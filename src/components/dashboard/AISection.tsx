@@ -1,11 +1,12 @@
 import { TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Brain, Cpu, Bot } from "lucide-react";
+import { Brain, Cpu, Bot, Sparkles } from "lucide-react";
 import AdvancedAI from "@/components/AdvancedAI";
 import LocalAI from "@/components/LocalAI";
 import VoiceInterface from "@/components/VoiceInterface";
 import AIConversation from "@/components/AIConversation";
+import ClaudeChat from "@/components/ClaudeChat";
 
 const AISection = () => {
   return (
@@ -24,6 +25,22 @@ const AISection = () => {
           </CardHeader>
         </Card>
         <AdvancedAI />
+      </TabsContent>
+
+      <TabsContent value="claude" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-purple-500" />
+              Claude 4 Chat
+              <Badge variant="secondary" className="bg-purple-500/20 text-purple-500 border-purple-500/30">Latest Model</Badge>
+            </CardTitle>
+            <CardDescription>
+              Direct conversation with Claude 4 Sonnet - Anthropic's most capable reasoning model.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <ClaudeChat />
       </TabsContent>
 
       <TabsContent value="local" className="space-y-4">

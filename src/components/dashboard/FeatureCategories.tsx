@@ -1,4 +1,4 @@
-import { Building2, GitBranch, Brain, Cpu, Bot, MessageSquare, Globe, Code2, BarChart3, Image, Mic, Volume2, Code } from "lucide-react";
+import { Building2, GitBranch, Brain, Cpu, Bot, MessageSquare, Globe, Code2, BarChart3, Image, Mic, Volume2, Code, Sparkles } from "lucide-react";
 
 export interface Feature {
   id: string;
@@ -75,6 +75,15 @@ export const features: Feature[] = [
     icon: Bot,
     color: "text-emerald-500",
     badge: "Voice AI",
+    category: "advanced-ai"
+  },
+  {
+    id: "claude",
+    title: "Claude 4 Chat",
+    description: "Direct conversation with Claude 4 Sonnet",
+    icon: Sparkles,
+    color: "text-purple-500",
+    badge: "Latest Model",
     category: "advanced-ai"
   },
 
