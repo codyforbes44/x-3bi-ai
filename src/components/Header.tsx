@@ -9,11 +9,11 @@ const Header = () => {
   const { theme, setTheme } = useTheme();
 
   const navigation = [
-    { name: "Community", href: "#" },
-    { name: "Pricing", href: "#" },
-    { name: "Enterprise", href: "#" },
-    { name: "Learn", href: "#" },
-    { name: "Launched", href: "#" }
+    { name: "Community", href: "/community" },
+    { name: "Pricing", href: "/pricing" },
+    { name: "Enterprise", href: "/enterprise" },
+    { name: "Learn", href: "/learn" },
+    { name: "Launched", href: "/launched" }
   ];
 
   return (
