@@ -2,7 +2,8 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MessageSquare, Image, Volume2, Code, Sparkles, ArrowRight, Zap, Brain, Cpu } from "lucide-react";
+import { MessageSquare, Image, Volume2, Code, Sparkles, ArrowRight, Zap, Brain, Cpu, Mic, Code2, BarChart3 } from "lucide-react";
+import AdvancedFeatures from "@/components/AdvancedFeatures";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -60,7 +61,7 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-hero relative overflow-hidden">
+    <div className="min-h-screen bg-gradient-hero relative overflow-hidden text-white">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-white/10 rounded-full blur-3xl animate-pulse"></div>
@@ -143,6 +144,8 @@ const Index = () => {
           </div>
         </section>
 
+        {/* Advanced Features Section */}
+        <AdvancedFeatures />
         {/* Features Grid */}
         <section className="pb-20">
           <div className="max-w-6xl mx-auto">
