@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MessageSquare, Image, Volume2, Code, Sparkles, Zap, Brain, Cpu, Mic, Code2, BarChart3 } from "lucide-react";
+import { MessageSquare, Image, Volume2, Code, Sparkles, Zap, Brain, Cpu, Mic, Code2, BarChart3, Globe, Bot } from "lucide-react";
 import AIChat from "@/components/AIChat";
 import AIImageGenerator from "@/components/AIImageGenerator";
 import AIVoice from "@/components/AIVoice";
@@ -10,11 +10,21 @@ import PremiumVoice from "@/components/PremiumVoice";
 import AICodeAssistant from "@/components/AICodeAssistant";
 import AIArchitect from "@/components/AIArchitect";
 import AIInsights from "@/components/AIInsights";
+import WebScraper from "@/components/WebScraper";
+import AIConversation from "@/components/AIConversation";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("chat");
 
   const features = [
+    {
+      id: "conversation",
+      title: "AI Conversation",
+      description: "Voice + text conversations with ElevenLabs",
+      icon: Bot,
+      color: "text-emerald-500",
+      badge: "Voice AI"
+    },
     {
       id: "chat",
       title: "AI Chat",
@@ -22,6 +32,14 @@ const Dashboard = () => {
       icon: MessageSquare,
       color: "text-blue-500",
       badge: "GPT-4o Mini"
+    },
+    {
+      id: "scraper",
+      title: "Web Scraper",
+      description: "Extract data from any website",
+      icon: Globe,
+      color: "text-cyan-500",
+      badge: "Data Extraction"
     },
     {
       id: "architect",
@@ -76,14 +94,14 @@ const Dashboard = () => {
   const stats = [
     {
       title: "AI Models Available",
-      value: "7+",
+      value: "9+",
       description: "Advanced AI capabilities",
       icon: Brain,
       color: "text-blue-500"
     },
     {
       title: "Processing Speed",
-      value: "< 1.5s",
+      value: "< 1s",
       description: "Average response time",
       icon: Zap,
       color: "text-yellow-500"
@@ -135,14 +153,30 @@ const Dashboard = () => {
 
         {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-9 text-xs">
             {features.map((feature) => (
-              <TabsTrigger key={feature.id} value={feature.id} className="flex items-center gap-2">
-                <feature.icon className={`w-4 h-4 ${feature.color}`} />
-                <span className="hidden sm:inline text-xs">{feature.title}</span>
+              <TabsTrigger key={feature.id} value={feature.id} className="flex items-center gap-1 text-xs">
+                <feature.icon className={`w-3 h-3 ${feature.color}`} />
+                <span className="hidden lg:inline text-xs">{feature.title.split(' ')[0]}</span>
               </TabsTrigger>
             ))}
           </TabsList>
+
+          <TabsContent value="conversation" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Bot className="w-5 h-5 text-emerald-500" />
+                  AI Voice Conversation
+                  <Badge variant="secondary">Voice + Text</Badge>
+                </CardTitle>
+                <CardDescription>
+                  Advanced conversational AI with voice responses using ElevenLabs premium voices.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            <AIConversation />
+          </TabsContent>
 
           <TabsContent value="chat" className="space-y-4">
             <Card>
@@ -158,6 +192,22 @@ const Dashboard = () => {
               </CardHeader>
             </Card>
             <AIChat />
+          </TabsContent>
+
+          <TabsContent value="scraper" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Globe className="w-5 h-5 text-cyan-500" />
+                  Advanced Web Scraper
+                  <Badge variant="secondary">Data Extraction</Badge>
+                </CardTitle>
+                <CardDescription>
+                  Extract and analyze data from any website with AI-powered content analysis and structured data output.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            <WebScraper />
           </TabsContent>
 
           <TabsContent value="architect" className="space-y-4">

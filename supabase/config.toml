@@ -20,3 +20,9 @@ verify_jwt = false
 
 [functions.ai-insights]
 verify_jwt = false
+
+[functions.web-scraper]
+verify_jwt = false
+
+[functions.ai-conversation]
+verify_jwt = false
