@@ -16,8 +16,12 @@ import {
   Rocket,
   CheckCircle
 } from "lucide-react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
+  const { user } = useAuth();
+  const navigate = useNavigate();
   const features = [
     {
       icon: Brain,
@@ -81,11 +85,20 @@ const HomePage = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-            <Button size="lg" className="bg-gradient-hero text-white text-lg px-8 py-4">
-              Get Started Free
+            <Button 
+              size="lg" 
+              className="bg-gradient-hero text-white text-lg px-8 py-4"
+              onClick={() => user ? navigate('/dashboard') : navigate('/auth')}
+            >
+              {user ? 'Go to Dashboard' : 'Get Started Free'}
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
-            <Button variant="outline" size="lg" className="text-lg px-8 py-4">
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="text-lg px-8 py-4"
+              onClick={() => navigate('/dashboard')}
+            >
               <Rocket className="mr-2 w-5 h-5" />
               View Dashboard
             </Button>

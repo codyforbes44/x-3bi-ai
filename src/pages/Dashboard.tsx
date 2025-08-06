@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
@@ -9,11 +10,33 @@ import UtilitiesSection from "@/components/dashboard/UtilitiesSection";
 import { getAllFeatures } from "@/components/dashboard/FeatureCategories";
 import { useIsMobile } from "@/hooks/use-mobile";
 import Header from "@/components/Header";
+import { useAuth } from "@/contexts/AuthContext";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("chat");
   const features = getAllFeatures();
   const isMobile = useIsMobile();
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+
+  // Redirect to auth if not authenticated
+  useEffect(() => {
+    if (!loading && !user) {
+      navigate('/auth');
+    }
+  }, [user, loading, navigate]);
+
+  // Show loading while checking auth
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  // Don't render if no user
+  if (!user) return null;
 
   return (
     <div className="min-h-screen bg-background">
