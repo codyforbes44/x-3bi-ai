@@ -12,11 +12,20 @@ import AIArchitect from "@/components/AIArchitect";
 import AIInsights from "@/components/AIInsights";
 import WebScraper from "@/components/WebScraper";
 import AIConversation from "@/components/AIConversation";
+import VoiceInterface from "@/components/VoiceInterface";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("chat");
 
   const features = [
+    {
+      id: "realtime",
+      title: "Real-Time Voice",
+      description: "Direct audio conversations with OpenAI Realtime API",
+      icon: Bot,
+      color: "text-red-500",
+      badge: "WebRTC"
+    },
     {
       id: "conversation",
       title: "AI Conversation",
@@ -94,7 +103,7 @@ const Dashboard = () => {
   const stats = [
     {
       title: "AI Models Available",
-      value: "9+",
+      value: "10+",
       description: "Advanced AI capabilities",
       icon: Brain,
       color: "text-blue-500"
@@ -153,7 +162,7 @@ const Dashboard = () => {
 
         {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-9 text-xs">
+          <TabsList className="grid w-full grid-cols-10 text-xs">
             {features.map((feature) => (
               <TabsTrigger key={feature.id} value={feature.id} className="flex items-center gap-1 text-xs">
                 <feature.icon className={`w-3 h-3 ${feature.color}`} />
@@ -161,6 +170,22 @@ const Dashboard = () => {
               </TabsTrigger>
             ))}
           </TabsList>
+
+          <TabsContent value="realtime" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Bot className="w-5 h-5 text-red-500" />
+                  Real-Time Voice Interface
+                  <Badge variant="secondary" className="bg-red-500/20 text-red-500 border-red-500/30">WebRTC</Badge>
+                </CardTitle>
+                <CardDescription>
+                  Direct audio-to-audio conversations using OpenAI's Realtime API with WebRTC for ultra-low latency.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            <VoiceInterface />
+          </TabsContent>
 
           <TabsContent value="conversation" className="space-y-4">
             <Card>
