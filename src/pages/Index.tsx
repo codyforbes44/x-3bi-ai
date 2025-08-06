@@ -4,6 +4,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { MessageSquare, Image, Volume2, Code, Sparkles, ArrowRight, Zap, Brain, Cpu, Mic, Code2, BarChart3 } from "lucide-react";
 import AdvancedFeatures from "@/components/AdvancedFeatures";
+import InteractiveDemo from "@/components/InteractiveDemo";
+import LiveMetrics from "@/components/LiveMetrics";
+import SocialProof from "@/components/SocialProof";
+import CtaSection from "@/components/CtaSection";
 
 const Index = () => {
   const navigate = useNavigate();
@@ -146,8 +150,19 @@ const Index = () => {
 
         {/* Advanced Features Section */}
         <AdvancedFeatures />
+        
+        {/* Interactive Demo Section */}
+        <section className="py-20">
+          <InteractiveDemo />
+        </section>
+
+        {/* Live Metrics Section */}
+        <section className="py-20">
+          <LiveMetrics />
+        </section>
+
         {/* Features Grid */}
-        <section className="pb-20">
+        <section className="py-20">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-12">
               <h2 className="text-4xl font-bold text-white mb-4">Powerful AI Features</h2>
@@ -177,6 +192,16 @@ const Index = () => {
               ))}
             </div>
           </div>
+        </section>
+
+        {/* Social Proof Section */}
+        <section className="py-20">
+          <SocialProof />
+        </section>
+
+        {/* CTA Section */}
+        <section className="py-20">
+          <CtaSection />
         </section>
       </div>
     </div>
