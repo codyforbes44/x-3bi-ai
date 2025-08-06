@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ThemeProvider from "@/components/ThemeProvider";
+import HomePage from "./pages/HomePage";
 import Dashboard from "./pages/Dashboard";
 import Community from "./pages/Community";
 import Pricing from "./pages/Pricing";
@@ -22,7 +23,8 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/community" element={<Community />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/enterprise" element={<Enterprise />} />
