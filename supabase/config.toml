@@ -35,3 +35,18 @@ verify_jwt = false
 
 [functions.realtime-search]
 verify_jwt = false
+
+[functions.free-text-analysis]
+verify_jwt = false
+
+[functions.free-image-analysis]
+verify_jwt = false
+
+[functions.free-audio-analysis]
+verify_jwt = false
+
+[functions.free-embeddings]
+verify_jwt = false
+
+[functions.free-text-comparison]
+verify_jwt = false
