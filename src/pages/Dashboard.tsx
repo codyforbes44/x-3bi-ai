@@ -24,47 +24,71 @@ const Dashboard = () => {
           {/* Header with stats */}
           <DashboardHeader />
 
-          {/* Main Content */}
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 md:space-y-6">
-            {/* Mobile: Horizontal scroll tabs, Desktop: Grid layout */}
-            {isMobile ? (
-              <ScrollArea className="w-full whitespace-nowrap">
-                <TabsList className="inline-flex h-12 items-center justify-start space-x-1 bg-muted p-1 min-w-max">
+          {/* Main Content with Sidebar */}
+          <div className="flex gap-6 mt-6">
+            {/* Sidebar Navigation */}
+            <div className="hidden md:block w-64 space-y-2">
+              <div className="bg-card rounded-lg border p-4">
+                <nav className="space-y-1">
                   {features.map((feature) => (
-                    <TabsTrigger 
-                      key={feature.id} 
-                      value={feature.id} 
-                      className="flex items-center gap-2 text-sm px-4 py-2 whitespace-nowrap"
+                    <button
+                      key={feature.id}
+                      onClick={() => setActiveTab(feature.id)}
+                      className={`w-full flex items-center gap-3 px-3 py-2 text-sm rounded-md text-left transition-colors ${
+                        activeTab === feature.id 
+                          ? 'bg-primary text-primary-foreground' 
+                          : 'text-muted-foreground hover:text-foreground hover:bg-muted'
+                      }`}
                     >
-                      <feature.icon className={`w-4 h-4 ${feature.color}`} />
-                      <span>{feature.title.split(' ')[0]}</span>
-                    </TabsTrigger>
+                      <feature.icon className={`w-4 h-4 ${activeTab === feature.id ? 'text-primary-foreground' : feature.color}`} />
+                      <span>{feature.title}</span>
+                    </button>
                   ))}
-                </TabsList>
-              </ScrollArea>
-            ) : (
-              <TabsList className="grid w-full grid-cols-15 text-xs">
-                {features.map((feature) => (
-                  <TabsTrigger key={feature.id} value={feature.id} className="flex items-center gap-1 text-xs">
-                    <feature.icon className={`w-3 h-3 ${feature.color}`} />
-                    <span className="hidden lg:inline text-xs">{feature.title.split(' ')[0]}</span>
-                  </TabsTrigger>
-                ))}
-              </TabsList>
+                </nav>
+              </div>
+            </div>
+
+            {/* Mobile Navigation */}
+            {isMobile && (
+              <div className="w-full mb-4">
+                <ScrollArea className="w-full whitespace-nowrap">
+                  <div className="flex space-x-2 p-1">
+                    {features.map((feature) => (
+                      <button
+                        key={feature.id}
+                        onClick={() => setActiveTab(feature.id)}
+                        className={`flex items-center gap-2 px-4 py-2 text-sm rounded-md whitespace-nowrap transition-colors ${
+                          activeTab === feature.id 
+                            ? 'bg-primary text-primary-foreground' 
+                            : 'bg-muted text-muted-foreground hover:text-foreground'
+                        }`}
+                      >
+                        <feature.icon className={`w-4 h-4 ${activeTab === feature.id ? 'text-primary-foreground' : feature.color}`} />
+                        <span>{feature.title.split(' ')[0]}</span>
+                      </button>
+                    ))}
+                  </div>
+                </ScrollArea>
+              </div>
             )}
 
-            {/* Enterprise Features */}
-            <EnterpriseSection />
+            {/* Main Content Area */}
+            <div className="flex-1">
+              <Tabs value={activeTab} onValueChange={setActiveTab}>
+                {/* Enterprise Features */}
+                <EnterpriseSection />
 
-            {/* Advanced AI Features */}
-            <AISection />
+                {/* Advanced AI Features */}
+                <AISection />
 
-            {/* AI Tools */}
-            <AIToolsSection />
+                {/* AI Tools */}
+                <AIToolsSection />
 
-            {/* Utilities */}
-            <UtilitiesSection />
-          </Tabs>
+                {/* Utilities */}
+                <UtilitiesSection />
+              </Tabs>
+            </div>
+          </div>
         </div>
       </div>
     </div>
