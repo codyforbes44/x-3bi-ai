@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Heart, Menu, X } from "lucide-react";
+import { Heart, Menu, Sun, Moon } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useTheme } from "next-themes";
 
 const Header = () => {
   const isMobile = useIsMobile();
+  const { theme, setTheme } = useTheme();
 
   const navigation = [
     { name: "Community", href: "#" },
@@ -40,8 +42,22 @@ const Header = () => {
         
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center space-x-4">
-          <Button variant="ghost">Log in</Button>
-          <Button variant="hero">Get started</Button>
+          {/* Theme Toggle */}
+          <div className="flex items-center space-x-2">
+            <Sun className="h-4 w-4" />
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="relative h-6 w-11 p-0 bg-muted border-0"
+            >
+              <div className={`absolute top-0.5 h-5 w-5 rounded-full bg-background shadow-md transition-transform ${
+                theme === "dark" ? "translate-x-5" : "translate-x-0.5"
+              }`} />
+            </Button>
+            <Moon className="h-4 w-4" />
+          </div>
+          <span className="text-sm font-medium">Dark</span>
         </div>
 
         {/* Mobile Menu */}
@@ -75,8 +91,24 @@ const Header = () => {
                 </nav>
                 
                 <div className="flex flex-col space-y-3 pt-4 border-t border-border">
-                  <Button variant="ghost" className="justify-start">Log in</Button>
-                  <Button variant="hero" className="justify-start">Get started</Button>
+                  {/* Mobile Theme Toggle */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium">Theme</span>
+                    <div className="flex items-center space-x-2">
+                      <Sun className="h-4 w-4" />
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                        className="relative h-6 w-11 p-0 bg-muted border-0"
+                      >
+                        <div className={`absolute top-0.5 h-5 w-5 rounded-full bg-background shadow-md transition-transform ${
+                          theme === "dark" ? "translate-x-5" : "translate-x-0.5"
+                        }`} />
+                      </Button>
+                      <Moon className="h-4 w-4" />
+                    </div>
+                  </div>
                 </div>
               </div>
             </SheetContent>
