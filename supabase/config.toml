@@ -50,3 +50,6 @@ verify_jwt = false
 
 [functions.free-text-comparison]
 verify_jwt = false
+
+[functions.deploypad-integration]
+verify_jwt = false

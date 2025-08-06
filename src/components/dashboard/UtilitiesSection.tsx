@@ -1,11 +1,12 @@
 import { TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Globe, Code2, BarChart3, Code } from "lucide-react";
+import { Globe, Code2, BarChart3, Code, Rocket } from "lucide-react";
 import WebScraper from "@/components/WebScraper";
 import AIArchitect from "@/components/AIArchitect";
 import AIInsights from "@/components/AIInsights";
 import AICodeAssistant from "@/components/AICodeAssistant";
+import DeploypadIntegration from "@/components/DeploypadIntegration";
 
 const UtilitiesSection = () => {
   return (
@@ -72,6 +73,22 @@ const UtilitiesSection = () => {
           </CardHeader>
         </Card>
         <AICodeAssistant />
+      </TabsContent>
+
+      <TabsContent value="deploy" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Rocket className="w-5 h-5 text-blue-500" />
+              Deploypad Integration
+              <Badge variant="secondary">Deploy</Badge>
+            </CardTitle>
+            <CardDescription>
+              Deploy your Lovable projects to Deploypad with one click. Automatic builds, custom domains, and production hosting.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <DeploypadIntegration />
       </TabsContent>
     </>
   );

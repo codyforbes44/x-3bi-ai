@@ -1,4 +1,4 @@
-import { Building2, GitBranch, Brain, Cpu, Bot, MessageSquare, Globe, Code2, BarChart3, Image, Mic, Volume2, Code, Sparkles } from "lucide-react";
+import { Building2, GitBranch, Brain, Cpu, Bot, MessageSquare, Globe, Code2, BarChart3, Image, Mic, Volume2, Code, Sparkles, Rocket } from "lucide-react";
 
 export interface Feature {
   id: string;
@@ -160,6 +160,15 @@ export const features: Feature[] = [
     icon: Code,
     color: "text-orange-500",
     badge: "Code AI",
+    category: "utilities"
+  },
+  {
+    id: "deploy",
+    title: "Deploypad Deploy",
+    description: "Deploy projects to Deploypad with one click",
+    icon: Rocket,
+    color: "text-blue-500",
+    badge: "Deploy",
     category: "utilities"
   }
 ];
