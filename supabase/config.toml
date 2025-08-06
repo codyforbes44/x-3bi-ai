@@ -11,3 +11,6 @@ verify_jwt = false
 
 [functions.ai-code]
 verify_jwt = false
+
+[functions.premium-voice]
+verify_jwt = false

@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MessageSquare, Image, Volume2, Code, Sparkles, Zap, Brain, Cpu } from "lucide-react";
+import { MessageSquare, Image, Volume2, Code, Sparkles, Zap, Brain, Cpu, Mic } from "lucide-react";
 import AIChat from "@/components/AIChat";
 import AIImageGenerator from "@/components/AIImageGenerator";
 import AIVoice from "@/components/AIVoice";
+import PremiumVoice from "@/components/PremiumVoice";
 import AICodeAssistant from "@/components/AICodeAssistant";
 
 const Dashboard = () => {
@@ -30,10 +31,18 @@ const Dashboard = () => {
     },
     {
       id: "voice",
-      title: "Voice Synthesis",
-      description: "Text-to-speech with natural voices",
-      icon: Volume2,
+      title: "Premium Voice",
+      description: "Ultra-realistic speech with ElevenLabs",
+      icon: Mic,
       color: "text-green-500",
+      badge: "ElevenLabs"
+    },
+    {
+      id: "basic-voice",
+      title: "Basic Voice",
+      description: "Standard text-to-speech with OpenAI",
+      icon: Volume2,
+      color: "text-teal-500",
       badge: "TTS-1"
     },
     {
@@ -49,7 +58,7 @@ const Dashboard = () => {
   const stats = [
     {
       title: "AI Models Available",
-      value: "4+",
+      value: "5+",
       description: "Advanced AI capabilities",
       icon: Brain,
       color: "text-blue-500"
@@ -108,7 +117,7 @@ const Dashboard = () => {
 
         {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             {features.map((feature) => (
               <TabsTrigger key={feature.id} value={feature.id} className="flex items-center gap-2">
                 <feature.icon className={`w-4 h-4 ${feature.color}`} />
@@ -153,12 +162,28 @@ const Dashboard = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Volume2 className="w-5 h-5 text-green-500" />
-                  AI Voice Synthesis
+                  <Mic className="w-5 h-5 text-green-500" />
+                  Premium Voice Synthesis
+                  <Badge variant="secondary">ElevenLabs</Badge>
+                </CardTitle>
+                <CardDescription>
+                  Generate ultra-realistic speech with ElevenLabs premium voices and emotional expression.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            <PremiumVoice />
+          </TabsContent>
+
+          <TabsContent value="basic-voice" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Volume2 className="w-5 h-5 text-teal-500" />
+                  Basic Voice Synthesis
                   <Badge variant="secondary">TTS-1</Badge>
                 </CardTitle>
                 <CardDescription>
-                  Convert text to natural-sounding speech with multiple voice options and high-quality audio output.
+                  Convert text to natural-sounding speech with OpenAI's text-to-speech models.
                 </CardDescription>
               </CardHeader>
             </Card>
