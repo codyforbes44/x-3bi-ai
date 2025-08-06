@@ -13,11 +13,29 @@ import AIInsights from "@/components/AIInsights";
 import WebScraper from "@/components/WebScraper";
 import AIConversation from "@/components/AIConversation";
 import VoiceInterface from "@/components/VoiceInterface";
+import AdvancedAI from "@/components/AdvancedAI";
+import LocalAI from "@/components/LocalAI";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("chat");
 
   const features = [
+    {
+      id: "advanced",
+      title: "Advanced AI",
+      description: "Claude 4, Perplexity, and multi-modal capabilities",
+      icon: Brain,
+      color: "text-purple-500",
+      badge: "Claude 4"
+    },
+    {
+      id: "local",
+      title: "Local AI",
+      description: "Privacy-first AI models running in your browser",
+      icon: Cpu,
+      color: "text-orange-500",
+      badge: "WebGPU"
+    },
     {
       id: "realtime",
       title: "Real-Time Voice",
@@ -103,7 +121,7 @@ const Dashboard = () => {
   const stats = [
     {
       title: "AI Models Available",
-      value: "10+",
+      value: "15+",
       description: "Advanced AI capabilities",
       icon: Brain,
       color: "text-blue-500"
@@ -162,7 +180,7 @@ const Dashboard = () => {
 
         {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-10 text-xs">
+          <TabsList className="grid w-full grid-cols-12 text-xs">
             {features.map((feature) => (
               <TabsTrigger key={feature.id} value={feature.id} className="flex items-center gap-1 text-xs">
                 <feature.icon className={`w-3 h-3 ${feature.color}`} />
@@ -170,6 +188,38 @@ const Dashboard = () => {
               </TabsTrigger>
             ))}
           </TabsList>
+
+          <TabsContent value="advanced" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Brain className="w-5 h-5 text-purple-500" />
+                  Advanced AI Intelligence
+                  <Badge variant="secondary" className="bg-purple-500/20 text-purple-500 border-purple-500/30">Claude 4</Badge>
+                </CardTitle>
+                <CardDescription>
+                  Access Claude 4's superior reasoning, Perplexity's real-time web search, and multi-modal AI capabilities.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            <AdvancedAI />
+          </TabsContent>
+
+          <TabsContent value="local" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Cpu className="w-5 h-5 text-orange-500" />
+                  Local AI Models
+                  <Badge variant="secondary" className="bg-orange-500/20 text-orange-500 border-orange-500/30">Privacy-First</Badge>
+                </CardTitle>
+                <CardDescription>
+                  Run AI models locally in your browser with WebGPU acceleration. No data leaves your device.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            <LocalAI />
+          </TabsContent>
 
           <TabsContent value="realtime" className="space-y-4">
             <Card>

@@ -29,3 +29,9 @@ verify_jwt = false
 
 [functions.realtime-session]
 verify_jwt = false
+
+[functions.advanced-ai]
+verify_jwt = false
+
+[functions.realtime-search]
+verify_jwt = false
