@@ -2,12 +2,14 @@ import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MessageSquare, Image, Volume2, Code, Sparkles, Zap, Brain, Cpu, Mic } from "lucide-react";
+import { MessageSquare, Image, Volume2, Code, Sparkles, Zap, Brain, Cpu, Mic, Code2, BarChart3 } from "lucide-react";
 import AIChat from "@/components/AIChat";
 import AIImageGenerator from "@/components/AIImageGenerator";
 import AIVoice from "@/components/AIVoice";
 import PremiumVoice from "@/components/PremiumVoice";
 import AICodeAssistant from "@/components/AICodeAssistant";
+import AIArchitect from "@/components/AIArchitect";
+import AIInsights from "@/components/AIInsights";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("chat");
@@ -22,11 +24,27 @@ const Dashboard = () => {
       badge: "GPT-4o Mini"
     },
     {
+      id: "architect",
+      title: "Code Architect",
+      description: "Generate complete applications with AI",
+      icon: Code2,
+      color: "text-purple-500",
+      badge: "GPT-4o"
+    },
+    {
+      id: "insights",
+      title: "AI Insights",
+      description: "Advanced analytics and predictions",
+      icon: BarChart3,
+      color: "text-indigo-500",
+      badge: "Analytics AI"
+    },
+    {
       id: "image",
       title: "Image Generation",
       description: "Create stunning visuals with DALL-E",
       icon: Image,
-      color: "text-purple-500",
+      color: "text-pink-500",
       badge: "DALL-E 3"
     },
     {
@@ -58,14 +76,14 @@ const Dashboard = () => {
   const stats = [
     {
       title: "AI Models Available",
-      value: "5+",
+      value: "7+",
       description: "Advanced AI capabilities",
       icon: Brain,
       color: "text-blue-500"
     },
     {
       title: "Processing Speed",
-      value: "< 2s",
+      value: "< 1.5s",
       description: "Average response time",
       icon: Zap,
       color: "text-yellow-500"
@@ -117,11 +135,11 @@ const Dashboard = () => {
 
         {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
+          <TabsList className="grid w-full grid-cols-7">
             {features.map((feature) => (
               <TabsTrigger key={feature.id} value={feature.id} className="flex items-center gap-2">
                 <feature.icon className={`w-4 h-4 ${feature.color}`} />
-                <span className="hidden sm:inline">{feature.title}</span>
+                <span className="hidden sm:inline text-xs">{feature.title}</span>
               </TabsTrigger>
             ))}
           </TabsList>
@@ -142,11 +160,43 @@ const Dashboard = () => {
             <AIChat />
           </TabsContent>
 
+          <TabsContent value="architect" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Code2 className="w-5 h-5 text-purple-500" />
+                  AI Code Architect
+                  <Badge variant="secondary">GPT-4o</Badge>
+                </CardTitle>
+                <CardDescription>
+                  Generate complete, production-ready applications and components with advanced AI architecture.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            <AIArchitect />
+          </TabsContent>
+
+          <TabsContent value="insights" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <BarChart3 className="w-5 h-5 text-indigo-500" />
+                  AI Insights Engine
+                  <Badge variant="secondary">Analytics AI</Badge>
+                </CardTitle>
+                <CardDescription>
+                  Advanced data analytics, predictions, and business intelligence powered by AI.
+                </CardDescription>
+              </CardHeader>
+            </Card>
+            <AIInsights />
+          </TabsContent>
+
           <TabsContent value="image" className="space-y-4">
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <Image className="w-5 h-5 text-purple-500" />
+                  <Image className="w-5 h-5 text-pink-500" />
                   AI Image Generator
                   <Badge variant="secondary">DALL-E 3</Badge>
                 </CardTitle>
