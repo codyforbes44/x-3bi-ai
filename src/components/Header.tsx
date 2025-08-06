@@ -11,7 +11,20 @@ import { useNavigate } from "react-router-dom";
 const Header = () => {
   const isMobile = useIsMobile();
   const { theme, setTheme } = useTheme();
-  const { user, signOut } = useAuth();
+  
+  // Safely get auth context with fallback
+  let user = null;
+  let signOut = () => Promise.resolve();
+  
+  try {
+    const auth = useAuth();
+    user = auth.user;
+    signOut = auth.signOut;
+  } catch (error) {
+    // AuthProvider not available yet
+    console.warn('AuthProvider not available');
+  }
+  
   const navigate = useNavigate();
 
   const getInitials = (name: string | null, email: string | null) => {
