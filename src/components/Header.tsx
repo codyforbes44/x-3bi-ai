@@ -66,9 +66,9 @@ const Header = () => {
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center space-x-4">
           {/* Theme Toggle */}
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 px-0">
             <Sun className="h-4 w-4" />
-            <Button variant="outline" size="sm" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="relative h-6 w-11 p-0 bg-muted border-0">
+            <Button variant="outline" size="sm" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="relative h-6 w-11 p-0 bg-muted border-0 px-[50px] py-0">
               <div className={`absolute top-0.5 h-5 w-5 rounded-full bg-background shadow-md transition-transform ${theme === "dark" ? "translate-x-5" : "translate-x-0.5"}`} />
             </Button>
             <Moon className="h-4 w-4" />
