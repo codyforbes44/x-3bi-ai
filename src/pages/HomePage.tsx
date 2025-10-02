@@ -165,7 +165,11 @@ const HomePage = () => {
                 ))}
               </div>
               
-              <Button size="lg" className="bg-gradient-hero text-white">
+              <Button 
+                size="lg" 
+                className="bg-gradient-hero text-white"
+                onClick={() => navigate('/dashboard')}
+              >
                 Start Using Free AI
               </Button>
             </div>
@@ -204,10 +208,20 @@ const HomePage = () => {
             Be part of a global community accessing free AI technology. Together, we're democratizing AI for all humanity.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" variant="secondary" className="text-lg px-8 py-4">
+            <Button 
+              size="lg" 
+              variant="secondary" 
+              className="text-lg px-8 py-4"
+              onClick={() => navigate('/dashboard')}
+            >
               Access Free Tools
             </Button>
-            <Button size="lg" variant="outline" className="text-lg px-8 py-4 border-white text-white hover:bg-white hover:text-primary">
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="text-lg px-8 py-4 border-white text-white hover:bg-white hover:text-primary"
+              onClick={() => navigate('/community')}
+            >
               Learn About Our Mission
             </Button>
           </div>

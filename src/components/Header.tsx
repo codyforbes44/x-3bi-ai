@@ -34,12 +34,6 @@ const Header = () => {
     name: "Community",
     href: "/community"
   }, {
-    name: "Pricing",
-    href: "/pricing"
-  }, {
-    name: "Enterprise",
-    href: "/enterprise"
-  }, {
     name: "Learn",
     href: "/learn"
   }, {

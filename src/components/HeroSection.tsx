@@ -65,10 +65,20 @@ const HeroSection = () => {
           
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center justify-center space-y-4 sm:space-y-0 sm:space-x-6">
-            <Button size="lg" variant="secondary" className="min-w-[180px] h-14 text-lg shadow-elegant">
+            <Button 
+              size="lg" 
+              variant="secondary" 
+              className="min-w-[180px] h-14 text-lg shadow-elegant"
+              onClick={() => window.location.href = '/dashboard'}
+            >
               Explore Free Tools
             </Button>
-            <Button size="lg" variant="outline" className="min-w-[180px] h-14 text-lg border-white/20 text-white hover:bg-white/10">
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="min-w-[180px] h-14 text-lg border-white/20 text-white hover:bg-white/10"
+              onClick={() => window.location.href = '/community'}
+            >
               About Our Mission
             </Button>
           </div>
