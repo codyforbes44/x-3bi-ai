@@ -1,12 +1,76 @@
+import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 import { Heart, Users, Rocket, GraduationCap, Globe, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/components/ui/use-toast";
 
 const Donate = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [selectedAmount, setSelectedAmount] = useState("");
+  const [customAmount, setCustomAmount] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  let user = null;
+  try {
+    const auth = useAuth();
+    user = auth.user;
+  } catch (error) {
+    console.warn('AuthProvider not available');
+  }
+
+  const handleDonate = async (amount: string) => {
+    const finalAmount = amount === "Custom" ? customAmount : amount;
+    if (!finalAmount || !email) {
+      toast({
+        title: "Missing information",
+        description: "Please provide an amount and email address.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const { error } = await supabase.from('donations').insert({
+        user_id: user?.id || null,
+        amount: finalAmount,
+        email: email,
+        message: message || null,
+        status: 'pending'
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Thank you!",
+        description: "Your donation has been recorded. Payment processing coming soon!"
+      });
+      
+      setSelectedAmount("");
+      setCustomAmount("");
+      setMessage("");
+      if (!user) setEmail("");
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to process donation",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const donationTiers = [
     {
@@ -115,8 +179,12 @@ const Donate = () => {
                     <Sparkles className="w-5 h-5 mx-auto mb-2 text-primary" />
                     <p className="text-xs font-medium">{tier.impact}</p>
                   </div>
-                  <Button className="w-full bg-gradient-hero text-white">
-                    Donate {tier.amount}
+                  <Button 
+                    className="w-full bg-gradient-hero text-white"
+                    onClick={() => setSelectedAmount(tier.amount)}
+                    disabled={loading}
+                  >
+                    {selectedAmount === tier.amount ? "Selected" : `Select ${tier.amount}`}
                   </Button>
                 </div>
               </Card>
@@ -202,6 +270,67 @@ const Donate = () => {
             </div>
           </div>
         </section>
+
+        {/* Donation Form */}
+        {selectedAmount && (
+          <section className="container mx-auto px-4 py-16">
+            <Card className="max-w-2xl mx-auto p-8">
+              <h2 className="text-2xl font-bold mb-6 text-center">Complete Your Donation</h2>
+              <div className="space-y-4">
+                <div>
+                  <Label>Amount</Label>
+                  {selectedAmount === "Custom" ? (
+                    <Input
+                      type="number"
+                      placeholder="Enter custom amount"
+                      value={customAmount}
+                      onChange={(e) => setCustomAmount(e.target.value)}
+                      min="1"
+                    />
+                  ) : (
+                    <Input value={selectedAmount} disabled />
+                  )}
+                </div>
+                <div>
+                  <Label>Email</Label>
+                  <Input
+                    type="email"
+                    placeholder="your@email.com"
+                    value={user?.email || email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    disabled={!!user?.email}
+                  />
+                </div>
+                <div>
+                  <Label>Message (Optional)</Label>
+                  <Textarea
+                    placeholder="Leave a message..."
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    rows={3}
+                  />
+                </div>
+                <div className="flex gap-3">
+                  <Button
+                    variant="outline"
+                    onClick={() => setSelectedAmount("")}
+                    className="flex-1"
+                    disabled={loading}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={() => handleDonate(selectedAmount)}
+                    className="flex-1 bg-gradient-hero text-white"
+                    disabled={loading}
+                  >
+                    {loading ? "Processing..." : "Continue to Payment"}
+                  </Button>
+                </div>
+              </div>
+            </Card>
+          </section>
+        )}
 
         {/* Tax Info */}
         <section className="container mx-auto px-4 py-8">
