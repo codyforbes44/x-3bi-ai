@@ -66,32 +66,32 @@ const Learn = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <div className="pt-20 pb-16">
-        <div className="container mx-auto px-4">
+      <div className="pt-16 md:pt-20 pb-12 md:pb-16">
+        <div className="container mx-auto px-4 md:px-6">
           {/* Hero Section */}
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-hero bg-clip-text text-transparent">
+          <div className="text-center mb-12 md:mb-16">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 bg-gradient-hero bg-clip-text text-transparent px-2">
               Learn & Master AI
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-6 md:mb-8 px-4">
               Comprehensive resources to help you master AI tools and build amazing projects. From beginner guides to advanced techniques.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-gradient-hero text-white">
-                <BookOpen className="w-5 h-5 mr-2" />
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4">
+              <Button size="lg" className="bg-gradient-hero text-white min-h-[48px]">
+                <BookOpen className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                 Start Learning
               </Button>
-              <Button variant="outline" size="lg">
-                <Video className="w-5 h-5 mr-2" />
+              <Button variant="outline" size="lg" className="min-h-[48px]">
+                <Video className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                 Watch Tutorials
               </Button>
             </div>
           </div>
 
           {/* Learning Categories */}
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold text-center mb-12">Learning Paths</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="mb-12 md:mb-16">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">Learning Paths</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
               {categories.map((category) => (
                 <Card key={category.title} className="h-full hover:shadow-lg transition-shadow cursor-pointer">
                   <CardHeader className="text-center">
@@ -108,9 +108,9 @@ const Learn = () => {
           </div>
 
           {/* Featured Content */}
-          <div className="mb-16">
-            <h2 className="text-3xl font-bold text-center mb-12">Featured Content</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="mb-12 md:mb-16">
+            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8 md:mb-12">Featured Content</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
               {featuredContent.map((content) => (
                 <Card key={content.title} className="h-full">
                   <CardHeader>
@@ -140,12 +140,12 @@ const Learn = () => {
           </div>
 
           {/* Quick Start Section */}
-          <div className="bg-muted/50 rounded-2xl p-8 md:p-12 text-center">
-            <h2 className="text-3xl font-bold mb-4">Ready to Start Learning?</h2>
-            <p className="text-muted-foreground mb-8 max-w-2xl mx-auto">
+          <div className="bg-muted/50 rounded-xl md:rounded-2xl p-6 md:p-12 text-center">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">Ready to Start Learning?</h2>
+            <p className="text-sm md:text-base text-muted-foreground mb-6 md:mb-8 max-w-2xl mx-auto">
               Join thousands of learners who have mastered AI tools and transformed their workflows.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-8 mb-6 md:mb-8">
               <div className="space-y-2">
                 <div className="text-3xl font-bold text-primary">500+</div>
                 <div className="text-sm text-muted-foreground">Learning Resources</div>
@@ -159,7 +159,7 @@ const Learn = () => {
                 <div className="text-sm text-muted-foreground">Satisfaction Rate</div>
               </div>
             </div>
-            <Button size="lg" className="bg-gradient-hero text-white">
+            <Button size="lg" className="bg-gradient-hero text-white min-h-[48px]">
               Browse All Resources
             </Button>
           </div>

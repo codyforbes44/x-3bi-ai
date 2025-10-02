@@ -7,30 +7,30 @@ const Community = () => {
   return (
     <div className="min-h-screen bg-background">
       <Header />
-      <div className="pt-20 pb-16">
-        <div className="container mx-auto px-4">
+      <div className="pt-16 md:pt-20 pb-12 md:pb-16">
+        <div className="container mx-auto px-4 md:px-6">
           {/* Hero Section */}
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-hero bg-clip-text text-transparent">
+          <div className="text-center mb-12 md:mb-16">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 bg-gradient-hero bg-clip-text text-transparent px-2">
               Join Our Community
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-6 md:mb-8 px-4">
               Connect with thousands of developers, designers, and creators building the future with AI-powered tools.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-gradient-hero text-white">
-                <MessageCircle className="w-5 h-5 mr-2" />
+            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4">
+              <Button size="lg" className="bg-gradient-hero text-white min-h-[48px]">
+                <MessageCircle className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                 Join Discord
               </Button>
-              <Button variant="outline" size="lg">
-                <Github className="w-5 h-5 mr-2" />
+              <Button variant="outline" size="lg" className="min-h-[48px]">
+                <Github className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                 GitHub Community
               </Button>
             </div>
           </div>
 
           {/* Community Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-8 mb-12 md:mb-16">
             <Card className="text-center">
               <CardHeader>
                 <Users className="w-12 h-12 mx-auto text-primary mb-4" />
@@ -55,7 +55,7 @@ const Community = () => {
           </div>
 
           {/* Community Features */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
             <Card>
               <CardHeader>
                 <MessageCircle className="w-8 h-8 text-primary mb-2" />

@@ -41,21 +41,21 @@ const Header = () => {
     href: "/launched"
   }];
   return <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border">
-      <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+      <div className="container mx-auto px-3 md:px-4 h-14 md:h-16 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center space-x-3">
-          <div className="w-8 h-8 bg-gradient-hero rounded-lg flex items-center justify-center">
-            <Heart className="w-5 h-5 text-white" />
+        <div className="flex items-center space-x-2 md:space-x-3">
+          <div className="w-7 h-7 md:w-8 md:h-8 bg-gradient-hero rounded-lg flex items-center justify-center">
+            <Heart className="w-4 h-4 md:w-5 md:h-5 text-white" />
           </div>
           <div className="flex flex-col">
-            <span className="text-xl font-bold leading-none">KALPESH</span>
-            
+            <span className="text-base md:text-xl font-bold leading-none">KALPESH</span>
+            <span className="text-[9px] md:text-xs text-muted-foreground hidden sm:block leading-none mt-0.5">Lord of dreams or imagination</span>
           </div>
         </div>
         
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
-          {navigation.map(item => <a key={item.name} href={item.href} className="text-muted-foreground hover:text-foreground transition-smooth">
+        <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
+          {navigation.map(item => <a key={item.name} href={item.href} className="text-sm lg:text-base text-muted-foreground hover:text-foreground transition-smooth">
               {item.name}
             </a>)}
         </nav>
@@ -111,22 +111,25 @@ const Header = () => {
         {/* Mobile Menu */}
         {isMobile && <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" className="h-9 w-9">
                 <Menu className="h-5 w-5" />
                 <span className="sr-only">Toggle menu</span>
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+            <SheetContent side="right" className="w-[280px] sm:w-[320px]">
               <div className="flex flex-col space-y-6 mt-6">
                 <div className="flex items-center space-x-2">
                   <div className="w-8 h-8 bg-gradient-hero rounded-lg flex items-center justify-center">
                     <Heart className="w-5 h-5 text-white" />
                   </div>
-                  <span className="text-xl font-bold">KALPESH</span>
+                  <div className="flex flex-col">
+                    <span className="text-lg font-bold">KALPESH</span>
+                    <span className="text-xs text-muted-foreground">Lord of dreams or imagination</span>
+                  </div>
                 </div>
                 
-                <nav className="flex flex-col space-y-4">
-                  {navigation.map(item => <a key={item.name} href={item.href} className="text-lg text-muted-foreground hover:text-foreground transition-smooth">
+                <nav className="flex flex-col space-y-3">
+                  {navigation.map(item => <a key={item.name} href={item.href} className="text-base text-muted-foreground hover:text-foreground transition-smooth py-2 touch-target">
                       {item.name}
                     </a>)}
                 </nav>
