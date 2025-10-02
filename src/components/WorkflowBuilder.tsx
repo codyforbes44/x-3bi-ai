@@ -8,8 +8,9 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/components/ui/use-toast";
+import { toast } from "sonner";
 import { GitBranch, Play, Plus, Settings, Clock, CheckCircle, XCircle, Pause, Workflow } from "lucide-react";
+import { useWorkflowContext } from "@/contexts/WorkflowContext";
 
 interface Workflow {
   id: string;
@@ -33,133 +34,42 @@ interface WorkflowExecution {
 }
 
 const WorkflowBuilder = () => {
-  const { toast } = useToast();
-  const [workflows] = useState<Workflow[]>([
-    {
-      id: 'wf-1',
-      name: 'Data Analysis Pipeline',
-      description: 'Automatically analyze data and generate insights',
-      steps: [
-        { id: 'step1', type: 'ai_chat', name: 'AI Analysis' },
-        { id: 'step2', type: 'data_transform', name: 'Process Results' }
-      ],
-      trigger_type: 'manual',
-      status: 'active',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    },
-    {
-      id: 'wf-2',
-      name: 'Content Generation',
-      description: 'Generate, review, and publish content',
-      steps: [
-        { id: 'step1', type: 'ai_chat', name: 'Generate Content' },
-        { id: 'step2', type: 'review', name: 'Quality Check' },
-        { id: 'step3', type: 'publish', name: 'Auto Publish' }
-      ],
-      trigger_type: 'scheduled',
-      status: 'active',
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString()
-    }
-  ]);
-  const [executions, setExecutions] = useState<WorkflowExecution[]>([
-    {
-      id: 'ex-1',
-      workflow_id: 'wf-1',
-      status: 'completed',
-      started_at: new Date(Date.now() - 300000).toISOString(),
-      completed_at: new Date(Date.now() - 120000).toISOString(),
-      result: { message: 'Analysis completed successfully' }
-    },
-    {
-      id: 'ex-2',
-      workflow_id: 'wf-2',
-      status: 'running',
-      started_at: new Date(Date.now() - 60000).toISOString()
-    }
-  ]);
+  const {
+    workflows,
+    executions,
+    loading,
+    createWorkflow,
+    executeWorkflow,
+  } = useWorkflowContext();
+  
   const [isLoading, setIsLoading] = useState(false);
   const [showCreateDialog, setShowCreateDialog] = useState(false);
   const [newWorkflow, setNewWorkflow] = useState({
     name: '',
     description: '',
     trigger_type: 'manual' as const,
-    steps: []
   });
 
-  const createWorkflow = async () => {
+
+  const handleCreateWorkflow = async () => {
     if (!newWorkflow.name.trim()) return;
 
     setIsLoading(true);
-    try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      setNewWorkflow({ name: '', description: '', trigger_type: 'manual', steps: [] });
+    const workflow = await createWorkflow(newWorkflow);
+    
+    if (workflow) {
+      setNewWorkflow({ name: '', description: '', trigger_type: 'manual' });
       setShowCreateDialog(false);
-
-      toast({
-        title: "Success",
-        description: "Workflow created successfully",
-      });
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to create workflow",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
     }
+    setIsLoading(false);
   };
 
-  const runWorkflow = async (workflowId: string) => {
+  const handleRunWorkflow = async (workflowId: string) => {
     setIsLoading(true);
-    try {
-      const newExecution: WorkflowExecution = {
-        id: `ex-${Date.now()}`,
-        workflow_id: workflowId,
-        status: 'running',
-        started_at: new Date().toISOString()
-      };
-
-      setExecutions(prev => [newExecution, ...prev]);
-
-      toast({
-        title: "Workflow Started",
-        description: "Your workflow is now running",
-      });
-
-      // Simulate workflow completion after 3 seconds
-      setTimeout(() => {
-        setExecutions(prev => prev.map(ex => 
-          ex.id === newExecution.id 
-            ? {
-                ...ex,
-                status: 'completed' as const,
-                completed_at: new Date().toISOString(),
-                result: { message: 'Workflow completed successfully', data: { processed: true } }
-              }
-            : ex
-        ));
-        
-        toast({
-          title: "Workflow Completed",
-          description: "Your workflow has finished successfully",
-        });
-      }, 3000);
-
-    } catch (error) {
-      toast({
-        title: "Error",
-        description: "Failed to start workflow",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoading(false);
-    }
+    await executeWorkflow(workflowId);
+    setIsLoading(false);
   };
+
 
   const getStatusIcon = (status: string) => {
     switch (status) {
@@ -251,7 +161,7 @@ const WorkflowBuilder = () => {
                       </SelectContent>
                     </Select>
                   </div>
-                  <Button onClick={createWorkflow} disabled={isLoading} className="w-full">
+                  <Button onClick={handleCreateWorkflow} disabled={isLoading} className="w-full">
                     {isLoading ? "Creating..." : "Create Workflow"}
                   </Button>
                 </div>
@@ -269,7 +179,21 @@ const WorkflowBuilder = () => {
         </TabsList>
 
         <TabsContent value="workflows" className="space-y-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+          {loading ? (
+            <div className="text-center py-8 text-muted-foreground">Loading workflows...</div>
+          ) : workflows.length === 0 ? (
+            <Card>
+              <CardContent className="py-12 text-center">
+                <Workflow className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground mb-4">No workflows yet</p>
+                <Button onClick={() => setShowCreateDialog(true)}>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Create Your First Workflow
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
             {workflows.map((workflow) => (
               <Card key={workflow.id}>
                 <CardHeader>
@@ -286,15 +210,13 @@ const WorkflowBuilder = () => {
                 <CardContent className="space-y-4">
                   <div className="flex items-center gap-2 text-sm text-muted-foreground">
                     <GitBranch className="w-4 h-4" />
-                    <span>{workflow.steps?.length || 0} steps</span>
-                    <span>•</span>
                     <span>{workflow.trigger_type} trigger</span>
                   </div>
                   
                   <div className="flex gap-2">
                     <Button 
                       size="sm" 
-                      onClick={() => runWorkflow(workflow.id)}
+                      onClick={() => handleRunWorkflow(workflow.id)}
                       disabled={workflow.status !== 'active' || isLoading}
                       className="flex-1"
                     >
@@ -312,6 +234,7 @@ const WorkflowBuilder = () => {
               </Card>
             ))}
           </div>
+          )}
         </TabsContent>
 
         <TabsContent value="executions" className="space-y-4">

@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ThemeProvider from "@/components/ThemeProvider";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { WorkspaceProvider } from "@/contexts/WorkspaceContext";
+import { WorkflowProvider } from "@/contexts/WorkflowContext";
 import FloatingBadge from "@/components/FloatingBadge";
 import HomePage from "./pages/HomePage";
 import Dashboard from "./pages/Dashboard";
@@ -40,7 +41,8 @@ const App = () => (
     <ThemeProvider>
       <AuthProvider>
         <WorkspaceProvider>
-          <TooltipProvider>
+          <WorkflowProvider>
+            <TooltipProvider>
           <Toaster />
           <Sonner />
           <FloatingBadge />
@@ -75,6 +77,7 @@ const App = () => (
             </Routes>
           </BrowserRouter>
           </TooltipProvider>
+        </WorkflowProvider>
         </WorkspaceProvider>
       </AuthProvider>
     </ThemeProvider>
