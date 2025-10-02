@@ -20,6 +20,10 @@ import Mission from "./pages/Mission";
 import Team from "./pages/Team";
 import Impact from "./pages/Impact";
 import Partners from "./pages/Partners";
+import Contact from "./pages/Contact";
+import Newsletter from "./pages/Newsletter";
+import Volunteer from "./pages/Volunteer";
+import Donate from "./pages/Donate";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -48,6 +52,10 @@ const App = () => (
               <Route path="/team" element={<Team />} />
               <Route path="/impact" element={<Impact />} />
               <Route path="/partners" element={<Partners />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/newsletter" element={<Newsletter />} />
+              <Route path="/volunteer" element={<Volunteer />} />
+              <Route path="/donate" element={<Donate />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

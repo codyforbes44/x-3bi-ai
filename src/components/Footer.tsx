@@ -33,10 +33,10 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="font-semibold">About</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li><a href="#" className="hover:text-foreground transition-smooth">Our Mission</a></li>
-              <li><a href="#" className="hover:text-foreground transition-smooth">Team</a></li>
-              <li><a href="#" className="hover:text-foreground transition-smooth">Impact</a></li>
-              <li><a href="#" className="hover:text-foreground transition-smooth">Partners</a></li>
+              <li><a href="/mission" className="hover:text-foreground transition-smooth">Our Mission</a></li>
+              <li><a href="/team" className="hover:text-foreground transition-smooth">Team</a></li>
+              <li><a href="/impact" className="hover:text-foreground transition-smooth">Impact</a></li>
+              <li><a href="/partners" className="hover:text-foreground transition-smooth">Partners</a></li>
             </ul>
           </div>
           
@@ -44,10 +44,10 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="font-semibold">Connect</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li><a href="#" className="hover:text-foreground transition-smooth">Contact Us</a></li>
-              <li><a href="#" className="hover:text-foreground transition-smooth">Newsletter</a></li>
-              <li><a href="#" className="hover:text-foreground transition-smooth">Volunteer</a></li>
-              <li><a href="#" className="hover:text-foreground transition-smooth">Donate</a></li>
+              <li><a href="/contact" className="hover:text-foreground transition-smooth">Contact Us</a></li>
+              <li><a href="/newsletter" className="hover:text-foreground transition-smooth">Newsletter</a></li>
+              <li><a href="/volunteer" className="hover:text-foreground transition-smooth">Volunteer</a></li>
+              <li><a href="/donate" className="hover:text-foreground transition-smooth">Donate</a></li>
             </ul>
           </div>
         </div>
