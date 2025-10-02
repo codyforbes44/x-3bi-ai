@@ -24,6 +24,10 @@ import Contact from "./pages/Contact";
 import Newsletter from "./pages/Newsletter";
 import Volunteer from "./pages/Volunteer";
 import Donate from "./pages/Donate";
+import FreeAITools from "./pages/FreeAITools";
+import Tutorials from "./pages/Tutorials";
+import Documentation from "./pages/Documentation";
+import APIAccess from "./pages/APIAccess";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -56,6 +60,10 @@ const App = () => (
               <Route path="/newsletter" element={<Newsletter />} />
               <Route path="/volunteer" element={<Volunteer />} />
               <Route path="/donate" element={<Donate />} />
+              <Route path="/free-ai-tools" element={<FreeAITools />} />
+              <Route path="/tutorials" element={<Tutorials />} />
+              <Route path="/documentation" element={<Documentation />} />
+              <Route path="/api-access" element={<APIAccess />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>

@@ -22,10 +22,10 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="font-semibold">Resources</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li><a href="#" className="hover:text-foreground transition-smooth">Free AI Tools</a></li>
-              <li><a href="#" className="hover:text-foreground transition-smooth">Tutorials</a></li>
-              <li><a href="#" className="hover:text-foreground transition-smooth">Documentation</a></li>
-              <li><a href="#" className="hover:text-foreground transition-smooth">API Access</a></li>
+              <li><a href="/free-ai-tools" className="hover:text-foreground transition-smooth">Free AI Tools</a></li>
+              <li><a href="/tutorials" className="hover:text-foreground transition-smooth">Tutorials</a></li>
+              <li><a href="/documentation" className="hover:text-foreground transition-smooth">Documentation</a></li>
+              <li><a href="/api-access" className="hover:text-foreground transition-smooth">API Access</a></li>
             </ul>
           </div>
           
