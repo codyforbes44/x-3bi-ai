@@ -2,18 +2,14 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Menu, Sun, Moon, User, Settings, LogOut } from "lucide-react";
+import { Menu, User, Settings, LogOut } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useTheme } from "next-themes";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import kalpeshLogo from "@/assets/kalpesh-logo.png";
 const Header = () => {
   const isMobile = useIsMobile();
-  const {
-    theme,
-    setTheme
-  } = useTheme();
 
   // Safely get auth context with fallback
   let user = null;
@@ -69,7 +65,7 @@ const Header = () => {
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center space-x-4">
           {/* Theme Toggle */}
-          
+          <ThemeToggle />
           
           {/* User Menu or Auth Buttons */}
           {user ? <DropdownMenu>
@@ -144,16 +140,53 @@ const Header = () => {
                 
                 <div className="flex flex-col space-y-3 pt-4 border-t border-border">
                   {/* Mobile Theme Toggle */}
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium">Theme</span>
-                    <div className="flex items-center space-x-2">
-                      <Sun className="h-4 w-4" />
-                      <Button variant="outline" size="sm" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="relative h-6 w-11 p-0 bg-muted border-0">
-                        <div className={`absolute top-0.5 h-5 w-5 rounded-full bg-background shadow-md transition-transform ${theme === "dark" ? "translate-x-5" : "translate-x-0.5"}`} />
+                  <ThemeToggle variant="mobile" />
+                  
+                  {/* Mobile Auth */}
+                  {user ? (
+                    <>
+                      <Button
+                        variant="ghost"
+                        className="justify-start"
+                        onClick={() => navigate('/dashboard')}
+                      >
+                        <User className="mr-2 h-4 w-4" />
+                        Dashboard
                       </Button>
-                      <Moon className="h-4 w-4" />
-                    </div>
-                  </div>
+                      <Button
+                        variant="ghost"
+                        className="justify-start"
+                        onClick={() => navigate('/profile')}
+                      >
+                        <Settings className="mr-2 h-4 w-4" />
+                        Profile Settings
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        className="justify-start text-destructive hover:text-destructive"
+                        onClick={signOut}
+                      >
+                        <LogOut className="mr-2 h-4 w-4" />
+                        Sign Out
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        variant="ghost"
+                        className="justify-start"
+                        onClick={() => navigate('/auth')}
+                      >
+                        Sign In
+                      </Button>
+                      <Button
+                        className="bg-gradient-hero text-white justify-start"
+                        onClick={() => navigate('/auth')}
+                      >
+                        Get Started
+                      </Button>
+                    </>
+                  )}
                 </div>
               </div>
             </SheetContent>
