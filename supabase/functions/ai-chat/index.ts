@@ -12,13 +12,66 @@ serve(async (req) => {
   }
 
   try {
-    const { messages, model = 'gpt-4o-mini', stream = false } = await req.json();
-    const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+    const { 
+      messages, 
+      model = 'claude-sonnet-4-20250514', 
+      provider = 'anthropic',
+      stream = false 
+    } = await req.json();
 
+    console.log(`Using provider: ${provider}, model: ${model}`);
+
+    // Use Anthropic Claude as default (most capable)
+    if (provider === 'anthropic') {
+      const anthropicApiKey = Deno.env.get('ANTHROPIC_API_KEY');
+      if (!anthropicApiKey) {
+        throw new Error('Anthropic API key not configured');
+      }
+
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'x-api-key': anthropicApiKey,
+          'anthropic-version': '2023-06-01',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model,
+          messages,
+          max_tokens: 4096,
+          stream,
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.text();
+        throw new Error(`Anthropic API error: ${error}`);
+      }
+
+      if (stream) {
+        return new Response(response.body, {
+          headers: {
+            ...corsHeaders,
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive',
+          },
+        });
+      }
+
+      const data = await response.json();
+      return new Response(JSON.stringify(data), {
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
+    // Fallback to OpenAI
+    const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
     if (!openAIApiKey) {
       throw new Error('OpenAI API key not configured');
     }
 
+    const openaiModel = model.startsWith('gpt') || model.startsWith('o') ? model : 'gpt-4o-mini';
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -26,10 +79,9 @@ serve(async (req) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model,
+        model: openaiModel,
         messages,
         stream,
-        temperature: 0.7,
         max_tokens: 4000,
       }),
     });

@@ -29,27 +29,56 @@ serve(async (req) => {
 
     console.log('Starting AI conversation with voice response');
 
-    // Get AI response first
-    const chatResponse = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${openAIApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages,
-        temperature: 0.7,
-        max_tokens: 500, // Shorter for voice
-      }),
-    });
+    // Get AI response using Claude Sonnet 4 (most capable for conversations)
+    const anthropicApiKey = Deno.env.get('ANTHROPIC_API_KEY');
+    
+    let aiResponse;
+    
+    if (anthropicApiKey) {
+      console.log('Using Claude Sonnet 4 for conversation');
+      const claudeResponse = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'x-api-key': anthropicApiKey,
+          'anthropic-version': '2023-06-01',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          messages,
+          max_tokens: 500, // Shorter for voice
+        }),
+      });
 
-    if (!chatResponse.ok) {
-      throw new Error(`OpenAI API error: ${await chatResponse.text()}`);
+      if (!claudeResponse.ok) {
+        throw new Error(`Claude API error: ${await claudeResponse.text()}`);
+      }
+
+      const claudeData = await claudeResponse.json();
+      aiResponse = claudeData.content[0].text;
+    } else {
+      // Fallback to OpenAI if Anthropic not configured
+      console.log('Falling back to OpenAI GPT-4o-mini');
+      const chatResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${openAIApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          model: 'gpt-4o-mini',
+          messages,
+          max_tokens: 500,
+        }),
+      });
+
+      if (!chatResponse.ok) {
+        throw new Error(`OpenAI API error: ${await chatResponse.text()}`);
+      }
+
+      const chatData = await chatResponse.json();
+      aiResponse = chatData.choices[0].message.content;
     }
-
-    const chatData = await chatResponse.json();
-    const aiResponse = chatData.choices[0].message.content;
 
     let audioContent = null;
 

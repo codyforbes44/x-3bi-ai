@@ -12,7 +12,15 @@ serve(async (req) => {
   }
 
   try {
-    const { prompt, model = 'dall-e-3', size = '1024x1024', quality = 'standard' } = await req.json();
+    const { 
+      prompt, 
+      model = 'gpt-image-1', // Most capable image model
+      size = 'auto', 
+      quality = 'auto',
+      output_format = 'png',
+      background = 'auto'
+    } = await req.json();
+    
     const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
 
     if (!openAIApiKey) {
@@ -23,7 +31,27 @@ serve(async (req) => {
       throw new Error('Prompt is required');
     }
 
-    console.log('Generating image with prompt:', prompt);
+    console.log(`Generating image with ${model}:`, prompt);
+
+    const requestBody: any = {
+      model,
+      prompt,
+      n: 1,
+    };
+
+    // Add model-specific parameters
+    if (model === 'gpt-image-1') {
+      requestBody.size = size;
+      requestBody.quality = quality;
+      requestBody.output_format = output_format;
+      requestBody.background = background;
+      // gpt-image-1 always returns base64
+    } else {
+      // For DALL-E models
+      requestBody.size = size === 'auto' ? '1024x1024' : size;
+      requestBody.quality = quality === 'auto' ? 'standard' : quality;
+      requestBody.response_format = 'url';
+    }
 
     const response = await fetch('https://api.openai.com/v1/images/generations', {
       method: 'POST',
@@ -31,14 +59,7 @@ serve(async (req) => {
         'Authorization': `Bearer ${openAIApiKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        model,
-        prompt,
-        n: 1,
-        size,
-        quality,
-        response_format: 'url',
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {
@@ -48,7 +69,7 @@ serve(async (req) => {
     }
 
     const data = await response.json();
-    console.log('Image generated successfully');
+    console.log(`Image generated successfully with ${model}`);
 
     return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
