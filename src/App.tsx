@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ThemeProvider from "@/components/ThemeProvider";
 import { AuthProvider } from "@/contexts/AuthContext";
+import FloatingBadge from "@/components/FloatingBadge";
 import HomePage from "./pages/HomePage";
 import Dashboard from "./pages/Dashboard";
 import AuthPage from "./pages/AuthPage";
@@ -25,6 +26,7 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
+          <FloatingBadge />
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<HomePage />} />
