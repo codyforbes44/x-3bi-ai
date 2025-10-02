@@ -63,7 +63,7 @@ const Header = () => {
           />
           <div className="flex flex-col">
             <span className="text-base md:text-xl font-bold leading-none">KALPESH</span>
-            <span className="text-[9px] md:text-xs text-muted-foreground hidden sm:block leading-none mt-0.5">Lord of dreams or imagination</span>
+            <span className="text-[9px] md:text-xs text-muted-foreground hidden sm:block leading-none mt-0.5">Lord of Dreams</span>
           </div>
         </div>
         
@@ -140,7 +140,7 @@ const Header = () => {
                   />
                   <div className="flex flex-col">
                     <span className="text-lg font-bold">KALPESH</span>
-                    <span className="text-xs text-muted-foreground">Lord of dreams or imagination</span>
+                    <span className="text-xs text-muted-foreground">Lord of Dreams</span>
                   </div>
                 </div>
                 
