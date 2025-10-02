@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ThemeProvider from "@/components/ThemeProvider";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { WorkspaceProvider } from "@/contexts/WorkspaceContext";
 import FloatingBadge from "@/components/FloatingBadge";
 import HomePage from "./pages/HomePage";
 import Dashboard from "./pages/Dashboard";
@@ -28,6 +29,7 @@ import FreeAITools from "./pages/FreeAITools";
 import Tutorials from "./pages/Tutorials";
 import Documentation from "./pages/Documentation";
 import APIAccess from "./pages/APIAccess";
+import Workspaces from "./pages/Workspaces";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -37,7 +39,8 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
       <AuthProvider>
-        <TooltipProvider>
+        <WorkspaceProvider>
+          <TooltipProvider>
           <Toaster />
           <Sonner />
           <FloatingBadge />
@@ -66,11 +69,13 @@ const App = () => (
               <Route path="/tutorials" element={<Tutorials />} />
               <Route path="/documentation" element={<Documentation />} />
               <Route path="/api-access" element={<APIAccess />} />
+              <Route path="/workspaces" element={<Workspaces />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
-        </TooltipProvider>
+          </TooltipProvider>
+        </WorkspaceProvider>
       </AuthProvider>
     </ThemeProvider>
   </QueryClientProvider>
