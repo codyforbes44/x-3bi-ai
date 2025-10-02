@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,9 +8,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Separator } from "@/components/ui/separator";
-import { User, Settings, LogOut, AlertCircle, CheckCircle } from "lucide-react";
+import { User, Settings, LogOut, AlertCircle, CheckCircle, Upload, Trash2 } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { uploadAvatar, deleteAvatar } from "@/utils/avatarUpload";
 import Header from "@/components/Header";
 
 interface UserProfile {
@@ -40,8 +41,10 @@ const ProfilePage = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   
   // Form states
   const [displayName, setDisplayName] = useState("");
@@ -111,6 +114,76 @@ const ProfilePage = () => {
       setError('An unexpected error occurred while updating your profile.');
     } finally {
       setUpdating(false);
+    }
+  };
+
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file || !user) return;
+
+    try {
+      setUploading(true);
+      setError(null);
+      setSuccess(null);
+
+      // Delete old avatar if exists
+      if (avatarUrl) {
+        try {
+          await deleteAvatar(avatarUrl, user.id);
+        } catch (err) {
+          console.warn('Failed to delete old avatar:', err);
+        }
+      }
+
+      // Upload new avatar
+      const publicUrl = await uploadAvatar(file, user.id);
+
+      // Update profile with new avatar URL
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: publicUrl })
+        .eq('user_id', user.id);
+
+      if (updateError) throw updateError;
+
+      setAvatarUrl(publicUrl);
+      setSuccess('Avatar uploaded successfully!');
+      loadProfile();
+    } catch (err: any) {
+      setError(err.message || 'Failed to upload avatar');
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+    }
+  };
+
+  const handleDeleteAvatar = async () => {
+    if (!user || !avatarUrl) return;
+
+    try {
+      setUploading(true);
+      setError(null);
+      setSuccess(null);
+
+      await deleteAvatar(avatarUrl, user.id);
+
+      // Update profile to remove avatar URL
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ avatar_url: null })
+        .eq('user_id', user.id);
+
+      if (updateError) throw updateError;
+
+      setAvatarUrl('');
+      setSuccess('Avatar removed successfully!');
+      loadProfile();
+    } catch (err: any) {
+      setError(err.message || 'Failed to remove avatar');
+    } finally {
+      setUploading(false);
     }
   };
 
@@ -192,26 +265,47 @@ const ProfilePage = () => {
                   <form onSubmit={updateProfile} className="space-y-6">
                     {/* Avatar */}
                     <div className="flex flex-col items-center space-y-4">
-                      <Avatar className="w-20 h-20">
+                      <Avatar className="w-24 h-24">
                         <AvatarImage src={avatarUrl} alt={displayName || user.email || ''} />
-                        <AvatarFallback className="text-lg">
+                        <AvatarFallback className="text-2xl">
                           {getInitials(displayName)}
                         </AvatarFallback>
                       </Avatar>
                       
-                      <div className="w-full space-y-2">
-                        <Label htmlFor="avatar-url">Avatar URL</Label>
-                        <Input
-                          id="avatar-url"
-                          type="url"
-                          placeholder="https://example.com/avatar.jpg"
-                          value={avatarUrl}
-                          onChange={(e) => setAvatarUrl(e.target.value)}
+                      <div className="flex gap-2">
+                        <input
+                          type="file"
+                          ref={fileInputRef}
+                          onChange={handleFileUpload}
+                          accept="image/jpeg,image/png,image/gif,image/webp"
+                          className="hidden"
                         />
-                        <p className="text-xs text-muted-foreground">
-                          Enter a URL to an image for your profile picture
-                        </p>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => fileInputRef.current?.click()}
+                          disabled={uploading}
+                        >
+                          <Upload className="w-4 h-4 mr-2" />
+                          {uploading ? 'Uploading...' : 'Upload Avatar'}
+                        </Button>
+                        {avatarUrl && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={handleDeleteAvatar}
+                            disabled={uploading}
+                          >
+                            <Trash2 className="w-4 h-4 mr-2" />
+                            Remove
+                          </Button>
+                        )}
                       </div>
+                      <p className="text-xs text-muted-foreground text-center">
+                        Upload a profile picture (max 5MB, JPEG/PNG/GIF/WebP)
+                      </p>
                     </div>
 
                     <div className="space-y-2">

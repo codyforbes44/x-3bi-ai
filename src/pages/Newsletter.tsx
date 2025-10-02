@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Mail, TrendingUp, Lightbulb, Newspaper, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const Newsletter = () => {
   const { toast } = useToast();
@@ -19,13 +20,40 @@ const Newsletter = () => {
     caseStudies: false
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Successfully Subscribed!",
-      description: "Check your email for a confirmation link.",
-    });
-    setEmail("");
+    
+    try {
+      const { error } = await supabase.from("newsletter_subscriptions").insert({
+        email,
+        interests,
+      });
+
+      if (error) {
+        // Handle duplicate email gracefully
+        if (error.code === '23505') {
+          toast({
+            title: "Already Subscribed",
+            description: "This email is already subscribed to our newsletter.",
+          });
+        } else {
+          throw error;
+        }
+      } else {
+        toast({
+          title: "Successfully Subscribed!",
+          description: "Check your email for a confirmation link.",
+        });
+        setEmail("");
+      }
+    } catch (error) {
+      console.error("Newsletter subscription error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to subscribe. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const benefits = [

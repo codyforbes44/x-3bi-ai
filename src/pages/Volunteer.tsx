@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Heart, Users, Code, MessageSquare, BookOpen, Megaphone } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const Volunteer = () => {
   const { toast } = useToast();
@@ -20,13 +21,36 @@ const Volunteer = () => {
     motivation: ""
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast({
-      title: "Application Submitted!",
-      description: "We'll review your application and get back to you soon.",
-    });
-    setFormData({ name: "", email: "", role: "", experience: "", motivation: "" });
+    
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      const { error } = await supabase.from("volunteer_applications").insert({
+        user_id: user?.id,
+        name: formData.name,
+        email: formData.email,
+        role: formData.role,
+        experience: formData.experience,
+        motivation: formData.motivation,
+      });
+
+      if (error) throw error;
+
+      toast({
+        title: "Application Submitted!",
+        description: "We'll review your application and get back to you soon.",
+      });
+      setFormData({ name: "", email: "", role: "", experience: "", motivation: "" });
+    } catch (error) {
+      console.error("Volunteer application error:", error);
+      toast({
+        title: "Error",
+        description: "Failed to submit application. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
   const opportunities = [
