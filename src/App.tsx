@@ -29,6 +29,7 @@ import Tutorials from "./pages/Tutorials";
 import Documentation from "./pages/Documentation";
 import APIAccess from "./pages/APIAccess";
 import NotFound from "./pages/NotFound";
+import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -41,6 +42,7 @@ const App = () => (
           <Sonner />
           <FloatingBadge />
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/dashboard" element={<Dashboard />} />
