@@ -88,9 +88,9 @@ const HomePage = () => {
             <Button 
               size="lg" 
               className="bg-gradient-hero text-white text-lg px-8 py-4"
-              onClick={() => user ? navigate('/dashboard') : navigate('/auth')}
+              onClick={() => navigate('/dashboard')}
             >
-              {user ? 'Go to Dashboard' : 'Access Free Tools'}
+              Access Free Tools
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
             <Button 
