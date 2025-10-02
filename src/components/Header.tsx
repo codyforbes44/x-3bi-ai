@@ -40,9 +40,6 @@ const Header = () => {
     name: "Our Mission",
     href: "/mission"
   }, {
-    name: "Team",
-    href: "/team"
-  }, {
     name: "Impact",
     href: "/impact"
   }, {
