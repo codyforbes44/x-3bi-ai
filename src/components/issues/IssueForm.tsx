@@ -45,8 +45,10 @@ export const IssueForm = () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
+      // user_id is now handled by the database trigger for anonymous users
+      // For authenticated users, we explicitly set it
       const { error } = await supabase.from("issues").insert({
-        user_id: user?.id || null,
+        user_id: user?.id, // Will be set by trigger if null (anonymous)
         name: values.name,
         email: values.email,
         title: values.title,
@@ -54,7 +56,10 @@ export const IssueForm = () => {
         category: values.category,
       });
 
-      if (error) throw error;
+      if (error) {
+        console.error('Submission error:', error);
+        throw error;
+      }
 
       toast({
         title: "Your concern has been submitted!",
