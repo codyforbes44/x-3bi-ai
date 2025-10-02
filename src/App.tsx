@@ -16,6 +16,10 @@ import Enterprise from "./pages/Enterprise";
 import Learn from "./pages/Learn";
 import Launched from "./pages/Launched";
 import Issues from "./pages/Issues";
+import Mission from "./pages/Mission";
+import Team from "./pages/Team";
+import Impact from "./pages/Impact";
+import Partners from "./pages/Partners";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -40,6 +44,10 @@ const App = () => (
               <Route path="/learn" element={<Learn />} />
               <Route path="/launched" element={<Launched />} />
               <Route path="/issues" element={<Issues />} />
+              <Route path="/mission" element={<Mission />} />
+              <Route path="/team" element={<Team />} />
+              <Route path="/impact" element={<Impact />} />
+              <Route path="/partners" element={<Partners />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
