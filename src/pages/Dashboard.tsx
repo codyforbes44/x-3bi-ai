@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Tabs } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import DashboardHeader from "@/components/dashboard/DashboardHeader";
@@ -11,8 +12,11 @@ import UtilitiesSection from "@/components/dashboard/UtilitiesSection";
 import { getAllFeatures } from "@/components/dashboard/FeatureCategories";
 import { useIsMobile } from "@/hooks/use-mobile";
 import Header from "@/components/Header";
+import { Menu } from "lucide-react";
+
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("advanced");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const features = getAllFeatures();
   const isMobile = useIsMobile();
 
@@ -40,27 +44,64 @@ const Dashboard = () => {
               {/* Header with stats */}
               <DashboardHeader />
 
-              {/* Mobile Navigation - Show at top on mobile */}
+              {/* Mobile Menu Button */}
               {isMobile && (
-                <div className="w-full mb-4 mt-4">
-                  <ScrollArea className="w-full whitespace-nowrap rounded-lg border bg-card">
-                    <div className="flex space-x-2 p-2">
-                      {features.map((feature) => (
-                        <button
-                          key={feature.id}
-                          onClick={() => setActiveTab(feature.id)}
-                          className={`flex items-center gap-2 px-3 py-2.5 text-sm rounded-md whitespace-nowrap transition-colors min-h-[44px] ${
-                            activeTab === feature.id 
-                              ? 'bg-primary text-primary-foreground' 
-                              : 'bg-background text-muted-foreground hover:text-foreground hover:bg-muted'
-                          }`}
-                        >
-                          <feature.icon className={`w-4 h-4 flex-shrink-0 ${activeTab === feature.id ? 'text-primary-foreground' : feature.color}`} />
-                          <span className="font-medium">{feature.title.split(' ')[0]}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </ScrollArea>
+                <div className="mt-4 mb-4">
+                  <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+                    <SheetTrigger asChild>
+                      <Button variant="outline" className="w-full justify-start gap-2">
+                        <Menu className="w-5 h-5" />
+                        <span>Browse Features</span>
+                      </Button>
+                    </SheetTrigger>
+                    <SheetContent side="left" className="w-[280px] p-0">
+                      <div className="py-6 px-4">
+                        <h2 className="text-lg font-semibold mb-4">Dashboard Menu</h2>
+                        <div className="space-y-6">
+                          {/* Group by category */}
+                          {['enterprise', 'advanced-ai', 'ai-tools', 'utilities'].map((category) => {
+                            const categoryFeatures = features.filter(f => f.category === category);
+                            const categoryLabels = {
+                              enterprise: 'Enterprise',
+                              'advanced-ai': 'Advanced AI',
+                              'ai-tools': 'AI Tools',
+                              utilities: 'Utilities',
+                            };
+                            
+                            return (
+                              <div key={category}>
+                                <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+                                  {categoryLabels[category as keyof typeof categoryLabels]}
+                                </h3>
+                                <div className="space-y-1">
+                                  {categoryFeatures.map((feature) => (
+                                    <button
+                                      key={feature.id}
+                                      onClick={() => {
+                                        setActiveTab(feature.id);
+                                        setMobileMenuOpen(false);
+                                      }}
+                                      className={`w-full flex items-center gap-3 px-3 py-3 text-sm rounded-lg text-left transition-colors ${
+                                        activeTab === feature.id 
+                                          ? 'bg-primary text-primary-foreground' 
+                                          : 'text-foreground hover:bg-muted'
+                                      }`}
+                                    >
+                                      <feature.icon className={`w-5 h-5 flex-shrink-0 ${activeTab === feature.id ? 'text-primary-foreground' : feature.color}`} />
+                                      <div className="flex-1 min-w-0">
+                                        <div className="font-medium truncate">{feature.title}</div>
+                                        <div className="text-xs opacity-70 truncate">{feature.badge}</div>
+                                      </div>
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </SheetContent>
+                  </Sheet>
                 </div>
               )}
 
