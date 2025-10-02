@@ -2,11 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Heart, Menu, Sun, Moon, User, Settings, LogOut } from "lucide-react";
+import { Menu, Sun, Moon, User, Settings, LogOut } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useTheme } from "next-themes";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import kalpeshLogo from "@/assets/kalpesh-logo.png";
 const Header = () => {
   const isMobile = useIsMobile();
   const {
@@ -43,10 +44,12 @@ const Header = () => {
   return <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border">
       <div className="container mx-auto px-3 md:px-4 h-14 md:h-16 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center space-x-2 md:space-x-3">
-          <div className="w-7 h-7 md:w-8 md:h-8 bg-gradient-hero rounded-lg flex items-center justify-center">
-            <Heart className="w-4 h-4 md:w-5 md:h-5 text-white" />
-          </div>
+        <div className="flex items-center space-x-2 md:space-x-3 cursor-pointer" onClick={() => navigate('/')}>
+          <img 
+            src={kalpeshLogo} 
+            alt="KALPESH Logo" 
+            className="w-8 h-8 md:w-10 md:h-10 object-contain"
+          />
           <div className="flex flex-col">
             <span className="text-base md:text-xl font-bold leading-none">KALPESH</span>
             <span className="text-[9px] md:text-xs text-muted-foreground hidden sm:block leading-none mt-0.5">Lord of dreams or imagination</span>
@@ -119,9 +122,11 @@ const Header = () => {
             <SheetContent side="right" className="w-[280px] sm:w-[320px]">
               <div className="flex flex-col space-y-6 mt-6">
                 <div className="flex items-center space-x-2">
-                  <div className="w-8 h-8 bg-gradient-hero rounded-lg flex items-center justify-center">
-                    <Heart className="w-5 h-5 text-white" />
-                  </div>
+                  <img 
+                    src={kalpeshLogo} 
+                    alt="KALPESH Logo" 
+                    className="w-10 h-10 object-contain"
+                  />
                   <div className="flex flex-col">
                     <span className="text-lg font-bold">KALPESH</span>
                     <span className="text-xs text-muted-foreground">Lord of dreams or imagination</span>
