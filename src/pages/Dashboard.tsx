@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Tabs } from "@/components/ui/tabs";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
@@ -54,10 +55,12 @@ const Dashboard = () => {
                         <span>Browse Features</span>
                       </Button>
                     </SheetTrigger>
-                    <SheetContent side="left" className="w-[280px] p-0">
-                      <div className="py-6 px-4">
-                        <h2 className="text-lg font-semibold mb-4">Dashboard Menu</h2>
-                        <div className="space-y-6">
+                    <SheetContent side="left" className="w-[280px] p-0 flex flex-col">
+                      <div className="py-6 px-4 border-b">
+                        <h2 className="text-lg font-semibold">Dashboard Menu</h2>
+                      </div>
+                      <ScrollArea className="flex-1 px-4">
+                        <div className="space-y-6 py-4">
                           {/* Group by category */}
                           {['enterprise', 'advanced-ai', 'ai-tools', 'utilities'].map((category) => {
                             const categoryFeatures = features.filter(f => f.category === category);
@@ -99,7 +102,7 @@ const Dashboard = () => {
                             );
                           })}
                         </div>
-                      </div>
+                      </ScrollArea>
                     </SheetContent>
                   </Sheet>
                 </div>
