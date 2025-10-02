@@ -24,8 +24,18 @@ interface UserProfile {
 }
 
 const ProfilePage = () => {
-  const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  
+  // Safely get auth context with fallback
+  let user = null;
+  let signOut = () => Promise.resolve();
+  try {
+    const auth = useAuth();
+    user = auth.user;
+    signOut = auth.signOut;
+  } catch (error) {
+    console.warn('AuthProvider not available');
+  }
   
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -37,13 +47,6 @@ const ProfilePage = () => {
   const [displayName, setDisplayName] = useState("");
   const [bio, setBio] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
-
-  // Redirect if not authenticated
-  useEffect(() => {
-    if (!user) {
-      navigate('/auth');
-    }
-  }, [user, navigate]);
 
   // Load user profile
   useEffect(() => {
@@ -120,7 +123,21 @@ const ProfilePage = () => {
   };
 
   if (!user) {
-    return null;
+    return (
+      <div className="min-h-screen bg-background">
+        <Header />
+        <div className="pt-20 pb-16 px-4">
+          <div className="container mx-auto max-w-2xl">
+            <Alert>
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                Profile features are available for authenticated users. <Button variant="link" className="p-0 h-auto" onClick={() => navigate('/auth')}>Sign in to continue</Button>
+              </AlertDescription>
+            </Alert>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const getInitials = (name: string | null) => {
