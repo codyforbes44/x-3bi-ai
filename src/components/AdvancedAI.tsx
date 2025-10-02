@@ -41,7 +41,7 @@ const AdvancedAI: React.FC = () => {
     {
       id: '1',
       role: 'assistant',
-      content: 'Hello! I\'m your advanced AI assistant powered by Claude 4, Perplexity, and local models. I can help with complex reasoning, real-time web search, image analysis, and more. How can I assist you today?',
+      content: 'Hello! I\'m your advanced AI assistant powered by Claude 4. I excel at complex reasoning, analysis, and creative tasks. I can also search the web in real-time and analyze images. How can I assist you today?',
       timestamp: new Date(),
       model: 'claude-sonnet-4-20250514',
       provider: 'anthropic'
@@ -62,12 +62,12 @@ const AdvancedAI: React.FC = () => {
     anthropic: {
       name: 'Claude 4',
       models: [
+        { value: 'claude-sonnet-4-20250514', label: 'Claude 4 Sonnet (Recommended)' },
         { value: 'claude-opus-4-20250514', label: 'Claude 4 Opus (Most Capable)' },
-        { value: 'claude-sonnet-4-20250514', label: 'Claude 4 Sonnet (Balanced)' },
         { value: 'claude-3-5-haiku-20241022', label: 'Claude 3.5 Haiku (Fast)' }
       ],
       color: 'text-purple-500',
-      badge: 'Superior Reasoning'
+      badge: 'Primary AI'
     },
     perplexity: {
       name: 'Perplexity',
