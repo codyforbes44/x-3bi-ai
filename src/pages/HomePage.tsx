@@ -56,12 +56,12 @@ const HomePage = () => {
   ];
 
   const benefits = [
-    "50+ AI models and tools",
-    "Real-time processing",
-    "Enterprise-grade security",
-    "24/7 availability",
-    "Multi-language support",
-    "Custom integrations"
+    "Completely free forever",
+    "No signup required for basic tools",
+    "Open access to AI technology",
+    "Community-driven development",
+    "Privacy-focused and ethical",
+    "Educational resources included"
   ];
 
   return (
@@ -72,16 +72,16 @@ const HomePage = () => {
       <section className="pt-20 pb-16 px-4">
         <div className="container mx-auto text-center">
           <Badge variant="secondary" className="mb-6 text-sm">
-            🚀 Next-Generation AI Platform
+            🌍 Non-Profit AI Resource Platform
           </Badge>
           
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-hero bg-clip-text text-transparent">
-            Build the Future with AI
+            Free AI for Everyone
           </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto mb-8">
-            Unleash the power of artificial intelligence with our comprehensive platform. 
-            From conversations to code, images to insights—everything you need to create amazing experiences.
+            KALPESH provides free access to advanced AI technology for all humanity. 
+            No costs, no barriers—just powerful AI tools to help you create, learn, and innovate.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
@@ -90,7 +90,7 @@ const HomePage = () => {
               className="bg-gradient-hero text-white text-lg px-8 py-4"
               onClick={() => user ? navigate('/dashboard') : navigate('/auth')}
             >
-              {user ? 'Go to Dashboard' : 'Get Started Free'}
+              {user ? 'Go to Dashboard' : 'Access Free Tools'}
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
             <Button 
@@ -100,23 +100,23 @@ const HomePage = () => {
               onClick={() => navigate('/dashboard')}
             >
               <Rocket className="mr-2 w-5 h-5" />
-              View Dashboard
+              View All Resources
             </Button>
           </div>
 
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">50K+</div>
-              <div className="text-muted-foreground">Active Users</div>
+              <div className="text-3xl font-bold text-primary mb-2">100%</div>
+              <div className="text-muted-foreground">Free Access</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">1M+</div>
-              <div className="text-muted-foreground">AI Interactions</div>
+              <div className="text-3xl font-bold text-primary mb-2">24/7</div>
+              <div className="text-muted-foreground">Available</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary mb-2">99.9%</div>
-              <div className="text-muted-foreground">Uptime</div>
+              <div className="text-3xl font-bold text-primary mb-2">∞</div>
+              <div className="text-muted-foreground">Possibilities</div>
             </div>
           </div>
         </div>
@@ -126,9 +126,9 @@ const HomePage = () => {
       <section className="py-16 px-4 bg-muted/30">
         <div className="container mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-6">Powerful AI Tools at Your Fingertips</h2>
+            <h2 className="text-4xl font-bold mb-6">Free AI Tools for Everyone</h2>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-              Our comprehensive suite of AI tools helps you work smarter, create faster, and achieve more.
+              Access powerful AI technology at no cost. Our mission is to democratize AI and make it accessible to all.
             </p>
           </div>
           
@@ -151,9 +151,9 @@ const HomePage = () => {
         <div className="container mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-4xl font-bold mb-6">Why Choose Our Platform?</h2>
+              <h2 className="text-4xl font-bold mb-6">Why KALPESH?</h2>
               <p className="text-xl text-muted-foreground mb-8">
-                Built for creators, developers, and businesses who demand the best AI technology.
+                A non-profit initiative dedicated to making AI technology accessible to everyone, everywhere.
               </p>
               
               <div className="space-y-4 mb-8">
@@ -166,30 +166,30 @@ const HomePage = () => {
               </div>
               
               <Button size="lg" className="bg-gradient-hero text-white">
-                Start Building Today
+                Start Using Free AI
               </Button>
             </div>
             
             <div className="grid grid-cols-2 gap-4">
               <Card className="text-center p-6">
                 <Shield className="w-12 h-12 mx-auto text-primary mb-4" />
-                <h3 className="font-semibold mb-2">Secure</h3>
-                <p className="text-sm text-muted-foreground">Enterprise-grade security</p>
+                <h3 className="font-semibold mb-2">Free</h3>
+                <p className="text-sm text-muted-foreground">Always free, no hidden costs</p>
               </Card>
               <Card className="text-center p-6">
                 <Zap className="w-12 h-12 mx-auto text-primary mb-4" />
-                <h3 className="font-semibold mb-2">Fast</h3>
-                <p className="text-sm text-muted-foreground">Lightning-fast responses</p>
+                <h3 className="font-semibold mb-2">Accessible</h3>
+                <p className="text-sm text-muted-foreground">No barriers to entry</p>
               </Card>
               <Card className="text-center p-6">
                 <Users className="w-12 h-12 mx-auto text-primary mb-4" />
-                <h3 className="font-semibold mb-2">Collaborative</h3>
-                <p className="text-sm text-muted-foreground">Team-friendly features</p>
+                <h3 className="font-semibold mb-2">Community</h3>
+                <p className="text-sm text-muted-foreground">Built by and for everyone</p>
               </Card>
               <Card className="text-center p-6">
                 <Star className="w-12 h-12 mx-auto text-primary mb-4" />
-                <h3 className="font-semibold mb-2">Rated #1</h3>
-                <p className="text-sm text-muted-foreground">Top AI platform</p>
+                <h3 className="font-semibold mb-2">Non-Profit</h3>
+                <p className="text-sm text-muted-foreground">Mission-driven organization</p>
               </Card>
             </div>
           </div>
@@ -199,16 +199,16 @@ const HomePage = () => {
       {/* CTA Section */}
       <section className="py-16 px-4 bg-gradient-hero text-white">
         <div className="container mx-auto text-center">
-          <h2 className="text-4xl font-bold mb-6">Ready to Transform Your Workflow?</h2>
+          <h2 className="text-4xl font-bold mb-6">Join the AI Revolution</h2>
           <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
-            Join thousands of creators and businesses already using our AI platform to achieve extraordinary results.
+            Be part of a global community accessing free AI technology. Together, we're democratizing AI for all humanity.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" variant="secondary" className="text-lg px-8 py-4">
-              Start Free Trial
+              Access Free Tools
             </Button>
             <Button size="lg" variant="outline" className="text-lg px-8 py-4 border-white text-white hover:bg-white hover:text-primary">
-              Contact Sales
+              Learn About Our Mission
             </Button>
           </div>
         </div>

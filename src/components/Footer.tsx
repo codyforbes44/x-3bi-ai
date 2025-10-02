@@ -11,43 +11,43 @@ const Footer = () => {
               <div className="w-8 h-8 bg-gradient-hero rounded-lg flex items-center justify-center">
                 <Heart className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold">Lovable</span>
+              <span className="text-xl font-bold">KALPESH</span>
             </div>
             <p className="text-muted-foreground">
-              Create beautiful apps and websites by chatting with AI. Build faster, innovate better.
+              Non-profit organization providing free AI resources and technology to all humanity. Visit kalpesh.org
             </p>
           </div>
           
           {/* Product */}
           <div className="space-y-4">
-            <h3 className="font-semibold">Product</h3>
+            <h3 className="font-semibold">Resources</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li><a href="#" className="hover:text-foreground transition-smooth">Features</a></li>
-              <li><a href="#" className="hover:text-foreground transition-smooth">Pricing</a></li>
-              <li><a href="#" className="hover:text-foreground transition-smooth">Enterprise</a></li>
-              <li><a href="#" className="hover:text-foreground transition-smooth">API</a></li>
+              <li><a href="#" className="hover:text-foreground transition-smooth">Free AI Tools</a></li>
+              <li><a href="#" className="hover:text-foreground transition-smooth">Tutorials</a></li>
+              <li><a href="#" className="hover:text-foreground transition-smooth">Documentation</a></li>
+              <li><a href="#" className="hover:text-foreground transition-smooth">API Access</a></li>
             </ul>
           </div>
           
           {/* Community */}
           <div className="space-y-4">
-            <h3 className="font-semibold">Community</h3>
+            <h3 className="font-semibold">About</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li><a href="#" className="hover:text-foreground transition-smooth">Discord</a></li>
-              <li><a href="#" className="hover:text-foreground transition-smooth">GitHub</a></li>
-              <li><a href="#" className="hover:text-foreground transition-smooth">Examples</a></li>
-              <li><a href="#" className="hover:text-foreground transition-smooth">Templates</a></li>
+              <li><a href="#" className="hover:text-foreground transition-smooth">Our Mission</a></li>
+              <li><a href="#" className="hover:text-foreground transition-smooth">Team</a></li>
+              <li><a href="#" className="hover:text-foreground transition-smooth">Impact</a></li>
+              <li><a href="#" className="hover:text-foreground transition-smooth">Partners</a></li>
             </ul>
           </div>
           
           {/* Support */}
           <div className="space-y-4">
-            <h3 className="font-semibold">Support</h3>
+            <h3 className="font-semibold">Connect</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li><a href="#" className="hover:text-foreground transition-smooth">Documentation</a></li>
-              <li><a href="#" className="hover:text-foreground transition-smooth">Help Center</a></li>
-              <li><a href="#" className="hover:text-foreground transition-smooth">Contact</a></li>
-              <li><a href="#" className="hover:text-foreground transition-smooth">Status</a></li>
+              <li><a href="#" className="hover:text-foreground transition-smooth">Contact Us</a></li>
+              <li><a href="#" className="hover:text-foreground transition-smooth">Newsletter</a></li>
+              <li><a href="#" className="hover:text-foreground transition-smooth">Volunteer</a></li>
+              <li><a href="#" className="hover:text-foreground transition-smooth">Donate</a></li>
             </ul>
           </div>
         </div>
@@ -56,7 +56,7 @@ const Footer = () => {
         <div className="border-t border-border pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
             <div className="text-muted-foreground text-sm">
-              © 2024 Lovable. All rights reserved.
+              © 2025 KALPESH (kalpesh.org) • Non-Profit AI Resource Platform • All AI tools are free
             </div>
             
             <div className="flex items-center space-x-6">
