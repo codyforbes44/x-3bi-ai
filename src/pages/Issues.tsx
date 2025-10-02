@@ -26,7 +26,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Bug, Code, Zap, Shield, Smartphone, Globe } from "lucide-react";
+import { Heart, Scale, Briefcase, DollarSign, Users, Brain } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().trim().min(2, { message: "Name must be at least 2 characters" }).max(100),
@@ -38,40 +38,40 @@ const formSchema = z.object({
 
 const exampleIssues = [
   {
-    icon: Bug,
-    title: "Bug Fixes & Error Resolution",
-    description: "Application crashes, unexpected errors, broken features, or performance issues that need immediate attention.",
-    category: "bug"
+    icon: Heart,
+    title: "Health & Wellness",
+    description: "Get guidance on maintaining physical health, mental wellness, stress management, nutrition, and building healthy habits.",
+    category: "health"
   },
   {
-    icon: Code,
-    title: "Code Optimization",
-    description: "Refactoring legacy code, improving performance, reducing technical debt, and implementing best practices.",
-    category: "optimization"
+    icon: Scale,
+    title: "Legal Concerns",
+    description: "Seek advice on legal matters, understanding your rights, contract issues, tenant rights, or family law questions.",
+    category: "legal"
   },
   {
-    icon: Zap,
-    title: "Feature Implementation",
-    description: "Adding new functionality, integrating third-party services, or building custom features from scratch.",
-    category: "feature"
+    icon: Briefcase,
+    title: "Career & Professional Development",
+    description: "Navigate career transitions, job search strategies, workplace challenges, professional growth, and work-life balance.",
+    category: "career"
   },
   {
-    icon: Shield,
-    title: "Security Vulnerabilities",
-    description: "Addressing security concerns, implementing authentication, fixing vulnerabilities, and ensuring data protection.",
-    category: "security"
+    icon: DollarSign,
+    title: "Financial Planning",
+    description: "Receive guidance on budgeting, debt management, savings strategies, investment basics, and financial decision-making.",
+    category: "finance"
   },
   {
-    icon: Smartphone,
-    title: "Responsive Design Issues",
-    description: "Mobile compatibility problems, layout inconsistencies, or UI/UX improvements across different devices.",
-    category: "design"
+    icon: Users,
+    title: "Relationships & Family",
+    description: "Find support for relationship challenges, family dynamics, communication issues, parenting advice, and social connections.",
+    category: "relationships"
   },
   {
-    icon: Globe,
-    title: "API Integration",
-    description: "Connecting external services, fixing API errors, or optimizing data fetching and synchronization.",
-    category: "integration"
+    icon: Brain,
+    title: "Personal Growth & Education",
+    description: "Explore learning opportunities, skill development, life transitions, goal setting, and personal development strategies.",
+    category: "personal"
   },
 ];
 
@@ -107,14 +107,14 @@ const Issues = () => {
       if (error) throw error;
 
       toast({
-        title: "Issue submitted successfully!",
-        description: "We'll review your submission and get back to you soon.",
+        title: "Your concern has been submitted!",
+        description: "Our AI will analyze your situation and provide guidance soon.",
       });
 
       form.reset();
     } catch (error) {
       toast({
-        title: "Error submitting issue",
+        title: "Error submitting your concern",
         description: "Please try again later.",
         variant: "destructive",
       });
@@ -131,15 +131,15 @@ const Issues = () => {
         <div className="max-w-6xl mx-auto space-y-12">
           {/* Header Section */}
           <div className="text-center space-y-4">
-            <h1 className="text-4xl md:text-5xl font-bold">Report an Issue</h1>
+            <h1 className="text-4xl md:text-5xl font-bold">Get AI Guidance</h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Found a problem or need help? Submit your issue below and our team will assist you.
+              Facing challenges in life? Share your concerns and get AI-powered guidance to help you navigate through them.
             </p>
           </div>
 
           {/* Example Issues Section */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-bold text-center">Examples of Solvable Issues</h2>
+            <h2 className="text-2xl font-bold text-center">Areas Where We Can Help</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {exampleIssues.map((issue, index) => (
                 <Card key={index} className="hover:shadow-lg transition-shadow">
@@ -162,9 +162,9 @@ const Issues = () => {
           {/* Submission Form */}
           <Card className="max-w-2xl mx-auto">
             <CardHeader>
-              <CardTitle>Submit Your Issue</CardTitle>
+              <CardTitle>Share Your Concern</CardTitle>
               <CardDescription>
-                Fill out the form below with as much detail as possible
+                Describe your situation in detail so our AI can provide the most helpful guidance
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -211,12 +211,12 @@ const Issues = () => {
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
-                            <SelectItem value="bug">Bug Fix</SelectItem>
-                            <SelectItem value="optimization">Code Optimization</SelectItem>
-                            <SelectItem value="feature">Feature Request</SelectItem>
-                            <SelectItem value="security">Security Issue</SelectItem>
-                            <SelectItem value="design">Design/UI Issue</SelectItem>
-                            <SelectItem value="integration">API Integration</SelectItem>
+                            <SelectItem value="health">Health & Wellness</SelectItem>
+                            <SelectItem value="legal">Legal Concerns</SelectItem>
+                            <SelectItem value="career">Career & Professional</SelectItem>
+                            <SelectItem value="finance">Financial Planning</SelectItem>
+                            <SelectItem value="relationships">Relationships & Family</SelectItem>
+                            <SelectItem value="personal">Personal Growth</SelectItem>
                             <SelectItem value="other">Other</SelectItem>
                           </SelectContent>
                         </Select>
@@ -230,9 +230,9 @@ const Issues = () => {
                     name="title"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Issue Title</FormLabel>
+                        <FormLabel>Concern Summary</FormLabel>
                         <FormControl>
-                          <Input placeholder="Brief description of the issue" {...field} />
+                          <Input placeholder="Brief summary of your concern" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -247,13 +247,13 @@ const Issues = () => {
                         <FormLabel>Detailed Description</FormLabel>
                         <FormControl>
                           <Textarea 
-                            placeholder="Provide as much detail as possible about the issue..."
+                            placeholder="Share your situation in detail. What's troubling you? What have you tried so far?"
                             className="min-h-[150px]"
                             {...field}
                           />
                         </FormControl>
                         <FormDescription>
-                          Include steps to reproduce, expected vs actual behavior, and any error messages
+                          The more context you provide, the better guidance we can offer
                         </FormDescription>
                         <FormMessage />
                       </FormItem>
@@ -261,7 +261,7 @@ const Issues = () => {
                   />
 
                   <Button type="submit" className="w-full" disabled={isSubmitting}>
-                    {isSubmitting ? "Submitting..." : "Submit Issue"}
+                    {isSubmitting ? "Submitting..." : "Get AI Guidance"}
                   </Button>
                 </form>
               </Form>
