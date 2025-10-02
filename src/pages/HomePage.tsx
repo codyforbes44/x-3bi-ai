@@ -220,9 +220,9 @@ const HomePage = () => {
               size="lg" 
               variant="outline" 
               className="text-lg px-8 py-4 border-white text-white hover:bg-white hover:text-primary"
-              onClick={() => navigate('/community')}
+              onClick={() => navigate('/dashboard')}
             >
-              Learn About Our Mission
+              Explore All Features
             </Button>
           </div>
         </div>

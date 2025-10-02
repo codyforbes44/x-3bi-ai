@@ -77,9 +77,9 @@ const HeroSection = () => {
               size="lg" 
               variant="outline" 
               className="w-full sm:w-auto sm:min-w-[160px] md:min-w-[180px] h-12 md:h-14 text-base md:text-lg border-white/20 text-white hover:bg-white/10"
-              onClick={() => window.location.href = '/community'}
+              onClick={() => window.location.href = '/dashboard'}
             >
-              About Our Mission
+              Explore All Features
             </Button>
           </div>
         </div>
