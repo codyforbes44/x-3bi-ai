@@ -165,6 +165,21 @@ async function executeStep(step: any, inputData: any, supabase: any) {
     case 'data_transform':
       return await executeDataTransform(config, inputData);
     
+    case 'zapier_webhook':
+      return await executeZapierWebhook(config, inputData);
+    
+    case 'extract_data':
+      return await executeExtractData(config, inputData);
+    
+    case 'filter_data':
+      return await executeFilterData(config, inputData);
+    
+    case 'map_data':
+      return await executeMapData(config, inputData);
+    
+    case 'aggregate_data':
+      return await executeAggregateData(config, inputData);
+    
     case 'delay':
       await new Promise(resolve => setTimeout(resolve, config.delay_ms || 1000));
       return { delayed: true };
@@ -218,5 +233,191 @@ async function executeHttpRequest(config: any, inputData: any) {
   return {
     http_response: data,
     status: response.status,
+  };
+}
+
+async function executeZapierWebhook(config: any, inputData: any) {
+  const webhookUrl = config.webhook_url;
+  if (!webhookUrl) {
+    throw new Error('Zapier webhook URL is required');
+  }
+
+  const payload = {
+    ...inputData,
+    triggered_at: new Date().toISOString(),
+    workflow_metadata: config.metadata || {},
+  };
+
+  const response = await fetch(webhookUrl, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  });
+
+  return {
+    zapier_triggered: true,
+    status: response.status,
+    webhook_url: webhookUrl,
+    payload_sent: payload,
+  };
+}
+
+async function executeExtractData(config: any, inputData: any) {
+  const fields = config.fields || [];
+  const source = config.source || inputData;
+  
+  const extracted: any = {};
+  
+  for (const field of fields) {
+    const { name, path, default_value } = field;
+    const value = getValueByPath(source, path) ?? default_value;
+    extracted[name] = value;
+  }
+  
+  return {
+    extracted_data: extracted,
+    original_data: inputData,
+  };
+}
+
+function getValueByPath(obj: any, path: string): any {
+  return path.split('.').reduce((current, key) => current?.[key], obj);
+}
+
+async function executeFilterData(config: any, inputData: any) {
+  const dataArray = Array.isArray(inputData.data) ? inputData.data : [inputData];
+  const filterRules = config.rules || [];
+  
+  let filtered = dataArray;
+  
+  for (const rule of filterRules) {
+    const { field, operator, value } = rule;
+    
+    filtered = filtered.filter((item: any) => {
+      const itemValue = getValueByPath(item, field);
+      
+      switch (operator) {
+        case 'equals':
+          return itemValue === value;
+        case 'not_equals':
+          return itemValue !== value;
+        case 'contains':
+          return String(itemValue).includes(value);
+        case 'greater_than':
+          return Number(itemValue) > Number(value);
+        case 'less_than':
+          return Number(itemValue) < Number(value);
+        case 'exists':
+          return itemValue !== undefined && itemValue !== null;
+        case 'not_exists':
+          return itemValue === undefined || itemValue === null;
+        default:
+          return true;
+      }
+    });
+  }
+  
+  return {
+    filtered_data: filtered,
+    original_count: dataArray.length,
+    filtered_count: filtered.length,
+  };
+}
+
+async function executeMapData(config: any, inputData: any) {
+  const dataArray = Array.isArray(inputData.data) ? inputData.data : [inputData];
+  const mappings = config.mappings || [];
+  
+  const mapped = dataArray.map((item: any) => {
+    const mappedItem: any = {};
+    
+    for (const mapping of mappings) {
+      const { target, source, transform } = mapping;
+      let value = getValueByPath(item, source);
+      
+      // Apply transformations
+      if (transform) {
+        switch (transform.type) {
+          case 'uppercase':
+            value = String(value).toUpperCase();
+            break;
+          case 'lowercase':
+            value = String(value).toLowerCase();
+            break;
+          case 'trim':
+            value = String(value).trim();
+            break;
+          case 'number':
+            value = Number(value);
+            break;
+          case 'string':
+            value = String(value);
+            break;
+          case 'date':
+            value = new Date(value).toISOString();
+            break;
+          case 'custom':
+            // Allow custom JavaScript expressions (be careful with this!)
+            try {
+              value = eval(`(${transform.expression})(${JSON.stringify(value)})`);
+            } catch (e) {
+              console.error('Custom transform error:', e);
+            }
+            break;
+        }
+      }
+      
+      mappedItem[target] = value;
+    }
+    
+    return mappedItem;
+  });
+  
+  return {
+    mapped_data: mapped,
+    count: mapped.length,
+  };
+}
+
+async function executeAggregateData(config: any, inputData: any) {
+  const dataArray = Array.isArray(inputData.data) ? inputData.data : [inputData];
+  const aggregations = config.aggregations || [];
+  
+  const results: any = {};
+  
+  for (const agg of aggregations) {
+    const { name, field, operation } = agg;
+    const values = dataArray.map((item: any) => getValueByPath(item, field)).filter((v: any) => v !== undefined && v !== null);
+    
+    switch (operation) {
+      case 'count':
+        results[name] = values.length;
+        break;
+      case 'sum':
+        results[name] = values.reduce((sum: number, val: any) => sum + Number(val), 0);
+        break;
+      case 'avg':
+        results[name] = values.reduce((sum: number, val: any) => sum + Number(val), 0) / values.length;
+        break;
+      case 'min':
+        results[name] = Math.min(...values.map(Number));
+        break;
+      case 'max':
+        results[name] = Math.max(...values.map(Number));
+        break;
+      case 'unique':
+        results[name] = [...new Set(values)];
+        break;
+      case 'concat':
+        results[name] = values.join(agg.separator || ', ');
+        break;
+    }
+  }
+  
+  return {
+    aggregated_data: results,
+    source_count: dataArray.length,
   };
 }
