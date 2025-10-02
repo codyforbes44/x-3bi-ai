@@ -49,7 +49,7 @@ const Header = () => {
           </div>
           <div className="flex flex-col">
             <span className="text-xl font-bold leading-none">KALPESH</span>
-            <span className="text-[10px] text-muted-foreground leading-none mt-0.5">Lord of dreams & imagination</span>
+            
           </div>
         </div>
         
