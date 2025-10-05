@@ -62,7 +62,7 @@ const Mission = () => {
             <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Our Story</h2>
             <Card className="p-8">
               <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                KALPESH was born from a simple belief: artificial intelligence should be a tool that empowers everyone, 
+                3BI.AI was born from a simple belief: artificial intelligence should be a tool that empowers everyone, 
                 not just those with advanced technical knowledge. We saw a world where AI capabilities were locked behind 
                 complex interfaces and steep learning curves, keeping transformative technology out of reach for most people.
               </p>
@@ -71,7 +71,7 @@ const Mission = () => {
                 and ElevenLabs—and crafted an intuitive platform that makes advanced AI capabilities feel natural and accessible.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Today, KALPESH serves thousands of users worldwide, helping them automate workflows, generate content, 
+                Today, 3BI.AI serves thousands of users worldwide, helping them automate workflows, generate content, 
                 analyze data, and bring their creative visions to life. But we're just getting started. Every day, 
                 we're working to make AI more powerful, more accessible, and more beneficial for everyone.
               </p>

@@ -11,10 +11,10 @@ const Footer = () => {
               <div className="w-8 h-8 bg-gradient-hero rounded-lg flex items-center justify-center">
                 <Heart className="w-5 h-5 text-white" />
               </div>
-              <span className="text-xl font-bold">KALPESH</span>
+              <span className="text-xl font-bold">3BI.AI</span>
             </div>
             <p className="text-muted-foreground">
-              Non-profit organization providing free AI resources and technology to all humanity. Visit kalpesh.org
+              Non-profit organization providing free AI resources and technology to all humanity. Visit 3bi.ai
             </p>
           </div>
           
@@ -55,7 +55,7 @@ const Footer = () => {
         <div className="border-t border-border pt-6 md:pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
             <div className="text-muted-foreground text-xs md:text-sm text-center md:text-left">
-              © 2025 KALPESH (kalpesh.org) • Non-Profit AI Resource Platform • All AI tools are free
+              © 2025 3BI.AI (3bi.ai) • Non-Profit AI Resource Platform • All AI tools are free
             </div>
             
             <div className="flex items-center space-x-4 md:space-x-6">

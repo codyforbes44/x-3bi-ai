@@ -11,7 +11,7 @@ const Tutorials = () => {
   const tutorials = [
     {
       icon: BookOpen,
-      title: "Getting Started with KALPESH AI",
+      title: "Getting Started with 3BI.AI",
       description: "Learn the basics of our platform and create your first AI-powered project in 10 minutes.",
       duration: "10 min",
       level: "Beginner",

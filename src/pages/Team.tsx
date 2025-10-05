@@ -61,7 +61,7 @@ const Team = () => {
     {
       name: "Lisa Thompson",
       role: "Head of Community",
-      bio: "Dedicated to building an engaged community and ensuring every user finds success with KALPESH.",
+      bio: "Dedicated to building an engaged community and ensuring every user finds success with 3BI.AI.",
       initials: "LT",
       social: {
         linkedin: "#",
@@ -162,7 +162,7 @@ const Team = () => {
               We're always looking for talented individuals who share our passion for AI and innovation.
             </p>
             <a 
-              href="mailto:careers@kalpesh.ai"
+              href="mailto:careers@3bi.ai"
               className="inline-block px-8 py-4 bg-gradient-hero text-white rounded-lg font-semibold hover-scale"
             >
               View Open Positions

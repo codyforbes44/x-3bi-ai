@@ -283,7 +283,7 @@ const APIAccess = () => {
                 <Card className="p-6">
                   <h3 className="text-xl font-bold mb-4">Make Your First API Call</h3>
                   <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm mb-4">
-                    <code>{`curl -X POST https://api.kalpesh.ai/v1/chat \\
+                    <code>{`curl -X POST https://api.3bi.ai/v1/chat \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{"message": "Hello, AI!"}'`}</code>
@@ -310,7 +310,7 @@ const APIAccess = () => {
           <div className="max-w-3xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Get Started?</h2>
             <p className="text-xl text-muted-foreground mb-8">
-              Join thousands of developers building with KALPESH AI
+              Join thousands of developers building with 3BI.AI
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 

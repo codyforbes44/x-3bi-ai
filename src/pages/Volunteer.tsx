@@ -81,7 +81,7 @@ const Volunteer = () => {
     {
       icon: Megaphone,
       title: "AI Advocates",
-      description: "Share KALPESH with your network and help grow our community.",
+      description: "Share 3BI.AI with your network and help grow our community.",
       commitment: "Flexible"
     },
     {

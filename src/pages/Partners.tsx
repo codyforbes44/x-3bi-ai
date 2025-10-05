@@ -63,7 +63,7 @@ const Partners = () => {
     {
       icon: Building2,
       title: "Enterprise Partnerships",
-      description: "Collaborate with us to integrate KALPESH AI capabilities into your enterprise workflows and applications."
+      description: "Collaborate with us to integrate 3BI.AI capabilities into your enterprise workflows and applications."
     },
     {
       icon: Handshake,
@@ -178,7 +178,7 @@ const Partners = () => {
               Let's explore how we can work together to create innovative AI solutions.
             </p>
             <a 
-              href="mailto:partnerships@kalpesh.ai"
+              href="mailto:partnerships@3bi.ai"
               className="inline-block px-8 py-4 bg-gradient-hero text-white rounded-lg font-semibold hover-scale"
             >
               Contact Partnerships Team

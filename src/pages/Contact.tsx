@@ -54,8 +54,8 @@ const Contact = () => {
     {
       icon: Mail,
       title: "Email",
-      content: "support@kalpesh.ai",
-      link: "mailto:support@kalpesh.ai"
+      content: "support@3bi.ai",
+      link: "mailto:support@3bi.ai"
     },
     {
       icon: Phone,

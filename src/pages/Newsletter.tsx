@@ -75,7 +75,7 @@ const Newsletter = () => {
     {
       icon: Newspaper,
       title: "Case Studies",
-      description: "Discover how others are succeeding with KALPESH AI"
+      description: "Discover how others are succeeding with 3BI.AI"
     }
   ];
 

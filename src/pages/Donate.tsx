@@ -129,7 +129,7 @@ const Donate = () => {
 
   const testimonials = [
     {
-      quote: "Thanks to KALPESH's nonprofit program, our organization automated hours of manual work. This donation program makes it sustainable.",
+      quote: "Thanks to 3BI.AI's nonprofit program, our organization automated hours of manual work. This donation program makes it sustainable.",
       author: "Sarah Chen",
       role: "Executive Director, Tech for Good"
     },
@@ -265,7 +265,7 @@ const Donate = () => {
               <Card className="p-6 hover-scale cursor-pointer" onClick={() => navigate('/community')}>
                 <Globe className="w-12 h-12 mx-auto mb-4 text-primary" />
                 <h3 className="text-xl font-bold mb-2">Spread the Word</h3>
-                <p className="text-muted-foreground">Share KALPESH with others who could benefit.</p>
+                <p className="text-muted-foreground">Share 3BI.AI with others who could benefit.</p>
               </Card>
             </div>
           </div>
@@ -336,7 +336,7 @@ const Donate = () => {
         <section className="container mx-auto px-4 py-8">
           <Card className="max-w-3xl mx-auto p-6 bg-muted/30">
             <p className="text-sm text-muted-foreground text-center">
-              KALPESH is a registered 501(c)(3) nonprofit organization. Your donation is tax-deductible to the extent allowed by law. 
+              3BI.AI is a registered 501(c)(3) nonprofit organization. Your donation is tax-deductible to the extent allowed by law. 
               Tax ID: 12-3456789. You will receive a receipt for your records.
             </p>
           </Card>

@@ -31,7 +31,7 @@ const Documentation = () => {
     {
       icon: Database,
       title: "Integration Guides",
-      description: "Integrate KALPESH with your applications",
+      description: "Integrate 3BI.AI with your applications",
       topics: ["JavaScript SDK", "Python SDK", "REST API", "Webhooks"]
     },
     {
@@ -57,10 +57,10 @@ const Documentation = () => {
     { title: "SDK Installation", category: "Integration" }
   ];
 
-  const codeExample = `// Initialize KALPESH AI
-import { KalpeshAI } from '@kalpesh/sdk';
+  const codeExample = `// Initialize 3BI.AI
+import { ThreeBIAI } from '@3bi/sdk';
 
-const ai = new KalpeshAI({
+const ai = new ThreeBIAI({
   apiKey: 'your-api-key'
 });
 
@@ -83,7 +83,7 @@ console.log(response.text);`;
             Documentation
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-            Everything you need to integrate and build with KALPESH AI. From quick starts to advanced implementations.
+            Everything you need to integrate and build with 3BI.AI. From quick starts to advanced implementations.
           </p>
         </section>
 
@@ -143,7 +143,7 @@ console.log(response.text);`;
                       <Terminal className="w-5 h-5 text-primary" />
                       <span className="font-semibold">JavaScript SDK</span>
                     </div>
-                    <Badge variant="secondary">npm install @kalpesh/sdk</Badge>
+                    <Badge variant="secondary">npm install @3bi/sdk</Badge>
                   </div>
                   <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
                     <code className="text-sm">{codeExample}</code>
@@ -158,13 +158,13 @@ console.log(response.text);`;
                       <Terminal className="w-5 h-5 text-primary" />
                       <span className="font-semibold">Python SDK</span>
                     </div>
-                    <Badge variant="secondary">pip install kalpesh-ai</Badge>
+                    <Badge variant="secondary">pip install 3bi-ai</Badge>
                   </div>
                   <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
-                    <code className="text-sm">{`# Initialize KALPESH AI
-from kalpesh import KalpeshAI
+                    <code className="text-sm">{`# Initialize 3BI.AI
+from threebiai import ThreeBIAI
 
-ai = KalpeshAI(api_key='your-api-key')
+ai = ThreeBIAI(api_key='your-api-key')
 
 # Generate a chat response
 response = ai.chat(
@@ -185,7 +185,7 @@ print(response.text)`}</code>
                     <span className="font-semibold">REST API</span>
                   </div>
                   <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
-                    <code className="text-sm">{`curl -X POST https://api.kalpesh.ai/v1/chat \\
+                    <code className="text-sm">{`curl -X POST https://api.3bi.ai/v1/chat \\
   -H "Authorization: Bearer your-api-key" \\
   -H "Content-Type: application/json" \\
   -d '{

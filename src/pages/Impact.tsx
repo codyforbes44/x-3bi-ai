@@ -35,7 +35,7 @@ const Impact = () => {
     {
       icon: Award,
       title: "Empowering Small Businesses",
-      description: "A boutique marketing agency used KALPESH to automate content creation, reducing production time by 70% and allowing them to take on 3x more clients.",
+      description: "A boutique marketing agency used 3BI.AI to automate content creation, reducing production time by 70% and allowing them to take on 3x more clients.",
       impact: "70% time saved"
     },
     {
