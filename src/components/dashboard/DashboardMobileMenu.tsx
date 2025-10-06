@@ -1,7 +1,11 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Menu } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Menu, Search, Star, Clock, Grid, X } from "lucide-react";
 import { Feature } from "./FeatureCategories";
 
 interface MobileMenuProps {
@@ -26,6 +30,13 @@ const CATEGORY_ORDER: Array<keyof typeof CATEGORY_LABELS> = [
   'utilities'
 ];
 
+const CATEGORY_ICONS = {
+  enterprise: '🏢',
+  'advanced-ai': '🧠',
+  'ai-tools': '🤖',
+  utilities: '🛠️',
+};
+
 export const DashboardMobileMenu = ({
   features,
   activeTab,
@@ -33,71 +44,229 @@ export const DashboardMobileMenu = ({
   onOpenChange,
   onTabSelect
 }: MobileMenuProps) => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [favorites, setFavorites] = useState<string[]>(() => {
+    const saved = localStorage.getItem("favoriteFeatures");
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [recentlyUsed, setRecentlyUsed] = useState<string[]>(() => {
+    const saved = localStorage.getItem("recentFeatures");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  const handleFeatureSelect = (featureId: string) => {
+    onTabSelect(featureId);
+    onOpenChange(false);
+    
+    // Update recently used
+    const updated = [featureId, ...recentlyUsed.filter(id => id !== featureId)].slice(0, 5);
+    setRecentlyUsed(updated);
+    localStorage.setItem("recentFeatures", JSON.stringify(updated));
+  };
+
+  const toggleFavorite = (featureId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    const updated = favorites.includes(featureId)
+      ? favorites.filter(id => id !== featureId)
+      : [...favorites, featureId];
+    setFavorites(updated);
+    localStorage.setItem("favoriteFeatures", JSON.stringify(updated));
+  };
+
+  const filteredFeatures = features.filter(feature =>
+    feature.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    feature.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    feature.badge.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const favoriteFeatures = features.filter(f => favorites.includes(f.id));
+  const recentFeatures = recentlyUsed
+    .map(id => features.find(f => f.id === id))
+    .filter(Boolean) as Feature[];
+
+  const renderFeatureCard = (feature: Feature) => {
+    const isFavorite = favorites.includes(feature.id);
+    const isActive = activeTab === feature.id;
+
+    return (
+      <button
+        key={feature.id}
+        onClick={() => handleFeatureSelect(feature.id)}
+        className={`w-full flex items-start gap-3 p-4 text-sm rounded-xl text-left transition-all border-2 ${
+          isActive 
+            ? 'border-primary bg-primary/5 shadow-sm' 
+            : 'border-border hover:border-primary/50 hover:bg-muted/50'
+        }`}
+      >
+        <div className={`p-2.5 rounded-lg bg-background ${isActive ? 'ring-2 ring-primary' : ''}`}>
+          <feature.icon className={`w-5 h-5 ${feature.color}`} />
+        </div>
+        
+        <div className="flex-1 min-w-0">
+          <div className="flex items-start justify-between gap-2 mb-1">
+            <h3 className="font-semibold text-base">{feature.title}</h3>
+            <button
+              onClick={(e) => toggleFavorite(feature.id, e)}
+              className="flex-shrink-0"
+            >
+              <Star
+                className={`w-4 h-4 ${
+                  isFavorite ? 'fill-yellow-500 text-yellow-500' : 'text-muted-foreground'
+                }`}
+              />
+            </button>
+          </div>
+          <p className="text-xs text-muted-foreground line-clamp-2 mb-2">
+            {feature.description}
+          </p>
+          <Badge variant="secondary" className="text-[10px] h-5">
+            {feature.badge}
+          </Badge>
+        </div>
+      </button>
+    );
+  };
+
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetTrigger asChild>
-        <Button variant="outline" className="w-full justify-start gap-2 h-12">
+        <Button variant="outline" className="w-full justify-start gap-2 h-12 text-base">
           <Menu className="w-5 h-5" />
-          <span className="font-medium">Browse All Features</span>
+          <span className="font-medium">Browse Features</span>
+          <Badge variant="secondary" className="ml-auto">
+            {features.length}
+          </Badge>
         </Button>
       </SheetTrigger>
       
-      <SheetContent side="left" className="w-[300px] p-0 flex flex-col">
-        <div className="py-6 px-4 border-b bg-muted/30">
-          <h2 className="text-lg font-semibold">Feature Categories</h2>
-          <p className="text-sm text-muted-foreground mt-1">
-            {features.length} AI-powered features
-          </p>
-        </div>
-        
-        <ScrollArea className="flex-1 px-4">
-          <div className="space-y-8 py-6">
-            {CATEGORY_ORDER.map((category) => {
-              const categoryFeatures = features.filter(f => f.category === category);
-              
-              if (categoryFeatures.length === 0) return null;
-              
-              return (
-                <div key={category} className="space-y-2">
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-                    {CATEGORY_LABELS[category]}
-                  </h3>
-                  
-                  <div className="space-y-1">
-                    {categoryFeatures.map((feature) => (
-                      <button
-                        key={feature.id}
-                        onClick={() => {
-                          onTabSelect(feature.id);
-                          onOpenChange(false);
-                        }}
-                        className={`w-full flex items-center gap-3 px-3 py-3 text-sm rounded-lg text-left transition-all hover-scale ${
-                          activeTab === feature.id 
-                            ? 'bg-primary text-primary-foreground shadow-sm' 
-                            : 'text-foreground hover:bg-muted'
-                        }`}
-                      >
-                        <feature.icon 
-                          className={`w-5 h-5 flex-shrink-0 ${
-                            activeTab === feature.id 
-                              ? 'text-primary-foreground' 
-                              : feature.color
-                          }`} 
-                        />
-                        <div className="flex-1 min-w-0">
-                          <div className="font-medium truncate">{feature.title}</div>
-                          <div className="text-xs opacity-70 truncate mt-0.5">
-                            {feature.badge}
-                          </div>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              );
-            })}
+      <SheetContent side="bottom" className="h-[90vh] p-0 flex flex-col">
+        <SheetHeader className="px-4 py-4 border-b bg-muted/30">
+          <SheetTitle className="text-xl">AI Features</SheetTitle>
+          
+          {/* Search Bar */}
+          <div className="relative mt-3">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              placeholder="Search features..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-9 h-11"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2"
+              >
+                <X className="h-4 w-4 text-muted-foreground" />
+              </button>
+            )}
           </div>
-        </ScrollArea>
+        </SheetHeader>
+        
+        <Tabs defaultValue="all" className="flex-1 flex flex-col">
+          <TabsList className="grid grid-cols-4 mx-4 mt-4">
+            <TabsTrigger value="all" className="text-xs">
+              <Grid className="w-3.5 h-3.5 mr-1" />
+              All
+            </TabsTrigger>
+            <TabsTrigger value="recent" className="text-xs">
+              <Clock className="w-3.5 h-3.5 mr-1" />
+              Recent
+            </TabsTrigger>
+            <TabsTrigger value="favorites" className="text-xs">
+              <Star className="w-3.5 h-3.5 mr-1" />
+              Saved
+            </TabsTrigger>
+            <TabsTrigger value="categories" className="text-xs">
+              Categories
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="all" className="flex-1 mt-0">
+            <ScrollArea className="h-full px-4 pb-4">
+              <div className="grid grid-cols-1 gap-3 py-4">
+                {searchQuery ? (
+                  filteredFeatures.length > 0 ? (
+                    filteredFeatures.map(renderFeatureCard)
+                  ) : (
+                    <div className="text-center py-12">
+                      <p className="text-muted-foreground">No features found</p>
+                      <p className="text-sm text-muted-foreground mt-1">Try a different search</p>
+                    </div>
+                  )
+                ) : (
+                  features.map(renderFeatureCard)
+                )}
+              </div>
+            </ScrollArea>
+          </TabsContent>
+
+          <TabsContent value="recent" className="flex-1 mt-0">
+            <ScrollArea className="h-full px-4 pb-4">
+              <div className="grid grid-cols-1 gap-3 py-4">
+                {recentFeatures.length > 0 ? (
+                  recentFeatures.map(renderFeatureCard)
+                ) : (
+                  <div className="text-center py-12">
+                    <Clock className="w-12 h-12 mx-auto mb-4 text-muted-foreground opacity-50" />
+                    <p className="text-muted-foreground">No recent features</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Features you use will appear here
+                    </p>
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
+          </TabsContent>
+
+          <TabsContent value="favorites" className="flex-1 mt-0">
+            <ScrollArea className="h-full px-4 pb-4">
+              <div className="grid grid-cols-1 gap-3 py-4">
+                {favoriteFeatures.length > 0 ? (
+                  favoriteFeatures.map(renderFeatureCard)
+                ) : (
+                  <div className="text-center py-12">
+                    <Star className="w-12 h-12 mx-auto mb-4 text-muted-foreground opacity-50" />
+                    <p className="text-muted-foreground">No favorites yet</p>
+                    <p className="text-sm text-muted-foreground mt-1">
+                      Tap the star icon to save features
+                    </p>
+                  </div>
+                )}
+              </div>
+            </ScrollArea>
+          </TabsContent>
+
+          <TabsContent value="categories" className="flex-1 mt-0">
+            <ScrollArea className="h-full px-4 pb-4">
+              <div className="space-y-6 py-4">
+                {CATEGORY_ORDER.map((category) => {
+                  const categoryFeatures = filteredFeatures.filter(f => f.category === category);
+                  if (categoryFeatures.length === 0) return null;
+
+                  return (
+                    <div key={category}>
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="text-2xl">{CATEGORY_ICONS[category]}</span>
+                        <div>
+                          <h3 className="font-semibold text-base">
+                            {CATEGORY_LABELS[category]}
+                          </h3>
+                          <p className="text-xs text-muted-foreground">
+                            {categoryFeatures.length} feature{categoryFeatures.length !== 1 ? 's' : ''}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-1 gap-3">
+                        {categoryFeatures.map(renderFeatureCard)}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </ScrollArea>
+          </TabsContent>
+        </Tabs>
       </SheetContent>
     </Sheet>
   );

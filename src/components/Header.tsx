@@ -28,26 +28,20 @@ const Header = () => {
     return email?.charAt(0).toUpperCase() || 'U';
   };
   const navigation = [{
-    name: "Community",
-    href: "/community"
-  }, {
-    name: "Workspaces",
-    href: "/workspaces"
+    name: "Dashboard",
+    href: "/dashboard"
   }, {
     name: "Learn",
     href: "/learn"
   }, {
+    name: "Community",
+    href: "/community"
+  }, {
     name: "Our Mission",
     href: "/mission"
   }, {
-    name: "Impact",
-    href: "/impact"
-  }, {
     name: "Partners",
     href: "/partners"
-  }, {
-    name: "Launched",
-    href: "/launched"
   }, {
     name: "Issues",
     href: "/issues"

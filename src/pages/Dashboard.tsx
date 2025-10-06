@@ -1,16 +1,20 @@
 import { useState, useEffect } from "react";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import Header from "@/components/Header";
-import DashboardHeader from "@/components/dashboard/DashboardHeader";
 import { DashboardMobileMenu } from "@/components/dashboard/DashboardMobileMenu";
 import { DashboardContent } from "@/components/dashboard/DashboardContent";
+import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
+import { DashboardFeatureHeader } from "@/components/dashboard/DashboardFeatureHeader";
+import { QuickAccess } from "@/components/dashboard/QuickAccess";
 import { getAllFeatures } from "@/components/dashboard/FeatureCategories";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
+import { Button } from "@/components/ui/button";
+import { LayoutDashboard } from "lucide-react";
 
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState("advanced");
+  const [activeTab, setActiveTab] = useState("overview");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const features = getAllFeatures();
   const isMobile = useIsMobile();
@@ -18,7 +22,7 @@ const Dashboard = () => {
   // Enable keyboard shortcuts
   useKeyboardShortcuts();
   
-  // Listen for feature switch events
+  // Listen for feature switch events from keyboard shortcuts
   useEffect(() => {
     const handleSwitchFeature = (e: Event) => {
       const customEvent = e as CustomEvent;
@@ -41,21 +45,29 @@ const Dashboard = () => {
           )}
 
           {/* Main Content Area */}
-          <main className="flex-1 w-full overflow-auto">
+          <SidebarInset className="flex-1">
             <div className="container mx-auto px-3 md:px-4 py-3 md:py-8 max-w-7xl">
-              {/* Sidebar Toggle - Desktop Only */}
+              {/* Sidebar Toggle & Breadcrumbs - Desktop */}
               {!isMobile && (
-                <div className="mb-6">
-                  <SidebarTrigger />
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-4">
+                    <SidebarTrigger />
+                    <DashboardBreadcrumbs activeTab={activeTab} />
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setActiveTab("advanced")}
+                  >
+                    <LayoutDashboard className="w-4 h-4 mr-2" />
+                    Overview
+                  </Button>
                 </div>
               )}
 
-              {/* Dashboard Header with Stats */}
-              <DashboardHeader />
-
               {/* Mobile Feature Menu */}
               {isMobile && (
-                <div className="my-6">
+                <div className="mb-4">
                   <DashboardMobileMenu
                     features={features}
                     activeTab={activeTab}
@@ -66,13 +78,22 @@ const Dashboard = () => {
                 </div>
               )}
 
-              {/* Feature Content */}
-              <DashboardContent 
-                activeTab={activeTab} 
-                onTabChange={setActiveTab} 
-              />
+              {/* Feature Header */}
+              {activeTab !== "overview" && (
+                <DashboardFeatureHeader activeTab={activeTab} />
+              )}
+
+              {/* Feature Content or Overview */}
+              {activeTab === "overview" ? (
+                <QuickAccess onFeatureSelect={setActiveTab} />
+              ) : (
+                <DashboardContent 
+                  activeTab={activeTab} 
+                  onTabChange={setActiveTab} 
+                />
+              )}
             </div>
-          </main>
+          </SidebarInset>
         </div>
       </div>
     </SidebarProvider>
