@@ -27,7 +27,7 @@ interface AppSidebarProps {
 }
 
 export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
-  const { open, isMobile } = useSidebar();
+  const { open, isMobile, setOpen } = useSidebar();
   const [searchQuery, setSearchQuery] = useState("");
   const [favorites, setFavorites] = useState<string[]>(() => {
     const saved = localStorage.getItem("favoriteFeatures");
@@ -48,6 +48,11 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
     const updated = [featureId, ...recentlyUsed.filter(id => id !== featureId)].slice(0, 5);
     setRecentlyUsed(updated);
     localStorage.setItem("recentFeatures", JSON.stringify(updated));
+    
+    // Auto-collapse sidebar on mobile after selection
+    if (isMobile) {
+      setOpen(false);
+    }
   };
 
   // Toggle favorite
