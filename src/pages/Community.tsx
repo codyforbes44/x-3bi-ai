@@ -1,5 +1,7 @@
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import { PageLayout } from "@/components/layout/PageLayout";
+import { PageHero } from "@/components/layout/PageHero";
+import { StatsGrid } from "@/components/layout/StatsGrid";
+import { CTASection } from "@/components/layout/CTASection";
 import FeaturedProjects from "@/components/FeaturedProjects";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,20 +9,20 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Users, MessageCircle, Github, Heart, Star, Trophy, Quote } from "lucide-react";
 
 const Community = () => {
+  const stats = [
+    { icon: Users, value: "50K+", description: "Active Members" },
+    { icon: Star, value: "25K+", description: "Projects Built" },
+    { icon: Trophy, value: "100+", description: "Weekly Events" }
+  ];
+
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <div className="pt-16 md:pt-20 pb-12 md:pb-16">
-        <div className="container mx-auto px-4 md:px-6">
-          {/* Hero Section */}
-          <div className="text-center mb-12 md:mb-16">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 bg-gradient-hero bg-clip-text text-transparent px-2">
-              Join Our Community
-            </h1>
-            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto mb-6 md:mb-8 px-4">
-              Connect with thousands of developers, designers, and creators building the future with AI-powered tools.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4">
+    <PageLayout>
+      <div className="pb-12 md:pb-16">
+        <PageHero
+          title="Join Our Community"
+          description="Connect with thousands of developers, designers, and creators building the future with AI-powered tools."
+          actions={
+            <>
               <Button size="lg" className="bg-gradient-hero text-white min-h-[48px]">
                 <MessageCircle className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                 Join Discord
@@ -29,33 +31,13 @@ const Community = () => {
                 <Github className="w-4 h-4 md:w-5 md:h-5 mr-2" />
                 GitHub Community
               </Button>
-            </div>
-          </div>
+            </>
+          }
+        />
 
+        <div className="container mx-auto px-4 md:px-6">
           {/* Community Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-8 mb-12 md:mb-16">
-            <Card className="text-center">
-              <CardHeader>
-                <Users className="w-12 h-12 mx-auto text-primary mb-4" />
-                <CardTitle className="text-3xl font-bold">50K+</CardTitle>
-                <CardDescription>Active Members</CardDescription>
-              </CardHeader>
-            </Card>
-            <Card className="text-center">
-              <CardHeader>
-                <Star className="w-12 h-12 mx-auto text-primary mb-4" />
-                <CardTitle className="text-3xl font-bold">25K+</CardTitle>
-                <CardDescription>Projects Built</CardDescription>
-              </CardHeader>
-            </Card>
-            <Card className="text-center">
-              <CardHeader>
-                <Trophy className="w-12 h-12 mx-auto text-primary mb-4" />
-                <CardTitle className="text-3xl font-bold">100+</CardTitle>
-                <CardDescription>Weekly Events</CardDescription>
-              </CardHeader>
-            </Card>
-          </div>
+          <StatsGrid stats={stats} className="mb-12 md:mb-16" />
 
           {/* Community Features */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 mb-16">
@@ -176,30 +158,22 @@ const Community = () => {
       </div>
 
       {/* Final CTA */}
-      <div className="py-16 md:py-24 bg-gradient-subtle">
-        <div className="container mx-auto px-4 md:px-6">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-              Ready to Join the Community?
-            </h2>
-            <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Connect with creators, learn from experts, and build amazing projects together.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-gradient-hero text-white min-h-[48px]">
-                <MessageCircle className="w-5 h-5 mr-2" />
-                Join Discord Now
-              </Button>
-              <Button variant="outline" size="lg" className="min-h-[48px]">
-                Explore Projects
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <Footer />
-    </div>
+      <CTASection
+        title="Ready to Join the Community?"
+        description="Connect with creators, learn from experts, and build amazing projects together."
+        actions={
+          <>
+            <Button size="lg" className="bg-gradient-hero text-white min-h-[48px]">
+              <MessageCircle className="w-5 h-5 mr-2" />
+              Join Discord Now
+            </Button>
+            <Button variant="outline" size="lg" className="min-h-[48px]">
+              Explore Projects
+            </Button>
+          </>
+        }
+      />
+    </PageLayout>
   );
 };
 

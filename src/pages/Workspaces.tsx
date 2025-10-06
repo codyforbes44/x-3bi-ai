@@ -1,6 +1,5 @@
 import { useState } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import { PageLayout } from "@/components/layout/PageLayout";
 import { WorkspaceSwitcher } from "@/components/workspaces/WorkspaceSwitcher";
 import { CreateWorkspaceDialog } from "@/components/workspaces/CreateWorkspaceDialog";
 import { WorkspaceSettings } from "@/components/workspaces/WorkspaceSettings";
@@ -14,21 +13,17 @@ const Workspaces = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col bg-background">
-        <Header />
-        <main className="flex-1 flex items-center justify-center">
+      <PageLayout>
+        <div className="flex items-center justify-center min-h-[60vh]">
           <p className="text-muted-foreground">Loading workspaces...</p>
-        </main>
-        <Footer />
-      </div>
+        </div>
+      </PageLayout>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-background">
-      <Header />
-      
-      <main className="flex-1 container mx-auto px-4 py-12">
+    <PageLayout>
+      <div className="container mx-auto px-4 py-12">
         <div className="max-w-6xl mx-auto space-y-8">
           {/* Header */}
           <div className="space-y-4">
@@ -105,15 +100,13 @@ const Workspaces = () => {
           {/* Workspace Settings */}
           {currentWorkspace && <WorkspaceSettings />}
         </div>
-      </main>
 
-      <Footer />
-      
-      <CreateWorkspaceDialog 
-        open={createDialogOpen} 
-        onOpenChange={setCreateDialogOpen} 
-      />
-    </div>
+        <CreateWorkspaceDialog 
+          open={createDialogOpen} 
+          onOpenChange={setCreateDialogOpen} 
+        />
+      </div>
+    </PageLayout>
   );
 };
 

@@ -1,4 +1,7 @@
-import Header from "@/components/Header";
+import { PageLayout } from "@/components/layout/PageLayout";
+import { PageHero } from "@/components/layout/PageHero";
+import { FeatureGrid } from "@/components/layout/FeatureGrid";
+import { CTASection } from "@/components/layout/CTASection";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Shield, Zap, Users, Settings, Lock, Cloud, Phone, Mail } from "lucide-react";
@@ -38,40 +41,26 @@ const Enterprise = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <div className="pt-20 pb-16">
-        <div className="container mx-auto px-4">
-          {/* Hero Section */}
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-hero bg-clip-text text-transparent">
-              Enterprise Solutions
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-              Powerful AI tools built for enterprise scale, security, and compliance. Transform your organization with custom AI solutions.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-gradient-hero text-white">
-                Schedule Demo
-              </Button>
-              <Button variant="outline" size="lg">
-                Contact Sales
-              </Button>
-            </div>
-          </div>
+    <PageLayout>
+      <PageHero
+        title="Enterprise Solutions"
+        description="Powerful AI tools built for enterprise scale, security, and compliance. Transform your organization with custom AI solutions."
+        actions={
+          <>
+            <Button size="lg" className="bg-gradient-hero text-white">
+              Schedule Demo
+            </Button>
+            <Button variant="outline" size="lg">
+              Contact Sales
+            </Button>
+          </>
+        }
+      />
 
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-            {features.map((feature) => (
-              <Card key={feature.title} className="h-full">
-                <CardHeader>
-                  <feature.icon className="w-12 h-12 text-primary mb-4" />
-                  <CardTitle>{feature.title}</CardTitle>
-                  <CardDescription>{feature.description}</CardDescription>
-                </CardHeader>
-              </Card>
-            ))}
-          </div>
+      <div className="container mx-auto px-4 pb-16">
+
+        {/* Features Grid */}
+        <FeatureGrid features={features} className="mb-16" />
 
           {/* Enterprise Benefits */}
           <div className="bg-muted/50 rounded-2xl p-8 md:p-12 mb-16">
@@ -137,40 +126,39 @@ const Enterprise = () => {
             </div>
           </div>
 
-          {/* Contact Section */}
-          <div className="text-center">
-            <h2 className="text-3xl font-bold mb-8">Ready to Get Started?</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
-              <Card>
-                <CardHeader className="text-center">
-                  <Phone className="w-8 h-8 mx-auto text-primary mb-4" />
-                  <CardTitle>Schedule a Call</CardTitle>
-                  <CardDescription>
-                    Speak with our enterprise team about your specific needs
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button className="w-full bg-gradient-hero text-white">Book Demo</Button>
-                </CardContent>
-              </Card>
-              
-              <Card>
-                <CardHeader className="text-center">
-                  <Mail className="w-8 h-8 mx-auto text-primary mb-4" />
-                  <CardTitle>Contact Sales</CardTitle>
-                  <CardDescription>
-                    Get a custom quote and implementation timeline
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button variant="outline" className="w-full">Send Message</Button>
-                </CardContent>
-              </Card>
-            </div>
+        {/* Contact Section */}
+        <div className="text-center">
+          <h2 className="text-3xl font-bold mb-8">Ready to Get Started?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
+            <Card>
+              <CardHeader className="text-center">
+                <Phone className="w-8 h-8 mx-auto text-primary mb-4" />
+                <CardTitle>Schedule a Call</CardTitle>
+                <CardDescription>
+                  Speak with our enterprise team about your specific needs
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button className="w-full bg-gradient-hero text-white">Book Demo</Button>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="text-center">
+                <Mail className="w-8 h-8 mx-auto text-primary mb-4" />
+                <CardTitle>Contact Sales</CardTitle>
+                <CardDescription>
+                  Get a custom quote and implementation timeline
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button variant="outline" className="w-full">Send Message</Button>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </div>
-    </div>
+    </PageLayout>
   );
 };
 
