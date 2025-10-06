@@ -1,13 +1,15 @@
 import { TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Brain, Cpu, Bot, Sparkles, MessageSquare } from "lucide-react";
+import { Brain, Cpu, Bot, Sparkles, MessageSquare, Music } from "lucide-react";
 import AdvancedAI from "@/components/AdvancedAI";
 import LocalAI from "@/components/LocalAI";
 import VoiceInterface from "@/components/VoiceInterface";
 import AIConversation from "@/components/AIConversation";
 import ClaudeChat from "@/components/ClaudeChat";
 import MultiModelChat from "@/components/MultiModelChat";
+import AdvancedHuggingFace from "@/components/AdvancedHuggingFace";
+import SunoAI from "@/components/SunoAI";
 
 const AISection = () => {
   return (
@@ -106,6 +108,38 @@ const AISection = () => {
           </CardHeader>
         </Card>
         <MultiModelChat />
+      </TabsContent>
+
+      <TabsContent value="advanced-huggingface" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Sparkles className="w-5 h-5 text-yellow-500" />
+              Advanced Hugging Face
+              <Badge variant="secondary" className="bg-yellow-500/20 text-yellow-500 border-yellow-500/30">Premium Models</Badge>
+            </CardTitle>
+            <CardDescription>
+              Access powerful AI models for image generation, NLP, vision, and audio tasks.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <AdvancedHuggingFace />
+      </TabsContent>
+
+      <TabsContent value="suno-ai" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Music className="w-5 h-5 text-pink-500" />
+              Suno AI Music Generator
+              <Badge variant="secondary" className="bg-pink-500/20 text-pink-500 border-pink-500/30">Music Generation</Badge>
+            </CardTitle>
+            <CardDescription>
+              Generate custom music and songs with AI - describe what you want to hear.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <SunoAI />
       </TabsContent>
     </>
   );

@@ -1,4 +1,4 @@
-import { Building2, GitBranch, Brain, Cpu, Bot, MessageSquare, Globe, Code2, BarChart3, Image, Mic, Volume2, Code, Sparkles, Rocket, Download, FileText, Wand2, Users } from "lucide-react";
+import { Building2, GitBranch, Brain, Cpu, Bot, MessageSquare, Globe, Code2, BarChart3, Image, Mic, Volume2, Code, Sparkles, Rocket, Download, FileText, Wand2, Users, Music } from "lucide-react";
 
 export interface Feature {
   id: string;
@@ -178,6 +178,24 @@ export const features: Feature[] = [
     icon: MessageSquare,
     color: "text-purple-500",
     badge: "Compare",
+    category: "advanced-ai"
+  },
+  {
+    id: "advanced-huggingface",
+    title: "Advanced Hugging Face",
+    description: "Access powerful AI models for image generation, NLP, vision, and audio",
+    icon: Sparkles,
+    color: "text-yellow-500",
+    badge: "Premium Models",
+    category: "advanced-ai"
+  },
+  {
+    id: "suno-ai",
+    title: "Suno AI Music",
+    description: "Generate custom music and songs with AI",
+    icon: Music,
+    color: "text-pink-500",
+    badge: "Music Generation",
     category: "advanced-ai"
   },
   {
