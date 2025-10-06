@@ -1,9 +1,19 @@
+import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { SidebarProvider, SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/AppSidebar";
+import { QuickAccess } from "@/components/dashboard/QuickAccess";
+import { DashboardContent } from "@/components/dashboard/DashboardContent";
+import { DashboardFeatureHeader } from "@/components/dashboard/DashboardFeatureHeader";
+import { DashboardMobileMenu } from "@/components/dashboard/DashboardMobileMenu";
+import { getAllFeatures } from "@/components/dashboard/FeatureCategories";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { 
   Brain, 
   Code2, 
@@ -16,12 +26,31 @@ import {
   Briefcase,
   CheckCircle2,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  LayoutDashboard
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("overview");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const features = getAllFeatures();
+  const isMobile = useIsMobile();
+  
+  // Enable keyboard shortcuts
+  useKeyboardShortcuts();
+  
+  // Listen for feature switch events from keyboard shortcuts
+  useEffect(() => {
+    const handleSwitchFeature = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      setActiveTab(customEvent.detail);
+    };
+    
+    window.addEventListener("switchFeature", handleSwitchFeature);
+    return () => window.removeEventListener("switchFeature", handleSwitchFeature);
+  }, []);
 
   const aiCapabilities = [
     {
@@ -96,9 +125,16 @@ const HomePage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <HeroSection />
+    <SidebarProvider defaultOpen={!isMobile}>
+      <div className="min-h-screen bg-background flex w-full">
+        {/* Desktop Sidebar - Only show when a feature is active */}
+        {!isMobile && activeTab !== "overview" && (
+          <AppSidebar activeTab={activeTab} onTabChange={setActiveTab} />
+        )}
+
+        <SidebarInset className="flex-1">
+          <Header />
+          <HeroSection />
       
       {/* AI Capabilities Showcase */}
       <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-muted/30">
@@ -145,12 +181,63 @@ const HomePage = () => {
             <Button 
               size="lg" 
               className="bg-gradient-hero text-white w-full sm:w-auto min-w-[200px] h-12 sm:h-14 text-base sm:text-lg touch-target"
-              onClick={() => navigate('/dashboard')}
+              onClick={() => {
+                const toolsSection = document.getElementById('ai-tools');
+                toolsSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               Try AI Tools Now
               <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
             </Button>
           </div>
+        </div>
+      </section>
+
+      {/* AI Tools Section - Integrated Dashboard */}
+      <section id="ai-tools" className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-background">
+        <div className="container mx-auto max-w-7xl">
+          {/* Mobile Feature Menu */}
+          {isMobile && activeTab !== "overview" && (
+            <div className="mb-4">
+              <DashboardMobileMenu
+                features={features}
+                activeTab={activeTab}
+                open={mobileMenuOpen}
+                onOpenChange={setMobileMenuOpen}
+                onTabSelect={setActiveTab}
+              />
+            </div>
+          )}
+
+          {/* Desktop Sidebar Toggle & Back Button */}
+          {!isMobile && activeTab !== "overview" && (
+            <div className="flex items-center gap-4 mb-6">
+              <SidebarTrigger />
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setActiveTab("overview")}
+              >
+                <LayoutDashboard className="w-4 h-4 mr-2" />
+                Back to Overview
+              </Button>
+            </div>
+          )}
+
+          {/* Feature Header */}
+          {activeTab !== "overview" && (
+            <DashboardFeatureHeader activeTab={activeTab} />
+          )}
+
+          {/* Feature Content or Overview */}
+          {activeTab === "overview" ? (
+            <QuickAccess onFeatureSelect={setActiveTab} />
+          ) : (
+            <DashboardContent 
+              activeTab={activeTab} 
+              onTabChange={setActiveTab} 
+            />
+          )}
         </div>
       </section>
 
@@ -223,7 +310,10 @@ const HomePage = () => {
               size="lg" 
               variant="secondary" 
               className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 touch-target"
-              onClick={() => navigate('/dashboard')}
+              onClick={() => {
+                const toolsSection = document.getElementById('ai-tools');
+                toolsSection?.scrollIntoView({ behavior: 'smooth' });
+              }}
             >
               Start Creating Now
             </Button>
@@ -239,8 +329,10 @@ const HomePage = () => {
         </div>
       </section>
 
-      <Footer />
-    </div>
+          <Footer />
+        </SidebarInset>
+      </div>
+    </SidebarProvider>
   );
 };
 

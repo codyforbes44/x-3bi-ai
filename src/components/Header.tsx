@@ -27,9 +27,20 @@ const Header = () => {
     if (name) return name.split(' ').map(n => n.charAt(0)).join('').toUpperCase().slice(0, 2);
     return email?.charAt(0).toUpperCase() || 'U';
   };
+  const handleToolsClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (window.location.pathname === '/') {
+      const toolsSection = document.getElementById('ai-tools');
+      toolsSection?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      navigate('/#ai-tools');
+    }
+  };
+
   const navigation = [{
-    name: "Dashboard",
-    href: "/dashboard"
+    name: "AI Tools",
+    href: "/#ai-tools",
+    onClick: handleToolsClick
   }, {
     name: "Learn",
     href: "/learn"
@@ -63,7 +74,12 @@ const Header = () => {
         
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
-          {navigation.map(item => <a key={item.name} href={item.href} className="text-sm lg:text-base text-muted-foreground hover:text-foreground transition-smooth">
+          {navigation.map(item => <a 
+              key={item.name} 
+              href={item.href} 
+              onClick={item.onClick}
+              className="text-sm lg:text-base text-muted-foreground hover:text-foreground transition-smooth"
+            >
               {item.name}
             </a>)}
         </nav>
@@ -92,9 +108,9 @@ const Header = () => {
                   </div>
                 </div>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => navigate('/dashboard')}>
+                <DropdownMenuItem onClick={() => navigate('/#ai-tools')}>
                   <User className="mr-2 h-4 w-4" />
-                  Dashboard
+                  AI Tools
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/profile')}>
                   <Settings className="mr-2 h-4 w-4" />
@@ -139,7 +155,12 @@ const Header = () => {
                 </div>
                 
                 <nav className="flex flex-col space-y-3">
-                  {navigation.map(item => <a key={item.name} href={item.href} className="text-base text-muted-foreground hover:text-foreground transition-smooth py-2 touch-target">
+                  {navigation.map(item => <a 
+                      key={item.name} 
+                      href={item.href} 
+                      onClick={item.onClick}
+                      className="text-base text-muted-foreground hover:text-foreground transition-smooth py-2 touch-target"
+                    >
                       {item.name}
                     </a>)}
                 </nav>
@@ -154,10 +175,10 @@ const Header = () => {
                       <Button
                         variant="ghost"
                         className="justify-start"
-                        onClick={() => navigate('/dashboard')}
+                        onClick={() => navigate('/#ai-tools')}
                       >
                         <User className="mr-2 h-4 w-4" />
-                        Dashboard
+                        AI Tools
                       </Button>
                       <Button
                         variant="ghost"
