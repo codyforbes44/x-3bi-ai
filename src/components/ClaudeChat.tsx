@@ -55,7 +55,7 @@ const ClaudeChat = () => {
       const { data, error } = await supabase.functions.invoke('advanced-ai', {
         body: {
           message: userMessage.content,
-          model: 'claude-sonnet-4-20250514',
+          model: 'claude-opus-4-1-20250805',
           provider: 'anthropic'
         }
       });

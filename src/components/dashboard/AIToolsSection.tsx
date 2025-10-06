@@ -1,12 +1,14 @@
 import { TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { MessageSquare, Image, Mic, Volume2 } from "lucide-react";
+import { MessageSquare, Image, Mic, Volume2, Wand2 } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import AIChat from "@/components/AIChat";
 import AIImageGenerator from "@/components/AIImageGenerator";
 import PremiumVoice from "@/components/PremiumVoice";
 import AIVoice from "@/components/AIVoice";
+import EnhancedVoice from "@/components/EnhancedVoice";
+import AdvancedImageGen from "@/components/AdvancedImageGen";
 
 const AIToolsSection = () => {
   const isMobile = useIsMobile();
@@ -75,6 +77,38 @@ const AIToolsSection = () => {
           </CardHeader>
         </Card>
         <AIVoice />
+      </TabsContent>
+
+      <TabsContent value="enhanced-voice" className={`space-y-${isMobile ? '3' : '4'}`}>
+        <Card>
+          <CardHeader className={isMobile ? 'p-4' : ''}>
+            <CardTitle className={`flex items-center gap-2 ${isMobile ? 'text-lg' : ''}`}>
+              <Mic className="w-5 h-5 text-green-500" />
+              Enhanced Voice Synthesis
+              <Badge variant="secondary">Premium</Badge>
+            </CardTitle>
+            <CardDescription className={isMobile ? 'text-sm' : ''}>
+              Advanced voice synthesis with multiple providers and voice selection options.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <EnhancedVoice />
+      </TabsContent>
+
+      <TabsContent value="advanced-image" className={`space-y-${isMobile ? '3' : '4'}`}>
+        <Card>
+          <CardHeader className={isMobile ? 'p-4' : ''}>
+            <CardTitle className={`flex items-center gap-2 ${isMobile ? 'text-lg' : ''}`}>
+              <Wand2 className="w-5 h-5 text-pink-500" />
+              Advanced Image Generation
+              <Badge variant="secondary">gpt-image-1</Badge>
+            </CardTitle>
+            <CardDescription className={isMobile ? 'text-sm' : ''}>
+              Enhanced image generation with advanced controls, presets, and batch processing.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <AdvancedImageGen />
       </TabsContent>
     </>
   );

@@ -1,12 +1,15 @@
 import { TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Globe, Code2, BarChart3, Code, Rocket } from "lucide-react";
+import { Globe, Code2, BarChart3, Code, Rocket, Volume2, FileText, Download } from "lucide-react";
 import WebScraper from "@/components/WebScraper";
 import AIArchitect from "@/components/AIArchitect";
 import AIInsights from "@/components/AIInsights";
 import AICodeAssistant from "@/components/AICodeAssistant";
 import DeploypadIntegration from "@/components/DeploypadIntegration";
+import VoiceHistory from "@/components/VoiceHistory";
+import TemplateLibrary from "@/components/TemplateLibrary";
+import ExportCenter from "@/components/ExportCenter";
 
 const UtilitiesSection = () => {
   return (
@@ -89,6 +92,54 @@ const UtilitiesSection = () => {
           </CardHeader>
         </Card>
         <DeploypadIntegration />
+      </TabsContent>
+
+      <TabsContent value="voice-history" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Volume2 className="w-5 h-5 text-cyan-500" />
+              Voice History
+              <Badge variant="secondary">Library</Badge>
+            </CardTitle>
+            <CardDescription>
+              Manage, replay, and download all your voice recordings and generated audio.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <VoiceHistory />
+      </TabsContent>
+
+      <TabsContent value="templates" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <FileText className="w-5 h-5 text-orange-500" />
+              Template Library
+              <Badge variant="secondary">Templates</Badge>
+            </CardTitle>
+            <CardDescription>
+              Pre-built prompts for common AI tasks - copy, customize, and use across all features.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <TemplateLibrary />
+      </TabsContent>
+
+      <TabsContent value="export" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Download className="w-5 h-5 text-gray-500" />
+              Export Center
+              <Badge variant="secondary">Data</Badge>
+            </CardTitle>
+            <CardDescription>
+              Export all your AI-generated content in JSON, Markdown, or CSV formats.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <ExportCenter />
       </TabsContent>
     </>
   );

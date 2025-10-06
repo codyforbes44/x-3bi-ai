@@ -1,12 +1,13 @@
 import { TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Brain, Cpu, Bot, Sparkles } from "lucide-react";
+import { Brain, Cpu, Bot, Sparkles, MessageSquare } from "lucide-react";
 import AdvancedAI from "@/components/AdvancedAI";
 import LocalAI from "@/components/LocalAI";
 import VoiceInterface from "@/components/VoiceInterface";
 import AIConversation from "@/components/AIConversation";
 import ClaudeChat from "@/components/ClaudeChat";
+import MultiModelChat from "@/components/MultiModelChat";
 
 const AISection = () => {
   return (
@@ -89,6 +90,22 @@ const AISection = () => {
           </CardHeader>
         </Card>
         <AIConversation />
+      </TabsContent>
+
+      <TabsContent value="multi-chat" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <MessageSquare className="w-5 h-5 text-purple-500" />
+              Multi-Model Chat
+              <Badge variant="secondary" className="bg-purple-500/20 text-purple-500 border-purple-500/30">Compare</Badge>
+            </CardTitle>
+            <CardDescription>
+              Compare responses from Claude Opus 4, Sonnet 4, GPT-5, and GPT-5 Mini simultaneously.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <MultiModelChat />
       </TabsContent>
     </>
   );

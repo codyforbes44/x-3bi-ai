@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import Header from "@/components/Header";
@@ -7,12 +7,27 @@ import { DashboardMobileMenu } from "@/components/dashboard/DashboardMobileMenu"
 import { DashboardContent } from "@/components/dashboard/DashboardContent";
 import { getAllFeatures } from "@/components/dashboard/FeatureCategories";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("advanced");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const features = getAllFeatures();
   const isMobile = useIsMobile();
+  
+  // Enable keyboard shortcuts
+  useKeyboardShortcuts();
+  
+  // Listen for feature switch events
+  useEffect(() => {
+    const handleSwitchFeature = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      setActiveTab(customEvent.detail);
+    };
+    
+    window.addEventListener("switchFeature", handleSwitchFeature);
+    return () => window.removeEventListener("switchFeature", handleSwitchFeature);
+  }, []);
 
   return (
     <SidebarProvider defaultOpen={!isMobile}>
