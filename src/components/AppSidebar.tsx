@@ -38,13 +38,8 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
     return saved ? JSON.parse(saved) : [];
   });
   
-  // Track which categories are open
-  const [openCategories, setOpenCategories] = useState<Record<string, boolean>>({
-    enterprise: true,
-    'advanced-ai': true,
-    'ai-tools': true,
-    utilities: true,
-  });
+  // Track which category is open (accordion - only one at a time)
+  const [openCategory, setOpenCategory] = useState<string>('ai-tools');
 
   const features = getAllFeatures();
 
@@ -207,7 +202,7 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
           {/* Recently Used - Only show when not searching */}
           {!searchQuery && recentFeatures.length > 0 && (
             <>
-              <Collapsible open={openCategories.recent} onOpenChange={(isOpen) => setOpenCategories(prev => ({ ...prev, recent: isOpen }))}>
+              <Collapsible open={openCategory === 'recent'} onOpenChange={(isOpen) => isOpen && setOpenCategory('recent')}>
                 <SidebarGroup>
                   <CollapsibleTrigger asChild>
                     <SidebarGroupLabel className="flex items-center gap-2 cursor-pointer hover:bg-accent/50 transition-colors rounded-md group">
@@ -215,7 +210,7 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
                       {open && (
                         <>
                           <span className="flex-1">Recent</span>
-                          <ChevronDown className={`w-4 h-4 transition-transform ${openCategories.recent ? '' : '-rotate-90'}`} />
+                          <ChevronDown className={`w-4 h-4 transition-transform ${openCategory === 'recent' ? '' : '-rotate-90'}`} />
                         </>
                       )}
                     </SidebarGroupLabel>
@@ -236,7 +231,7 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
           {/* Favorites - Only show when not searching */}
           {!searchQuery && favoriteFeatures.length > 0 && (
             <>
-              <Collapsible open={openCategories.favorites} onOpenChange={(isOpen) => setOpenCategories(prev => ({ ...prev, favorites: isOpen }))}>
+              <Collapsible open={openCategory === 'favorites'} onOpenChange={(isOpen) => isOpen && setOpenCategory('favorites')}>
                 <SidebarGroup>
                   <CollapsibleTrigger asChild>
                     <SidebarGroupLabel className="flex items-center gap-2 cursor-pointer hover:bg-accent/50 transition-colors rounded-md group">
@@ -244,7 +239,7 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
                       {open && (
                         <>
                           <span className="flex-1">Favorites</span>
-                          <ChevronDown className={`w-4 h-4 transition-transform ${openCategories.favorites ? '' : '-rotate-90'}`} />
+                          <ChevronDown className={`w-4 h-4 transition-transform ${openCategory === 'favorites' ? '' : '-rotate-90'}`} />
                         </>
                       )}
                     </SidebarGroupLabel>
@@ -269,8 +264,8 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
             return (
               <Collapsible 
                 key={categoryKey}
-                open={openCategories[categoryKey as keyof typeof openCategories]}
-                onOpenChange={(isOpen) => setOpenCategories(prev => ({ ...prev, [categoryKey]: isOpen }))}
+                open={openCategory === categoryKey}
+                onOpenChange={(isOpen) => isOpen && setOpenCategory(categoryKey)}
               >
                 <SidebarGroup>
                   <CollapsibleTrigger asChild>
@@ -285,7 +280,7 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
                               {categoryDescriptions[categoryKey as keyof typeof categoryDescriptions]}
                             </span>
                           </div>
-                          <ChevronDown className={`w-4 h-4 transition-transform flex-shrink-0 ${openCategories[categoryKey as keyof typeof openCategories] ? '' : '-rotate-90'}`} />
+                          <ChevronDown className={`w-4 h-4 transition-transform flex-shrink-0 ${openCategory === categoryKey ? '' : '-rotate-90'}`} />
                         </>
                       ) : (
                         <span className="text-xs font-semibold">
