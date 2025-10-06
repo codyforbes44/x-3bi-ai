@@ -14,7 +14,7 @@ const Footer = () => {
               <span className="text-xl font-bold">3BI.AI</span>
             </div>
             <p className="text-muted-foreground">
-              AI That Works For You - Empowering everyone with accessible, powerful AI tools designed with your success in mind. Visit 3bi.ai
+              AI That Works - Empowering everyone with accessible, powerful AI tools designed with your success in mind. Visit 3bi.ai
             </p>
           </div>
           

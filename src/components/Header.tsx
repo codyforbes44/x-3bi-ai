@@ -63,7 +63,7 @@ const Header = () => {
           />
           <div className="flex flex-col">
             <span className="text-base md:text-xl font-bold leading-none">3BI.AI</span>
-            <span className="text-[9px] md:text-xs text-muted-foreground hidden sm:block leading-none mt-0.5">AI That Works For You</span>
+            <span className="text-[9px] md:text-xs text-muted-foreground hidden sm:block leading-none mt-0.5">AI That Works</span>
           </div>
         </div>
         
@@ -140,7 +140,7 @@ const Header = () => {
                   />
                   <div className="flex flex-col">
                     <span className="text-lg font-bold">3BI.AI</span>
-                    <span className="text-xs text-muted-foreground">AI That Works For You</span>
+                    <span className="text-xs text-muted-foreground">AI That Works</span>
                   </div>
                 </div>
                 
