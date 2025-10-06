@@ -28,6 +28,11 @@ import Volunteer from "./pages/Volunteer";
 import Donate from "./pages/Donate";
 import FreeAITools from "./pages/FreeAITools";
 import Tutorials from "./pages/Tutorials";
+import AIChatTutorial from "./pages/tutorials/AIChatTutorial";
+import CodeGenerationTutorial from "./pages/tutorials/CodeGenerationTutorial";
+import ImageGenerationTutorial from "./pages/tutorials/ImageGenerationTutorial";
+import VoiceAITutorial from "./pages/tutorials/VoiceAITutorial";
+import SystemArchitectureTutorial from "./pages/tutorials/SystemArchitectureTutorial";
 import Documentation from "./pages/Documentation";
 import APIAccess from "./pages/APIAccess";
 import Workspaces from "./pages/Workspaces";
@@ -71,6 +76,11 @@ const App = () => (
               <Route path="/donate" element={<Donate />} />
               <Route path="/free-ai-tools" element={<FreeAITools />} />
               <Route path="/tutorials" element={<Tutorials />} />
+              <Route path="/tutorials/ai-chat" element={<AIChatTutorial />} />
+              <Route path="/tutorials/code-generation" element={<CodeGenerationTutorial />} />
+              <Route path="/tutorials/image-generation" element={<ImageGenerationTutorial />} />
+              <Route path="/tutorials/voice-ai" element={<VoiceAITutorial />} />
+              <Route path="/tutorials/system-architecture" element={<SystemArchitectureTutorial />} />
               <Route path="/documentation" element={<Documentation />} />
               <Route path="/api-access" element={<APIAccess />} />
               <Route path="/workspaces" element={<Workspaces />} />
