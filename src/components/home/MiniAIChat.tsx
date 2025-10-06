@@ -47,7 +47,8 @@ const MiniAIChat = () => {
             role: msg.role,
             content: msg.content
           })),
-          model: 'gpt-4o-mini'
+          model: 'gpt-4o-mini',
+          provider: 'openai'
         }
       });
 
