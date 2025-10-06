@@ -76,11 +76,7 @@ const HeroSection = () => {
           <div className="mt-8 sm:mt-10 md:mt-12 flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8 text-white/70 text-xs sm:text-sm px-4">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse flex-shrink-0"></div>
-              <span className="whitespace-nowrap">Easy to Use</span>
-            </div>
-            <div className="hidden sm:block w-1 h-1 bg-white/30 rounded-full flex-shrink-0"></div>
-            <div className="flex items-center gap-2">
-              <span className="whitespace-nowrap">Always Free</span>
+              <span className="whitespace-nowrap">Online</span>
             </div>
           </div>
         </div>
