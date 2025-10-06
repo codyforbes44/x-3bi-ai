@@ -49,31 +49,31 @@ const AdvancedFeatures = () => {
   ];
 
   return (
-    <section className="py-20">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 mb-6">
-            <Brain className="w-5 h-5 text-white" />
-            <span className="text-white font-medium">Advanced AI Capabilities</span>
+    <section className="py-12 sm:py-16 md:py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-10 sm:mb-12 md:mb-16">
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 sm:px-5 md:px-6 py-2 sm:py-2.5 md:py-3 mb-4 sm:mb-5 md:mb-6">
+            <Brain className="w-4 h-4 sm:w-5 sm:h-5 text-white flex-shrink-0" />
+            <span className="text-white font-medium text-sm sm:text-base">Advanced AI Capabilities</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-5 md:mb-6 px-4">
             Beyond Traditional Platforms
           </h2>
-          <p className="text-xl text-white/80 max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-white/80 max-w-2xl lg:max-w-3xl mx-auto px-4 leading-relaxed">
             Our platform integrates cutting-edge AI technologies to deliver unprecedented 
             capabilities for development, analysis, and creativity.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
           {features.map((feature) => (
-            <Card key={feature.title} className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all duration-500 group">
-              <CardHeader className="pb-4">
-                <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${feature.gradient} p-3 mb-4 group-hover:scale-110 transition-transform duration-300`}>
-                  <feature.icon className="w-6 h-6 text-white" />
+            <Card key={feature.title} className="bg-white/5 backdrop-blur-sm border-white/10 hover:bg-white/10 transition-all duration-500 group touch-target">
+              <CardHeader className="p-4 sm:p-5 md:p-6 pb-4 sm:pb-5 md:pb-6">
+                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-r ${feature.gradient} p-2.5 sm:p-3 mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300 flex-shrink-0`}>
+                  <feature.icon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                 </div>
-                <CardTitle className="text-white text-lg">{feature.title}</CardTitle>
-                <CardDescription className="text-white/70">
+                <CardTitle className="text-white text-base sm:text-lg mb-2">{feature.title}</CardTitle>
+                <CardDescription className="text-white/70 text-sm sm:text-base leading-relaxed">
                   {feature.description}
                 </CardDescription>
               </CardHeader>
@@ -81,19 +81,19 @@ const AdvancedFeatures = () => {
           ))}
         </div>
         
-        <div className="mt-16 text-center">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">7+</div>
-              <div className="text-white/80">AI Models</div>
+        <div className="mt-10 sm:mt-12 md:mt-16 text-center px-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 max-w-4xl mx-auto">
+            <div className="text-center py-4">
+              <div className="text-2xl sm:text-3xl font-bold text-white mb-2">7+</div>
+              <div className="text-white/80 text-sm sm:text-base">AI Models</div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">1.5s</div>
-              <div className="text-white/80">Response Time</div>
+            <div className="text-center py-4">
+              <div className="text-2xl sm:text-3xl font-bold text-white mb-2">1.5s</div>
+              <div className="text-white/80 text-sm sm:text-base">Response Time</div>
             </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-white mb-2">∞</div>
-              <div className="text-white/80">Possibilities</div>
+            <div className="text-center py-4">
+              <div className="text-2xl sm:text-3xl font-bold text-white mb-2">∞</div>
+              <div className="text-white/80 text-sm sm:text-base">Possibilities</div>
             </div>
           </div>
         </div>

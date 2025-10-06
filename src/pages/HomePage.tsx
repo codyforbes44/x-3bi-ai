@@ -101,39 +101,39 @@ const HomePage = () => {
       <HeroSection />
       
       {/* AI Capabilities Showcase */}
-      <section className="py-20 px-4 bg-muted/30">
-        <div className="container mx-auto">
-          <div className="text-center mb-16 animate-fade-in">
-            <Badge variant="secondary" className="mb-4">
-              <Sparkles className="w-3 h-3 mr-1" />
+      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-muted/30">
+        <div className="container mx-auto max-w-7xl">
+          <div className="text-center mb-10 sm:mb-12 md:mb-16 animate-fade-in">
+            <Badge variant="secondary" className="mb-3 sm:mb-4 text-xs sm:text-sm">
+              <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 sm:mr-1.5" />
               Powered by Best-in-Class AI
             </Badge>
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-5 md:mb-6 px-4">
               World-Class AI Technology
             </h2>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl lg:max-w-3xl mx-auto px-4">
               Experience the most advanced AI models available, integrated into one powerful platform
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
             {aiCapabilities.map((capability, index) => (
               <Card 
                 key={capability.title} 
-                className="h-full hover:shadow-lg transition-all hover-scale border-border/50"
+                className="h-full hover:shadow-lg transition-all hover-scale border-border/50 touch-target"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <CardHeader>
-                  <div className="flex items-start justify-between mb-4">
-                    <div className={`p-3 rounded-lg bg-primary/10`}>
-                      <capability.icon className={`w-6 h-6 ${capability.color}`} />
+                <CardHeader className="p-4 sm:p-5 md:p-6">
+                  <div className="flex items-start justify-between mb-3 sm:mb-4 gap-2">
+                    <div className={`p-2 sm:p-2.5 md:p-3 rounded-lg bg-primary/10 flex-shrink-0`}>
+                      <capability.icon className={`w-5 h-5 sm:w-6 sm:h-6 ${capability.color}`} />
                     </div>
-                    <Badge variant="outline" className="text-xs">
+                    <Badge variant="outline" className="text-[10px] sm:text-xs whitespace-nowrap">
                       {capability.badge}
                     </Badge>
                   </div>
-                  <CardTitle className="text-xl">{capability.title}</CardTitle>
-                  <CardDescription className="text-base">
+                  <CardTitle className="text-lg sm:text-xl mb-2">{capability.title}</CardTitle>
+                  <CardDescription className="text-sm sm:text-base leading-relaxed">
                     {capability.description}
                   </CardDescription>
                 </CardHeader>
@@ -141,41 +141,41 @@ const HomePage = () => {
             ))}
           </div>
 
-          <div className="text-center mt-12">
+          <div className="text-center mt-8 sm:mt-10 md:mt-12 px-4">
             <Button 
               size="lg" 
-              className="bg-gradient-hero text-white"
+              className="bg-gradient-hero text-white w-full sm:w-auto min-w-[200px] h-12 sm:h-14 text-base sm:text-lg touch-target"
               onClick={() => navigate('/dashboard')}
             >
               Try AI Tools Now
-              <ArrowRight className="ml-2 w-5 h-5" />
+              <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
             </Button>
           </div>
         </div>
       </section>
 
       {/* AI Guidance Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6">
+        <div className="container mx-auto max-w-7xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 md:gap-12 items-center">
             <div>
-              <Badge variant="secondary" className="mb-4">AI-Powered Guidance</Badge>
-              <h2 className="text-4xl md:text-5xl font-bold mb-6">
+              <Badge variant="secondary" className="mb-3 sm:mb-4 text-xs sm:text-sm">AI-Powered Guidance</Badge>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-5 md:mb-6">
                 Get Help When You Need It
               </h2>
-              <p className="text-xl text-muted-foreground mb-8">
+              <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-6 sm:mb-7 md:mb-8 leading-relaxed">
                 Submit your concerns and receive AI-powered guidance for life's challenges - from health and legal matters to career and personal growth.
               </p>
               
-              <div className="space-y-4 mb-8">
+              <div className="space-y-3 sm:space-y-4 mb-6 sm:mb-7 md:mb-8">
                 {guidanceAreas.map((area) => (
-                  <div key={area.title} className="flex items-start gap-4 p-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
-                    <div className="p-2 rounded-lg bg-primary/10">
-                      <area.icon className="w-5 h-5 text-primary" />
+                  <div key={area.title} className="flex items-start gap-3 sm:gap-4 p-3 sm:p-4 rounded-lg bg-muted/50 hover:bg-muted transition-colors touch-target">
+                    <div className="p-2 rounded-lg bg-primary/10 flex-shrink-0">
+                      <area.icon className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
                     </div>
-                    <div>
-                      <h3 className="font-semibold mb-1">{area.title}</h3>
-                      <p className="text-sm text-muted-foreground">{area.description}</p>
+                    <div className="min-w-0">
+                      <h3 className="font-semibold mb-1 text-sm sm:text-base">{area.title}</h3>
+                      <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{area.description}</p>
                     </div>
                   </div>
                 ))}
@@ -184,21 +184,22 @@ const HomePage = () => {
               <Button 
                 size="lg" 
                 variant="outline"
+                className="w-full sm:w-auto h-12 sm:h-14 text-base sm:text-lg touch-target"
                 onClick={() => navigate('/issues')}
               >
                 Get AI Guidance
-                <ArrowRight className="ml-2 w-5 h-5" />
+                <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
               </Button>
             </div>
             
-            <div>
-              <Card className="p-8 bg-gradient-subtle border-border/50">
-                <h3 className="text-2xl font-bold mb-6">Platform Benefits</h3>
-                <div className="space-y-4">
+            <div className="mt-8 lg:mt-0">
+              <Card className="p-5 sm:p-6 md:p-8 bg-gradient-subtle border-border/50">
+                <h3 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-5 md:mb-6">Platform Benefits</h3>
+                <div className="space-y-3 sm:space-y-4">
                   {platformBenefits.map((benefit) => (
-                    <div key={benefit} className="flex items-start gap-3">
-                      <CheckCircle2 className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
-                      <span className="text-base">{benefit}</span>
+                    <div key={benefit} className="flex items-start gap-2.5 sm:gap-3">
+                      <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-green-500 flex-shrink-0 mt-0.5" />
+                      <span className="text-sm sm:text-base leading-relaxed">{benefit}</span>
                     </div>
                   ))}
                 </div>
@@ -209,19 +210,19 @@ const HomePage = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 px-4 bg-gradient-hero text-white">
-        <div className="container mx-auto text-center">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
+      <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-gradient-hero text-white">
+        <div className="container mx-auto text-center max-w-4xl">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-5 md:mb-6 px-4">
             Ready to Experience Next-Gen AI?
           </h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto opacity-90">
+          <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-7 md:mb-8 max-w-xl lg:max-w-2xl mx-auto opacity-90 px-4 leading-relaxed">
             Access Claude Opus 4, GPT Image-1, ElevenLabs Voice, and more - all in one platform
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 max-w-lg mx-auto">
             <Button 
               size="lg" 
               variant="secondary" 
-              className="text-lg px-8"
+              className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 touch-target"
               onClick={() => navigate('/dashboard')}
             >
               Start Creating Now
@@ -229,7 +230,7 @@ const HomePage = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="text-lg px-8 border-white text-white hover:bg-white/10"
+              className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 border-white text-white hover:bg-white/10 touch-target"
               onClick={() => navigate('/learn')}
             >
               Learn More
