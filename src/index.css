@@ -8,54 +8,101 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Dark mode as default */
-    --background: 220 27% 4%;
+    /* Advanced AI Platform - Dark Mode (Default) */
+    /* Deep space background with subtle blue tint */
+    --background: 222 47% 3%;
     --foreground: 210 40% 98%;
 
-    --card: 220 27% 6%;
+    /* Card with glass morphism effect */
+    --card: 222 47% 6%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 220 27% 6%;
+    /* Enhanced popover */
+    --popover: 222 47% 8%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 220 100% 65%;
-    --primary-foreground: 220 27% 4%;
-    --primary-glow: 230 100% 80%;
+    /* Vibrant primary - Electric Blue */
+    --primary: 217 91% 60%;
+    --primary-foreground: 0 0% 100%;
+    --primary-glow: 220 100% 75%;
+    --primary-variant: 215 89% 52%;
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+    /* Secondary - Deep Purple */
+    --secondary: 265 89% 58%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-glow: 270 100% 75%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+    /* Muted states */
+    --muted: 222 35% 15%;
+    --muted-foreground: 215 20% 65%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    /* Accent - Cyan */
+    --accent: 189 94% 55%;
+    --accent-foreground: 222 47% 3%;
+    --accent-glow: 189 100% 70%;
 
-    --destructive: 0 62.8% 50.6%;
-    --destructive-foreground: 210 40% 98%;
+    /* Success - Emerald */
+    --success: 158 64% 52%;
+    --success-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 220 100% 65%;
+    /* Warning - Amber */
+    --warning: 38 92% 50%;
+    --warning-foreground: 222 47% 3%;
 
+    /* Destructive - Rose */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders and inputs */
+    --border: 222 35% 18%;
+    --input: 222 35% 18%;
+    --ring: 217 91% 60%;
+
+    /* Border radius */
     --radius: 0.75rem;
 
-    /* Enhanced gradient colors for dark mode */
-    --gradient-start: 200 100% 75%;
-    --gradient-middle: 280 100% 85%;
-    --gradient-end: 340 82% 62%;
+    /* Advanced gradient system */
+    --gradient-start: 217 91% 60%;
+    --gradient-middle: 265 89% 58%;
+    --gradient-end: 189 94% 55%;
+    --gradient-accent: 310 80% 58%;
     
-    /* Dark mode gradients with enhanced vibrancy */
-    --gradient-hero: linear-gradient(135deg, hsl(var(--gradient-start) / 0.9), hsl(var(--gradient-middle) / 0.9), hsl(var(--gradient-end) / 0.9));
-    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--card)));
+    /* Multi-stop gradients */
+    --gradient-hero: linear-gradient(135deg, 
+      hsl(var(--gradient-start)) 0%, 
+      hsl(var(--gradient-middle)) 50%, 
+      hsl(var(--gradient-end)) 100%);
     
-    /* Enhanced shadows for dark mode */
-    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.3);
-    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.4);
+    --gradient-card: linear-gradient(145deg, 
+      hsl(var(--card)) 0%, 
+      hsl(222 47% 8%) 100%);
+    
+    --gradient-subtle: linear-gradient(180deg, 
+      hsl(var(--background)) 0%, 
+      hsl(222 47% 5%) 100%);
+    
+    --gradient-ai: linear-gradient(135deg, 
+      hsl(217 91% 60%) 0%, 
+      hsl(270 100% 65%) 50%, 
+      hsl(310 80% 58%) 100%);
+    
+    --gradient-neural: radial-gradient(ellipse at top, 
+      hsl(217 91% 60% / 0.15) 0%, 
+      transparent 50%);
+    
+    /* Enhanced shadows */
+    --shadow-sm: 0 1px 2px hsl(222 47% 3% / 0.3);
+    --shadow-md: 0 4px 6px hsl(222 47% 3% / 0.4);
+    --shadow-lg: 0 10px 15px hsl(222 47% 3% / 0.5);
+    --shadow-xl: 0 20px 25px hsl(222 47% 3% / 0.6);
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.4);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.5);
+    --shadow-glow-accent: 0 0 60px hsl(var(--accent-glow) / 0.3);
     
     /* Animations */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     --transition-spring: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
     
     /* Mobile optimizations */
     --mobile-padding: 1rem;
@@ -72,43 +119,87 @@ All colors MUST be HSL.
   }
 
   .light {
-    /* Light mode (optional override) */
+    /* Advanced AI Platform - Light Mode */
+    /* Clean white background */
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 222 47% 11%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    /* Soft card background */
+    --card: 0 0% 98%;
+    --card-foreground: 222 47% 11%;
 
+    /* Elevated popover */
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 222 47% 11%;
 
-    --primary: 220 100% 55%;
+    /* Vibrant primary - Electric Blue */
+    --primary: 217 91% 52%;
     --primary-foreground: 0 0% 100%;
-    --primary-glow: 230 100% 70%;
+    --primary-glow: 220 100% 70%;
+    --primary-variant: 215 89% 45%;
 
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220 8.9% 46.1%;
+    /* Secondary - Purple */
+    --secondary: 265 89% 55%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-glow: 270 100% 70%;
 
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
+    /* Muted states */
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
 
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 220 8.9% 46.1%;
+    /* Accent - Cyan */
+    --accent: 189 94% 45%;
+    --accent-foreground: 0 0% 100%;
+    --accent-glow: 189 100% 65%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    /* Success - Emerald */
+    --success: 158 64% 45%;
+    --success-foreground: 0 0% 100%;
 
+    /* Warning - Amber */
+    --warning: 38 92% 48%;
+    --warning-foreground: 0 0% 100%;
+
+    /* Destructive - Rose */
+    --destructive: 0 84% 55%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Borders and inputs */
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 220 100% 55%;
+    --ring: 217 91% 52%;
     
     /* Light mode gradients */
-    --gradient-hero: linear-gradient(135deg, hsl(var(--gradient-start)), hsl(var(--gradient-middle)), hsl(var(--gradient-end)));
-    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--muted)));
+    --gradient-hero: linear-gradient(135deg, 
+      hsl(217 91% 52%) 0%, 
+      hsl(265 89% 55%) 50%, 
+      hsl(189 94% 45%) 100%);
+    
+    --gradient-card: linear-gradient(145deg, 
+      hsl(0 0% 100%) 0%, 
+      hsl(0 0% 98%) 100%);
+    
+    --gradient-subtle: linear-gradient(180deg, 
+      hsl(0 0% 100%) 0%, 
+      hsl(220 14% 96%) 100%);
+    
+    --gradient-ai: linear-gradient(135deg, 
+      hsl(217 91% 52%) 0%, 
+      hsl(270 100% 60%) 50%, 
+      hsl(310 80% 55%) 100%);
+    
+    --gradient-neural: radial-gradient(ellipse at top, 
+      hsl(217 91% 52% / 0.08) 0%, 
+      transparent 50%);
     
     /* Light mode shadows */
-    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.1);
-    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.2);
+    --shadow-sm: 0 1px 2px hsl(0 0% 0% / 0.05);
+    --shadow-md: 0 4px 6px hsl(0 0% 0% / 0.08);
+    --shadow-lg: 0 10px 15px hsl(0 0% 0% / 0.1);
+    --shadow-xl: 0 20px 25px hsl(0 0% 0% / 0.15);
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--primary) / 0.15);
+    --shadow-glow: 0 0 40px hsl(var(--primary-glow) / 0.25);
+    --shadow-glow-accent: 0 0 60px hsl(var(--accent-glow) / 0.15);
 
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -163,5 +254,41 @@ All colors MUST be HSL.
   .smooth-scroll {
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
+  }
+
+  /* Hover scale effect */
+  .hover-scale {
+    @apply transition-transform duration-300 ease-spring;
+  }
+
+  .hover-scale:hover {
+    @apply scale-105;
+  }
+
+  /* Glass morphism effect */
+  .glass {
+    background: hsl(var(--card) / 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--border) / 0.5);
+  }
+
+  /* Animated gradient text */
+  .gradient-text {
+    @apply bg-gradient-ai bg-clip-text text-transparent;
+  }
+
+  /* Neural network background effect */
+  .neural-bg {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .neural-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gradient-neural);
+    pointer-events: none;
   }
 }
