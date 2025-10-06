@@ -31,6 +31,7 @@ import Tutorials from "./pages/Tutorials";
 import Documentation from "./pages/Documentation";
 import APIAccess from "./pages/APIAccess";
 import Workspaces from "./pages/Workspaces";
+import Integrations from "./pages/Integrations";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
 
@@ -72,6 +73,7 @@ const App = () => (
               <Route path="/documentation" element={<Documentation />} />
               <Route path="/api-access" element={<APIAccess />} />
               <Route path="/workspaces" element={<Workspaces />} />
+              <Route path="/integrations" element={<Integrations />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
