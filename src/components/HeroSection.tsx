@@ -25,17 +25,14 @@ const HeroSection = () => {
           
           {/* Main heading */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6 md:mb-8 leading-[1.1] sm:leading-tight animate-fade-in">
-            AI That Works
-            <br />
             <span className="bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
-              For You
+              AI That Works
             </span>
           </h1>
           
           {/* Subtitle */}
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 mb-6 sm:mb-8 md:mb-10 max-w-2xl lg:max-w-3xl mx-auto leading-relaxed px-2 sm:px-4">
-            Get instant access to powerful AI tools built with your needs first - 
-            no complexity, just results that help you succeed
+            Powerful AI tools that deliver real results. Built for simplicity, designed for success—no complexity, just solutions that work for you.
           </p>
           
           {/* AI Capabilities Pills */}
