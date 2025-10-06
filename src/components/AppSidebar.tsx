@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { useState, useMemo } from "react";
 import {
   Sidebar,
   SidebarContent,
@@ -13,13 +12,13 @@ import {
   SidebarFooter,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { getAllFeatures, Feature } from "@/components/dashboard/FeatureCategories";
-import { Search, Star, Clock, Sparkles, X } from "lucide-react";
+import { Search, Star, Clock, Sparkles, X, ChevronDown } from "lucide-react";
 
 interface AppSidebarProps {
   activeTab: string;
@@ -29,6 +28,12 @@ interface AppSidebarProps {
 export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
   const { open } = useSidebar();
   const [searchQuery, setSearchQuery] = useState("");
+  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({
+    enterprise: true,
+    'advanced-ai': true,
+    'ai-tools': true,
+    utilities: true,
+  });
   const [favorites, setFavorites] = useState<string[]>(() => {
     const saved = localStorage.getItem("favoriteFeatures");
     return saved ? JSON.parse(saved) : [];
@@ -60,20 +65,31 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
     localStorage.setItem("favoriteFeatures", JSON.stringify(updated));
   };
 
-  // Filter features based on search
-  const filteredFeatures = features.filter(feature =>
-    feature.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    feature.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    feature.badge.toLowerCase().includes(searchQuery.toLowerCase())
+  // Toggle category expansion
+  const toggleCategory = (categoryKey: string) => {
+    setExpandedCategories(prev => ({
+      ...prev,
+      [categoryKey]: !prev[categoryKey]
+    }));
+  };
+
+  // Memoized filtered features for performance
+  const filteredFeatures = useMemo(() => 
+    features.filter(feature =>
+      feature.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      feature.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      feature.badge.toLowerCase().includes(searchQuery.toLowerCase())
+    ),
+    [features, searchQuery]
   );
 
-  // Group features by category
-  const categories = {
+  // Memoized grouped features
+  const categories = useMemo(() => ({
     enterprise: filteredFeatures.filter(f => f.category === 'enterprise'),
     'advanced-ai': filteredFeatures.filter(f => f.category === 'advanced-ai'),
     'ai-tools': filteredFeatures.filter(f => f.category === 'ai-tools'),
     utilities: filteredFeatures.filter(f => f.category === 'utilities'),
-  };
+  }), [filteredFeatures]);
 
   const categoryLabels = {
     enterprise: 'Enterprise',
@@ -89,11 +105,18 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
     utilities: 'Productivity tools',
   };
 
-  // Get features for quick access sections
-  const favoriteFeatures = features.filter(f => favorites.includes(f.id));
-  const recentFeatures = recentlyUsed
-    .map(id => features.find(f => f.id === id))
-    .filter(Boolean) as Feature[];
+  // Memoized quick access sections
+  const favoriteFeatures = useMemo(() => 
+    features.filter(f => favorites.includes(f.id)),
+    [features, favorites]
+  );
+  
+  const recentFeatures = useMemo(() => 
+    recentlyUsed
+      .map(id => features.find(f => f.id === id))
+      .filter(Boolean) as Feature[],
+    [features, recentlyUsed]
+  );
 
   const renderFeatureButton = (feature: Feature) => {
     const isActive = activeTab === feature.id;
@@ -210,28 +233,48 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
             </>
           )}
 
-          {/* All Features by Category */}
+          {/* All Features by Category - Collapsible */}
           {Object.entries(categories).map(([categoryKey, categoryFeatures]) => {
             if (categoryFeatures.length === 0) return null;
+            const isExpanded = expandedCategories[categoryKey];
 
             return (
-              <SidebarGroup key={categoryKey}>
-                <SidebarGroupLabel className="flex flex-col items-start gap-1">
-                  <span className="font-semibold">
-                    {categoryLabels[categoryKey as keyof typeof categoryLabels]}
-                  </span>
-                  {open && (
-                    <span className="text-[10px] font-normal text-muted-foreground">
-                      {categoryDescriptions[categoryKey as keyof typeof categoryDescriptions]}
-                    </span>
-                  )}
-                </SidebarGroupLabel>
-                <SidebarGroupContent>
-                  <SidebarMenu>
-                    {categoryFeatures.map(renderFeatureButton)}
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </SidebarGroup>
+              <Collapsible
+                key={categoryKey}
+                open={isExpanded}
+                onOpenChange={() => toggleCategory(categoryKey)}
+              >
+                <SidebarGroup>
+                  <CollapsibleTrigger asChild>
+                    <SidebarGroupLabel className="flex items-center justify-between cursor-pointer hover:bg-accent/50 transition-colors rounded-md px-2 py-1.5">
+                      <div className="flex flex-col items-start gap-1">
+                        <span className="font-semibold">
+                          {categoryLabels[categoryKey as keyof typeof categoryLabels]}
+                        </span>
+                        {open && (
+                          <span className="text-[10px] font-normal text-muted-foreground">
+                            {categoryDescriptions[categoryKey as keyof typeof categoryDescriptions]}
+                          </span>
+                        )}
+                      </div>
+                      {open && (
+                        <ChevronDown 
+                          className={`w-4 h-4 transition-transform duration-200 ${
+                            isExpanded ? 'rotate-180' : ''
+                          }`}
+                        />
+                      )}
+                    </SidebarGroupLabel>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarGroupContent>
+                      <SidebarMenu>
+                        {categoryFeatures.map(renderFeatureButton)}
+                      </SidebarMenu>
+                    </SidebarGroupContent>
+                  </CollapsibleContent>
+                </SidebarGroup>
+              </Collapsible>
             );
           })}
 
