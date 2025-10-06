@@ -25,17 +25,17 @@ const HeroSection = () => {
           
           {/* Main heading */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 md:mb-8 leading-tight animate-fade-in">
-            Best-in-Class
+            AI That Works
             <br />
             <span className="bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
-              AI Platform
+              For You
             </span>
           </h1>
           
           {/* Subtitle */}
           <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed px-4">
-            Enterprise-grade AI solutions powered by Claude Opus 4, GPT Image-1, 
-            and ElevenLabs - delivering unmatched performance and reliability
+            Get instant access to powerful AI tools built with your needs first - 
+            no complexity, just results that help you succeed
           </p>
           
           {/* AI Capabilities Pills */}
@@ -79,11 +79,11 @@ const HeroSection = () => {
           <div className="mt-12 flex items-center justify-center gap-8 text-white/70 text-sm">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-              <span>Best-in-Class AI</span>
+              <span>Easy to Use</span>
             </div>
             <div className="hidden sm:block w-1 h-1 bg-white/30 rounded-full"></div>
             <div className="flex items-center gap-2">
-              <span>Real-time Processing</span>
+              <span>Always Free</span>
             </div>
           </div>
         </div>

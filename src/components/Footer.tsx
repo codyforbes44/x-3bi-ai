@@ -14,7 +14,7 @@ const Footer = () => {
               <span className="text-xl font-bold">3BI.AI</span>
             </div>
             <p className="text-muted-foreground">
-              Best-in-Class AI Platform - Delivering enterprise-grade AI solutions with unmatched performance and reliability. Visit 3bi.ai
+              AI That Works For You - Empowering everyone with accessible, powerful AI tools designed with your success in mind. Visit 3bi.ai
             </p>
           </div>
           
