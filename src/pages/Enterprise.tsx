@@ -64,12 +64,6 @@ const Enterprise = () => {
 
           {/* Enterprise Benefits */}
           <div className="bg-muted/50 rounded-2xl p-8 md:p-12 mb-16">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold mb-4">Why Choose Enterprise?</h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                Get the full power of our AI platform with enterprise-grade features and support.
-              </p>
-            </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-6">
@@ -128,7 +122,6 @@ const Enterprise = () => {
 
         {/* Contact Section */}
         <div className="text-center">
-          <h2 className="text-3xl font-bold mb-8">Ready to Get Started?</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-2xl mx-auto">
             <Card>
               <CardHeader className="text-center">
