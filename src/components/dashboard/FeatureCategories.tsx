@@ -1,4 +1,4 @@
-import { Building2, GitBranch, Brain, Cpu, Bot, MessageSquare, Globe, Code2, BarChart3, Image, Mic, Volume2, Code, Sparkles, Rocket } from "lucide-react";
+import { Building2, GitBranch, Brain, Cpu, Bot, MessageSquare, Globe, Code2, BarChart3, Image, Mic, Volume2, Code, Sparkles, Rocket, Download, FileText, Wand2, Users } from "lucide-react";
 
 export interface Feature {
   id: string;
@@ -169,6 +169,78 @@ export const features: Feature[] = [
     icon: Rocket,
     color: "text-blue-500",
     badge: "Deploy",
+    category: "utilities"
+  },
+  {
+    id: "multi-chat",
+    title: "Multi-Model Chat",
+    description: "Compare responses from multiple AI models",
+    icon: MessageSquare,
+    color: "text-purple-500",
+    badge: "Compare",
+    category: "advanced-ai"
+  },
+  {
+    id: "enhanced-voice",
+    title: "Enhanced Voice",
+    description: "Advanced voice synthesis with multiple providers",
+    icon: Mic,
+    color: "text-green-500",
+    badge: "Premium",
+    category: "ai-tools"
+  },
+  {
+    id: "voice-history",
+    title: "Voice History",
+    description: "Manage and replay voice recordings",
+    icon: Volume2,
+    color: "text-cyan-500",
+    badge: "Library",
+    category: "utilities"
+  },
+  {
+    id: "templates",
+    title: "Template Library",
+    description: "Pre-built prompts for common tasks",
+    icon: FileText,
+    color: "text-orange-500",
+    badge: "Templates",
+    category: "utilities"
+  },
+  {
+    id: "advanced-image",
+    title: "Advanced Image Gen",
+    description: "Enhanced image generation with controls",
+    icon: Wand2,
+    color: "text-pink-500",
+    badge: "gpt-image-1",
+    category: "ai-tools"
+  },
+  {
+    id: "workflow-templates",
+    title: "Workflow Templates",
+    description: "Pre-built automation workflows",
+    icon: GitBranch,
+    color: "text-indigo-500",
+    badge: "Automation",
+    category: "enterprise"
+  },
+  {
+    id: "usage-analytics",
+    title: "Usage Analytics",
+    description: "Track usage, costs, and performance",
+    icon: BarChart3,
+    color: "text-blue-500",
+    badge: "Insights",
+    category: "enterprise"
+  },
+  {
+    id: "export",
+    title: "Export Center",
+    description: "Export all your AI-generated content",
+    icon: Download,
+    color: "text-gray-500",
+    badge: "Data",
     category: "utilities"
   }
 ];
