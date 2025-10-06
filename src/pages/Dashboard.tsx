@@ -38,43 +38,36 @@ const Dashboard = () => {
       <div className="min-h-screen w-full flex flex-col bg-background">
         <Header />
         
-        <div className="flex-1 flex w-full pt-14 md:pt-16">
-          {/* Desktop Sidebar */}
-          {!isMobile && (
-            <AppSidebar activeTab={activeTab} onTabChange={setActiveTab} />
-          )}
+        <div className="flex-1 flex w-full pt-14 md:pt-16 relative">
+          {/* Sidebar for all screen sizes */}
+          <AppSidebar activeTab={activeTab} onTabChange={setActiveTab} />
 
           {/* Main Content Area */}
-          <SidebarInset className="flex-1">
+          <SidebarInset className="flex-1 min-w-0">
             <div className="container mx-auto px-3 md:px-4 py-3 md:py-8 max-w-7xl">
-              {/* Sidebar Toggle & Breadcrumbs - Desktop */}
-              {!isMobile && (
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-4">
-                    <SidebarTrigger />
-                    <DashboardBreadcrumbs activeTab={activeTab} />
-                  </div>
+              {/* Sidebar Toggle & Breadcrumbs */}
+              <div className="flex items-center justify-between mb-4 md:mb-6 sticky top-0 bg-background/95 backdrop-blur-sm z-10 pb-3 border-b md:border-0">
+                <div className="flex items-center gap-2 md:gap-4 min-w-0">
+                  <SidebarTrigger className="shrink-0" />
+                  {!isMobile && <DashboardBreadcrumbs activeTab={activeTab} />}
+                </div>
+                {!isMobile && (
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => setActiveTab("advanced")}
+                    onClick={() => setActiveTab("overview")}
+                    className="shrink-0"
                   >
                     <LayoutDashboard className="w-4 h-4 mr-2" />
                     Overview
                   </Button>
-                </div>
-              )}
+                )}
+              </div>
 
-              {/* Mobile Feature Menu */}
-              {isMobile && (
+              {/* Mobile Breadcrumbs */}
+              {isMobile && activeTab !== "overview" && (
                 <div className="mb-4">
-                  <DashboardMobileMenu
-                    features={features}
-                    activeTab={activeTab}
-                    open={mobileMenuOpen}
-                    onOpenChange={setMobileMenuOpen}
-                    onTabSelect={setActiveTab}
-                  />
+                  <DashboardBreadcrumbs activeTab={activeTab} />
                 </div>
               )}
 

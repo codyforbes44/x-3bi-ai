@@ -27,7 +27,7 @@ interface AppSidebarProps {
 }
 
 export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
-  const { open } = useSidebar();
+  const { open, isMobile } = useSidebar();
   const [searchQuery, setSearchQuery] = useState("");
   const [favorites, setFavorites] = useState<string[]>(() => {
     const saved = localStorage.getItem("favoriteFeatures");
@@ -136,7 +136,11 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
   };
 
   return (
-    <Sidebar collapsible="icon" className="border-r">
+    <Sidebar 
+      collapsible="icon" 
+      className="border-r"
+      variant={isMobile ? "sidebar" : "sidebar"}
+    >
       {/* Header with Search */}
       <SidebarHeader className="border-b">
         {open && (
@@ -152,7 +156,7 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
             </div>
             
             <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none" />
               <Input
                 placeholder="Search features..."
                 value={searchQuery}
@@ -162,12 +166,18 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-2.5 top-2.5"
+                  className="absolute right-2.5 top-2.5 hover:bg-accent rounded-sm p-0.5 transition-colors"
+                  aria-label="Clear search"
                 >
-                  <X className="h-4 w-4 text-muted-foreground" />
+                  <X className="h-3.5 w-3.5 text-muted-foreground" />
                 </button>
               )}
             </div>
+          </div>
+        )}
+        {!open && (
+          <div className="flex items-center justify-center py-3">
+            <Sparkles className="w-5 h-5 text-primary" />
           </div>
         )}
       </SidebarHeader>
@@ -179,8 +189,8 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
             <>
               <SidebarGroup>
                 <SidebarGroupLabel className="flex items-center gap-2">
-                  <Clock className="w-3.5 h-3.5" />
-                  {open && "Recent"}
+                  <Clock className="w-3.5 h-3.5 flex-shrink-0" />
+                  {open && <span>Recent</span>}
                 </SidebarGroupLabel>
                 <SidebarGroupContent>
                   <SidebarMenu>
@@ -197,8 +207,8 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
             <>
               <SidebarGroup>
                 <SidebarGroupLabel className="flex items-center gap-2">
-                  <Star className="w-3.5 h-3.5" />
-                  {open && "Favorites"}
+                  <Star className="w-3.5 h-3.5 flex-shrink-0" />
+                  {open && <span>Favorites</span>}
                 </SidebarGroupLabel>
                 <SidebarGroupContent>
                   <SidebarMenu>
@@ -217,12 +227,18 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
             return (
               <SidebarGroup key={categoryKey}>
                 <SidebarGroupLabel className="flex flex-col items-start gap-1">
-                  <span className="font-semibold">
-                    {categoryLabels[categoryKey as keyof typeof categoryLabels]}
-                  </span>
-                  {open && (
-                    <span className="text-[10px] font-normal text-muted-foreground">
-                      {categoryDescriptions[categoryKey as keyof typeof categoryDescriptions]}
+                  {open ? (
+                    <>
+                      <span className="font-semibold">
+                        {categoryLabels[categoryKey as keyof typeof categoryLabels]}
+                      </span>
+                      <span className="text-[10px] font-normal text-muted-foreground">
+                        {categoryDescriptions[categoryKey as keyof typeof categoryDescriptions]}
+                      </span>
+                    </>
+                  ) : (
+                    <span className="text-xs font-semibold">
+                      {categoryLabels[categoryKey as keyof typeof categoryLabels].charAt(0)}
                     </span>
                   )}
                 </SidebarGroupLabel>
@@ -236,32 +252,45 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
           })}
 
           {/* No Results */}
-          {searchQuery && filteredFeatures.length === 0 && open && (
+          {searchQuery && filteredFeatures.length === 0 && (
             <div className="px-4 py-8 text-center text-sm text-muted-foreground">
-              <p>No features found</p>
-              <p className="text-xs mt-1">Try a different search term</p>
+              {open ? (
+                <>
+                  <Search className="w-8 h-8 mx-auto mb-2 opacity-50" />
+                  <p>No features found</p>
+                  <p className="text-xs mt-1">Try a different search term</p>
+                </>
+              ) : (
+                <Search className="w-5 h-5 mx-auto opacity-50" />
+              )}
             </div>
           )}
         </ScrollArea>
       </SidebarContent>
 
       {/* Footer with Stats */}
-      {open && (
-        <SidebarFooter className="border-t">
+      <SidebarFooter className="border-t">
+        {open ? (
           <div className="px-3 py-2 text-xs text-muted-foreground space-y-1">
             <div className="flex items-center justify-between">
               <span>Active</span>
-              <Badge variant="outline" className="text-[10px] h-5">
-                {features.find(f => f.id === activeTab)?.title || 'None'}
+              <Badge variant="outline" className="text-[10px] h-5 max-w-[120px] truncate">
+                {features.find(f => f.id === activeTab)?.title || 'Overview'}
               </Badge>
             </div>
             <div className="flex items-center justify-between">
               <span>Favorites</span>
-              <span>{favorites.length}</span>
+              <span className="font-medium">{favorites.length}</span>
             </div>
           </div>
-        </SidebarFooter>
-      )}
+        ) : (
+          <div className="flex items-center justify-center py-2">
+            <Badge variant="outline" className="w-7 h-7 rounded-full p-0 flex items-center justify-center text-xs">
+              {favorites.length}
+            </Badge>
+          </div>
+        )}
+      </SidebarFooter>
     </Sidebar>
   );
 }
