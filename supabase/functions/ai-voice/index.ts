@@ -12,48 +12,48 @@ serve(async (req) => {
   }
 
   try {
-    const { text, voice = 'alloy', action = 'tts' } = await req.json();
-    const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+    const { text, voice_id = '9BWtsMINqrJLrRacOk9x', model_id = 'eleven_multilingual_v2' } = await req.json();
+    const elevenLabsApiKey = Deno.env.get('ELEVENLABS_API_KEY');
 
-    if (!openAIApiKey) {
-      throw new Error('OpenAI API key not configured');
+    if (!elevenLabsApiKey) {
+      throw new Error('ElevenLabs API key not configured');
     }
 
-    if (action === 'tts') {
-      // Text-to-Speech
-      if (!text) {
-        throw new Error('Text is required for TTS');
-      }
+    if (!text) {
+      throw new Error('Text is required');
+    }
 
-      const response = await fetch('https://api.openai.com/v1/audio/speech', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${openAIApiKey}`,
-          'Content-Type': 'application/json',
+    console.log('Generating voice with ElevenLabs:', { voice_id, model_id, text_length: text.length });
+
+    const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voice_id}`, {
+      method: 'POST',
+      headers: {
+        'xi-api-key': elevenLabsApiKey,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        text,
+        model_id,
+        voice_settings: {
+          stability: 0.5,
+          similarity_boost: 0.75,
         },
-        body: JSON.stringify({
-          model: 'tts-1',
-          input: text,
-          voice,
-          response_format: 'mp3',
-        }),
-      });
+      }),
+    });
 
-      if (!response.ok) {
-        const error = await response.text();
-        throw new Error(`TTS API error: ${error}`);
-      }
-
-      const arrayBuffer = await response.arrayBuffer();
-      const base64Audio = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
-
-      return new Response(JSON.stringify({ audioContent: base64Audio }), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      });
+    if (!response.ok) {
+      const error = await response.text();
+      console.error('ElevenLabs API error:', error);
+      throw new Error(`ElevenLabs API error: ${error}`);
     }
 
-    return new Response(JSON.stringify({ error: 'Invalid action' }), {
-      status: 400,
+    const arrayBuffer = await response.arrayBuffer();
+    const base64Audio = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
+    const audio_url = `data:audio/mpeg;base64,${base64Audio}`;
+
+    console.log('Voice generated successfully');
+
+    return new Response(JSON.stringify({ audio_url }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {
