@@ -161,9 +161,9 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon" className="border-r">
       {/* Header with Search */}
-      <SidebarHeader className="border-b">
+      <SidebarHeader className="border-b p-0 overflow-visible">
         {open && (
-          <div className="px-3 py-2 space-y-2">
+          <div className="px-4 py-3 space-y-3">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-primary" />
@@ -174,18 +174,19 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
               </Badge>
             </div>
             
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <div className="relative w-full">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none z-10" />
               <Input
                 placeholder="Search features..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-8 h-9"
+                className="pl-9 pr-9 h-10 w-full"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-2.5 top-2.5"
+                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 hover:bg-muted rounded-sm p-0.5 transition-colors"
+                  aria-label="Clear search"
                 >
                   <X className="h-4 w-4 text-muted-foreground" />
                 </button>

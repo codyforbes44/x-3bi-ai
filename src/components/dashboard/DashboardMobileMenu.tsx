@@ -163,23 +163,24 @@ export const DashboardMobileMenu = ({
         </Button>
       </SheetTrigger>
       
-      <SheetContent side="bottom" className="h-[90vh] p-0 flex flex-col">
-        <SheetHeader className="px-4 py-4 border-b bg-muted/30">
+      <SheetContent side="bottom" className="h-[90vh] p-0 flex flex-col bg-background">
+        <SheetHeader className="px-4 py-4 border-b bg-muted/30 shrink-0">
           <SheetTitle className="text-xl">AI Features</SheetTitle>
           
           {/* Search Bar */}
-          <div className="relative mt-3">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <div className="relative mt-3 w-full">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none z-10" />
             <Input
               placeholder="Search features..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 h-11"
+              className="pl-9 pr-9 h-11 w-full"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2"
+                className="absolute right-3 top-1/2 -translate-y-1/2 z-10 hover:bg-muted rounded-sm p-1 transition-colors"
+                aria-label="Clear search"
               >
                 <X className="h-4 w-4 text-muted-foreground" />
               </button>
