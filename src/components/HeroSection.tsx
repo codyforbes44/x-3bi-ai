@@ -57,10 +57,7 @@ const HeroSection = () => {
               size="lg" 
               variant="secondary" 
               className="w-full sm:w-auto sm:min-w-[180px] md:min-w-[200px] h-12 sm:h-14 text-base md:text-lg shadow-elegant hover-scale touch-target"
-              onClick={() => {
-                const toolsSection = document.getElementById('ai-tools');
-                toolsSection?.scrollIntoView({ behavior: 'smooth' });
-              }}
+              onClick={() => navigate('/dashboard')}
             >
               <span className="truncate">Explore All Features</span>
               <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />

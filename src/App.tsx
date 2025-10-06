@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ThemeProvider from "@/components/ThemeProvider";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { WorkspaceProvider } from "@/contexts/WorkspaceContext";
@@ -57,7 +57,7 @@ const App = () => (
             <ScrollToTop />
             <Routes>
               <Route path="/" element={<HomePage />} />
-              <Route path="/dashboard" element={<Navigate to="/#ai-tools" replace />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/auth" element={<AuthPage />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/community" element={<Community />} />

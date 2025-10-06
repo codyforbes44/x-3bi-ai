@@ -1,12 +1,11 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Menu, Search, Star, Clock, Grid, X, ChevronDown } from "lucide-react";
+import { Menu, Search, Star, Clock, Grid, X } from "lucide-react";
 import { Feature } from "./FeatureCategories";
 
 interface MobileMenuProps {
@@ -46,12 +45,6 @@ export const DashboardMobileMenu = ({
   onTabSelect
 }: MobileMenuProps) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({
-    enterprise: true,
-    'advanced-ai': true,
-    'ai-tools': true,
-    utilities: true,
-  });
   const [favorites, setFavorites] = useState<string[]>(() => {
     const saved = localStorage.getItem("favoriteFeatures");
     return saved ? JSON.parse(saved) : [];
@@ -80,33 +73,16 @@ export const DashboardMobileMenu = ({
     localStorage.setItem("favoriteFeatures", JSON.stringify(updated));
   };
 
-  const toggleCategory = (categoryKey: string) => {
-    setExpandedCategories(prev => ({
-      ...prev,
-      [categoryKey]: !prev[categoryKey]
-    }));
-  };
-
-  const filteredFeatures = useMemo(() => 
-    features.filter(feature =>
-      feature.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      feature.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      feature.badge.toLowerCase().includes(searchQuery.toLowerCase())
-    ),
-    [features, searchQuery]
+  const filteredFeatures = features.filter(feature =>
+    feature.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    feature.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    feature.badge.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const favoriteFeatures = useMemo(() => 
-    features.filter(f => favorites.includes(f.id)),
-    [features, favorites]
-  );
-  
-  const recentFeatures = useMemo(() => 
-    recentlyUsed
-      .map(id => features.find(f => f.id === id))
-      .filter(Boolean) as Feature[],
-    [features, recentlyUsed]
-  );
+  const favoriteFeatures = features.filter(f => favorites.includes(f.id));
+  const recentFeatures = recentlyUsed
+    .map(id => features.find(f => f.id === id))
+    .filter(Boolean) as Feature[];
 
   const renderFeatureCard = (feature: Feature) => {
     const isFavorite = favorites.includes(feature.id);
@@ -163,24 +139,23 @@ export const DashboardMobileMenu = ({
         </Button>
       </SheetTrigger>
       
-      <SheetContent side="bottom" className="h-[90vh] p-0 flex flex-col bg-background">
-        <SheetHeader className="px-4 py-4 border-b bg-muted/30 shrink-0">
+      <SheetContent side="bottom" className="h-[90vh] p-0 flex flex-col">
+        <SheetHeader className="px-4 py-4 border-b bg-muted/30">
           <SheetTitle className="text-xl">AI Features</SheetTitle>
           
           {/* Search Bar */}
-          <div className="relative mt-3 w-full">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none z-10" />
+          <div className="relative mt-3">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               placeholder="Search features..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 pr-9 h-11 w-full"
+              className="pl-9 h-11"
             />
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className="absolute right-3 top-1/2 -translate-y-1/2 z-10 hover:bg-muted rounded-sm p-1 transition-colors"
-                aria-label="Clear search"
+                className="absolute right-3 top-1/2 -translate-y-1/2"
               >
                 <X className="h-4 w-4 text-muted-foreground" />
               </button>
@@ -264,44 +239,28 @@ export const DashboardMobileMenu = ({
 
           <TabsContent value="categories" className="flex-1 mt-0">
             <ScrollArea className="h-full px-4 pb-4">
-              <div className="space-y-4 py-4">
+              <div className="space-y-6 py-4">
                 {CATEGORY_ORDER.map((category) => {
                   const categoryFeatures = filteredFeatures.filter(f => f.category === category);
                   if (categoryFeatures.length === 0) return null;
-                  const isExpanded = expandedCategories[category];
 
                   return (
-                    <Collapsible
-                      key={category}
-                      open={isExpanded}
-                      onOpenChange={() => toggleCategory(category)}
-                    >
-                      <CollapsibleTrigger asChild>
-                        <button className="w-full flex items-center justify-between p-3 rounded-lg bg-muted/50 hover:bg-muted transition-colors">
-                          <div className="flex items-center gap-3">
-                            <span className="text-2xl">{CATEGORY_ICONS[category]}</span>
-                            <div className="text-left">
-                              <h3 className="font-semibold text-base">
-                                {CATEGORY_LABELS[category]}
-                              </h3>
-                              <p className="text-xs text-muted-foreground">
-                                {categoryFeatures.length} feature{categoryFeatures.length !== 1 ? 's' : ''}
-                              </p>
-                            </div>
-                          </div>
-                          <ChevronDown 
-                            className={`w-5 h-5 text-muted-foreground transition-transform duration-200 ${
-                              isExpanded ? 'rotate-180' : ''
-                            }`}
-                          />
-                        </button>
-                      </CollapsibleTrigger>
-                      <CollapsibleContent>
-                        <div className="grid grid-cols-1 gap-3 mt-3">
-                          {categoryFeatures.map(renderFeatureCard)}
+                    <div key={category}>
+                      <div className="flex items-center gap-2 mb-3">
+                        <span className="text-2xl">{CATEGORY_ICONS[category]}</span>
+                        <div>
+                          <h3 className="font-semibold text-base">
+                            {CATEGORY_LABELS[category]}
+                          </h3>
+                          <p className="text-xs text-muted-foreground">
+                            {categoryFeatures.length} feature{categoryFeatures.length !== 1 ? 's' : ''}
+                          </p>
                         </div>
-                      </CollapsibleContent>
-                    </Collapsible>
+                      </div>
+                      <div className="grid grid-cols-1 gap-3">
+                        {categoryFeatures.map(renderFeatureCard)}
+                      </div>
+                    </div>
                   );
                 })}
               </div>

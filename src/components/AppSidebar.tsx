@@ -1,4 +1,5 @@
-import { useState, useMemo } from "react";
+import { useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   Sidebar,
   SidebarContent,
@@ -12,13 +13,13 @@ import {
   SidebarFooter,
   useSidebar,
 } from "@/components/ui/sidebar";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { getAllFeatures, Feature } from "@/components/dashboard/FeatureCategories";
-import { Search, Star, Clock, Sparkles, X, ChevronDown } from "lucide-react";
+import { Search, Star, Clock, Sparkles, X } from "lucide-react";
 
 interface AppSidebarProps {
   activeTab: string;
@@ -28,12 +29,6 @@ interface AppSidebarProps {
 export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
   const { open } = useSidebar();
   const [searchQuery, setSearchQuery] = useState("");
-  const [expandedCategories, setExpandedCategories] = useState<Record<string, boolean>>({
-    enterprise: true,
-    'advanced-ai': true,
-    'ai-tools': true,
-    utilities: true,
-  });
   const [favorites, setFavorites] = useState<string[]>(() => {
     const saved = localStorage.getItem("favoriteFeatures");
     return saved ? JSON.parse(saved) : [];
@@ -65,31 +60,20 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
     localStorage.setItem("favoriteFeatures", JSON.stringify(updated));
   };
 
-  // Toggle category expansion
-  const toggleCategory = (categoryKey: string) => {
-    setExpandedCategories(prev => ({
-      ...prev,
-      [categoryKey]: !prev[categoryKey]
-    }));
-  };
-
-  // Memoized filtered features for performance
-  const filteredFeatures = useMemo(() => 
-    features.filter(feature =>
-      feature.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      feature.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      feature.badge.toLowerCase().includes(searchQuery.toLowerCase())
-    ),
-    [features, searchQuery]
+  // Filter features based on search
+  const filteredFeatures = features.filter(feature =>
+    feature.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    feature.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    feature.badge.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Memoized grouped features
-  const categories = useMemo(() => ({
+  // Group features by category
+  const categories = {
     enterprise: filteredFeatures.filter(f => f.category === 'enterprise'),
     'advanced-ai': filteredFeatures.filter(f => f.category === 'advanced-ai'),
     'ai-tools': filteredFeatures.filter(f => f.category === 'ai-tools'),
     utilities: filteredFeatures.filter(f => f.category === 'utilities'),
-  }), [filteredFeatures]);
+  };
 
   const categoryLabels = {
     enterprise: 'Enterprise',
@@ -105,18 +89,11 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
     utilities: 'Productivity tools',
   };
 
-  // Memoized quick access sections
-  const favoriteFeatures = useMemo(() => 
-    features.filter(f => favorites.includes(f.id)),
-    [features, favorites]
-  );
-  
-  const recentFeatures = useMemo(() => 
-    recentlyUsed
-      .map(id => features.find(f => f.id === id))
-      .filter(Boolean) as Feature[],
-    [features, recentlyUsed]
-  );
+  // Get features for quick access sections
+  const favoriteFeatures = features.filter(f => favorites.includes(f.id));
+  const recentFeatures = recentlyUsed
+    .map(id => features.find(f => f.id === id))
+    .filter(Boolean) as Feature[];
 
   const renderFeatureButton = (feature: Feature) => {
     const isActive = activeTab === feature.id;
@@ -161,9 +138,9 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon" className="border-r">
       {/* Header with Search */}
-      <SidebarHeader className="border-b p-0 overflow-visible">
+      <SidebarHeader className="border-b">
         {open && (
-          <div className="px-4 py-3 space-y-3">
+          <div className="px-3 py-2 space-y-2">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-primary" />
@@ -174,19 +151,18 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
               </Badge>
             </div>
             
-            <div className="relative w-full">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none z-10" />
+            <div className="relative">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
                 placeholder="Search features..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9 pr-9 h-10 w-full"
+                className="pl-8 h-9"
               />
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 z-10 hover:bg-muted rounded-sm p-0.5 transition-colors"
-                  aria-label="Clear search"
+                  className="absolute right-2.5 top-2.5"
                 >
                   <X className="h-4 w-4 text-muted-foreground" />
                 </button>
@@ -234,48 +210,28 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
             </>
           )}
 
-          {/* All Features by Category - Collapsible */}
+          {/* All Features by Category */}
           {Object.entries(categories).map(([categoryKey, categoryFeatures]) => {
             if (categoryFeatures.length === 0) return null;
-            const isExpanded = expandedCategories[categoryKey];
 
             return (
-              <Collapsible
-                key={categoryKey}
-                open={isExpanded}
-                onOpenChange={() => toggleCategory(categoryKey)}
-              >
-                <SidebarGroup>
-                  <CollapsibleTrigger asChild>
-                    <SidebarGroupLabel className="flex items-center justify-between cursor-pointer hover:bg-accent/50 transition-colors rounded-md px-2 py-1.5">
-                      <div className="flex flex-col items-start gap-1">
-                        <span className="font-semibold">
-                          {categoryLabels[categoryKey as keyof typeof categoryLabels]}
-                        </span>
-                        {open && (
-                          <span className="text-[10px] font-normal text-muted-foreground">
-                            {categoryDescriptions[categoryKey as keyof typeof categoryDescriptions]}
-                          </span>
-                        )}
-                      </div>
-                      {open && (
-                        <ChevronDown 
-                          className={`w-4 h-4 transition-transform duration-200 ${
-                            isExpanded ? 'rotate-180' : ''
-                          }`}
-                        />
-                      )}
-                    </SidebarGroupLabel>
-                  </CollapsibleTrigger>
-                  <CollapsibleContent>
-                    <SidebarGroupContent>
-                      <SidebarMenu>
-                        {categoryFeatures.map(renderFeatureButton)}
-                      </SidebarMenu>
-                    </SidebarGroupContent>
-                  </CollapsibleContent>
-                </SidebarGroup>
-              </Collapsible>
+              <SidebarGroup key={categoryKey}>
+                <SidebarGroupLabel className="flex flex-col items-start gap-1">
+                  <span className="font-semibold">
+                    {categoryLabels[categoryKey as keyof typeof categoryLabels]}
+                  </span>
+                  {open && (
+                    <span className="text-[10px] font-normal text-muted-foreground">
+                      {categoryDescriptions[categoryKey as keyof typeof categoryDescriptions]}
+                    </span>
+                  )}
+                </SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {categoryFeatures.map(renderFeatureButton)}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
             );
           })}
 

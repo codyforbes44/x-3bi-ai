@@ -27,20 +27,9 @@ const Header = () => {
     if (name) return name.split(' ').map(n => n.charAt(0)).join('').toUpperCase().slice(0, 2);
     return email?.charAt(0).toUpperCase() || 'U';
   };
-  const handleToolsClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    if (window.location.pathname === '/') {
-      const toolsSection = document.getElementById('ai-tools');
-      toolsSection?.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      navigate('/#ai-tools');
-    }
-  };
-
   const navigation = [{
-    name: "AI Tools",
-    href: "/#ai-tools",
-    onClick: handleToolsClick
+    name: "Dashboard",
+    href: "/dashboard"
   }, {
     name: "Learn",
     href: "/learn"
@@ -66,17 +55,15 @@ const Header = () => {
             alt="3BI.AI Logo" 
             className="w-8 h-8 md:w-10 md:h-10 object-contain"
           />
-          <span className="text-base md:text-xl font-bold leading-none">3BI.AI</span>
+          <div className="flex flex-col">
+            <span className="text-base md:text-xl font-bold leading-none">3BI.AI</span>
+            <span className="text-[9px] md:text-xs text-muted-foreground hidden sm:block leading-none mt-0.5">AI That Works</span>
+          </div>
         </div>
         
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
-          {navigation.map(item => <a 
-              key={item.name} 
-              href={item.href} 
-              onClick={item.onClick}
-              className="text-sm lg:text-base text-muted-foreground hover:text-foreground transition-smooth"
-            >
+          {navigation.map(item => <a key={item.name} href={item.href} className="text-sm lg:text-base text-muted-foreground hover:text-foreground transition-smooth">
               {item.name}
             </a>)}
         </nav>
@@ -105,9 +92,9 @@ const Header = () => {
                   </div>
                 </div>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => navigate('/#ai-tools')}>
+                <DropdownMenuItem onClick={() => navigate('/dashboard')}>
                   <User className="mr-2 h-4 w-4" />
-                  AI Tools
+                  Dashboard
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/profile')}>
                   <Settings className="mr-2 h-4 w-4" />
@@ -145,16 +132,14 @@ const Header = () => {
                     alt="3BI.AI Logo" 
                     className="w-10 h-10 object-contain"
                   />
-                  <span className="text-lg font-bold">3BI.AI</span>
+                  <div className="flex flex-col">
+                    <span className="text-lg font-bold">3BI.AI</span>
+                    <span className="text-xs text-muted-foreground">AI That Works</span>
+                  </div>
                 </div>
                 
                 <nav className="flex flex-col space-y-3">
-                  {navigation.map(item => <a 
-                      key={item.name} 
-                      href={item.href} 
-                      onClick={item.onClick}
-                      className="text-base text-muted-foreground hover:text-foreground transition-smooth py-2 touch-target"
-                    >
+                  {navigation.map(item => <a key={item.name} href={item.href} className="text-base text-muted-foreground hover:text-foreground transition-smooth py-2 touch-target">
                       {item.name}
                     </a>)}
                 </nav>
@@ -169,10 +154,10 @@ const Header = () => {
                       <Button
                         variant="ghost"
                         className="justify-start"
-                        onClick={() => navigate('/#ai-tools')}
+                        onClick={() => navigate('/dashboard')}
                       >
                         <User className="mr-2 h-4 w-4" />
-                        AI Tools
+                        Dashboard
                       </Button>
                       <Button
                         variant="ghost"
