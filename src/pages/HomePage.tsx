@@ -16,9 +16,14 @@ import {
   Briefcase,
   CheckCircle2,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Zap
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import MiniAIChat from "@/components/home/MiniAIChat";
+import MiniImageGenerator from "@/components/home/MiniImageGenerator";
+import MiniCodeAssistant from "@/components/home/MiniCodeAssistant";
+import MiniVoiceInterface from "@/components/home/MiniVoiceInterface";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -100,23 +105,40 @@ const HomePage = () => {
       <Header />
       <HeroSection />
       
-      {/* AI Capabilities Showcase */}
+      {/* Quick Start Hub - Working Mini Tools */}
       <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-muted/30">
         <div className="container mx-auto max-w-7xl">
           <div className="text-center mb-10 sm:mb-12 md:mb-16 animate-fade-in">
             <Badge variant="secondary" className="mb-3 sm:mb-4 text-xs sm:text-sm">
-              <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 sm:mr-1.5" />
-              Powered by Best-in-Class AI
+              <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 mr-1 sm:mr-1.5" />
+              Quick Start Hub
             </Badge>
             <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-5 md:mb-6 px-4">
-              World-Class AI Technology
+              Try AI Tools Right Now
             </h2>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl lg:max-w-3xl mx-auto px-4">
-              Experience the most advanced AI models available, integrated into one powerful platform
+              Get started immediately with these working AI tools. No signup required.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6">
+          {/* Working Mini Tools Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-5 md:gap-6 mb-8 sm:mb-10">
+            <div className="h-[500px]">
+              <MiniAIChat />
+            </div>
+            <div className="h-[500px]">
+              <MiniImageGenerator />
+            </div>
+            <div className="h-[500px]">
+              <MiniCodeAssistant />
+            </div>
+            <div className="h-[500px]">
+              <MiniVoiceInterface />
+            </div>
+          </div>
+
+          {/* AI Capabilities Overview */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 md:gap-6 mb-8 sm:mb-10">
             {aiCapabilities.map((capability, index) => (
               <Card 
                 key={capability.title} 
@@ -141,15 +163,17 @@ const HomePage = () => {
             ))}
           </div>
 
-          <div className="text-center mt-8 sm:mt-10 md:mt-12 px-4">
+          <div className="text-center px-4">
             <Button 
               size="lg" 
-              className="bg-gradient-hero text-white w-full sm:w-auto min-w-[200px] h-12 sm:h-14 text-base sm:text-lg touch-target"
+              className="bg-gradient-hero text-white w-full sm:w-auto min-w-[250px] h-12 sm:h-14 text-base sm:text-lg touch-target"
               onClick={() => navigate('/dashboard')}
             >
-              Try AI Tools Now
-              <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5" />
+              See All 24 Features →
             </Button>
+            <p className="text-sm text-muted-foreground mt-3">
+              Advanced controls • Workspaces • Analytics • Workflows
+            </p>
           </div>
         </div>
       </section>
@@ -213,10 +237,10 @@ const HomePage = () => {
       <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-gradient-hero text-white">
         <div className="container mx-auto text-center max-w-4xl">
           <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-5 md:mb-6 px-4">
-            Ready to Experience Next-Gen AI?
+            Unlock the Full Power User Interface
           </h2>
           <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-7 md:mb-8 max-w-xl lg:max-w-2xl mx-auto opacity-90 px-4 leading-relaxed">
-            Access Claude Opus 4, GPT Image-1, ElevenLabs Voice, and more - all in one platform
+            Access all 24 advanced AI features with full controls, workspaces, analytics, and workflow automation
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 max-w-lg mx-auto">
             <Button 
@@ -225,7 +249,7 @@ const HomePage = () => {
               className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 touch-target"
               onClick={() => navigate('/dashboard')}
             >
-              Start Creating Now
+              Go to Dashboard
             </Button>
             <Button 
               size="lg" 
