@@ -216,9 +216,15 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-transparent text-foreground;
     transition: background-color 0.3s ease, color 0.3s ease;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+
+  /* Ensure content is above starry background */
+  #root {
+    position: relative;
+    z-index: 1;
   }
 
   /* Smooth theme transitions */
