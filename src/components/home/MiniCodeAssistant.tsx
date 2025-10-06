@@ -32,15 +32,23 @@ const MiniCodeAssistant = () => {
 
       if (error) throw error;
 
-      if (data.choices && data.choices[0]?.message?.content) {
-        setResult(data.choices[0].message.content);
-        toast({
-          title: "Success",
-          description: "Code analyzed!",
-        });
+      // Handle both Claude and OpenAI response formats
+      let resultText = '';
+      if (data.content && data.content[0]?.text) {
+        // Claude response format
+        resultText = data.content[0].text;
+      } else if (data.choices && data.choices[0]?.message?.content) {
+        // OpenAI response format
+        resultText = data.choices[0].message.content;
       } else {
         throw new Error('No response received');
       }
+
+      setResult(resultText);
+      toast({
+        title: "Success",
+        description: "Code analyzed!",
+      });
     } catch (error) {
       console.error('Code processing error:', error);
       toast({
@@ -71,7 +79,7 @@ const MiniCodeAssistant = () => {
             <ArrowRight className="w-3 h-3" />
           </Button>
         </div>
-        <Badge variant="secondary" className="w-fit text-xs">GPT-4o Mini</Badge>
+        <Badge variant="secondary" className="w-fit text-xs">Claude Sonnet 4</Badge>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col p-4 pt-0 gap-3">
         <div className="space-y-3">
