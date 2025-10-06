@@ -142,9 +142,16 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
 
   return (
     <Sidebar 
-      collapsible="icon" 
-      className="border-r"
-      variant={isMobile ? "sidebar" : "sidebar"}
+      collapsible="icon"
+      className="border-r bg-sidebar shadow-sm"
+      style={isMobile && !open ? { 
+        position: 'fixed',
+        left: 0,
+        top: 56,
+        bottom: 0,
+        width: '56px',
+        zIndex: 40
+      } : undefined}
     >
       {/* Header with Search */}
       <SidebarHeader className="border-b">
