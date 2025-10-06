@@ -206,7 +206,17 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 240 10% 10%;
     --sidebar-border: 240 5% 88%;
     --sidebar-ring: 215 25% 45%;
-  }
+}
+
+/* Hide scrollbar for sidebar */
+.scrollbar-hide {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
 }
 
 @layer base {

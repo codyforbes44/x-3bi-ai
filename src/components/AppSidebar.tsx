@@ -13,13 +13,13 @@ import {
   SidebarFooter,
   useSidebar,
 } from "@/components/ui/sidebar";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { getAllFeatures, Feature } from "@/components/dashboard/FeatureCategories";
-import { Search, Star, Clock, Sparkles, X } from "lucide-react";
+import { Search, Star, Clock, Sparkles, X, ChevronDown } from "lucide-react";
 
 interface AppSidebarProps {
   activeTab: string;
@@ -36,6 +36,14 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
   const [recentlyUsed, setRecentlyUsed] = useState<string[]>(() => {
     const saved = localStorage.getItem("recentFeatures");
     return saved ? JSON.parse(saved) : [];
+  });
+  
+  // Track which categories are open
+  const [openCategories, setOpenCategories] = useState<Record<string, boolean>>({
+    enterprise: true,
+    'advanced-ai': true,
+    'ai-tools': true,
+    utilities: true,
   });
 
   const features = getAllFeatures();
@@ -194,22 +202,33 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
         )}
       </SidebarHeader>
 
-      <SidebarContent>
-        <ScrollArea className="flex-1">
+      <SidebarContent className="overflow-y-auto scrollbar-hide">
+        <div className="space-y-2 py-2">
           {/* Recently Used - Only show when not searching */}
           {!searchQuery && recentFeatures.length > 0 && (
             <>
-              <SidebarGroup>
-                <SidebarGroupLabel className="flex items-center gap-2">
-                  <Clock className="w-3.5 h-3.5 flex-shrink-0" />
-                  {open && <span>Recent</span>}
-                </SidebarGroupLabel>
-                <SidebarGroupContent>
-                  <SidebarMenu>
-                    {recentFeatures.map(renderFeatureButton)}
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </SidebarGroup>
+              <Collapsible open={openCategories.recent} onOpenChange={(isOpen) => setOpenCategories(prev => ({ ...prev, recent: isOpen }))}>
+                <SidebarGroup>
+                  <CollapsibleTrigger asChild>
+                    <SidebarGroupLabel className="flex items-center gap-2 cursor-pointer hover:bg-accent/50 transition-colors rounded-md group">
+                      <Clock className="w-3.5 h-3.5 flex-shrink-0" />
+                      {open && (
+                        <>
+                          <span className="flex-1">Recent</span>
+                          <ChevronDown className={`w-4 h-4 transition-transform ${openCategories.recent ? '' : '-rotate-90'}`} />
+                        </>
+                      )}
+                    </SidebarGroupLabel>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarGroupContent>
+                      <SidebarMenu>
+                        {recentFeatures.map(renderFeatureButton)}
+                      </SidebarMenu>
+                    </SidebarGroupContent>
+                  </CollapsibleContent>
+                </SidebarGroup>
+              </Collapsible>
               <Separator className="my-2" />
             </>
           )}
@@ -217,17 +236,28 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
           {/* Favorites - Only show when not searching */}
           {!searchQuery && favoriteFeatures.length > 0 && (
             <>
-              <SidebarGroup>
-                <SidebarGroupLabel className="flex items-center gap-2">
-                  <Star className="w-3.5 h-3.5 flex-shrink-0" />
-                  {open && <span>Favorites</span>}
-                </SidebarGroupLabel>
-                <SidebarGroupContent>
-                  <SidebarMenu>
-                    {favoriteFeatures.map(renderFeatureButton)}
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </SidebarGroup>
+              <Collapsible open={openCategories.favorites} onOpenChange={(isOpen) => setOpenCategories(prev => ({ ...prev, favorites: isOpen }))}>
+                <SidebarGroup>
+                  <CollapsibleTrigger asChild>
+                    <SidebarGroupLabel className="flex items-center gap-2 cursor-pointer hover:bg-accent/50 transition-colors rounded-md group">
+                      <Star className="w-3.5 h-3.5 flex-shrink-0" />
+                      {open && (
+                        <>
+                          <span className="flex-1">Favorites</span>
+                          <ChevronDown className={`w-4 h-4 transition-transform ${openCategories.favorites ? '' : '-rotate-90'}`} />
+                        </>
+                      )}
+                    </SidebarGroupLabel>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarGroupContent>
+                      <SidebarMenu>
+                        {favoriteFeatures.map(renderFeatureButton)}
+                      </SidebarMenu>
+                    </SidebarGroupContent>
+                  </CollapsibleContent>
+                </SidebarGroup>
+              </Collapsible>
               <Separator className="my-2" />
             </>
           )}
@@ -237,29 +267,42 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
             if (categoryFeatures.length === 0) return null;
 
             return (
-              <SidebarGroup key={categoryKey}>
-                <SidebarGroupLabel className="flex flex-col items-start gap-1">
-                  {open ? (
-                    <>
-                      <span className="font-semibold">
-                        {categoryLabels[categoryKey as keyof typeof categoryLabels]}
-                      </span>
-                      <span className="text-[10px] font-normal text-muted-foreground">
-                        {categoryDescriptions[categoryKey as keyof typeof categoryDescriptions]}
-                      </span>
-                    </>
-                  ) : (
-                    <span className="text-xs font-semibold">
-                      {categoryLabels[categoryKey as keyof typeof categoryLabels].charAt(0)}
-                    </span>
-                  )}
-                </SidebarGroupLabel>
-                <SidebarGroupContent>
-                  <SidebarMenu>
-                    {categoryFeatures.map(renderFeatureButton)}
-                  </SidebarMenu>
-                </SidebarGroupContent>
-              </SidebarGroup>
+              <Collapsible 
+                key={categoryKey}
+                open={openCategories[categoryKey as keyof typeof openCategories]}
+                onOpenChange={(isOpen) => setOpenCategories(prev => ({ ...prev, [categoryKey]: isOpen }))}
+              >
+                <SidebarGroup>
+                  <CollapsibleTrigger asChild>
+                    <SidebarGroupLabel className="flex items-center gap-2 cursor-pointer hover:bg-accent/50 transition-colors rounded-md group">
+                      {open ? (
+                        <>
+                          <div className="flex-1 flex flex-col items-start gap-0.5">
+                            <span className="font-semibold">
+                              {categoryLabels[categoryKey as keyof typeof categoryLabels]}
+                            </span>
+                            <span className="text-[10px] font-normal text-muted-foreground">
+                              {categoryDescriptions[categoryKey as keyof typeof categoryDescriptions]}
+                            </span>
+                          </div>
+                          <ChevronDown className={`w-4 h-4 transition-transform flex-shrink-0 ${openCategories[categoryKey as keyof typeof openCategories] ? '' : '-rotate-90'}`} />
+                        </>
+                      ) : (
+                        <span className="text-xs font-semibold">
+                          {categoryLabels[categoryKey as keyof typeof categoryLabels].charAt(0)}
+                        </span>
+                      )}
+                    </SidebarGroupLabel>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarGroupContent>
+                      <SidebarMenu>
+                        {categoryFeatures.map(renderFeatureButton)}
+                      </SidebarMenu>
+                    </SidebarGroupContent>
+                  </CollapsibleContent>
+                </SidebarGroup>
+              </Collapsible>
             );
           })}
 
@@ -277,7 +320,7 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
               )}
             </div>
           )}
-        </ScrollArea>
+        </div>
       </SidebarContent>
 
       {/* Footer with Stats */}
