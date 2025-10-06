@@ -8,7 +8,6 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import { WorkspaceProvider } from "@/contexts/WorkspaceContext";
 import { WorkflowProvider } from "@/contexts/WorkflowContext";
 import FloatingBadge from "@/components/FloatingBadge";
-import StarryBackground from "@/components/StarryBackground";
 import HomePage from "./pages/HomePage";
 import Dashboard from "./pages/Dashboard";
 import AuthPage from "./pages/AuthPage";
@@ -53,7 +52,6 @@ const App = () => (
             <TooltipProvider>
           <Toaster />
           <Sonner />
-          <StarryBackground />
           <FloatingBadge />
           <BrowserRouter>
             <ScrollToTop />
