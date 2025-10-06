@@ -1,4 +1,4 @@
-import { Building2, GitBranch, Brain, Cpu, Bot, MessageSquare, Globe, Code2, BarChart3, Image, Mic, Volume2, Code, Sparkles, Rocket, Download, FileText, Wand2, Users, Music } from "lucide-react";
+import { Building2, GitBranch, Brain, Cpu, Bot, MessageSquare, Globe, Code2, BarChart3, Image, Mic, Volume2, Code, Sparkles, Rocket, Download, FileText, Wand2, Users, Music, Video, Phone } from "lucide-react";
 
 export interface Feature {
   id: string;
@@ -196,6 +196,51 @@ export const features: Feature[] = [
     icon: Music,
     color: "text-pink-500",
     badge: "Music Generation",
+    category: "advanced-ai"
+  },
+  {
+    id: "replicate-ai",
+    title: "Replicate AI",
+    description: "Access hundreds of AI models - image, video, upscaling",
+    icon: Sparkles,
+    color: "text-blue-500",
+    badge: "Multi-Model",
+    category: "advanced-ai"
+  },
+  {
+    id: "elevenlabs-conversation",
+    title: "ElevenLabs Voice Agents",
+    description: "Real-time voice conversations with AI agents",
+    icon: Phone,
+    color: "text-green-500",
+    badge: "Voice AI",
+    category: "advanced-ai"
+  },
+  {
+    id: "stability-ai",
+    title: "Stability AI",
+    description: "Professional image generation with Stable Diffusion 3",
+    icon: Wand2,
+    color: "text-purple-500",
+    badge: "SD3",
+    category: "advanced-ai"
+  },
+  {
+    id: "google-gemini",
+    title: "Google Gemini",
+    description: "Multimodal AI with 2M token context",
+    icon: Sparkles,
+    color: "text-orange-500",
+    badge: "Gemini 2.0",
+    category: "advanced-ai"
+  },
+  {
+    id: "runwayml",
+    title: "RunwayML Gen-3",
+    description: "Advanced AI video generation",
+    icon: Video,
+    color: "text-red-500",
+    badge: "Video AI",
     category: "advanced-ai"
   },
   {
