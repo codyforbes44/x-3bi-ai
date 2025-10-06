@@ -55,10 +55,7 @@ const Header = () => {
             alt="3BI.AI Logo" 
             className="w-8 h-8 md:w-10 md:h-10 object-contain"
           />
-          <div className="flex flex-col">
-            <span className="text-base md:text-xl font-bold leading-none">3BI.AI</span>
-            <span className="text-[9px] md:text-xs text-muted-foreground hidden sm:block leading-none mt-0.5">AI That Works</span>
-          </div>
+          <span className="text-base md:text-xl font-bold">3BI.AI</span>
         </div>
         
         {/* Desktop Navigation */}
@@ -132,10 +129,7 @@ const Header = () => {
                     alt="3BI.AI Logo" 
                     className="w-10 h-10 object-contain"
                   />
-                  <div className="flex flex-col">
-                    <span className="text-lg font-bold">3BI.AI</span>
-                    <span className="text-xs text-muted-foreground">AI That Works</span>
-                  </div>
+                  <span className="text-lg font-bold">3BI.AI</span>
                 </div>
                 
                 <nav className="flex flex-col space-y-3">
