@@ -9,8 +9,8 @@ All colors MUST be HSL.
 @layer base {
   :root {
     /* Sleek Professional Dark Mode (Default) */
-    /* Deep neutral backgrounds */
-    --background: 240 10% 3.9%;
+    /* Very Dark Night Sky Background */
+    --background: 240 50% 3%;
     --foreground: 0 0% 98%;
 
     /* Card with subtle elevation */
@@ -216,9 +216,16 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    @apply bg-transparent text-foreground;
+    transition: color 0.3s ease;
     font-feature-settings: "rlig" 1, "calt" 1;
+    position: relative;
+  }
+  
+  /* Ensure main content is above starry background */
+  #root {
+    position: relative;
+    z-index: 1;
   }
 
   /* Smooth theme transitions */
