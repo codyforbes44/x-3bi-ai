@@ -25,7 +25,7 @@ const HeroSection = () => {
           
           {/* Main heading */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 md:mb-8 leading-tight animate-fade-in">
-            The Most Advanced
+            Best-in-Class
             <br />
             <span className="bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
               AI Platform
@@ -34,8 +34,8 @@ const HeroSection = () => {
           
           {/* Subtitle */}
           <p className="text-lg sm:text-xl md:text-2xl text-white/90 mb-8 md:mb-12 max-w-3xl mx-auto leading-relaxed px-4">
-            Experience Claude Opus 4's maximum intelligence, GPT Image-1's advanced generation, 
-            and ElevenLabs' premium voice - all integrated seamlessly
+            Enterprise-grade AI solutions powered by Claude Opus 4, GPT Image-1, 
+            and ElevenLabs - delivering unmatched performance and reliability
           </p>
           
           {/* AI Capabilities Pills */}
