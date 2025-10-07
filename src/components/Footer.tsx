@@ -59,13 +59,13 @@ const Footer = () => {
             </div>
             
             <div className="flex items-center space-x-4 md:space-x-6">
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-smooth touch-target p-2">
+              <a href="#" className="text-muted-foreground hover:text-foreground transition-smooth touch-target p-2" aria-label="Visit our GitHub repository">
                 <Github className="w-5 h-5" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-smooth touch-target p-2">
+              <a href="#" className="text-muted-foreground hover:text-foreground transition-smooth touch-target p-2" aria-label="Follow us on Twitter">
                 <Twitter className="w-5 h-5" />
               </a>
-              <a href="#" className="text-muted-foreground hover:text-foreground transition-smooth touch-target p-2">
+              <a href="#" className="text-muted-foreground hover:text-foreground transition-smooth touch-target p-2" aria-label="Join our community chat">
                 <MessageCircle className="w-5 h-5" />
               </a>
             </div>
