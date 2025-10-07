@@ -7,7 +7,9 @@ import ThemeProvider from "@/components/ThemeProvider";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { WorkspaceProvider } from "@/contexts/WorkspaceContext";
 import { WorkflowProvider } from "@/contexts/WorkflowContext";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import FloatingBadge from "@/components/FloatingBadge";
+import ScrollToTop from "@/components/ScrollToTop";
 import HomePage from "./pages/HomePage";
 import Dashboard from "./pages/Dashboard";
 import AuthPage from "./pages/AuthPage";
@@ -39,7 +41,6 @@ import Workspaces from "./pages/Workspaces";
 import Integrations from "./pages/Integrations";
 import APIDemos from "./pages/APIDemos";
 import NotFound from "./pages/NotFound";
-import ScrollToTop from "./components/ScrollToTop";
 
 const queryClient = new QueryClient();
 
@@ -56,10 +57,9 @@ const App = () => (
           <BrowserRouter>
             <ScrollToTop />
             <Routes>
+              {/* Public routes */}
               <Route path="/" element={<HomePage />} />
-              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/auth" element={<AuthPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
               <Route path="/community" element={<Community />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/enterprise" element={<Enterprise />} />
@@ -75,18 +75,45 @@ const App = () => (
               <Route path="/volunteer" element={<Volunteer />} />
               <Route path="/donate" element={<Donate />} />
               <Route path="/free-ai-tools" element={<FreeAITools />} />
+              <Route path="/documentation" element={<Documentation />} />
+              <Route path="/api-demos" element={<APIDemos />} />
+              
+              {/* Tutorial routes */}
               <Route path="/tutorials" element={<Tutorials />} />
               <Route path="/tutorials/ai-chat" element={<AIChatTutorial />} />
               <Route path="/tutorials/code-generation" element={<CodeGenerationTutorial />} />
               <Route path="/tutorials/image-generation" element={<ImageGenerationTutorial />} />
               <Route path="/tutorials/voice-ai" element={<VoiceAITutorial />} />
               <Route path="/tutorials/system-architecture" element={<SystemArchitectureTutorial />} />
-              <Route path="/documentation" element={<Documentation />} />
-              <Route path="/api-access" element={<APIAccess />} />
-              <Route path="/workspaces" element={<Workspaces />} />
-              <Route path="/integrations" element={<Integrations />} />
-              <Route path="/api-demos" element={<APIDemos />} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              
+              {/* Protected routes - require authentication */}
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <Dashboard />
+                </ProtectedRoute>
+              } />
+              <Route path="/profile" element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              } />
+              <Route path="/workspaces" element={
+                <ProtectedRoute>
+                  <Workspaces />
+                </ProtectedRoute>
+              } />
+              <Route path="/integrations" element={
+                <ProtectedRoute>
+                  <Integrations />
+                </ProtectedRoute>
+              } />
+              <Route path="/api-access" element={
+                <ProtectedRoute>
+                  <APIAccess />
+                </ProtectedRoute>
+              } />
+              
+              {/* 404 catch-all */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

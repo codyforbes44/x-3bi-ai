@@ -20,13 +20,16 @@ import {
   Zap
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
 import MiniAIChat from "@/components/home/MiniAIChat";
 import MiniImageGenerator from "@/components/home/MiniImageGenerator";
 import MiniCodeAssistant from "@/components/home/MiniCodeAssistant";
 import MiniVoiceInterface from "@/components/home/MiniVoiceInterface";
+import { ROUTES } from "@/config/routes";
 
 const HomePage = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   const aiCapabilities = [
     {
@@ -160,12 +163,15 @@ const HomePage = () => {
             <Button 
               size="lg" 
               className="bg-gradient-hero text-white w-full sm:w-auto min-w-[250px] h-12 sm:h-14 text-base sm:text-lg touch-target"
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate(user ? ROUTES.DASHBOARD : ROUTES.AUTH)}
             >
-              See All 24 Features →
+              {user ? 'Go to Dashboard →' : 'Get Started - Free →'}
             </Button>
             <p className="text-sm text-muted-foreground mt-3">
-              Advanced controls • Workspaces • Analytics • Workflows
+              {user 
+                ? 'Access all 24 features • Workspaces • Analytics'
+                : 'No credit card required • Full access to all features'
+              }
             </p>
           </div>
         </div>
@@ -233,15 +239,15 @@ const HomePage = () => {
               size="lg" 
               variant="secondary" 
               className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 touch-target"
-              onClick={() => navigate('/dashboard')}
+              onClick={() => navigate(user ? ROUTES.DASHBOARD : ROUTES.AUTH)}
             >
-              Go to Dashboard
+              {user ? 'Go to Dashboard' : 'Get Started Free'}
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
               className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 border-white text-white hover:bg-white/10 touch-target"
-              onClick={() => navigate('/learn')}
+              onClick={() => navigate(ROUTES.LEARN)}
             >
               Learn More
             </Button>
