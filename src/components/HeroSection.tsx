@@ -23,7 +23,7 @@ const HeroSection = () => {
           {/* Badge */}
           <Badge variant="secondary" className="mb-6 md:mb-8 bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20">
             <Sparkles className="w-4 h-4 mr-2" />
-            Powered by Cᴏᴅʏ Fᴏʀʙᴇꜱ • 27 AI Features
+            27 AI Features
           </Badge>
           
           {/* Main heading */}
