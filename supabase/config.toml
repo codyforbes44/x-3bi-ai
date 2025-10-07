@@ -53,3 +53,6 @@ verify_jwt = false
 
 [functions.deploypad-integration]
 verify_jwt = false
+
+[functions.suno-ai]
+verify_jwt = false
