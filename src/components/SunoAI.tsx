@@ -129,12 +129,18 @@ export default function SunoAI() {
       <CardHeader>
         <div className="flex items-center gap-2">
           <Music className="w-6 h-6 text-primary" />
-          <div>
+          <div className="flex-1">
             <CardTitle>Suno AI Music Generator</CardTitle>
             <CardDescription>
               Generate custom music and songs with AI - describe what you want to hear
             </CardDescription>
           </div>
+        </div>
+        <div className="mt-4 p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg">
+          <p className="text-sm text-amber-600 dark:text-amber-400">
+            <strong>⚠️ Service Status:</strong> This feature uses a third-party Suno API service which may experience downtime. 
+            If you see errors, the external API service is temporarily unavailable. Please try again later.
+          </p>
         </div>
       </CardHeader>
       <CardContent className="space-y-6">
