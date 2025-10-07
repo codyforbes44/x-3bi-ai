@@ -142,6 +142,7 @@ const MiniAIChat = () => {
             onClick={handleSend} 
             disabled={!input.trim() || isLoading}
             size="icon"
+            aria-label="Send message"
           >
             <Send className="w-4 h-4" />
           </Button>
