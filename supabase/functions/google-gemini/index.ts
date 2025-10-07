@@ -11,10 +11,10 @@ serve(async (req) => {
   }
 
   try {
-    const GOOGLE_AI_API_KEY = Deno.env.get('GOOGLE_AI_API_KEY');
+    const GOOGLE_AI_API_KEY = Deno.env.get('GEMINI_API_KEY');
     
     if (!GOOGLE_AI_API_KEY) {
-      throw new Error('GOOGLE_AI_API_KEY not configured');
+      throw new Error('GEMINI_API_KEY not configured');
     }
 
     const { prompt, model, image, video } = await req.json();
