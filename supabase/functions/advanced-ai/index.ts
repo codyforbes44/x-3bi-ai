@@ -55,8 +55,27 @@ serve(async (req) => {
         system: "You are Claude 4, an advanced AI assistant with superior reasoning capabilities. Provide thoughtful, accurate, and helpful responses. You can analyze images, process complex requests, and use tools when available."
       };
 
+      // Convert OpenAI-style tools to Anthropic format if needed
       if (tools && tools.length > 0) {
-        requestBody.tools = tools;
+        requestBody.tools = tools.map((tool: any) => {
+          // If it's already in Anthropic format, use as-is
+          if (tool.name && tool.description && tool.input_schema) {
+            return tool;
+          }
+          // Convert from OpenAI format to Anthropic format
+          if (tool.type === 'function' && tool.function) {
+            return {
+              name: tool.function.name,
+              description: tool.function.description || '',
+              input_schema: tool.function.parameters || {
+                type: 'object',
+                properties: {},
+                required: []
+              }
+            };
+          }
+          return tool;
+        });
       }
 
       response = await fetch('https://api.anthropic.com/v1/messages', {

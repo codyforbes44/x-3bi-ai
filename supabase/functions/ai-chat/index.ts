@@ -28,6 +28,10 @@ serve(async (req) => {
         throw new Error('Anthropic API key not configured');
       }
 
+      // Ensure we're using a Claude model when provider is anthropic
+      const anthropicModel = model.includes('claude') ? model : 'claude-sonnet-4-20250514';
+      console.log(`Using Anthropic model: ${anthropicModel}`);
+
       const response = await fetch('https://api.anthropic.com/v1/messages', {
         method: 'POST',
         headers: {
@@ -36,7 +40,7 @@ serve(async (req) => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          model,
+          model: anthropicModel,
           messages,
           max_tokens: 4096,
           stream,
