@@ -5,11 +5,14 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Menu, User, Settings, LogOut } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import kalpeshLogo from "@/assets/kalpesh-logo.png";
+import { MAIN_NAVIGATION, ROUTES } from "@/config/routes";
 const Header = () => {
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   // Safely get auth context with fallback
   let user = null;
@@ -19,50 +22,47 @@ const Header = () => {
     user = auth.user;
     signOut = auth.signOut;
   } catch (error) {
-    // AuthProvider not available yet
     console.warn('AuthProvider not available');
   }
-  const navigate = useNavigate();
+
   const getInitials = (name: string | null, email: string | null) => {
     if (name) return name.split(' ').map(n => n.charAt(0)).join('').toUpperCase().slice(0, 2);
     return email?.charAt(0).toUpperCase() || 'U';
   };
-  const navigation = [{
-    name: "Dashboard",
-    href: "/dashboard"
-  }, {
-    name: "Learn",
-    href: "/learn"
-  }, {
-    name: "Community",
-    href: "/community"
-  }, {
-    name: "Our Mission",
-    href: "/mission"
-  }, {
-    name: "Partners",
-    href: "/partners"
-  }, {
-    name: "Issues",
-    href: "/issues"
-  }];
-  return <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border">
+
+  const isActiveRoute = (href: string) => location.pathname === href;
+
+  return (
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border">
       <div className="container mx-auto px-3 md:px-4 h-14 md:h-16 flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center space-x-2 md:space-x-3 cursor-pointer" onClick={() => navigate('/')}>
+        <Link 
+          to={ROUTES.HOME} 
+          className="flex items-center space-x-2 md:space-x-3 hover:opacity-80 transition-opacity"
+        >
           <img 
             src={kalpeshLogo} 
             alt="3BI.AI Logo" 
             className="w-8 h-8 md:w-10 md:h-10 object-contain"
           />
           <span className="text-base md:text-xl font-bold">3BI.AI</span>
-        </div>
+        </Link>
         
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
-          {navigation.map(item => <a key={item.name} href={item.href} className="text-sm lg:text-base text-muted-foreground hover:text-foreground transition-smooth">
+          {MAIN_NAVIGATION.map(item => (
+            <Link 
+              key={item.name} 
+              to={item.href} 
+              className={`text-sm lg:text-base transition-smooth ${
+                isActiveRoute(item.href) 
+                  ? 'text-foreground font-medium' 
+                  : 'text-muted-foreground hover:text-foreground'
+              }`}
+            >
               {item.name}
-            </a>)}
+            </Link>
+          ))}
         </nav>
         
         {/* Desktop Actions */}
@@ -89,13 +89,17 @@ const Header = () => {
                   </div>
                 </div>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => navigate('/dashboard')}>
-                  <User className="mr-2 h-4 w-4" />
-                  Dashboard
+                <DropdownMenuItem asChild>
+                  <Link to={ROUTES.DASHBOARD} className="flex items-center">
+                    <User className="mr-2 h-4 w-4" />
+                    Dashboard
+                  </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate('/profile')}>
-                  <Settings className="mr-2 h-4 w-4" />
-                  Profile Settings
+                <DropdownMenuItem asChild>
+                  <Link to={ROUTES.PROFILE} className="flex items-center">
+                    <Settings className="mr-2 h-4 w-4" />
+                    Profile Settings
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={signOut}>
@@ -103,18 +107,21 @@ const Header = () => {
                   Sign Out
                 </DropdownMenuItem>
               </DropdownMenuContent>
-            </DropdownMenu> : <>
-              <Button variant="ghost" onClick={() => navigate('/auth')}>
-                Sign In
+            </DropdownMenu> : (
+            <>
+              <Button variant="ghost" asChild>
+                <Link to={ROUTES.AUTH}>Sign In</Link>
               </Button>
-              <Button className="bg-gradient-hero text-white" onClick={() => navigate('/auth')}>
-                Get Started
+              <Button className="bg-gradient-hero text-white" asChild>
+                <Link to={ROUTES.AUTH}>Get Started</Link>
               </Button>
-            </>}
+            </>
+          )}
         </div>
 
         {/* Mobile Menu */}
-        {isMobile && <Sheet>
+        {isMobile && (
+          <Sheet>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="h-9 w-9">
                 <Menu className="h-5 w-5" />
@@ -133,9 +140,19 @@ const Header = () => {
                 </div>
                 
                 <nav className="flex flex-col space-y-3">
-                  {navigation.map(item => <a key={item.name} href={item.href} className="text-base text-muted-foreground hover:text-foreground transition-smooth py-2 touch-target">
+                  {MAIN_NAVIGATION.map(item => (
+                    <Link 
+                      key={item.name} 
+                      to={item.href} 
+                      className={`text-base py-2 touch-target transition-smooth ${
+                        isActiveRoute(item.href)
+                          ? 'text-foreground font-medium'
+                          : 'text-muted-foreground hover:text-foreground'
+                      }`}
+                    >
                       {item.name}
-                    </a>)}
+                    </Link>
+                  ))}
                 </nav>
                 
                 <div className="flex flex-col space-y-3 pt-4 border-t border-border">
@@ -145,21 +162,17 @@ const Header = () => {
                   {/* Mobile Auth */}
                   {user ? (
                     <>
-                      <Button
-                        variant="ghost"
-                        className="justify-start"
-                        onClick={() => navigate('/dashboard')}
-                      >
-                        <User className="mr-2 h-4 w-4" />
-                        Dashboard
+                      <Button variant="ghost" className="justify-start" asChild>
+                        <Link to={ROUTES.DASHBOARD}>
+                          <User className="mr-2 h-4 w-4" />
+                          Dashboard
+                        </Link>
                       </Button>
-                      <Button
-                        variant="ghost"
-                        className="justify-start"
-                        onClick={() => navigate('/profile')}
-                      >
-                        <Settings className="mr-2 h-4 w-4" />
-                        Profile Settings
+                      <Button variant="ghost" className="justify-start" asChild>
+                        <Link to={ROUTES.PROFILE}>
+                          <Settings className="mr-2 h-4 w-4" />
+                          Profile Settings
+                        </Link>
                       </Button>
                       <Button
                         variant="ghost"
@@ -172,26 +185,22 @@ const Header = () => {
                     </>
                   ) : (
                     <>
-                      <Button
-                        variant="ghost"
-                        className="justify-start"
-                        onClick={() => navigate('/auth')}
-                      >
-                        Sign In
+                      <Button variant="ghost" className="justify-start" asChild>
+                        <Link to={ROUTES.AUTH}>Sign In</Link>
                       </Button>
-                      <Button
-                        className="bg-gradient-hero text-white justify-start"
-                        onClick={() => navigate('/auth')}
-                      >
-                        Get Started
+                      <Button className="bg-gradient-hero text-white justify-start" asChild>
+                        <Link to={ROUTES.AUTH}>Get Started</Link>
                       </Button>
                     </>
                   )}
                 </div>
               </div>
             </SheetContent>
-          </Sheet>}
+          </Sheet>
+        )}
       </div>
-    </header>;
+    </header>
+  );
 };
+
 export default Header;
