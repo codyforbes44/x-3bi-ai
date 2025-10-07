@@ -1,4 +1,4 @@
-import { Building2, GitBranch, Brain, Cpu, Bot, MessageSquare, Globe, Code2, BarChart3, Image, Mic, Volume2, Code, Sparkles, Rocket, Download, FileText, Wand2, Users, Music, Video, Phone } from "lucide-react";
+import { Building2, GitBranch, Brain, Cpu, Bot, MessageSquare, Globe, Code2, BarChart3, Image, Mic, Volume2, Code, Sparkles, Rocket, Download, FileText, Wand2, Users, Music, Video, Phone, Zap, Eye, Wrench } from "lucide-react";
 
 export interface Feature {
   id: string;
@@ -241,6 +241,33 @@ export const features: Feature[] = [
     icon: Video,
     color: "text-red-500",
     badge: "Video AI",
+    category: "advanced-ai"
+  },
+  {
+    id: "grok-chat",
+    title: "Grok Chat",
+    description: "Real-time AI conversations with X's Grok",
+    icon: Zap,
+    color: "text-blue-500",
+    badge: "xAI",
+    category: "advanced-ai"
+  },
+  {
+    id: "grok-vision",
+    title: "Grok Vision",
+    description: "Image understanding with Grok Vision",
+    icon: Eye,
+    color: "text-cyan-500",
+    badge: "Vision AI",
+    category: "advanced-ai"
+  },
+  {
+    id: "grok-tools",
+    title: "Grok Function Calling",
+    description: "Grok with advanced function calling capabilities",
+    icon: Wrench,
+    color: "text-purple-500",
+    badge: "Tools",
     category: "advanced-ai"
   },
   {

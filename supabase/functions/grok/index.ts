@@ -17,7 +17,9 @@ serve(async (req) => {
       model = 'grok-beta',
       stream = false,
       temperature = 0.7,
-      max_tokens = 4096
+      max_tokens = 4096,
+      tools,
+      tool_choice
     } = await req.json();
 
     const grokApiKey = Deno.env.get('GROK_API_KEY');
@@ -27,6 +29,25 @@ serve(async (req) => {
 
     console.log(`Using Grok model: ${model}`);
 
+    // Build request body
+    const requestBody: any = {
+      model,
+      messages,
+      temperature,
+      max_tokens,
+      stream,
+    };
+
+    // Add tools if provided (function calling)
+    if (tools && tools.length > 0) {
+      requestBody.tools = tools;
+      if (tool_choice) {
+        requestBody.tool_choice = tool_choice;
+      }
+    }
+
+    console.log('Grok request:', JSON.stringify(requestBody, null, 2));
+
     // Grok API follows OpenAI-compatible format
     const response = await fetch('https://api.x.ai/v1/chat/completions', {
       method: 'POST',
@@ -34,13 +55,7 @@ serve(async (req) => {
         'Authorization': `Bearer ${grokApiKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        model,
-        messages,
-        temperature,
-        max_tokens,
-        stream,
-      }),
+      body: JSON.stringify(requestBody),
     });
 
     if (!response.ok) {

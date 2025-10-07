@@ -1,7 +1,7 @@
 import { TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Brain, Cpu, Bot, Sparkles, MessageSquare, Music, Video, Phone, Wand2 } from "lucide-react";
+import { Brain, Cpu, Bot, Sparkles, MessageSquare, Music, Video, Phone, Wand2, Zap, Eye, Wrench } from "lucide-react";
 import AdvancedAI from "@/components/AdvancedAI";
 import LocalAI from "@/components/LocalAI";
 import VoiceInterface from "@/components/VoiceInterface";
@@ -15,6 +15,9 @@ import ElevenLabsConversation from "@/components/ElevenLabsConversation";
 import StabilityAI from "@/components/StabilityAI";
 import GoogleGemini from "@/components/GoogleGemini";
 import RunwayML from "@/components/RunwayML";
+import { GrokChat } from "@/components/GrokChat";
+import { GrokVision } from "@/components/GrokVision";
+import { GrokTools } from "@/components/GrokTools";
 
 const AISection = () => {
   return (
@@ -225,6 +228,54 @@ const AISection = () => {
           </CardHeader>
         </Card>
         <RunwayML />
+      </TabsContent>
+
+      <TabsContent value="grok-chat" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Zap className="w-5 h-5 text-blue-500" />
+              Grok Chat
+              <Badge variant="secondary" className="bg-blue-500/20 text-blue-500 border-blue-500/30">xAI</Badge>
+            </CardTitle>
+            <CardDescription>
+              Real-time AI conversations with X's Grok - witty, accurate, and powered by real-time information.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <GrokChat />
+      </TabsContent>
+
+      <TabsContent value="grok-vision" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Eye className="w-5 h-5 text-cyan-500" />
+              Grok Vision
+              <Badge variant="secondary" className="bg-cyan-500/20 text-cyan-500 border-cyan-500/30">Vision AI</Badge>
+            </CardTitle>
+            <CardDescription>
+              Advanced image understanding and analysis with Grok Vision - describe, analyze, and extract insights from images.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <GrokVision />
+      </TabsContent>
+
+      <TabsContent value="grok-tools" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Wrench className="w-5 h-5 text-purple-500" />
+              Grok Function Calling
+              <Badge variant="secondary" className="bg-purple-500/20 text-purple-500 border-purple-500/30">Tools</Badge>
+            </CardTitle>
+            <CardDescription>
+              Advanced Grok capabilities with function calling - weather, search, calculations, and custom tools.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <GrokTools />
       </TabsContent>
     </>
   );

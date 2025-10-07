@@ -3,7 +3,8 @@ import { Card, CardContent, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
-import { Loader2, Send, Zap } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Loader2, Send, Zap, Brain, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -16,25 +17,32 @@ export const GrokChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [model, setModel] = useState('grok-beta');
+  const [systemPrompt, setSystemPrompt] = useState('You are Grok, a witty and helpful AI assistant created by xAI. You provide accurate, engaging responses with a touch of humor.');
   const { toast } = useToast();
 
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
 
     const userMessage: Message = { role: 'user', content: input };
-    const updatedMessages = [...messages, userMessage];
-    setMessages(updatedMessages);
+    
+    // Include system prompt if it's the first message
+    const messagesToSend = messages.length === 0 && systemPrompt
+      ? [{ role: 'system' as const, content: systemPrompt }, userMessage]
+      : [...messages, userMessage];
+    
+    setMessages([...messages, userMessage]);
     setInput('');
     setIsLoading(true);
 
     try {
       const { data, error } = await supabase.functions.invoke('grok', {
         body: {
-          messages: updatedMessages.map(msg => ({
+          messages: messagesToSend.map(msg => ({
             role: msg.role,
             content: msg.content,
           })),
-          model: 'grok-beta',
+          model,
           temperature: 0.7,
         },
       });
@@ -46,7 +54,7 @@ export const GrokChat = () => {
         content: data.choices[0].message.content,
       };
 
-      setMessages([...updatedMessages, assistantMessage]);
+      setMessages([...messages, userMessage, assistantMessage]);
     } catch (error) {
       console.error('Error calling Grok:', error);
       toast({
@@ -72,9 +80,45 @@ export const GrokChat = () => {
         <CardContent className="pt-6">
           <CardDescription className="mb-4 flex items-center gap-2">
             <Zap className="w-4 h-4" />
-            Chat with Grok, X's advanced AI assistant
+            Chat with Grok, X's advanced AI assistant with real-time knowledge
             <Badge variant="outline" className="ml-2">Premium</Badge>
           </CardDescription>
+
+          {/* Model Selection & System Prompt */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Model</label>
+              <Select value={model} onValueChange={setModel}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="grok-beta">
+                    <div className="flex items-center gap-2">
+                      <Brain className="w-4 h-4" />
+                      Grok Beta
+                    </div>
+                  </SelectItem>
+                  <SelectItem value="grok-vision-beta">
+                    <div className="flex items-center gap-2">
+                      <Sparkles className="w-4 h-4" />
+                      Grok Vision Beta
+                    </div>
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">System Prompt</label>
+              <Textarea
+                value={systemPrompt}
+                onChange={(e) => setSystemPrompt(e.target.value)}
+                placeholder="Set Grok's personality and behavior..."
+                className="min-h-[80px]"
+                disabled={messages.length > 0}
+              />
+            </div>
+          </div>
 
           <div className="space-y-4">
             {/* Messages */}
