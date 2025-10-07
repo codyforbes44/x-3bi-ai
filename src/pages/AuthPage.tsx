@@ -169,7 +169,7 @@ const AuthPage = () => {
           <div className="w-12 h-12 bg-gradient-hero rounded-lg flex items-center justify-center mx-auto mb-4">
             <Heart className="w-6 h-6 text-white" />
           </div>
-          <CardTitle className="text-2xl">Welcome to Lovable</CardTitle>
+          <CardTitle className="text-2xl">Welcome to 3BI.AI</CardTitle>
           <CardDescription>Sign in to your account or create a new one</CardDescription>
         </CardHeader>
         
