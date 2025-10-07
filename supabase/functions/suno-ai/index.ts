@@ -60,19 +60,56 @@ serve(async (req) => {
 
     console.log('Generating music with:', requestBody);
 
-    const response = await fetch('https://api.suno.ai/v1/songs', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${SUNO_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(requestBody),
-    });
+    let response;
+    let retries = 0;
+    const maxRetries = 2;
+    
+    while (retries <= maxRetries) {
+      try {
+        response = await fetch('https://api.suno.ai/v1/songs', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${SUNO_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(requestBody),
+          signal: AbortSignal.timeout(30000), // 30 second timeout
+        });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Suno API error:', errorText);
-      throw new Error(`Suno API error: ${response.status} - ${errorText}`);
+        if (response.ok) {
+          break; // Success, exit retry loop
+        }
+
+        // Handle specific status codes
+        if (response.status === 503) {
+          if (retries < maxRetries) {
+            console.log(`Suno API temporarily unavailable, retrying... (${retries + 1}/${maxRetries})`);
+            await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2 seconds
+            retries++;
+            continue;
+          }
+          throw new Error('Suno API is temporarily unavailable. Please try again in a few moments.');
+        }
+
+        if (response.status === 429) {
+          throw new Error('Rate limit exceeded. Please wait a moment before trying again.');
+        }
+
+        if (response.status === 401) {
+          throw new Error('Invalid Suno API key. Please check your configuration.');
+        }
+
+        // For other errors, get the error text
+        const errorText = await response.text();
+        console.error('Suno API error:', errorText);
+        throw new Error(`Suno API error: ${response.status} - ${errorText}`);
+
+      } catch (error) {
+        if (error.name === 'TimeoutError') {
+          throw new Error('Request timed out. Suno API may be experiencing issues.');
+        }
+        throw error;
+      }
     }
 
     const data = await response.json();
