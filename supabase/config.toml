@@ -56,3 +56,21 @@ verify_jwt = false
 
 [functions.suno-ai]
 verify_jwt = false
+
+[functions.replicate-ai]
+verify_jwt = false
+
+[functions.elevenlabs-conversation]
+verify_jwt = false
+
+[functions.google-gemini]
+verify_jwt = false
+
+[functions.stability-ai]
+verify_jwt = false
+
+[functions.runwayml]
+verify_jwt = false
+
+[functions.execute-workflow]
+verify_jwt = false
