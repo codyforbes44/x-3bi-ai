@@ -90,37 +90,37 @@ const AIChat = () => {
   };
 
   return (
-    <Card className="h-[600px] flex flex-col">
-      <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2">
-          <Bot className="w-5 h-5 text-primary" />
+    <Card className="h-[600px] md:h-[700px] flex flex-col">
+      <CardHeader className="pb-3 md:pb-4">
+        <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+          <Bot className="w-4 h-4 md:w-5 md:h-5 text-primary" />
           AI Assistant
-          <Badge variant="secondary" className="ml-auto">GPT-4o Mini</Badge>
+          <Badge variant="secondary" className="ml-auto text-xs">GPT-4o Mini</Badge>
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex-1 flex flex-col p-0">
-        <ScrollArea className="flex-1 px-6" ref={scrollAreaRef}>
-          <div className="space-y-4 pb-4">
+      <CardContent className="flex-1 flex flex-col p-0 min-h-0">
+        <ScrollArea className="flex-1 px-3 md:px-6" ref={scrollAreaRef}>
+          <div className="space-y-3 md:space-y-4 pb-4">
             {messages.map((message) => (
               <div
                 key={message.id}
-                className={`flex gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                className={`flex gap-2 md:gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
-                <div className={`flex gap-3 max-w-[80%] ${message.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                <div className={`flex gap-2 md:gap-3 max-w-[85%] md:max-w-[80%] ${message.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+                  <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
                     message.role === 'user' 
                       ? 'bg-primary text-primary-foreground' 
                       : 'bg-muted text-muted-foreground'
                   }`}>
-                    {message.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+                    {message.role === 'user' ? <User className="w-3 h-3 md:w-4 md:h-4" /> : <Bot className="w-3 h-3 md:w-4 md:h-4" />}
                   </div>
-                  <div className={`rounded-lg p-3 ${
+                  <div className={`rounded-lg p-2.5 md:p-3 ${
                     message.role === 'user'
                       ? 'bg-primary text-primary-foreground'
                       : 'bg-muted text-muted-foreground'
                   }`}>
-                    <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-                    <span className="text-xs opacity-70 mt-1 block">
+                    <p className="text-xs md:text-sm whitespace-pre-wrap break-words">{message.content}</p>
+                    <span className="text-[10px] md:text-xs opacity-70 mt-1 block">
                       {message.timestamp.toLocaleTimeString()}
                     </span>
                   </div>
@@ -128,33 +128,34 @@ const AIChat = () => {
               </div>
             ))}
             {isLoading && (
-              <div className="flex gap-3 justify-start">
-                <div className="w-8 h-8 rounded-full bg-muted flex items-center justify-center">
-                  <Bot className="w-4 h-4" />
+              <div className="flex gap-2 md:gap-3 justify-start">
+                <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-muted flex items-center justify-center">
+                  <Bot className="w-3 h-3 md:w-4 md:h-4" />
                 </div>
-                <div className="bg-muted rounded-lg p-3">
-                  <Loader2 className="w-4 h-4 animate-spin" />
+                <div className="bg-muted rounded-lg p-2.5 md:p-3">
+                  <Loader2 className="w-3 h-3 md:w-4 md:h-4 animate-spin" />
                 </div>
               </div>
             )}
           </div>
         </ScrollArea>
-        <div className="p-6 pt-4 border-t">
+        <div className="p-3 md:p-6 pt-3 md:pt-4 border-t">
           <div className="flex gap-2">
             <Input
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
               placeholder="Ask me anything..."
-              className="flex-1"
+              className="flex-1 text-sm md:text-base"
               disabled={isLoading}
             />
             <Button 
               onClick={handleSend} 
               disabled={!input.trim() || isLoading}
               size="icon"
+              className="h-9 w-9 md:h-10 md:w-10"
             >
-              <Send className="w-4 h-4" />
+              <Send className="w-3 h-3 md:w-4 md:h-4" />
             </Button>
           </div>
         </div>

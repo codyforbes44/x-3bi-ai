@@ -69,32 +69,32 @@ const AIImageGenerator = () => {
   };
 
   return (
-    <Card className="h-[600px] flex flex-col">
-      <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2">
-          <Image className="w-5 h-5 text-primary" />
+    <Card className="h-[700px] md:h-[800px] flex flex-col">
+      <CardHeader className="pb-3 md:pb-4">
+        <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+          <Image className="w-4 h-4 md:w-5 md:h-5 text-primary" />
           AI Image Generator
-          <Badge variant="secondary" className="ml-auto">DALL-E 3</Badge>
+          <Badge variant="secondary" className="ml-auto text-xs">DALL-E 3</Badge>
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex-1 flex flex-col space-y-4">
-        <div className="space-y-4">
+      <CardContent className="flex-1 flex flex-col space-y-3 md:space-y-4 min-h-0">
+        <div className="space-y-3 md:space-y-4">
           <div>
-            <label className="text-sm font-medium mb-2 block">Prompt</label>
+            <label className="text-xs md:text-sm font-medium mb-2 block">Prompt</label>
             <Textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
               placeholder="Describe the image you want to generate..."
-              className="min-h-[80px]"
+              className="min-h-[60px] md:min-h-[80px] text-sm"
               disabled={isGenerating}
             />
           </div>
           
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
             <div>
-              <label className="text-sm font-medium mb-2 block">Model</label>
+              <label className="text-xs md:text-sm font-medium mb-2 block">Model</label>
               <Select value={model} onValueChange={setModel} disabled={isGenerating}>
-                <SelectTrigger>
+                <SelectTrigger className="text-sm">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -105,24 +105,24 @@ const AIImageGenerator = () => {
             </div>
             
             <div>
-              <label className="text-sm font-medium mb-2 block">Size</label>
+              <label className="text-xs md:text-sm font-medium mb-2 block">Size</label>
               <Select value={size} onValueChange={setSize} disabled={isGenerating}>
-                <SelectTrigger>
+                <SelectTrigger className="text-sm">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="1024x1024">Square (1024x1024)</SelectItem>
-                  <SelectItem value="1792x1024">Landscape (1792x1024)</SelectItem>
-                  <SelectItem value="1024x1792">Portrait (1024x1792)</SelectItem>
+                  <SelectItem value="1024x1024">Square</SelectItem>
+                  <SelectItem value="1792x1024">Landscape</SelectItem>
+                  <SelectItem value="1024x1792">Portrait</SelectItem>
                 </SelectContent>
               </Select>
             </div>
           </div>
 
           <div>
-            <label className="text-sm font-medium mb-2 block">Quality</label>
+            <label className="text-xs md:text-sm font-medium mb-2 block">Quality</label>
             <Select value={quality} onValueChange={setQuality} disabled={isGenerating}>
-              <SelectTrigger>
+              <SelectTrigger className="text-sm">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -151,27 +151,28 @@ const AIImageGenerator = () => {
           </Button>
         </div>
 
-        <div className="flex-1 flex items-center justify-center border-2 border-dashed border-border rounded-lg">
+        <div className="flex-1 flex items-center justify-center border-2 border-dashed border-border rounded-lg min-h-0 overflow-hidden">
           {generatedImage ? (
-            <div className="relative max-w-full max-h-full">
+            <div className="relative w-full h-full p-2 md:p-4">
               <img 
                 src={generatedImage} 
                 alt="Generated" 
-                className="max-w-full max-h-full object-contain rounded-lg"
+                className="w-full h-full object-contain rounded-lg"
               />
               <Button
                 onClick={handleDownload}
-                className="absolute top-2 right-2"
+                className="absolute top-3 right-3 md:top-4 md:right-4"
                 size="sm"
                 variant="secondary"
               >
-                <Download className="w-4 h-4" />
+                <Download className="w-4 h-4 mr-2" />
+                <span className="hidden sm:inline">Download</span>
               </Button>
             </div>
           ) : (
-            <div className="text-center text-muted-foreground">
-              <Image className="w-12 h-12 mx-auto mb-4 opacity-50" />
-              <p>Generated image will appear here</p>
+            <div className="text-center text-muted-foreground p-4">
+              <Image className="w-10 h-10 md:w-12 md:h-12 mx-auto mb-3 md:mb-4 opacity-50" />
+              <p className="text-xs md:text-sm">Generated image will appear here</p>
             </div>
           )}
         </div>
