@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Sparkles, Brain, Code2, ImagePlus, Workflow, Database, Users } from "lucide-react";
+import { ArrowRight, Sparkles, Brain, Code2, ImagePlus, Workflow, Zap, Eye } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { ROUTES } from "@/config/routes";
@@ -23,50 +23,50 @@ const HeroSection = () => {
           {/* Badge */}
           <Badge variant="secondary" className="mb-6 md:mb-8 bg-white/10 backdrop-blur-sm border-white/20 text-white hover:bg-white/20">
             <Sparkles className="w-4 h-4 mr-2" />
-            24 Advanced AI Features • Enterprise Ready
+            Powered by Cᴏᴅʏ Fᴏʀʙᴇꜱ • 27 AI Features
           </Badge>
           
           {/* Main heading */}
           <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-white mb-4 sm:mb-6 md:mb-8 leading-[1.1] sm:leading-tight animate-fade-in">
             <span className="bg-gradient-to-r from-white to-white/80 bg-clip-text text-transparent">
-              Complete AI Platform for
+              Premium AI Platform
             </span>
             <br />
             <span className="bg-gradient-to-r from-white via-blue-100 to-white bg-clip-text text-transparent">
-              Modern Teams
+              Built for Excellence
             </span>
           </h1>
           
           {/* Subtitle */}
           <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 mb-6 sm:mb-8 md:mb-10 max-w-2xl lg:max-w-3xl mx-auto leading-relaxed px-2 sm:px-4">
-            Chat, code, create images, generate voice, build workflows, and collaborate—all powered by the world's most advanced AI models. From prototypes to production.
+            Claude 4, Grok, GPT-5, Gemini 2.0, DALL-E, Stable Diffusion, ElevenLabs, and more—all in one unified platform with enterprise features.
           </p>
           
           {/* AI Capabilities Pills */}
           <div className="flex flex-wrap justify-center gap-2 sm:gap-3 mb-8 sm:mb-10 md:mb-12 px-2 sm:px-4">
             <div className="flex items-center gap-1.5 sm:gap-2 bg-white/10 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/20">
-              <Brain className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white flex-shrink-0" />
-              <span className="text-white text-xs sm:text-sm whitespace-nowrap">Claude 4 AI</span>
+              <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-300 flex-shrink-0" />
+              <span className="text-white text-xs sm:text-sm whitespace-nowrap">Grok AI</span>
             </div>
             <div className="flex items-center gap-1.5 sm:gap-2 bg-white/10 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/20">
-              <ImagePlus className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white flex-shrink-0" />
-              <span className="text-white text-xs sm:text-sm whitespace-nowrap">Image Generation</span>
+              <Brain className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-purple-300 flex-shrink-0" />
+              <span className="text-white text-xs sm:text-sm whitespace-nowrap">Claude 4</span>
             </div>
             <div className="flex items-center gap-1.5 sm:gap-2 bg-white/10 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/20">
-              <Code2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white flex-shrink-0" />
-              <span className="text-white text-xs sm:text-sm whitespace-nowrap">Code Assistant</span>
+              <ImagePlus className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-pink-300 flex-shrink-0" />
+              <span className="text-white text-xs sm:text-sm whitespace-nowrap">Image Gen</span>
             </div>
             <div className="flex items-center gap-1.5 sm:gap-2 bg-white/10 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/20">
-              <Workflow className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white flex-shrink-0" />
+              <Code2 className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-300 flex-shrink-0" />
+              <span className="text-white text-xs sm:text-sm whitespace-nowrap">Code AI</span>
+            </div>
+            <div className="flex items-center gap-1.5 sm:gap-2 bg-white/10 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/20">
+              <Eye className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-cyan-300 flex-shrink-0" />
+              <span className="text-white text-xs sm:text-sm whitespace-nowrap">Vision AI</span>
+            </div>
+            <div className="flex items-center gap-1.5 sm:gap-2 bg-white/10 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/20">
+              <Workflow className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-300 flex-shrink-0" />
               <span className="text-white text-xs sm:text-sm whitespace-nowrap">Workflows</span>
-            </div>
-            <div className="flex items-center gap-1.5 sm:gap-2 bg-white/10 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/20">
-              <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white flex-shrink-0" />
-              <span className="text-white text-xs sm:text-sm whitespace-nowrap">Team Workspaces</span>
-            </div>
-            <div className="flex items-center gap-1.5 sm:gap-2 bg-white/10 backdrop-blur-sm px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/20">
-              <Database className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white flex-shrink-0" />
-              <span className="text-white text-xs sm:text-sm whitespace-nowrap">Analytics</span>
             </div>
           </div>
           
@@ -95,12 +95,12 @@ const HeroSection = () => {
           <div className="mt-8 sm:mt-10 md:mt-12 flex flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8 text-white/70 text-xs sm:text-sm px-4">
             <div className="flex items-center gap-2">
               <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse flex-shrink-0"></div>
-              <span className="whitespace-nowrap">All Systems Operational</span>
+              <span className="whitespace-nowrap">Premium X Verified</span>
             </div>
             <span className="whitespace-nowrap">•</span>
-            <span className="whitespace-nowrap">24 AI Features Available</span>
+            <span className="whitespace-nowrap">27 AI Features</span>
             <span className="whitespace-nowrap">•</span>
-            <span className="whitespace-nowrap">No Credit Card Required</span>
+            <span className="whitespace-nowrap">Enterprise Ready</span>
           </div>
         </div>
       </div>

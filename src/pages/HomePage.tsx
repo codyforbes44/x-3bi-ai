@@ -33,31 +33,38 @@ const HomePage = () => {
 
   const aiCapabilities = [
     {
-      icon: Brain,
-      title: "Advanced AI Chat",
-      description: "Claude Opus 4 & Sonnet 4 for superior reasoning, context understanding, and intelligent conversations",
-      badge: "Most Intelligent",
+      icon: Zap,
+      title: "Grok AI",
+      description: "X's premium AI with real-time knowledge, vision capabilities, and advanced function calling",
+      badge: "X Verified",
       color: "text-blue-500"
+    },
+    {
+      icon: Brain,
+      title: "Claude 4 Chat",
+      description: "Claude Opus 4 & Sonnet 4 for superior reasoning, context understanding, and intelligent conversations",
+      badge: "Most Capable",
+      color: "text-purple-500"
     },
     {
       icon: Code2,
       title: "AI Code Assistant",
-      description: "Generate, analyze, debug, and optimize code with Claude Sonnet 4's exceptional programming capabilities",
-      badge: "Developer Favorite",
+      description: "Generate, analyze, debug, and optimize code with Claude Sonnet 4 and GPT-5's programming expertise",
+      badge: "Developer Pro",
       color: "text-green-500"
     },
     {
       icon: ImagePlus,
       title: "Image Generation",
-      description: "Create stunning visuals with DALL-E, Stable Diffusion, FLUX, and more state-of-the-art models",
-      badge: "Multiple Models",
-      color: "text-purple-500"
+      description: "DALL-E, Stable Diffusion 3, FLUX, Grok Vision, and more cutting-edge image models",
+      badge: "Multi-Model",
+      color: "text-pink-500"
     },
     {
       icon: Rocket,
       title: "System Architect",
       description: "Design complex architectures and technical solutions with Claude Opus 4's maximum intelligence",
-      badge: "Enterprise Ready",
+      badge: "Enterprise",
       color: "text-orange-500"
     },
     {
@@ -65,13 +72,6 @@ const HomePage = () => {
       title: "Voice AI",
       description: "ElevenLabs premium voice synthesis and real-time conversational AI with natural emotions",
       badge: "Studio Quality",
-      color: "text-pink-500"
-    },
-    {
-      icon: Lightbulb,
-      title: "Workflow Automation",
-      description: "Build and execute multi-step AI workflows with visual builder and advanced analytics",
-      badge: "Productivity",
       color: "text-cyan-500"
     }
   ];
@@ -95,13 +95,13 @@ const HomePage = () => {
   ];
 
   const platformBenefits = [
-    "24 Advanced AI Features - Chat, code, images, voice, workflows, and more",
-    "Latest AI Models - Claude 4, GPT-4, DALL-E, Stable Diffusion, ElevenLabs",
+    "27 Advanced AI Features - Grok, Claude 4, GPT-5, Gemini 2.0, image, voice, and more",
+    "Latest AI Models - Premium access to cutting-edge models with real-time updates",
+    "X Premium Integration - Verified organization with Grok AI capabilities",
     "Team Workspaces - Collaborate with unlimited members and role-based access",
     "Workflow Builder - Automate complex AI tasks with visual workflow editor",
     "Usage Analytics - Track performance, costs, and optimize AI usage",
-    "Enterprise Security - Row-level security, audit logs, and compliance ready",
-    "Free Tier Available - Full access to core features with generous limits"
+    "Enterprise Security - Row-level security, audit logs, and compliance ready"
   ];
 
   return (
@@ -113,9 +113,13 @@ const HomePage = () => {
       <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-muted/30">
         <div className="container mx-auto max-w-7xl">
           <div className="text-center mb-10 sm:mb-12 md:mb-16 animate-fade-in">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Try It Now</h2>
+            <Badge variant="secondary" className="mb-4">
+              <Sparkles className="w-4 h-4 mr-2" />
+              Powered by Cᴏᴅʏ Fᴏʀʙᴇꜱ
+            </Badge>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">Try AI Features Now</h2>
             <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-2xl lg:max-w-3xl mx-auto px-4">
-              Experience the power of AI instantly. No signup required—just start creating.
+              Experience premium AI instantly. No signup required—just start creating with enterprise-grade tools.
             </p>
           </div>
           
@@ -231,9 +235,9 @@ const HomePage = () => {
       {/* CTA Section */}
       <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-gradient-hero text-white">
         <div className="container mx-auto text-center max-w-4xl">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">Ready to Transform Your Workflow?</h2>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">Ready for Premium AI?</h2>
           <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-7 md:mb-8 max-w-xl lg:max-w-2xl mx-auto opacity-90 px-4 leading-relaxed">
-            Join teams using our platform to build, automate, and scale with AI. Full access to 24 features, team workspaces, and enterprise-grade security.
+            Join teams using our platform with Grok, Claude 4, GPT-5, and 24+ other AI features. Enterprise-grade security, team workspaces, and premium support.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 max-w-lg mx-auto">
             <Button 
