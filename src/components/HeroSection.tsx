@@ -76,18 +76,18 @@ const HeroSection = () => {
               size="lg" 
               variant="secondary" 
               className="w-full sm:w-auto sm:min-w-[180px] md:min-w-[200px] h-12 sm:h-14 text-base md:text-lg shadow-elegant hover-scale touch-target"
-              onClick={() => navigate(user ? ROUTES.DASHBOARD : ROUTES.AUTH)}
+              onClick={() => navigate(ROUTES.DASHBOARD)}
             >
-              <span className="truncate">{user ? 'Go to Dashboard' : 'Get Started Free'}</span>
+              <span className="truncate">Get Started Free</span>
               <ArrowRight className="ml-2 w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
               className="w-full sm:w-auto sm:min-w-[180px] md:min-w-[200px] h-12 sm:h-14 text-base md:text-lg border-white/20 text-white hover:bg-white/10 backdrop-blur-sm touch-target"
-              onClick={() => navigate(ROUTES.LEARN)}
+              onClick={() => navigate(ROUTES.DASHBOARD)}
             >
-              <span className="truncate">View Demo</span>
+              <span className="truncate">Learn More</span>
             </Button>
           </div>
 

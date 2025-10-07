@@ -86,32 +86,12 @@ const App = () => (
               <Route path="/tutorials/voice-ai" element={<VoiceAITutorial />} />
               <Route path="/tutorials/system-architecture" element={<SystemArchitectureTutorial />} />
               
-              {/* Protected routes - require authentication */}
-              <Route path="/dashboard" element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              } />
-              <Route path="/profile" element={
-                <ProtectedRoute>
-                  <ProfilePage />
-                </ProtectedRoute>
-              } />
-              <Route path="/workspaces" element={
-                <ProtectedRoute>
-                  <Workspaces />
-                </ProtectedRoute>
-              } />
-              <Route path="/integrations" element={
-                <ProtectedRoute>
-                  <Integrations />
-                </ProtectedRoute>
-              } />
-              <Route path="/api-access" element={
-                <ProtectedRoute>
-                  <APIAccess />
-                </ProtectedRoute>
-              } />
+              {/* Public routes - no authentication required */}
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/workspaces" element={<Workspaces />} />
+              <Route path="/integrations" element={<Integrations />} />
+              <Route path="/api-access" element={<APIAccess />} />
               
               {/* 404 catch-all */}
               <Route path="*" element={<NotFound />} />

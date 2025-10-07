@@ -165,15 +165,12 @@ const HomePage = () => {
             <Button 
               size="lg" 
               className="bg-gradient-hero text-white w-full sm:w-auto min-w-[250px] h-12 sm:h-14 text-base sm:text-lg touch-target"
-              onClick={() => navigate(user ? ROUTES.DASHBOARD : ROUTES.AUTH)}
+              onClick={() => navigate(ROUTES.DASHBOARD)}
             >
-              {user ? 'Go to Dashboard →' : 'Get Started - Free →'}
+              Get Started Free →
             </Button>
             <p className="text-sm text-muted-foreground mt-3">
-              {user 
-                ? 'Access all 24 features • Workspaces • Analytics'
-                : 'No credit card required • Full access to all features'
-              }
+              No credit card required • Full access to all features
             </p>
           </div>
         </div>
@@ -243,15 +240,15 @@ const HomePage = () => {
               size="lg" 
               variant="secondary" 
               className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 touch-target"
-              onClick={() => navigate(user ? ROUTES.DASHBOARD : ROUTES.AUTH)}
+              onClick={() => navigate(ROUTES.DASHBOARD)}
             >
-              {user ? 'Go to Dashboard' : 'Get Started Free'}
+              Get Started Free
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
               className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 border-white text-white hover:bg-white/10 touch-target"
-              onClick={() => navigate(ROUTES.LEARN)}
+              onClick={() => navigate(ROUTES.DASHBOARD)}
             >
               Learn More
             </Button>
