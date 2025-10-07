@@ -14,12 +14,10 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { getAllFeatures, Feature } from "@/components/dashboard/FeatureCategories";
-import { Search, Star, Clock, Sparkles, X, ChevronDown } from "lucide-react";
+import { Star, Clock, Sparkles, ChevronDown } from "lucide-react";
 
 interface AppSidebarProps {
   activeTab: string;
@@ -28,7 +26,6 @@ interface AppSidebarProps {
 
 export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
   const { open, isMobile, setOpen } = useSidebar();
-  const [searchQuery, setSearchQuery] = useState("");
   const [favorites, setFavorites] = useState<string[]>(() => {
     const saved = localStorage.getItem("favoriteFeatures");
     return saved ? JSON.parse(saved) : [];
@@ -68,19 +65,12 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
     localStorage.setItem("favoriteFeatures", JSON.stringify(updated));
   };
 
-  // Filter features based on search
-  const filteredFeatures = features.filter(feature =>
-    feature.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    feature.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    feature.badge.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   // Group features by category
   const categories = {
-    enterprise: filteredFeatures.filter(f => f.category === 'enterprise'),
-    'advanced-ai': filteredFeatures.filter(f => f.category === 'advanced-ai'),
-    'ai-tools': filteredFeatures.filter(f => f.category === 'ai-tools'),
-    utilities: filteredFeatures.filter(f => f.category === 'utilities'),
+    enterprise: features.filter(f => f.category === 'enterprise'),
+    'advanced-ai': features.filter(f => f.category === 'advanced-ai'),
+    'ai-tools': features.filter(f => f.category === 'ai-tools'),
+    utilities: features.filter(f => f.category === 'utilities'),
   };
 
   const categoryLabels = {
@@ -156,10 +146,10 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
         zIndex: 40
       } : undefined}
     >
-      {/* Header with Search */}
+      {/* Header */}
       <SidebarHeader className="border-b">
         {open && (
-          <div className="px-3 py-2 space-y-2">
+          <div className="px-3 py-2">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-semibold flex items-center gap-2">
                 <Sparkles className="w-4 h-4 text-primary" />
@@ -168,25 +158,6 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
               <Badge variant="secondary" className="text-xs">
                 {features.length}
               </Badge>
-            </div>
-            
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground pointer-events-none" />
-              <Input
-                placeholder="Search features..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-8 h-9"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery("")}
-                  className="absolute right-2.5 top-2.5 hover:bg-accent rounded-sm p-0.5 transition-colors"
-                  aria-label="Clear search"
-                >
-                  <X className="h-3.5 w-3.5 text-muted-foreground" />
-                </button>
-              )}
             </div>
           </div>
         )}
@@ -199,8 +170,8 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
 
       <SidebarContent className="overflow-y-auto scrollbar-hide">
         <div className="space-y-2 py-2">
-          {/* Recently Used - Only show when not searching */}
-          {!searchQuery && recentFeatures.length > 0 && (
+          {/* Recently Used */}
+          {recentFeatures.length > 0 && (
             <>
               <Collapsible open={openCategory === 'recent'} onOpenChange={(isOpen) => isOpen && setOpenCategory('recent')}>
                 <SidebarGroup>
@@ -228,8 +199,8 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
             </>
           )}
 
-          {/* Favorites - Only show when not searching */}
-          {!searchQuery && favoriteFeatures.length > 0 && (
+          {/* Favorites */}
+          {favoriteFeatures.length > 0 && (
             <>
               <Collapsible open={openCategory === 'favorites'} onOpenChange={(isOpen) => isOpen && setOpenCategory('favorites')}>
                 <SidebarGroup>
@@ -301,20 +272,6 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
             );
           })}
 
-          {/* No Results */}
-          {searchQuery && filteredFeatures.length === 0 && (
-            <div className="px-4 py-8 text-center text-sm text-muted-foreground">
-              {open ? (
-                <>
-                  <Search className="w-8 h-8 mx-auto mb-2 opacity-50" />
-                  <p>No features found</p>
-                  <p className="text-xs mt-1">Try a different search term</p>
-                </>
-              ) : (
-                <Search className="w-5 h-5 mx-auto opacity-50" />
-              )}
-            </div>
-          )}
         </div>
       </SidebarContent>
 
