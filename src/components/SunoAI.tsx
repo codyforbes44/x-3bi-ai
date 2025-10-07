@@ -33,7 +33,7 @@ export default function SunoAI() {
     setLoading(true);
 
     try {
-      const response = await supabase.functions.invoke("suno-ai", {
+      const { data, error } = await supabase.functions.invoke("suno-ai", {
         body: {
           prompt: prompt.trim(),
           title: title.trim() || undefined,
@@ -43,18 +43,43 @@ export default function SunoAI() {
         },
       });
 
-      if (response.error) throw response.error;
+      if (error) {
+        // Check if error has a message from the edge function
+        const errorMessage = error.message || error.msg || "Failed to generate music";
+        throw new Error(errorMessage);
+      }
 
-      setResults(response.data.songs || []);
+      // Check if the response contains an error field
+      if (data?.error) {
+        throw new Error(data.error);
+      }
+
+      setResults(data.songs || []);
       toast({
         title: "Success",
-        description: "Music generation started! This may take a few minutes.",
+        description: data.message || "Music generation started! Check back in a few minutes.",
       });
     } catch (error: any) {
-      console.error("Error:", error);
+      console.error("Error generating music:", error);
+      
+      let errorMessage = "Failed to generate music. Please try again.";
+      
+      // Parse different error types
+      if (error.message) {
+        if (error.message.includes("temporarily unavailable")) {
+          errorMessage = "Suno AI is temporarily unavailable. Please try again in a few moments.";
+        } else if (error.message.includes("Rate limit")) {
+          errorMessage = "Rate limit reached. Please wait a moment before trying again.";
+        } else if (error.message.includes("API key")) {
+          errorMessage = "Configuration error. Please contact support.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
       toast({
-        title: "Error",
-        description: error.message || "Failed to generate music",
+        title: "Generation Failed",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
@@ -64,26 +89,36 @@ export default function SunoAI() {
 
   const checkStatus = async (songId: string) => {
     try {
-      const response = await supabase.functions.invoke("suno-ai", {
+      const { data, error } = await supabase.functions.invoke("suno-ai", {
         body: { action: "check_status", song_id: songId },
       });
 
-      if (response.error) throw response.error;
+      if (error) {
+        throw new Error(error.message || "Failed to check status");
+      }
+
+      if (data?.error) {
+        throw new Error(data.error);
+      }
 
       const updatedResults = results.map((song) =>
-        song.id === songId ? response.data : song
+        song.id === songId ? data : song
       );
       setResults(updatedResults);
 
+      const statusMessage = data.status === "complete" 
+        ? "Your music is ready!" 
+        : `Song status: ${data.status || "processing"}`;
+
       toast({
         title: "Status Updated",
-        description: `Song status: ${response.data.status}`,
+        description: statusMessage,
       });
     } catch (error: any) {
-      console.error("Error:", error);
+      console.error("Error checking status:", error);
       toast({
-        title: "Error",
-        description: "Failed to check status",
+        title: "Status Check Failed",
+        description: error.message || "Failed to check song status",
         variant: "destructive",
       });
     }

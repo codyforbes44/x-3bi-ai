@@ -127,11 +127,34 @@ serve(async (req) => {
 
   } catch (error) {
     console.error('Error in Suno AI function:', error);
+    
+    // Provide user-friendly error messages
+    let errorMessage = 'An unexpected error occurred';
+    let statusCode = 500;
+    
+    if (error.message) {
+      if (error.message.includes('temporarily unavailable')) {
+        errorMessage = error.message;
+        statusCode = 503;
+      } else if (error.message.includes('Rate limit')) {
+        errorMessage = error.message;
+        statusCode = 429;
+      } else if (error.message.includes('API key')) {
+        errorMessage = 'Suno AI configuration error. Please contact support.';
+        statusCode = 500;
+      } else if (error.message.includes('SUNO_API_KEY not configured')) {
+        errorMessage = 'Suno AI is not properly configured. Please contact support.';
+        statusCode = 500;
+      } else {
+        errorMessage = error.message;
+      }
+    }
+    
     return new Response(
       JSON.stringify({
-        error: error.message || 'An unexpected error occurred',
+        error: errorMessage,
       }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: statusCode }
     );
   }
 });
