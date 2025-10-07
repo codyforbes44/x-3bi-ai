@@ -12,7 +12,6 @@ import {
   Lightbulb,
   Rocket,
   Heart,
-  Scale,
   Briefcase,
   CheckCircle2,
   ArrowRight,
@@ -81,11 +80,6 @@ const HomePage = () => {
       icon: Heart,
       title: "Health & Wellness",
       description: "Get AI guidance on physical health, mental wellness, and lifestyle"
-    },
-    {
-      icon: Scale,
-      title: "Legal Advice",
-      description: "Understand your rights and navigate legal matters with AI support"
     },
     {
       icon: Briefcase,
