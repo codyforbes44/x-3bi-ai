@@ -100,7 +100,7 @@ const HeroSection = () => {
             <span className="whitespace-nowrap">•</span>
             <span className="whitespace-nowrap">27 AI Features</span>
             <span className="whitespace-nowrap">•</span>
-            <span className="whitespace-nowrap">Enterprise Ready</span>
+            <span className="whitespace-nowrap">ApplyAI</span>
           </div>
         </div>
       </div>
