@@ -20,7 +20,6 @@ export const ROUTES = {
   
   // Support & Contact
   CONTACT: '/contact',
-  ISSUES: '/issues',
   NEWSLETTER: '/newsletter',
   VOLUNTEER: '/volunteer',
   DONATE: '/donate',
@@ -52,5 +51,4 @@ export const MAIN_NAVIGATION = [
   { name: 'Community', href: ROUTES.COMMUNITY },
   { name: 'Our Mission', href: ROUTES.MISSION },
   { name: 'Partners', href: ROUTES.PARTNERS },
-  { name: 'Issues', href: ROUTES.ISSUES },
 ] as const;

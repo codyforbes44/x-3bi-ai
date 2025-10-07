@@ -21,7 +21,7 @@ const Pricing = lazy(() => import("./pages/Pricing"));
 const Enterprise = lazy(() => import("./pages/Enterprise"));
 const Learn = lazy(() => import("./pages/Learn"));
 const Launched = lazy(() => import("./pages/Launched"));
-const Issues = lazy(() => import("./pages/Issues"));
+
 const Mission = lazy(() => import("./pages/Mission"));
 const Team = lazy(() => import("./pages/Team"));
 const Impact = lazy(() => import("./pages/Impact"));
@@ -68,7 +68,7 @@ const App = () => (
                 <Route path="/enterprise" element={<Enterprise />} />
                 <Route path="/learn" element={<Learn />} />
                 <Route path="/launched" element={<Launched />} />
-                <Route path="/issues" element={<Issues />} />
+                
                 <Route path="/mission" element={<Mission />} />
                 <Route path="/team" element={<Team />} />
                 <Route path="/impact" element={<Impact />} />
