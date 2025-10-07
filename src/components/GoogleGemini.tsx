@@ -90,15 +90,9 @@ export default function GoogleGemini() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <div className="flex items-center gap-2">
-          <Sparkles className="w-6 h-6 text-primary" />
-          <div>
-            <CardTitle>Google Gemini</CardTitle>
-            <CardDescription>
-              Multimodal AI with 2M token context - understand text, images, video, and audio
-            </CardDescription>
-          </div>
-        </div>
+        <CardDescription>
+          Multimodal AI with 2M token context - understand text, images, video, and audio
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">

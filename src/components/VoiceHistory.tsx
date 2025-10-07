@@ -99,10 +99,6 @@ export default function VoiceHistory() {
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="flex items-center gap-2">
-              <Mic className="w-5 h-5 text-primary" />
-              Voice History
-            </CardTitle>
             <CardDescription>
               Play, download, or manage your voice recordings
             </CardDescription>

@@ -87,12 +87,8 @@ const AIVoice = () => {
 
   return (
     <Card className="h-[600px] flex flex-col">
-      <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2">
-          <Volume2 className="w-5 h-5 text-primary" />
-          AI Voice Generator
-          <Badge variant="secondary" className="ml-auto">TTS-1</Badge>
-        </CardTitle>
+      <CardHeader className="pb-4 flex-row items-center justify-end">
+        <Badge variant="secondary">TTS-1</Badge>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col space-y-4">
         <div className="space-y-4">

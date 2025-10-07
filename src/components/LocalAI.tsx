@@ -244,16 +244,14 @@ const LocalAI: React.FC = () => {
   return (
     <Card className="h-[700px] flex flex-col">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2">
-          <Cpu className="w-5 h-5 text-primary" />
-          Local AI Models
+        <div className="flex items-center justify-between">
+          <CardDescription>
+            Run AI models locally in your browser with privacy and offline capabilities. No data leaves your device.
+          </CardDescription>
           <Badge variant="secondary" className={isSupported ? "bg-green-500/20 text-green-500 border-green-500/30" : "bg-yellow-500/20 text-yellow-500 border-yellow-500/30"}>
             {isSupported ? "WebGPU" : "CPU"}
           </Badge>
-        </CardTitle>
-        <CardDescription>
-          Run AI models locally in your browser with privacy and offline capabilities. No data leaves your device.
-        </CardDescription>
+        </div>
       </CardHeader>
 
       <CardContent className="flex-1 flex flex-col space-y-6">

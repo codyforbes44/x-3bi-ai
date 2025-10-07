@@ -91,12 +91,8 @@ const AIChat = () => {
 
   return (
     <Card className="h-[600px] md:h-[700px] flex flex-col">
-      <CardHeader className="pb-3 md:pb-4">
-        <CardTitle className="flex items-center gap-2 text-base md:text-lg">
-          <Bot className="w-4 h-4 md:w-5 md:h-5 text-primary" />
-          AI Assistant
-          <Badge variant="secondary" className="ml-auto text-xs">GPT-4o Mini</Badge>
-        </CardTitle>
+      <CardHeader className="pb-3 md:pb-4 flex-row items-center justify-end">
+        <Badge variant="secondary" className="text-xs">GPT-4o Mini</Badge>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col p-0 min-h-0">
         <ScrollArea className="flex-1 px-3 md:px-6" ref={scrollAreaRef}>

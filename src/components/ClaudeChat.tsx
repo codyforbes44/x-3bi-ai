@@ -88,22 +88,14 @@ const ClaudeChat = () => {
   return (
     <Card className="h-[600px] flex flex-col">
       <CardHeader className="pb-4">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-600 rounded-lg flex items-center justify-center">
-            <Brain className="w-4 h-4 text-white" />
-          </div>
-          <div>
-            <CardTitle className="flex items-center gap-2">
-              Claude 4 Assistant
-              <Badge variant="secondary" className="text-xs">
-                <Sparkles className="w-3 h-3 mr-1" />
-                Advanced AI
-              </Badge>
-            </CardTitle>
-            <CardDescription>
-              Powered by Anthropic's most capable reasoning model
-            </CardDescription>
-          </div>
+        <div className="flex items-center justify-between">
+          <CardDescription>
+            Powered by Anthropic's most capable reasoning model
+          </CardDescription>
+          <Badge variant="secondary" className="text-xs">
+            <Sparkles className="w-3 h-3 mr-1" />
+            Advanced AI
+          </Badge>
         </div>
       </CardHeader>
 

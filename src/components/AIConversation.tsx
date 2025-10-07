@@ -134,11 +134,9 @@ const AIConversation = () => {
   return (
     <Card className="h-[700px] flex flex-col">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2">
-          <MessageSquare className="w-5 h-5 text-primary" />
-          AI Conversation
-          <Badge variant="secondary" className="ml-auto">Voice + Text</Badge>
-        </CardTitle>
+        <div className="flex items-center justify-end">
+          <Badge variant="secondary">Voice + Text</Badge>
+        </div>
         
         {/* Controls */}
         <div className="flex items-center gap-4 pt-2">

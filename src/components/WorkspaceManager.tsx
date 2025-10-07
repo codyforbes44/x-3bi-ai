@@ -164,10 +164,6 @@ const WorkspaceManager = () => {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="flex items-center gap-2">
-                <Building2 className="w-5 h-5 text-primary" />
-                Workspace Management
-              </CardTitle>
               <CardDescription>
                 Manage your collaborative AI workspaces and team members
               </CardDescription>

@@ -97,12 +97,8 @@ const AICodeAssistant = () => {
 
   return (
     <Card className="h-[600px] flex flex-col">
-      <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2">
-          <Code className="w-5 h-5 text-primary" />
-          AI Code Assistant
-          <Badge variant="secondary" className="ml-auto">GPT-4o Mini</Badge>
-        </CardTitle>
+      <CardHeader className="pb-4 flex-row items-center justify-end">
+        <Badge variant="secondary">GPT-4o Mini</Badge>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col space-y-4">
         <div className="space-y-4">

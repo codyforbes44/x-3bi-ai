@@ -97,12 +97,8 @@ const WebScraper = () => {
 
   return (
     <Card className="h-[700px] flex flex-col">
-      <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2">
-          <Globe className="w-5 h-5 text-primary" />
-          Web Scraper
-          <Badge variant="secondary" className="ml-auto">Advanced Extraction</Badge>
-        </CardTitle>
+      <CardHeader className="pb-4 flex-row items-center justify-end">
+        <Badge variant="secondary">Advanced Extraction</Badge>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col space-y-4">
         <div className="space-y-4">

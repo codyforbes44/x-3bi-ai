@@ -70,12 +70,8 @@ const AIImageGenerator = () => {
 
   return (
     <Card className="h-[700px] md:h-[800px] flex flex-col">
-      <CardHeader className="pb-3 md:pb-4">
-        <CardTitle className="flex items-center gap-2 text-base md:text-lg">
-          <Image className="w-4 h-4 md:w-5 md:h-5 text-primary" />
-          AI Image Generator
-          <Badge variant="secondary" className="ml-auto text-xs">DALL-E 3</Badge>
-        </CardTitle>
+      <CardHeader className="pb-3 md:pb-4 flex-row items-center justify-end">
+        <Badge variant="secondary" className="text-xs">DALL-E 3</Badge>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col space-y-3 md:space-y-4 min-h-0">
         <div className="space-y-3 md:space-y-4">

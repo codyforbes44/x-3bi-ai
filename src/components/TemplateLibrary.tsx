@@ -158,10 +158,6 @@ export default function TemplateLibrary() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-primary" />
-          Template Library
-        </CardTitle>
         <CardDescription>
           Pre-built prompts for common AI tasks - copy and customize
         </CardDescription>

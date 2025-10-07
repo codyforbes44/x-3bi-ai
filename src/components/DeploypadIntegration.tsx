@@ -189,10 +189,6 @@ const DeploypadIntegration = () => {
     return (
       <Card className="max-w-2xl mx-auto">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Rocket className="w-5 h-5 text-blue-500" />
-            Connect to Deploypad
-          </CardTitle>
           <CardDescription>
             Deploy your Lovable projects to Deploypad with one click
           </CardDescription>

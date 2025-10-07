@@ -193,10 +193,6 @@ export default function ExportCenter() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Download className="w-5 h-5 text-primary" />
-          Export Center
-        </CardTitle>
         <CardDescription>
           Export your AI-generated content in various formats
         </CardDescription>

@@ -160,10 +160,6 @@ export default function MultiModelChat() {
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle className="flex items-center gap-2">
-              <Sparkles className="w-5 h-5 text-primary" />
-              Multi-Model Chat
-            </CardTitle>
             <CardDescription>
               Compare responses from different AI models or use single model mode
             </CardDescription>

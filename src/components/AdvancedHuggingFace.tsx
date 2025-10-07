@@ -107,15 +107,9 @@ export default function AdvancedHuggingFace() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <div className="flex items-center gap-2">
-          <Sparkles className="w-6 h-6 text-primary" />
-          <div>
-            <CardTitle>Advanced Hugging Face AI</CardTitle>
-            <CardDescription>
-              Access powerful AI models for image generation, NLP, vision, and audio tasks
-            </CardDescription>
-          </div>
-        </div>
+        <CardDescription>
+          Access powerful AI models for image generation, NLP, vision, and audio tasks
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <Tabs defaultValue="text" className="w-full">

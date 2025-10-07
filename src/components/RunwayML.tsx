@@ -126,15 +126,9 @@ export default function RunwayML() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <div className="flex items-center gap-2">
-          <Video className="w-6 h-6 text-primary" />
-          <div>
-            <CardTitle>RunwayML Gen-3</CardTitle>
-            <CardDescription>
-              Advanced AI video generation - text to video and image to video
-            </CardDescription>
-          </div>
-        </div>
+        <CardDescription>
+          Advanced AI video generation - text to video and image to video
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">

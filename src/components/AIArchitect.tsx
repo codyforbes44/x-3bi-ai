@@ -149,15 +149,11 @@ const AIArchitect = () => {
 
   return (
     <Card className="h-[800px] flex flex-col">
-      <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2">
-          <Code2 className="w-5 h-5 text-primary" />
-          AI Code Architect
-          <Badge variant="secondary" className="ml-auto flex items-center gap-1">
-            <Sparkles className="w-3 h-3" />
-            GPT-4o
-          </Badge>
-        </CardTitle>
+      <CardHeader className="pb-4 flex-row items-center justify-end">
+        <Badge variant="secondary" className="flex items-center gap-1">
+          <Sparkles className="w-3 h-3" />
+          GPT-4o
+        </Badge>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col space-y-6">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

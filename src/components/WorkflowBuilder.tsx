@@ -107,10 +107,6 @@ const WorkflowBuilder = () => {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="flex items-center gap-2">
-                <Workflow className="w-5 h-5 text-primary" />
-                AI Workflow Automation
-              </CardTitle>
               <CardDescription>
                 Create and manage automated AI workflows for complex tasks
               </CardDescription>

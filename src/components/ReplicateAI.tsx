@@ -137,15 +137,9 @@ export default function ReplicateAI() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <div className="flex items-center gap-2">
-          <Sparkles className="w-6 h-6 text-primary" />
-          <div>
-            <CardTitle>Replicate AI</CardTitle>
-            <CardDescription>
-              Access hundreds of AI models - image generation, video, upscaling, and more
-            </CardDescription>
-          </div>
-        </div>
+        <CardDescription>
+          Access hundreds of AI models - image generation, video, upscaling, and more
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">

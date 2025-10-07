@@ -190,15 +190,9 @@ export default function ElevenLabsConversation() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <div className="flex items-center gap-2">
-          <Phone className="w-6 h-6 text-primary" />
-          <div>
-            <CardTitle>ElevenLabs Conversational AI</CardTitle>
-            <CardDescription>
-              Real-time voice conversations with AI agents
-            </CardDescription>
-          </div>
-        </div>
+        <CardDescription>
+          Real-time voice conversations with AI agents
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="flex items-center justify-center gap-4">

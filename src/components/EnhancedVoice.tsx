@@ -117,10 +117,6 @@ export default function EnhancedVoice() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Mic className="w-5 h-5 text-primary" />
-          Enhanced Voice Synthesis
-        </CardTitle>
         <CardDescription>
           Generate natural speech with multiple voice options and providers
         </CardDescription>

@@ -127,14 +127,10 @@ export default function SunoAI() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <div className="flex items-center gap-2">
-          <Music className="w-6 h-6 text-primary" />
-          <div className="flex-1">
-            <CardTitle>Suno AI Music Generator</CardTitle>
-            <CardDescription>
-              Generate custom music and songs with AI - describe what you want to hear
-            </CardDescription>
-          </div>
+        <div className="flex items-center justify-between">
+          <CardDescription className="flex-1">
+            Generate custom music and songs with AI - describe what you want to hear
+          </CardDescription>
         </div>
         <div className="mt-4 p-4 bg-amber-500/10 border border-amber-500/20 rounded-lg">
           <p className="text-sm text-amber-600 dark:text-amber-400">

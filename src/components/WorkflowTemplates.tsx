@@ -127,10 +127,6 @@ export default function WorkflowTemplates() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <GitBranch className="w-5 h-5 text-primary" />
-          Workflow Templates
-        </CardTitle>
         <CardDescription>
           Pre-built automation workflows you can customize and deploy
         </CardDescription>

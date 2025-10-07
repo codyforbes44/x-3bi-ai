@@ -131,15 +131,11 @@ const PremiumVoice = () => {
 
   return (
     <Card className="h-[700px] flex flex-col">
-      <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2">
-          <Volume2 className="w-5 h-5 text-primary" />
-          Premium Voice Generator
-          <Badge variant="secondary" className="ml-auto flex items-center gap-1">
-            <Sparkles className="w-3 h-3" />
-            AI Enhanced
-          </Badge>
-        </CardTitle>
+      <CardHeader className="pb-4 flex-row items-center justify-end">
+        <Badge variant="secondary" className="flex items-center gap-1">
+          <Sparkles className="w-3 h-3" />
+          AI Enhanced
+        </Badge>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col space-y-4">
         <Tabs value={provider} onValueChange={handleProviderChange} className="w-full">

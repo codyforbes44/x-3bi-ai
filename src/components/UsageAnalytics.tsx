@@ -65,10 +65,6 @@ export default function UsageAnalytics() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <BarChart3 className="w-5 h-5 text-primary" />
-          Usage Analytics
-        </CardTitle>
         <CardDescription>
           Track your AI usage, costs, and performance metrics
         </CardDescription>

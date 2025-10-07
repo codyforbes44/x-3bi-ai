@@ -209,9 +209,7 @@ const VoiceInterface: React.FC = () => {
   return (
     <Card className="h-[700px] flex flex-col">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2">
-          <Radio className="w-5 h-5 text-primary" />
-          Real-Time AI Voice Interface
+        <div className="flex items-center justify-end gap-2 mb-2">
           <Badge variant="secondary" className={isConnected ? "bg-green-500/20 text-green-500 border-green-500/30" : "bg-red-500/20 text-red-500 border-red-500/30"}>
             {isConnected ? "Connected" : "Disconnected"}
           </Badge>
@@ -221,7 +219,7 @@ const VoiceInterface: React.FC = () => {
               Speaking
             </Badge>
           )}
-        </CardTitle>
+        </div>
         <CardDescription>
           Real-time voice conversations with OpenAI's latest models. Speak naturally or type messages.
         </CardDescription>

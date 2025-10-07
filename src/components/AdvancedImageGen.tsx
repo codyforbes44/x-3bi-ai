@@ -123,10 +123,6 @@ export default function AdvancedImageGen() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Wand2 className="w-5 h-5 text-primary" />
-          Advanced Image Generation
-        </CardTitle>
         <CardDescription>
           Generate images with advanced controls using gpt-image-1
         </CardDescription>

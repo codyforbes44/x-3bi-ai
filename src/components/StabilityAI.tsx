@@ -77,15 +77,9 @@ export default function StabilityAI() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <div className="flex items-center gap-2">
-          <Wand2 className="w-6 h-6 text-primary" />
-          <div>
-            <CardTitle>Stability AI</CardTitle>
-            <CardDescription>
-              Professional image generation with Stable Diffusion 3
-            </CardDescription>
-          </div>
-        </div>
+        <CardDescription>
+          Professional image generation with Stable Diffusion 3
+        </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
         <div className="space-y-4">

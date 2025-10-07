@@ -88,15 +88,11 @@ const AIInsights = () => {
 
   return (
     <Card className="h-[700px] flex flex-col">
-      <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2">
-          <BarChart3 className="w-5 h-5 text-primary" />
-          AI Insights Engine
-          <Badge variant="secondary" className="ml-auto flex items-center gap-1">
-            <Brain className="w-3 h-3" />
-            Advanced Analytics
-          </Badge>
-        </CardTitle>
+      <CardHeader className="pb-4 flex-row items-center justify-end">
+        <Badge variant="secondary" className="flex items-center gap-1">
+          <Brain className="w-3 h-3" />
+          Advanced Analytics
+        </Badge>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col space-y-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

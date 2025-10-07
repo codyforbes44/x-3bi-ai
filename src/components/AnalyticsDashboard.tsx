@@ -99,10 +99,6 @@ const AnalyticsDashboard = () => {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle className="flex items-center gap-2">
-                <BarChart3 className="w-5 h-5 text-primary" />
-                Analytics Dashboard
-              </CardTitle>
               <CardDescription>
                 Monitor AI platform usage, performance, and user engagement
               </CardDescription>

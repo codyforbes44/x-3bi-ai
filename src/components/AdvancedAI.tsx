@@ -243,16 +243,14 @@ const AdvancedAI: React.FC = () => {
   return (
     <Card className="h-[700px] flex flex-col">
       <CardHeader className="pb-4">
-        <CardTitle className="flex items-center gap-2">
-          <Brain className="w-5 h-5 text-primary" />
-          Advanced AI Intelligence
+        <div className="flex items-center justify-between">
+          <CardDescription>
+            Access Claude 4, Perplexity real-time search, and advanced AI capabilities with function calling and image analysis.
+          </CardDescription>
           <Badge variant="secondary" className="bg-primary/20 text-primary border-primary/30">
             Multi-Modal
           </Badge>
-        </CardTitle>
-        <CardDescription>
-          Access Claude 4, Perplexity real-time search, and advanced AI capabilities with function calling and image analysis.
-        </CardDescription>
+        </div>
       </CardHeader>
 
       <CardContent className="flex-1 flex flex-col p-0">
