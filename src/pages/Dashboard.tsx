@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { LayoutDashboard } from "lucide-react";
 
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState("overview");
+  const [activeTab, setActiveTab] = useState("grok-chat");
   const isMobile = useIsMobile();
   
   // Enable keyboard shortcuts

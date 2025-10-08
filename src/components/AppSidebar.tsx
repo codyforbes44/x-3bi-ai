@@ -36,7 +36,7 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
   });
   
   // Track which category is open (accordion - only one at a time)
-  const [openCategory, setOpenCategory] = useState<string>('ai-tools');
+  const [openCategory, setOpenCategory] = useState<string>('advanced-ai');
 
   const features = getAllFeatures();
 
