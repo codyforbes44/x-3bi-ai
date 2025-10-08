@@ -111,10 +111,10 @@ export const GrokChat = () => {
                       Grok 3
                     </div>
                   </SelectItem>
-                  <SelectItem value="grok-vision">
+                  <SelectItem value="grok-3">
                     <div className="flex items-center gap-2">
                       <Sparkles className="w-4 h-4" />
-                      Grok Vision
+                      Grok 3 (Vision Enabled)
                     </div>
                   </SelectItem>
                 </SelectContent>
