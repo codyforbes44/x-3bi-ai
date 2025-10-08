@@ -76,7 +76,7 @@ export const GrokVision = () => {
             role: msg.role,
             content: msg.content,
           })),
-          model: 'grok-vision-beta', // Grok Vision model
+          model: 'grok-vision', // Grok Vision model
           temperature: 0.7,
         },
       });

@@ -17,7 +17,7 @@ export const GrokChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [model, setModel] = useState('grok-beta');
+  const [model, setModel] = useState('grok-3');
   const [systemPrompt, setSystemPrompt] = useState('You are Grok, a witty and helpful AI assistant created by xAI. You provide accurate, engaging responses with a touch of humor.');
   const { toast } = useToast();
 
@@ -105,16 +105,16 @@ export const GrokChat = () => {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="grok-beta">
+                  <SelectItem value="grok-3">
                     <div className="flex items-center gap-2">
                       <Brain className="w-4 h-4" />
-                      Grok Beta
+                      Grok 3
                     </div>
                   </SelectItem>
-                  <SelectItem value="grok-vision-beta">
+                  <SelectItem value="grok-vision">
                     <div className="flex items-center gap-2">
                       <Sparkles className="w-4 h-4" />
-                      Grok Vision Beta
+                      Grok Vision
                     </div>
                   </SelectItem>
                 </SelectContent>
