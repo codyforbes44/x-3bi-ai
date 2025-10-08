@@ -88,6 +88,120 @@ const HomePage = () => {
       <Header />
       <HeroSection />
       
+      {/* Grok AI Spotlight Section */}
+      <section className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 bg-gradient-to-br from-blue-950/20 via-background to-purple-950/20 border-y border-border/50">
+        <div className="container mx-auto max-w-7xl">
+          <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+            {/* Left Content */}
+            <div className="animate-fade-in">
+              <Badge variant="secondary" className="mb-4 bg-blue-500/10 text-blue-500 border-blue-500/20">
+                <Zap className="w-4 h-4 mr-2" />
+                Powered by X (Twitter)
+              </Badge>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                Grok AI Integration
+              </h2>
+              <p className="text-lg sm:text-xl text-muted-foreground mb-8 leading-relaxed">
+                Experience X's most advanced AI directly in our platform. Built by xAI, Grok brings real-time knowledge, 
+                multimodal understanding, and powerful reasoning to your workflows.
+              </p>
+              
+              {/* Feature List */}
+              <div className="space-y-4 mb-8">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-blue-500/10 rounded-lg flex-shrink-0">
+                    <Brain className="w-5 h-5 text-blue-500" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1">Grok 3 - Latest Model</h3>
+                    <p className="text-sm text-muted-foreground">Advanced reasoning and real-time knowledge up to October 2025</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-purple-500/10 rounded-lg flex-shrink-0">
+                    <ImagePlus className="w-5 h-5 text-purple-500" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1">Vision Capabilities</h3>
+                    <p className="text-sm text-muted-foreground">Analyze images, understand visual context, and extract insights</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-cyan-500/10 rounded-lg flex-shrink-0">
+                    <Code2 className="w-5 h-5 text-cyan-500" />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold mb-1">Function Calling</h3>
+                    <p className="text-sm text-muted-foreground">Execute tools, search data, and automate complex workflows</p>
+                  </div>
+                </div>
+              </div>
+
+              <Button 
+                size="lg" 
+                className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto group"
+                onClick={() => navigate(ROUTES.DASHBOARD)}
+              >
+                Try Grok Now
+                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </div>
+
+            {/* Right Visual Card */}
+            <div className="relative">
+              <Card className="border-2 border-blue-500/20 bg-gradient-to-br from-blue-950/30 to-purple-950/30 backdrop-blur-sm overflow-hidden">
+                <CardContent className="p-8">
+                  <div className="space-y-6">
+                    {/* Chat Example */}
+                    <div className="space-y-3">
+                      <div className="flex justify-end">
+                        <div className="bg-blue-600 text-white rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
+                          <p className="text-sm">Analyze this market trend and give insights</p>
+                        </div>
+                      </div>
+                      <div className="flex justify-start">
+                        <div className="bg-muted rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%]">
+                          <div className="flex items-center gap-2 mb-2">
+                            <Zap className="w-4 h-4 text-blue-500" />
+                            <span className="text-xs font-semibold text-blue-500">Grok</span>
+                          </div>
+                          <p className="text-sm">Based on current data, I'm seeing a 23% upward trend in Q4 2025. Key factors include...</p>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Feature Pills */}
+                    <div className="flex flex-wrap gap-2 pt-4 border-t border-border/50">
+                      <Badge variant="secondary" className="bg-blue-500/10 text-blue-500">
+                        <CheckCircle2 className="w-3 h-3 mr-1" />
+                        Real-time Data
+                      </Badge>
+                      <Badge variant="secondary" className="bg-purple-500/10 text-purple-500">
+                        <CheckCircle2 className="w-3 h-3 mr-1" />
+                        Vision AI
+                      </Badge>
+                      <Badge variant="secondary" className="bg-cyan-500/10 text-cyan-500">
+                        <CheckCircle2 className="w-3 h-3 mr-1" />
+                        Function Calling
+                      </Badge>
+                      <Badge variant="secondary" className="bg-green-500/10 text-green-500">
+                        <CheckCircle2 className="w-3 h-3 mr-1" />
+                        X Verified
+                      </Badge>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Floating Badge */}
+              <div className="absolute -top-4 -right-4 bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-full p-4 shadow-xl animate-pulse-slow">
+                <Sparkles className="w-6 h-6" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
       {/* Quick Start Hub - Working Mini Tools */}
       <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-muted/30">
         <div className="container mx-auto max-w-7xl">
