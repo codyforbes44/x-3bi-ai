@@ -134,6 +134,8 @@ export const GrokTools = () => {
     setIsLoading(true);
 
     try {
+      console.log('Calling Grok Tools with:', { messageCount: updatedMessages.length, toolCount: tools.length });
+      
       // Send initial request with tools
       const { data, error } = await supabase.functions.invoke('grok', {
         body: {
@@ -149,7 +151,12 @@ export const GrokTools = () => {
         },
       });
 
-      if (error) throw error;
+      console.log('Grok Tools response:', { data, error });
+
+      if (error) {
+        console.error('Grok Tools error details:', error);
+        throw error;
+      }
 
       const choice = data.choices[0];
       
@@ -217,11 +224,11 @@ export const GrokTools = () => {
 
         setMessages([...updatedMessages, assistantMessage]);
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error calling Grok with tools:', error);
       toast({
         title: 'Error',
-        description: 'Failed to get response from Grok. Please try again.',
+        description: error?.message || 'Failed to get response from Grok. Please try again.',
         variant: 'destructive',
       });
     } finally {

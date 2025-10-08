@@ -36,6 +36,8 @@ export const GrokChat = () => {
     setIsLoading(true);
 
     try {
+      console.log('Calling Grok with:', { model, messageCount: messagesToSend.length });
+      
       const { data, error } = await supabase.functions.invoke('grok', {
         body: {
           messages: messagesToSend.map(msg => ({
@@ -47,7 +49,17 @@ export const GrokChat = () => {
         },
       });
 
-      if (error) throw error;
+      console.log('Grok response:', { data, error });
+
+      if (error) {
+        console.error('Grok error details:', error);
+        throw error;
+      }
+
+      if (!data?.choices?.[0]?.message?.content) {
+        console.error('Invalid response structure:', data);
+        throw new Error('Invalid response from Grok');
+      }
 
       const assistantMessage: Message = {
         role: 'assistant',
@@ -55,11 +67,11 @@ export const GrokChat = () => {
       };
 
       setMessages([...messages, userMessage, assistantMessage]);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error calling Grok:', error);
       toast({
         title: 'Error',
-        description: 'Failed to get response from Grok. Please try again.',
+        description: error?.message || 'Failed to get response from Grok. Please try again.',
         variant: 'destructive',
       });
     } finally {

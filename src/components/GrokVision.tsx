@@ -68,6 +68,8 @@ export const GrokVision = () => {
     setIsLoading(true);
 
     try {
+      console.log('Calling Grok Vision with:', { messageCount: updatedMessages.length });
+      
       const { data, error } = await supabase.functions.invoke('grok', {
         body: {
           messages: updatedMessages.map(msg => ({
@@ -79,7 +81,17 @@ export const GrokVision = () => {
         },
       });
 
-      if (error) throw error;
+      console.log('Grok Vision response:', { data, error });
+
+      if (error) {
+        console.error('Grok Vision error details:', error);
+        throw error;
+      }
+
+      if (!data?.choices?.[0]?.message?.content) {
+        console.error('Invalid response structure:', data);
+        throw new Error('Invalid response from Grok Vision');
+      }
 
       const assistantMessage: Message = {
         role: 'assistant',
@@ -87,11 +99,11 @@ export const GrokVision = () => {
       };
 
       setMessages([...updatedMessages, assistantMessage]);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error calling Grok Vision:', error);
       toast({
         title: 'Error',
-        description: 'Failed to get response from Grok Vision. Please try again.',
+        description: error?.message || 'Failed to get response from Grok Vision. Please try again.',
         variant: 'destructive',
       });
     } finally {
