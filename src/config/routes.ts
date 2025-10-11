@@ -34,6 +34,9 @@ export const ROUTES = {
   // Workspaces
   WORKSPACES: '/workspaces',
   INTEGRATIONS: '/integrations',
+  
+  // Multi-Modal Memory
+  MEMORY: '/memory',
 } as const;
 
 export const TUTORIAL_ROUTES = {

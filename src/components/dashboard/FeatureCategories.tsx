@@ -1,4 +1,4 @@
-import { Building2, GitBranch, Brain, Cpu, Bot, MessageSquare, Globe, Code2, BarChart3, Image, Mic, Volume2, Code, Sparkles, Rocket, Download, FileText, Wand2, Users, Music, Video, Phone, Zap, Eye, Wrench } from "lucide-react";
+import { Building2, GitBranch, Brain, Cpu, Bot, MessageSquare, Globe, Code2, BarChart3, Image, Mic, Volume2, Code, Sparkles, Rocket, Download, FileText, Wand2, Users, Music, Video, Phone, Zap, Eye, Wrench, Database } from "lucide-react";
 
 export interface Feature {
   id: string;
@@ -332,6 +332,15 @@ export const features: Feature[] = [
     color: "text-gray-500",
     badge: "Data",
     category: "utilities"
+  },
+  {
+    id: "memory",
+    title: "Multi-Modal Memory",
+    description: "TIMP-inspired vector storage with Grok Vision analysis",
+    icon: Database,
+    color: "text-violet-500",
+    badge: "pgvector",
+    category: "advanced-ai"
   }
 ];
 

@@ -1,7 +1,7 @@
 import { TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Brain, Cpu, Bot, Sparkles, MessageSquare, Music, Video, Phone, Wand2, Zap, Eye, Wrench } from "lucide-react";
+import { Brain, Cpu, Bot, Sparkles, MessageSquare, Music, Video, Phone, Wand2, Zap, Eye, Wrench, Database } from "lucide-react";
 import AdvancedAI from "@/components/AdvancedAI";
 import LocalAI from "@/components/LocalAI";
 import VoiceInterface from "@/components/VoiceInterface";
@@ -18,6 +18,7 @@ import RunwayML from "@/components/RunwayML";
 import { GrokChat } from "@/components/GrokChat";
 import { GrokVision } from "@/components/GrokVision";
 import { GrokTools } from "@/components/GrokTools";
+import MultiModalMemory from "@/components/MultiModalMemory";
 
 const AISection = () => {
   return (
@@ -276,6 +277,22 @@ const AISection = () => {
           </CardHeader>
         </Card>
         <GrokTools />
+      </TabsContent>
+
+      <TabsContent value="memory" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Database className="w-5 h-5 text-violet-500" />
+              Multi-Modal Memory System
+              <Badge variant="secondary" className="bg-violet-500/20 text-violet-500 border-violet-500/30">pgvector</Badge>
+            </CardTitle>
+            <CardDescription>
+              TIMP-inspired storage with vector embeddings, Grok Vision analysis, and semantic search across text, images, audio, and video.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <MultiModalMemory />
       </TabsContent>
     </>
   );

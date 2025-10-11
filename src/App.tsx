@@ -43,6 +43,7 @@ const Workspaces = lazy(() => import("./pages/Workspaces"));
 const Integrations = lazy(() => import("./pages/Integrations"));
 const APIDemos = lazy(() => import("./pages/APIDemos"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const MemoryPage = lazy(() => import("./pages/MemoryPage"));
 
 const queryClient = new QueryClient();
 
@@ -95,6 +96,7 @@ const App = () => (
                 <Route path="/workspaces" element={<Workspaces />} />
                 <Route path="/integrations" element={<Integrations />} />
                 <Route path="/api-access" element={<APIAccess />} />
+                <Route path="/memory" element={<MemoryPage />} />
                 
                 {/* 404 catch-all */}
                 <Route path="*" element={<NotFound />} />

@@ -119,6 +119,66 @@ export type Database = {
         }
         Relationships: []
       }
+      multimodal_sessions: {
+        Row: {
+          alias: string
+          audio_url: string | null
+          content_hash: string | null
+          created_at: string
+          data: Json
+          embedding: string | null
+          id: string
+          image_url: string | null
+          last_accessed_at: string | null
+          metadata: Json | null
+          modality: Database["public"]["Enums"]["modality_type"]
+          parent_alias: string | null
+          tags: string[] | null
+          updated_at: string
+          user_id: string
+          video_metadata: Json | null
+          vision_analysis: Json | null
+        }
+        Insert: {
+          alias: string
+          audio_url?: string | null
+          content_hash?: string | null
+          created_at?: string
+          data?: Json
+          embedding?: string | null
+          id?: string
+          image_url?: string | null
+          last_accessed_at?: string | null
+          metadata?: Json | null
+          modality?: Database["public"]["Enums"]["modality_type"]
+          parent_alias?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          user_id: string
+          video_metadata?: Json | null
+          vision_analysis?: Json | null
+        }
+        Update: {
+          alias?: string
+          audio_url?: string | null
+          content_hash?: string | null
+          created_at?: string
+          data?: Json
+          embedding?: string | null
+          id?: string
+          image_url?: string | null
+          last_accessed_at?: string | null
+          metadata?: Json | null
+          modality?: Database["public"]["Enums"]["modality_type"]
+          parent_alias?: string | null
+          tags?: string[] | null
+          updated_at?: string
+          user_id?: string
+          video_metadata?: Json | null
+          vision_analysis?: Json | null
+        }
+        Relationships: []
+      }
       newsletter_subscriptions: {
         Row: {
           active: boolean
@@ -498,6 +558,30 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      binary_quantize: {
+        Args: { "": string } | { "": unknown }
+        Returns: unknown
+      }
+      calculate_relevance_score: {
+        Args: { created_at: string; decay_factor?: number; similarity: number }
+        Returns: number
+      }
+      halfvec_avg: {
+        Args: { "": number[] }
+        Returns: unknown
+      }
+      halfvec_out: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      halfvec_send: {
+        Args: { "": unknown }
+        Returns: string
+      }
+      halfvec_typmod_in: {
+        Args: { "": unknown[] }
+        Returns: number
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -513,6 +597,22 @@ export type Database = {
         }
         Returns: boolean
       }
+      hnsw_bit_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      hnsw_halfvec_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      hnsw_sparsevec_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      hnswhandler: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
       is_workspace_admin: {
         Args: { _user_id: string; _workspace_id: string }
         Returns: boolean
@@ -520,6 +620,62 @@ export type Database = {
       is_workspace_member: {
         Args: { _user_id: string; _workspace_id: string }
         Returns: boolean
+      }
+      ivfflat_bit_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      ivfflat_halfvec_support: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      ivfflathandler: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      l2_norm: {
+        Args: { "": unknown } | { "": unknown }
+        Returns: number
+      }
+      l2_normalize: {
+        Args: { "": string } | { "": unknown } | { "": unknown }
+        Returns: string
+      }
+      sparsevec_out: {
+        Args: { "": unknown }
+        Returns: unknown
+      }
+      sparsevec_send: {
+        Args: { "": unknown }
+        Returns: string
+      }
+      sparsevec_typmod_in: {
+        Args: { "": unknown[] }
+        Returns: number
+      }
+      vector_avg: {
+        Args: { "": number[] }
+        Returns: string
+      }
+      vector_dims: {
+        Args: { "": string } | { "": unknown }
+        Returns: number
+      }
+      vector_norm: {
+        Args: { "": string }
+        Returns: number
+      }
+      vector_out: {
+        Args: { "": string }
+        Returns: unknown
+      }
+      vector_send: {
+        Args: { "": string }
+        Returns: string
+      }
+      vector_typmod_in: {
+        Args: { "": unknown[] }
+        Returns: number
       }
     }
     Enums: {
@@ -530,6 +686,7 @@ export type Database = {
         | "completed"
         | "failed"
         | "cancelled"
+      modality_type: "text" | "image" | "audio" | "video" | "mixed"
       step_type:
         | "ai_chat"
         | "ai_image"
@@ -679,6 +836,7 @@ export const Constants = {
         "failed",
         "cancelled",
       ],
+      modality_type: ["text", "image", "audio", "video", "mixed"],
       step_type: [
         "ai_chat",
         "ai_image",
