@@ -8,7 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Upload, Search, Image, Music, Video, FileText, Sparkles, Download } from 'lucide-react';
+import { Upload, Search, Image, Music, Video, FileText, Sparkles, Download, Database } from 'lucide-react';
+import PruningDashboard from './PruningDashboard';
 
 interface Session {
   id: string;
@@ -184,7 +185,7 @@ export default function MultiModalMemory() {
       </div>
 
       <Tabs defaultValue="upload" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="upload" className="flex items-center gap-2">
             <Upload className="w-4 h-4" />
             Upload Session
@@ -192,6 +193,10 @@ export default function MultiModalMemory() {
           <TabsTrigger value="search" className="flex items-center gap-2">
             <Search className="w-4 h-4" />
             Search Sessions
+          </TabsTrigger>
+          <TabsTrigger value="pruning" className="flex items-center gap-2">
+            <Database className="w-4 h-4" />
+            AI Pruning
           </TabsTrigger>
         </TabsList>
 
@@ -384,6 +389,10 @@ export default function MultiModalMemory() {
               ))}
             </div>
           )}
+        </TabsContent>
+
+        <TabsContent value="pruning">
+          <PruningDashboard />
         </TabsContent>
       </Tabs>
     </div>
