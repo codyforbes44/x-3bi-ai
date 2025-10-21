@@ -1,0 +1,40 @@
+{
+  "nav": {
+    "home": "Startseite",
+    "dashboard": "Dashboard",
+    "learn": "Lernen",
+    "community": "Community",
+    "pricing": "Preise",
+    "signIn": "Anmelden",
+    "signOut": "Abmelden",
+    "profile": "Profil"
+  },
+  "hero": {
+    "title": "Mit KI-Intelligenz bauen",
+    "subtitle": "Die ultimative Plattform für KI-Entwicklung und -Bereitstellung",
+    "cta": "Loslegen"
+  },
+  "dashboard": {
+    "welcome": "Willkommen zurück",
+    "quickAccess": "Schnellzugriff",
+    "aiTools": "KI-Tools",
+    "utilities": "Dienstprogramme"
+  },
+  "settings": {
+    "language": "Sprache",
+    "theme": "Design",
+    "security": "Sicherheit",
+    "notifications": "Benachrichtigungen"
+  },
+  "common": {
+    "loading": "Laden...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "copy": "Kopieren",
+    "share": "Teilen"
+  }
+}

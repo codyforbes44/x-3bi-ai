@@ -1,0 +1,40 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "dashboard": "Panel",
+    "learn": "Aprender",
+    "community": "Comunidad",
+    "pricing": "Precios",
+    "signIn": "Iniciar Sesión",
+    "signOut": "Cerrar Sesión",
+    "profile": "Perfil"
+  },
+  "hero": {
+    "title": "Construye con Inteligencia Artificial",
+    "subtitle": "La plataforma definitiva para el desarrollo e implementación de IA",
+    "cta": "Comenzar"
+  },
+  "dashboard": {
+    "welcome": "Bienvenido de nuevo",
+    "quickAccess": "Acceso Rápido",
+    "aiTools": "Herramientas de IA",
+    "utilities": "Utilidades"
+  },
+  "settings": {
+    "language": "Idioma",
+    "theme": "Tema",
+    "security": "Seguridad",
+    "notifications": "Notificaciones"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "copy": "Copiar",
+    "share": "Compartir"
+  }
+}

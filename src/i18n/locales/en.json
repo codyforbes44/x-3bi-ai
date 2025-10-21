@@ -1,0 +1,40 @@
+{
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "learn": "Learn",
+    "community": "Community",
+    "pricing": "Pricing",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "profile": "Profile"
+  },
+  "hero": {
+    "title": "Build with AI-Powered Intelligence",
+    "subtitle": "The ultimate platform for AI development and deployment",
+    "cta": "Get Started"
+  },
+  "dashboard": {
+    "welcome": "Welcome back",
+    "quickAccess": "Quick Access",
+    "aiTools": "AI Tools",
+    "utilities": "Utilities"
+  },
+  "settings": {
+    "language": "Language",
+    "theme": "Theme",
+    "security": "Security",
+    "notifications": "Notifications"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "copy": "Copy",
+    "share": "Share"
+  }
+}

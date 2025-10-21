@@ -263,6 +263,75 @@ export type Database = {
         }
         Relationships: []
       }
+      referral_stats: {
+        Row: {
+          created_at: string
+          id: string
+          pending_referrals: number | null
+          referral_code: string
+          successful_referrals: number | null
+          total_referrals: number | null
+          total_rewards: number | null
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          pending_referrals?: number | null
+          referral_code: string
+          successful_referrals?: number | null
+          total_referrals?: number | null
+          total_rewards?: number | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          pending_referrals?: number | null
+          referral_code?: string
+          successful_referrals?: number | null
+          total_referrals?: number | null
+          total_rewards?: number | null
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      referrals: {
+        Row: {
+          completed_at: string | null
+          created_at: string
+          id: string
+          referral_code: string
+          referred_user_id: string | null
+          referrer_id: string | null
+          reward_amount: number | null
+          status: string | null
+        }
+        Insert: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          referral_code: string
+          referred_user_id?: string | null
+          referrer_id?: string | null
+          reward_amount?: number | null
+          status?: string | null
+        }
+        Update: {
+          completed_at?: string | null
+          created_at?: string
+          id?: string
+          referral_code?: string
+          referred_user_id?: string | null
+          referrer_id?: string | null
+          reward_amount?: number | null
+          status?: string | null
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string

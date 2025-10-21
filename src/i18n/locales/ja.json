@@ -1,0 +1,40 @@
+{
+  "nav": {
+    "home": "ホーム",
+    "dashboard": "ダッシュボード",
+    "learn": "学習",
+    "community": "コミュニティ",
+    "pricing": "料金",
+    "signIn": "ログイン",
+    "signOut": "ログアウト",
+    "profile": "プロフィール"
+  },
+  "hero": {
+    "title": "AIを活用した構築",
+    "subtitle": "AI開発とデプロイのための究極のプラットフォーム",
+    "cta": "始める"
+  },
+  "dashboard": {
+    "welcome": "おかえりなさい",
+    "quickAccess": "クイックアクセス",
+    "aiTools": "AIツール",
+    "utilities": "ユーティリティ"
+  },
+  "settings": {
+    "language": "言語",
+    "theme": "テーマ",
+    "security": "セキュリティ",
+    "notifications": "通知"
+  },
+  "common": {
+    "loading": "読み込み中...",
+    "error": "エラー",
+    "success": "成功",
+    "cancel": "キャンセル",
+    "save": "保存",
+    "delete": "削除",
+    "edit": "編集",
+    "copy": "コピー",
+    "share": "共有"
+  }
+}

@@ -51,6 +51,8 @@ const MemoryPage = lazy(() => import("./pages/MemoryPage"));
 const UsageAnalyticsPage = lazy(() => import("./pages/UsageAnalyticsPage"));
 const InstallPage = lazy(() => import("./pages/InstallPage"));
 const SecuritySettings = lazy(() => import("./pages/SecuritySettings"));
+const ReferralProgram = lazy(() => import("./pages/ReferralProgram"));
+const IntegrationsHub = lazy(() => import("./pages/IntegrationsHub"));
 
 const queryClient = new QueryClient();
 
@@ -111,6 +113,8 @@ const App = () => (
                           <Route path="/analytics" element={<UsageAnalyticsPage />} />
                           <Route path="/install" element={<InstallPage />} />
                           <Route path="/security" element={<SecuritySettings />} />
+                          <Route path="/referrals" element={<ReferralProgram />} />
+                          <Route path="/integrations-hub" element={<IntegrationsHub />} />
                           
                           {/* 404 catch-all */}
                           <Route path="*" element={<NotFound />} />

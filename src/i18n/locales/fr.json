@@ -1,0 +1,40 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "dashboard": "Tableau de bord",
+    "learn": "Apprendre",
+    "community": "Communauté",
+    "pricing": "Tarification",
+    "signIn": "Se connecter",
+    "signOut": "Se déconnecter",
+    "profile": "Profil"
+  },
+  "hero": {
+    "title": "Construisez avec l'IA",
+    "subtitle": "La plateforme ultime pour le développement et le déploiement d'IA",
+    "cta": "Commencer"
+  },
+  "dashboard": {
+    "welcome": "Bienvenue",
+    "quickAccess": "Accès rapide",
+    "aiTools": "Outils IA",
+    "utilities": "Utilitaires"
+  },
+  "settings": {
+    "language": "Langue",
+    "theme": "Thème",
+    "security": "Sécurité",
+    "notifications": "Notifications"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "save": "Sauvegarder",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "copy": "Copier",
+    "share": "Partager"
+  }
+}
