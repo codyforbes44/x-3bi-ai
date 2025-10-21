@@ -14,6 +14,7 @@ import { OnboardingProvider } from "@/contexts/OnboardingContext";
 import { RealtimeProvider } from "@/contexts/RealtimeContext";
 import { AccessibilityProvider } from "@/components/AccessibilityProvider";
 import { CommandPalette } from "@/components/CommandPalette";
+import { MobileBottomNav } from "@/components/MobileBottomNav";
 import FloatingBadge from "@/components/FloatingBadge";
 import ScrollToTop from "@/components/ScrollToTop";
 import HomePage from "./pages/HomePage";
@@ -75,59 +76,62 @@ const App = () => (
                         <BrowserRouter>
                           <CommandPalette />
                           <ScrollToTop />
-                          <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div></div>}>
-                            <Routes>
-                          {/* Public routes */}
-                          <Route path="/" element={<HomePage />} />
-                          <Route path="/auth" element={<AuthPage />} />
-                          <Route path="/community" element={<Community />} />
-                          <Route path="/pricing" element={<Pricing />} />
-                          <Route path="/enterprise" element={<Enterprise />} />
-                          <Route path="/learn" element={<Learn />} />
-                          <Route path="/launched" element={<Launched />} />
-                          <Route path="/free-ai-tools" element={<FreeAITools />} />
-                          
-                          {/* Company pages */}
-                          <Route path="/mission" element={<Mission />} />
-                          <Route path="/team" element={<Team />} />
-                          <Route path="/impact" element={<Impact />} />
-                          <Route path="/partners" element={<Partners />} />
-                          <Route path="/contact" element={<Contact />} />
-                          <Route path="/newsletter" element={<Newsletter />} />
-                          
-                          {/* Resources */}
-                          <Route path="/documentation" element={<Documentation />} />
-                          <Route path="/api-demos" element={<APIDemos />} />
-                          
-                          {/* Tutorial routes */}
-                          <Route path="/tutorials" element={<Tutorials />} />
-                          <Route path="/tutorials/ai-chat" element={<AIChatTutorial />} />
-                          <Route path="/tutorials/code-generation" element={<CodeGenerationTutorial />} />
-                          <Route path="/tutorials/image-generation" element={<ImageGenerationTutorial />} />
-                          <Route path="/tutorials/voice-ai" element={<VoiceAITutorial />} />
-                          <Route path="/tutorials/system-architecture" element={<SystemArchitectureTutorial />} />
-                          
-                          {/* Dashboard and authenticated routes with sidebar layout */}
-                          <Route path="/dashboard/*" element={<DashboardLayout />}>
-                            <Route index element={<Dashboard />} />
-                          </Route>
-                          
-                          {/* Other authenticated pages */}
-                          <Route path="/profile" element={<ProfilePage />} />
-                          <Route path="/workspaces" element={<Workspaces />} />
-                          <Route path="/integrations" element={<Integrations />} />
-                          <Route path="/integrations-hub" element={<IntegrationsHub />} />
-                          <Route path="/api-access" element={<APIAccess />} />
-                          <Route path="/memory" element={<MemoryPage />} />
-                          <Route path="/analytics" element={<UsageAnalyticsPage />} />
-                          <Route path="/security" element={<SecuritySettings />} />
-                          <Route path="/referrals" element={<ReferralProgram />} />
-                          <Route path="/install" element={<InstallPage />} />
-                          
-                          {/* 404 catch-all */}
-                          <Route path="*" element={<NotFound />} />
-                            </Routes>
-                          </Suspense>
+                          <div className="pb-16 md:pb-0">
+                            <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div></div>}>
+                              <Routes>
+                            {/* Public routes */}
+                            <Route path="/" element={<HomePage />} />
+                            <Route path="/auth" element={<AuthPage />} />
+                            <Route path="/community" element={<Community />} />
+                            <Route path="/pricing" element={<Pricing />} />
+                            <Route path="/enterprise" element={<Enterprise />} />
+                            <Route path="/learn" element={<Learn />} />
+                            <Route path="/launched" element={<Launched />} />
+                            <Route path="/free-ai-tools" element={<FreeAITools />} />
+                            
+                            {/* Company pages */}
+                            <Route path="/mission" element={<Mission />} />
+                            <Route path="/team" element={<Team />} />
+                            <Route path="/impact" element={<Impact />} />
+                            <Route path="/partners" element={<Partners />} />
+                            <Route path="/contact" element={<Contact />} />
+                            <Route path="/newsletter" element={<Newsletter />} />
+                            
+                            {/* Resources */}
+                            <Route path="/documentation" element={<Documentation />} />
+                            <Route path="/api-demos" element={<APIDemos />} />
+                            
+                            {/* Tutorial routes */}
+                            <Route path="/tutorials" element={<Tutorials />} />
+                            <Route path="/tutorials/ai-chat" element={<AIChatTutorial />} />
+                            <Route path="/tutorials/code-generation" element={<CodeGenerationTutorial />} />
+                            <Route path="/tutorials/image-generation" element={<ImageGenerationTutorial />} />
+                            <Route path="/tutorials/voice-ai" element={<VoiceAITutorial />} />
+                            <Route path="/tutorials/system-architecture" element={<SystemArchitectureTutorial />} />
+                            
+                            {/* Dashboard and authenticated routes with sidebar layout */}
+                            <Route path="/dashboard/*" element={<DashboardLayout />}>
+                              <Route index element={<Dashboard />} />
+                            </Route>
+                            
+                            {/* Other authenticated pages */}
+                            <Route path="/profile" element={<ProfilePage />} />
+                            <Route path="/workspaces" element={<Workspaces />} />
+                            <Route path="/integrations" element={<Integrations />} />
+                            <Route path="/integrations-hub" element={<IntegrationsHub />} />
+                            <Route path="/api-access" element={<APIAccess />} />
+                            <Route path="/memory" element={<MemoryPage />} />
+                            <Route path="/analytics" element={<UsageAnalyticsPage />} />
+                            <Route path="/security" element={<SecuritySettings />} />
+                            <Route path="/referrals" element={<ReferralProgram />} />
+                            <Route path="/install" element={<InstallPage />} />
+                            
+                            {/* 404 catch-all */}
+                            <Route path="*" element={<NotFound />} />
+                              </Routes>
+                            </Suspense>
+                          </div>
+                          <MobileBottomNav />
                         </BrowserRouter>
                       </AccessibilityProvider>
                     </TooltipProvider>

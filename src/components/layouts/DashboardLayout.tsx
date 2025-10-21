@@ -1,6 +1,5 @@
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/components/DashboardSidebar";
-import { MobileBottomNav } from "@/components/MobileBottomNav";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
@@ -29,12 +28,9 @@ export default function DashboardLayout() {
           </header>
 
           {/* Main content area */}
-          <main className="flex-1 overflow-auto pb-20 md:pb-4">
+          <main className="flex-1 overflow-auto">
             <Outlet />
           </main>
-
-          {/* Mobile bottom navigation */}
-          {isMobile && <MobileBottomNav />}
         </div>
       </div>
     </SidebarProvider>
