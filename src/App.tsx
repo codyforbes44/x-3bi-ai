@@ -12,6 +12,8 @@ import { WorkflowProvider } from "@/contexts/WorkflowContext";
 import { LoadingProvider } from "@/contexts/LoadingContext";
 import { OnboardingProvider } from "@/contexts/OnboardingContext";
 import { RealtimeProvider } from "@/contexts/RealtimeContext";
+import { AccessibilityProvider } from "@/components/AccessibilityProvider";
+import { CommandPalette } from "@/components/CommandPalette";
 import FloatingBadge from "@/components/FloatingBadge";
 import ScrollToTop from "@/components/ScrollToTop";
 import HomePage from "./pages/HomePage";
@@ -48,6 +50,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const MemoryPage = lazy(() => import("./pages/MemoryPage"));
 const UsageAnalyticsPage = lazy(() => import("./pages/UsageAnalyticsPage"));
 const InstallPage = lazy(() => import("./pages/InstallPage"));
+const SecuritySettings = lazy(() => import("./pages/SecuritySettings"));
 
 const queryClient = new QueryClient();
 
@@ -62,13 +65,15 @@ const App = () => (
                 <WorkspaceProvider>
                   <WorkflowProvider>
                     <TooltipProvider>
-                    <Toaster />
-                    <Sonner />
-                    <FloatingBadge />
-                    <BrowserRouter>
-                      <ScrollToTop />
-                      <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div></div>}>
-                        <Routes>
+                      <AccessibilityProvider>
+                        <CommandPalette />
+                        <Toaster />
+                        <Sonner />
+                        <FloatingBadge />
+                        <BrowserRouter>
+                          <ScrollToTop />
+                          <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div></div>}>
+                            <Routes>
                           {/* Public routes */}
                           <Route path="/" element={<HomePage />} />
                           <Route path="/auth" element={<AuthPage />} />
@@ -105,12 +110,14 @@ const App = () => (
                           <Route path="/memory" element={<MemoryPage />} />
                           <Route path="/analytics" element={<UsageAnalyticsPage />} />
                           <Route path="/install" element={<InstallPage />} />
+                          <Route path="/security" element={<SecuritySettings />} />
                           
                           {/* 404 catch-all */}
                           <Route path="*" element={<NotFound />} />
-                        </Routes>
-                      </Suspense>
-                    </BrowserRouter>
+                            </Routes>
+                          </Suspense>
+                        </BrowserRouter>
+                      </AccessibilityProvider>
                     </TooltipProvider>
                   </WorkflowProvider>
                 </WorkspaceProvider>

@@ -84,6 +84,7 @@ export const useKeyboardShortcuts = () => {
         action: () => {
           const message = `
 Keyboard Shortcuts:
+• Cmd/Ctrl + K → Command Palette
 • Alt + H → Home
 • Alt + D → Dashboard  
 • Alt + L → Learn

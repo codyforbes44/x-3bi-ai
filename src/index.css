@@ -251,6 +251,27 @@ All colors MUST be HSL.
   [class*="border-"] {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
   }
+
+  /* Accessibility improvements */
+  .skip-to-main {
+    @apply absolute left-0 top-0 -translate-y-full bg-primary text-primary-foreground px-4 py-2 rounded-br-md z-50;
+    @apply focus:translate-y-0 transition-transform;
+  }
+  
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+    clip: rect(0, 0, 0, 0);
+  }
+  
+  /* Focus visible styles */
+  .user-is-tabbing *:focus {
+    @apply outline-2 outline-offset-2 outline-primary;
+  }
+  
+  /* High contrast focus indicators */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary ring-2 ring-primary;
+  }
 }
 
 @layer utilities {
