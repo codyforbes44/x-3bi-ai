@@ -10,15 +10,28 @@ import { QuickAccess } from "@/components/dashboard/QuickAccess";
 import { getAllFeatures } from "@/components/dashboard/FeatureCategories";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
+import { useOnboarding } from "@/contexts/OnboardingContext";
+import { ProductTour } from "@/components/onboarding/ProductTour";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard } from "lucide-react";
+import { SEO } from "@/components/SEO";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("grok-chat");
+  const [runTour, setRunTour] = useState(false);
   const isMobile = useIsMobile();
+  const { hasCompletedTour } = useOnboarding();
   
   // Enable keyboard shortcuts
   useKeyboardShortcuts();
+  
+  // Start tour for first-time users
+  useEffect(() => {
+    if (!hasCompletedTour && !isMobile) {
+      const timer = setTimeout(() => setRunTour(true), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [hasCompletedTour, isMobile]);
   
   // Listen for feature switch events from keyboard shortcuts
   useEffect(() => {
@@ -32,68 +45,76 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <SidebarProvider defaultOpen={!isMobile}>
-      <div className="min-h-screen w-full flex flex-col bg-background">
-        <Header />
-        
-        <div className="flex-1 flex w-full pt-14 md:pt-16">
-          <AppSidebar activeTab={activeTab} onTabChange={setActiveTab} />
+    <>
+      <SEO
+        title="AI Dashboard"
+        description="Access Grok AI, Claude 4, GPT-5, and more. Multi-modal memory, workflow automation, and enterprise AI tools."
+        keywords={['AI dashboard', 'Grok chat', 'Claude 4', 'GPT-5', 'AI tools', 'enterprise AI']}
+      />
+      <ProductTour runTour={runTour} onComplete={() => setRunTour(false)} />
+      <SidebarProvider defaultOpen={!isMobile}>
+        <div className="min-h-screen w-full flex flex-col bg-background">
+          <Header />
+          
+          <div className="flex-1 flex w-full pt-14 md:pt-16">
+            <AppSidebar activeTab={activeTab} onTabChange={setActiveTab} />
 
-          <SidebarInset className="flex-1 min-w-0">
-            <div className="h-full">
-              {/* Top Bar - Sticky */}
-              <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
-                <div className="container mx-auto px-3 md:px-4 py-3 md:py-4">
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-2 md:gap-4 min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
-                        <SidebarTrigger className="shrink-0" />
-                        <span className="text-sm font-medium text-muted-foreground md:hidden animate-pulse">TAP HERE</span>
+            <SidebarInset className="flex-1 min-w-0">
+              <div className="h-full">
+                {/* Top Bar - Sticky */}
+                <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
+                  <div className="container mx-auto px-3 md:px-4 py-3 md:py-4">
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex items-center gap-2 md:gap-4 min-w-0 flex-1">
+                        <div className="flex items-center gap-2">
+                          <SidebarTrigger className="shrink-0 sidebar-trigger" />
+                          <span className="text-sm font-medium text-muted-foreground md:hidden animate-pulse">TAP HERE</span>
+                        </div>
+                        {!isMobile && <DashboardBreadcrumbs activeTab={activeTab} />}
                       </div>
-                      {!isMobile && <DashboardBreadcrumbs activeTab={activeTab} />}
+                      {!isMobile && (
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setActiveTab("overview")}
+                          className="shrink-0"
+                        >
+                          <LayoutDashboard className="w-4 h-4 mr-2" />
+                          Overview
+                        </Button>
+                      )}
                     </div>
-                    {!isMobile && (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setActiveTab("overview")}
-                        className="shrink-0"
-                      >
-                        <LayoutDashboard className="w-4 h-4 mr-2" />
-                        Overview
-                      </Button>
+                    
+                    {/* Mobile Breadcrumbs */}
+                    {isMobile && activeTab !== "overview" && (
+                      <div className="mt-3">
+                        <DashboardBreadcrumbs activeTab={activeTab} />
+                      </div>
                     )}
                   </div>
-                  
-                  {/* Mobile Breadcrumbs */}
-                  {isMobile && activeTab !== "overview" && (
-                    <div className="mt-3">
-                      <DashboardBreadcrumbs activeTab={activeTab} />
-                    </div>
+                </div>
+
+                {/* Main Content */}
+                <div className="container mx-auto px-3 md:px-4 py-4 md:py-8 max-w-7xl">
+                  {activeTab !== "overview" && (
+                    <DashboardFeatureHeader activeTab={activeTab} />
+                  )}
+
+                  {activeTab === "overview" ? (
+                    <QuickAccess onFeatureSelect={setActiveTab} />
+                  ) : (
+                    <DashboardContent 
+                      activeTab={activeTab} 
+                      onTabChange={setActiveTab} 
+                    />
                   )}
                 </div>
               </div>
-
-              {/* Main Content */}
-              <div className="container mx-auto px-3 md:px-4 py-4 md:py-8 max-w-7xl">
-                {activeTab !== "overview" && (
-                  <DashboardFeatureHeader activeTab={activeTab} />
-                )}
-
-                {activeTab === "overview" ? (
-                  <QuickAccess onFeatureSelect={setActiveTab} />
-                ) : (
-                  <DashboardContent 
-                    activeTab={activeTab} 
-                    onTabChange={setActiveTab} 
-                  />
-                )}
-              </div>
-            </div>
-          </SidebarInset>
+            </SidebarInset>
+          </div>
         </div>
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </>
   );
 };
 

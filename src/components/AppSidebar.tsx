@@ -104,6 +104,7 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
           isActive={isActive}
           tooltip={open ? undefined : feature.title}
           className="group relative"
+          data-feature={feature.id}
         >
           <feature.icon 
             className={`flex-shrink-0 ${isActive ? 'text-primary' : feature.color}`} 
