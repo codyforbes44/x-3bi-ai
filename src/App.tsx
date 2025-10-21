@@ -28,8 +28,6 @@ const Impact = lazy(() => import("./pages/Impact"));
 const Partners = lazy(() => import("./pages/Partners"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Newsletter = lazy(() => import("./pages/Newsletter"));
-const Volunteer = lazy(() => import("./pages/Volunteer"));
-const Donate = lazy(() => import("./pages/Donate"));
 const FreeAITools = lazy(() => import("./pages/FreeAITools"));
 const Tutorials = lazy(() => import("./pages/Tutorials"));
 const AIChatTutorial = lazy(() => import("./pages/tutorials/AIChatTutorial"));
@@ -76,8 +74,6 @@ const App = () => (
                 <Route path="/partners" element={<Partners />} />
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/newsletter" element={<Newsletter />} />
-                <Route path="/volunteer" element={<Volunteer />} />
-                <Route path="/donate" element={<Donate />} />
                 <Route path="/free-ai-tools" element={<FreeAITools />} />
                 <Route path="/documentation" element={<Documentation />} />
                 <Route path="/api-demos" element={<APIDemos />} />

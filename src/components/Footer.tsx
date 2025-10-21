@@ -14,7 +14,7 @@ const Footer = () => {
               <span className="text-xl font-bold">3BI.AI</span>
             </div>
             <p className="text-muted-foreground">
-              AI That Works - Empowering everyone with accessible, powerful AI tools designed with your success in mind. Visit 3bi.ai
+              Premium AI Platform - Unlock the full potential of AI with enterprise-grade tools, advanced models, and professional support. Visit 3bi.ai
             </p>
           </div>
           
@@ -29,24 +29,25 @@ const Footer = () => {
             </ul>
           </div>
           
-          {/* Community */}
+          {/* Company */}
           <div className="space-y-4">
-            <h3 className="font-semibold">About</h3>
+            <h3 className="font-semibold">Company</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li><a href="/mission" className="hover:text-foreground transition-smooth">Our Mission</a></li>
-              <li><a href="/impact" className="hover:text-foreground transition-smooth">Impact</a></li>
+              <li><a href="/mission" className="hover:text-foreground transition-smooth">About Us</a></li>
+              <li><a href="/pricing" className="hover:text-foreground transition-smooth">Pricing</a></li>
+              <li><a href="/enterprise" className="hover:text-foreground transition-smooth">Enterprise</a></li>
               <li><a href="/partners" className="hover:text-foreground transition-smooth">Partners</a></li>
             </ul>
           </div>
           
           {/* Support */}
           <div className="space-y-4">
-            <h3 className="font-semibold">Connect</h3>
+            <h3 className="font-semibold">Support</h3>
             <ul className="space-y-2 text-muted-foreground">
-              <li><a href="/contact" className="hover:text-foreground transition-smooth">Contact Us</a></li>
+              <li><a href="/contact" className="hover:text-foreground transition-smooth">Contact Sales</a></li>
+              <li><a href="/documentation" className="hover:text-foreground transition-smooth">Help Center</a></li>
+              <li><a href="/community" className="hover:text-foreground transition-smooth">Community</a></li>
               <li><a href="/newsletter" className="hover:text-foreground transition-smooth">Newsletter</a></li>
-              <li><a href="/volunteer" className="hover:text-foreground transition-smooth">Volunteer</a></li>
-              <li><a href="/donate" className="hover:text-foreground transition-smooth">Donate</a></li>
             </ul>
           </div>
         </div>
@@ -55,7 +56,7 @@ const Footer = () => {
         <div className="border-t border-border pt-6 md:pt-8">
           <div className="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0">
             <div className="text-muted-foreground text-xs md:text-sm text-center md:text-left">
-              © 2025 3BI.AI (3bi.ai) • Non-Profit AI Resource Platform • All AI tools are free
+              © 2025 3BI.AI (3bi.ai) • Premium AI Platform • Powered by Cᴏᴅʏ Fᴏʀʙᴇꜱ
             </div>
             
             <div className="flex items-center space-x-4 md:space-x-6">

@@ -7,34 +7,38 @@ import { Check, Zap, Crown, Rocket } from "lucide-react";
 const Pricing = () => {
   const plans = [
     {
-      name: "Free",
-      price: "$0",
+      name: "Starter",
+      price: "$49",
       period: "/month",
-      description: "Perfect for getting started",
+      description: "Perfect for individuals and small teams",
       icon: Zap,
       features: [
-        "5 AI conversations per day",
-        "Basic image generation",
-        "Community support",
-        "Standard processing speed"
+        "50,000 AI requests/month",
+        "All AI models (Grok, Claude 4, GPT-5, Gemini 2.0)",
+        "Advanced image generation",
+        "Voice AI & synthesis",
+        "Priority email support",
+        "Basic analytics dashboard"
       ],
-      buttonText: "Get Started",
+      buttonText: "Start Free Trial",
       buttonVariant: "outline" as const,
       popular: false
     },
     {
-      name: "Pro",
-      price: "$29",
+      name: "Professional",
+      price: "$149",
       period: "/month",
-      description: "For serious creators",
+      description: "For growing businesses and power users",
       icon: Crown,
       features: [
-        "Unlimited AI conversations",
-        "Advanced image generation",
-        "Priority support",
-        "Fast processing speed",
-        "Custom integrations",
-        "Advanced analytics"
+        "250,000 AI requests/month",
+        "Priority model access",
+        "Team workspaces (up to 10 members)",
+        "Advanced workflow automation",
+        "Custom integrations & API access",
+        "24/7 priority support",
+        "Advanced analytics & insights",
+        "Multi-modal memory system"
       ],
       buttonText: "Start Pro Trial",
       buttonVariant: "default" as const,
@@ -44,15 +48,17 @@ const Pricing = () => {
       name: "Enterprise",
       price: "Custom",
       period: "",
-      description: "For teams and organizations",
+      description: "For large teams and organizations",
       icon: Rocket,
       features: [
-        "Everything in Pro",
-        "Custom AI models",
-        "Dedicated support",
-        "SLA guarantees",
-        "Advanced security",
-        "Custom deployment"
+        "Unlimited AI requests",
+        "Custom AI model fine-tuning",
+        "Unlimited team members",
+        "Dedicated account manager",
+        "99.9% SLA guarantee",
+        "Advanced security & compliance",
+        "On-premise deployment options",
+        "Custom integrations & white-label"
       ],
       buttonText: "Contact Sales",
       buttonVariant: "outline" as const,
@@ -123,7 +129,7 @@ const Pricing = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground text-left">
-                    Yes, you can upgrade or downgrade your plan at any time. Changes take effect immediately.
+                    Yes, you can upgrade or downgrade your plan at any time. Changes take effect at the next billing cycle.
                   </p>
                 </CardContent>
               </Card>
@@ -133,7 +139,27 @@ const Pricing = () => {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground text-left">
-                    We accept all major credit cards, PayPal, and bank transfers for enterprise customers.
+                    We accept all major credit cards, PayPal, and invoice billing for Enterprise customers.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-left">Is there a free trial?</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground text-left">
+                    Yes, all paid plans include a 14-day free trial with full access to features. No credit card required to start.
+                  </p>
+                </CardContent>
+              </Card>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-left">What happens after I exceed my request limit?</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground text-left">
+                    You can purchase additional request packs or upgrade to a higher tier. We'll notify you before you reach your limit.
                   </p>
                 </CardContent>
               </Card>

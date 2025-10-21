@@ -34,10 +34,10 @@ const Mission = () => {
         {/* Hero Section */}
         <section className="container mx-auto px-4 py-16 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-hero bg-clip-text text-transparent">
-            Our Mission
+            About 3BI.AI
           </h1>
           <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
-            Empowering humanity through accessible, intelligent AI solutions that transform imagination into reality.
+            Building the future of AI-powered productivity with enterprise-grade tools designed for professionals and teams.
           </p>
         </section>
 
@@ -62,18 +62,20 @@ const Mission = () => {
             <h2 className="text-3xl md:text-4xl font-bold mb-8 text-center">Our Story</h2>
             <Card className="p-8">
               <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                3BI.AI was born from a simple belief: artificial intelligence should be a tool that empowers everyone, 
-                not just those with advanced technical knowledge. We saw a world where AI capabilities were locked behind 
-                complex interfaces and steep learning curves, keeping transformative technology out of reach for most people.
+                3BI.AI was founded with a vision to create the most powerful and comprehensive AI platform for businesses 
+                and professionals. We recognized that while AI technology was advancing rapidly, professionals needed a unified, 
+                enterprise-grade solution that could handle their complex workflows without compromise.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed mb-6">
-                Our team set out to change that. We brought together the best AI models from leading providers—Claude, GPT, 
-                and ElevenLabs—and crafted an intuitive platform that makes advanced AI capabilities feel natural and accessible.
+                Our team of AI experts and engineers brought together the world's leading AI models—Grok, Claude 4, GPT-5, 
+                Gemini 2.0, and more—into a single, powerful platform. We've integrated advanced features like multi-modal 
+                memory, workflow automation, and team collaboration tools to create a truly professional AI solution.
               </p>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Today, 3BI.AI serves thousands of users worldwide, helping them automate workflows, generate content, 
-                analyze data, and bring their creative visions to life. But we're just getting started. Every day, 
-                we're working to make AI more powerful, more accessible, and more beneficial for everyone.
+                Today, 3BI.AI powers thousands of businesses worldwide, from startups to Fortune 500 companies. Our clients 
+                rely on us for mission-critical AI operations, achieving unprecedented productivity gains and business outcomes. 
+                We're continuously innovating, adding cutting-edge AI capabilities, and setting new standards for what's possible 
+                with enterprise AI technology.
               </p>
             </Card>
           </div>
@@ -82,15 +84,15 @@ const Mission = () => {
         {/* CTA Section */}
         <section className="container mx-auto px-4 py-16 text-center">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">Join Us on This Journey</h2>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Business?</h2>
             <p className="text-xl text-muted-foreground mb-8">
-              Be part of the AI revolution and help shape the future of intelligent technology.
+              Join leading organizations using 3BI.AI to drive innovation and achieve breakthrough results with AI.
             </p>
             <a 
-              href="/auth"
+              href="/pricing"
               className="inline-block px-8 py-4 bg-gradient-hero text-white rounded-lg font-semibold hover-scale"
             >
-              Get Started Today
+              View Pricing Plans
             </a>
           </div>
         </section>

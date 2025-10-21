@@ -262,12 +262,12 @@ const HomePage = () => {
             <Button 
               size="lg" 
               className="bg-gradient-hero text-white w-full sm:w-auto min-w-[250px] h-12 sm:h-14 text-base sm:text-lg touch-target"
-              onClick={() => navigate(ROUTES.DASHBOARD)}
+              onClick={() => navigate(ROUTES.PRICING)}
             >
-              Get Started Free →
+              View Pricing & Plans →
             </Button>
             <p className="text-sm text-muted-foreground mt-3">
-              No credit card required • Full access to all features
+              14-day free trial • No credit card required • Cancel anytime
             </p>
           </div>
         </div>
@@ -276,26 +276,26 @@ const HomePage = () => {
       {/* CTA Section */}
       <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6 bg-gradient-hero text-white">
         <div className="container mx-auto text-center max-w-4xl">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">Ready for Premium AI?</h2>
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4 sm:mb-6">Ready to Transform Your Workflow?</h2>
           <p className="text-base sm:text-lg md:text-xl mb-6 sm:mb-7 md:mb-8 max-w-xl lg:max-w-2xl mx-auto opacity-90 px-4 leading-relaxed">
-            Join teams using our platform with Grok, Claude 4, GPT-5, and 24+ other AI features. Enterprise-grade security, team workspaces, and premium support.
+            Join thousands of professionals using our platform with Grok, Claude 4, GPT-5, and 24+ other AI features. Enterprise-grade security, team collaboration, and dedicated support.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center px-4 max-w-lg mx-auto">
             <Button 
               size="lg" 
               variant="secondary" 
               className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 touch-target"
-              onClick={() => navigate(ROUTES.DASHBOARD)}
+              onClick={() => navigate(ROUTES.PRICING)}
             >
-              Get Started Free
+              Start Free Trial
             </Button>
             <Button 
               size="lg" 
               variant="outline" 
               className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 border-white text-white hover:bg-white/10 touch-target"
-              onClick={() => navigate(ROUTES.DASHBOARD)}
+              onClick={() => navigate(ROUTES.ENTERPRISE)}
             >
-              Learn More
+              Enterprise Solutions
             </Button>
           </div>
         </div>

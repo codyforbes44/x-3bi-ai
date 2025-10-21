@@ -21,8 +21,6 @@ export const ROUTES = {
   // Support & Contact
   CONTACT: '/contact',
   NEWSLETTER: '/newsletter',
-  VOLUNTEER: '/volunteer',
-  DONATE: '/donate',
   
   // Resources
   FREE_AI_TOOLS: '/free-ai-tools',
@@ -50,8 +48,8 @@ export const TUTORIAL_ROUTES = {
 // Navigation groups for Header
 export const MAIN_NAVIGATION = [
   { name: 'Dashboard', href: ROUTES.DASHBOARD },
+  { name: 'Pricing', href: ROUTES.PRICING },
+  { name: 'Enterprise', href: ROUTES.ENTERPRISE },
   { name: 'Learn', href: ROUTES.LEARN },
-  { name: 'Community', href: ROUTES.COMMUNITY },
-  { name: 'Our Mission', href: ROUTES.MISSION },
-  { name: 'Partners', href: ROUTES.PARTNERS },
+  { name: 'About', href: ROUTES.MISSION },
 ] as const;
