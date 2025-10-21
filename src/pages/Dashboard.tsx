@@ -18,7 +18,7 @@ import { LayoutDashboard } from "lucide-react";
 import { SEO } from "@/components/SEO";
 
 const Dashboard = () => {
-  const [activeTab, setActiveTab] = useState("grok-chat");
+  const [activeTab, setActiveTab] = useState("overview");
   const [runTour, setRunTour] = useState(false);
   const isMobile = useIsMobile();
   const { hasCompletedTour } = useOnboarding();
