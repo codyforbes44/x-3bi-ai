@@ -9,6 +9,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import kalpeshLogo from "@/assets/kalpesh-logo.png";
 import { MAIN_NAVIGATION, ROUTES } from "@/config/routes";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 const Header = () => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();

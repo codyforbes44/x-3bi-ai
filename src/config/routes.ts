@@ -1,40 +1,48 @@
-// Centralized route configuration
+// Centralized route configuration with comprehensive navigation structure
 export const ROUTES = {
+  // Core
   HOME: '/',
   DASHBOARD: '/dashboard',
   AUTH: '/auth',
   PROFILE: '/profile',
   
-  // Community & Info
-  COMMUNITY: '/community',
+  // AI Tools & Features
+  FREE_AI_TOOLS: '/free-ai-tools',
+  MEMORY: '/memory',
+  ANALYTICS: '/analytics',
+  
+  // Business
+  PRICING: '/pricing',
+  ENTERPRISE: '/enterprise',
+  
+  // Learning & Resources
   LEARN: '/learn',
+  TUTORIALS: '/tutorials',
+  DOCUMENTATION: '/documentation',
+  API_ACCESS: '/api-access',
+  API_DEMOS: '/api-demos',
+  
+  // Community & Company
+  COMMUNITY: '/community',
   MISSION: '/mission',
   TEAM: '/team',
   IMPACT: '/impact',
   PARTNERS: '/partners',
   LAUNCHED: '/launched',
   
-  // Business
-  PRICING: '/pricing',
-  ENTERPRISE: '/enterprise',
-  
-  // Support & Contact
+  // Support
   CONTACT: '/contact',
   NEWSLETTER: '/newsletter',
   
-  // Resources
-  FREE_AI_TOOLS: '/free-ai-tools',
-  TUTORIALS: '/tutorials',
-  DOCUMENTATION: '/documentation',
-  API_ACCESS: '/api-access',
-  API_DEMOS: '/api-demos',
-  
-  // Workspaces
+  // Platform Features
   WORKSPACES: '/workspaces',
   INTEGRATIONS: '/integrations',
+  INTEGRATIONS_HUB: '/integrations-hub',
   
-  // Multi-Modal Memory
-  MEMORY: '/memory',
+  // Account & Settings
+  SECURITY: '/security',
+  REFERRALS: '/referrals',
+  INSTALL: '/install',
 } as const;
 
 export const TUTORIAL_ROUTES = {
@@ -45,11 +53,90 @@ export const TUTORIAL_ROUTES = {
   SYSTEM_ARCHITECTURE: '/tutorials/system-architecture',
 } as const;
 
-// Navigation groups for Header
+// Main Header Navigation (visible to all users)
 export const MAIN_NAVIGATION = [
-  { name: 'Dashboard', href: ROUTES.DASHBOARD },
-  { name: 'Pricing', href: ROUTES.PRICING },
-  { name: 'Enterprise', href: ROUTES.ENTERPRISE },
-  { name: 'Learn', href: ROUTES.LEARN },
-  { name: 'About', href: ROUTES.MISSION },
+  { name: 'Dashboard', href: ROUTES.DASHBOARD, icon: 'LayoutDashboard' },
+  { name: 'AI Tools', href: ROUTES.FREE_AI_TOOLS, icon: 'Sparkles' },
+  { name: 'Learn', href: ROUTES.LEARN, icon: 'BookOpen' },
+  { name: 'Pricing', href: ROUTES.PRICING, icon: 'DollarSign' },
+  { name: 'Community', href: ROUTES.COMMUNITY, icon: 'Users' },
+] as const;
+
+// Dashboard Sidebar Navigation (for authenticated users in dashboard)
+export const DASHBOARD_NAV_GROUPS = [
+  {
+    title: 'AI Features',
+    items: [
+      { name: 'Dashboard', href: ROUTES.DASHBOARD, icon: 'LayoutDashboard' },
+      { name: 'AI Tools', href: ROUTES.FREE_AI_TOOLS, icon: 'Sparkles' },
+      { name: 'Memory', href: ROUTES.MEMORY, icon: 'Brain' },
+      { name: 'Analytics', href: ROUTES.ANALYTICS, icon: 'BarChart3' },
+    ],
+  },
+  {
+    title: 'Workspace',
+    items: [
+      { name: 'Workspaces', href: ROUTES.WORKSPACES, icon: 'FolderKanban' },
+      { name: 'Integrations', href: ROUTES.INTEGRATIONS_HUB, icon: 'Plug' },
+      { name: 'API Access', href: ROUTES.API_ACCESS, icon: 'Code2' },
+    ],
+  },
+  {
+    title: 'Account',
+    items: [
+      { name: 'Profile', href: ROUTES.PROFILE, icon: 'User' },
+      { name: 'Security', href: ROUTES.SECURITY, icon: 'Shield' },
+      { name: 'Referrals', href: ROUTES.REFERRALS, icon: 'Gift' },
+    ],
+  },
+] as const;
+
+// Footer Navigation Groups
+export const FOOTER_NAV_GROUPS = [
+  {
+    title: 'Product',
+    items: [
+      { name: 'Dashboard', href: ROUTES.DASHBOARD },
+      { name: 'AI Tools', href: ROUTES.FREE_AI_TOOLS },
+      { name: 'Pricing', href: ROUTES.PRICING },
+      { name: 'Enterprise', href: ROUTES.ENTERPRISE },
+      { name: 'Integrations', href: ROUTES.INTEGRATIONS_HUB },
+    ],
+  },
+  {
+    title: 'Resources',
+    items: [
+      { name: 'Learn', href: ROUTES.LEARN },
+      { name: 'Tutorials', href: ROUTES.TUTORIALS },
+      { name: 'Documentation', href: ROUTES.DOCUMENTATION },
+      { name: 'API Demos', href: ROUTES.API_DEMOS },
+      { name: 'Community', href: ROUTES.COMMUNITY },
+    ],
+  },
+  {
+    title: 'Company',
+    items: [
+      { name: 'Mission', href: ROUTES.MISSION },
+      { name: 'Team', href: ROUTES.TEAM },
+      { name: 'Impact', href: ROUTES.IMPACT },
+      { name: 'Partners', href: ROUTES.PARTNERS },
+      { name: 'Launched', href: ROUTES.LAUNCHED },
+    ],
+  },
+  {
+    title: 'Support',
+    items: [
+      { name: 'Contact', href: ROUTES.CONTACT },
+      { name: 'Newsletter', href: ROUTES.NEWSLETTER },
+    ],
+  },
+] as const;
+
+// Mobile Quick Actions (bottom navigation for mobile)
+export const MOBILE_QUICK_NAV = [
+  { name: 'Home', href: ROUTES.HOME, icon: 'Home' },
+  { name: 'Dashboard', href: ROUTES.DASHBOARD, icon: 'LayoutDashboard' },
+  { name: 'AI Tools', href: ROUTES.FREE_AI_TOOLS, icon: 'Sparkles' },
+  { name: 'Learn', href: ROUTES.LEARN, icon: 'BookOpen' },
+  { name: 'Profile', href: ROUTES.PROFILE, icon: 'User' },
 ] as const;

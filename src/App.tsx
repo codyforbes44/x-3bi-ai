@@ -53,6 +53,7 @@ const InstallPage = lazy(() => import("./pages/InstallPage"));
 const SecuritySettings = lazy(() => import("./pages/SecuritySettings"));
 const ReferralProgram = lazy(() => import("./pages/ReferralProgram"));
 const IntegrationsHub = lazy(() => import("./pages/IntegrationsHub"));
+const DashboardLayout = lazy(() => import("./components/layouts/DashboardLayout"));
 
 const queryClient = new QueryClient();
 
@@ -84,14 +85,17 @@ const App = () => (
                           <Route path="/enterprise" element={<Enterprise />} />
                           <Route path="/learn" element={<Learn />} />
                           <Route path="/launched" element={<Launched />} />
+                          <Route path="/free-ai-tools" element={<FreeAITools />} />
                           
+                          {/* Company pages */}
                           <Route path="/mission" element={<Mission />} />
                           <Route path="/team" element={<Team />} />
                           <Route path="/impact" element={<Impact />} />
                           <Route path="/partners" element={<Partners />} />
                           <Route path="/contact" element={<Contact />} />
                           <Route path="/newsletter" element={<Newsletter />} />
-                          <Route path="/free-ai-tools" element={<FreeAITools />} />
+                          
+                          {/* Resources */}
                           <Route path="/documentation" element={<Documentation />} />
                           <Route path="/api-demos" element={<APIDemos />} />
                           
@@ -103,18 +107,22 @@ const App = () => (
                           <Route path="/tutorials/voice-ai" element={<VoiceAITutorial />} />
                           <Route path="/tutorials/system-architecture" element={<SystemArchitectureTutorial />} />
                           
-                          {/* Public routes - no authentication required */}
-                          <Route path="/dashboard" element={<Dashboard />} />
+                          {/* Dashboard and authenticated routes with sidebar layout */}
+                          <Route path="/dashboard/*" element={<DashboardLayout />}>
+                            <Route index element={<Dashboard />} />
+                          </Route>
+                          
+                          {/* Other authenticated pages */}
                           <Route path="/profile" element={<ProfilePage />} />
                           <Route path="/workspaces" element={<Workspaces />} />
                           <Route path="/integrations" element={<Integrations />} />
+                          <Route path="/integrations-hub" element={<IntegrationsHub />} />
                           <Route path="/api-access" element={<APIAccess />} />
                           <Route path="/memory" element={<MemoryPage />} />
                           <Route path="/analytics" element={<UsageAnalyticsPage />} />
-                          <Route path="/install" element={<InstallPage />} />
                           <Route path="/security" element={<SecuritySettings />} />
                           <Route path="/referrals" element={<ReferralProgram />} />
-                          <Route path="/integrations-hub" element={<IntegrationsHub />} />
+                          <Route path="/install" element={<InstallPage />} />
                           
                           {/* 404 catch-all */}
                           <Route path="*" element={<NotFound />} />
