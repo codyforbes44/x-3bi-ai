@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { setUserContext, clearUserContext } from '@/utils/sentry';
 
 interface AuthContextType {
   user: User | null;
@@ -52,9 +53,17 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setSession(session);
         setUser(session?.user ?? null);
         
+        if (session?.user) {
+          setUserContext({
+            id: session.user.id,
+            email: session.user.email,
+            username: session.user.email?.split('@')[0],
+          });
+        }
+        
         if (event === 'SIGNED_OUT') {
-          // Clean up on sign out
           cleanupAuthState();
+          clearUserContext();
         }
         
         if (loading) {

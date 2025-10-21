@@ -47,6 +47,7 @@ const APIDemos = lazy(() => import("./pages/APIDemos"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const MemoryPage = lazy(() => import("./pages/MemoryPage"));
 const UsageAnalyticsPage = lazy(() => import("./pages/UsageAnalyticsPage"));
+const InstallPage = lazy(() => import("./pages/InstallPage"));
 
 const queryClient = new QueryClient();
 
@@ -103,6 +104,7 @@ const App = () => (
                           <Route path="/api-access" element={<APIAccess />} />
                           <Route path="/memory" element={<MemoryPage />} />
                           <Route path="/analytics" element={<UsageAnalyticsPage />} />
+                          <Route path="/install" element={<InstallPage />} />
                           
                           {/* 404 catch-all */}
                           <Route path="*" element={<NotFound />} />

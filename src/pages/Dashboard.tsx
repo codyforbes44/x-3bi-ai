@@ -12,6 +12,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
 import { useOnboarding } from "@/contexts/OnboardingContext";
 import { ProductTour } from "@/components/onboarding/ProductTour";
+import { RateLimitIndicator } from "@/components/usage/RateLimitIndicator";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard } from "lucide-react";
 import { SEO } from "@/components/SEO";

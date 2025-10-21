@@ -10,6 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { Upload, Search, Image, Music, Video, FileText, Sparkles, Download, Database } from 'lucide-react';
 import PruningDashboard from './PruningDashboard';
+import { AdvancedMemorySearch, SearchFilters } from './memory/AdvancedMemorySearch';
 
 interface Session {
   id: string;
