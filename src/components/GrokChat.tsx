@@ -6,7 +6,12 @@ import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Loader2, Send, Zap, Brain, Sparkles } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
+import { routeAIRequest } from '@/utils/aiRouter';
+import { VoiceControls } from '@/components/voice/VoiceControls';
+import { useVoiceInput } from '@/hooks/useVoiceInput';
+import { useTextToSpeech } from '@/hooks/useTextToSpeech';
+import { PresenceIndicator } from '@/components/collaboration/PresenceIndicator';
+import { useRealtime } from '@/contexts/RealtimeContext';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -19,14 +24,26 @@ export const GrokChat = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [model, setModel] = useState('grok-3');
   const [systemPrompt, setSystemPrompt] = useState('You are Grok, a witty and helpful AI assistant created by xAI. You provide accurate, engaging responses with a touch of humor.');
+  const [voiceEnabled, setVoiceEnabled] = useState(false);
   const { toast } = useToast();
+  const { joinRoom, currentRoom, presenceUsers } = useRealtime();
+
+  // Voice functionality
+  const { speak, stop: stopSpeaking, isSpeaking } = useTextToSpeech({
+    voice: 'alloy',
+  });
+
+  const { isListening, startListening, stopListening } = useVoiceInput({
+    onTranscript: (text) => {
+      setInput((prev) => prev + ' ' + text);
+    },
+  });
 
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
 
     const userMessage: Message = { role: 'user', content: input };
     
-    // Include system prompt if it's the first message
     const messagesToSend = messages.length === 0 && systemPrompt
       ? [{ role: 'system' as const, content: systemPrompt }, userMessage]
       : [...messages, userMessage];
@@ -36,42 +53,28 @@ export const GrokChat = () => {
     setIsLoading(true);
 
     try {
-      console.log('Calling Grok with:', { model, messageCount: messagesToSend.length });
-      
-      const { data, error } = await supabase.functions.invoke('grok', {
-        body: {
-          messages: messagesToSend.map(msg => ({
-            role: msg.role,
-            content: msg.content,
-          })),
-          model,
-          temperature: 0.7,
-        },
+      // Use AI router with fallbacks
+      const data = await routeAIRequest(messagesToSend, {
+        preferredModel: model,
+        task: 'chat',
       });
-
-      console.log('Grok response:', { data, error });
-
-      if (error) {
-        console.error('Grok error details:', error);
-        throw error;
-      }
-
-      if (!data?.choices?.[0]?.message?.content) {
-        console.error('Invalid response structure:', data);
-        throw new Error('Invalid response from Grok');
-      }
 
       const assistantMessage: Message = {
         role: 'assistant',
-        content: data.choices[0].message.content,
+        content: data.response || data.choices?.[0]?.message?.content,
       };
 
       setMessages([...messages, userMessage, assistantMessage]);
+
+      // Speak the response if voice is enabled
+      if (voiceEnabled && assistantMessage.content) {
+        speak(assistantMessage.content);
+      }
     } catch (error: any) {
-      console.error('Error calling Grok:', error);
+      console.error('Error calling AI:', error);
       toast({
         title: 'Error',
-        description: error?.message || 'Failed to get response from Grok. Please try again.',
+        description: error?.message || 'Failed to get response. Please try again.',
         variant: 'destructive',
       });
     } finally {
@@ -90,11 +93,26 @@ export const GrokChat = () => {
     <div className="space-y-6">
       <Card>
         <CardContent className="pt-6">
-          <CardDescription className="mb-4 flex items-center gap-2">
-            <Zap className="w-4 h-4" />
-            Chat with Grok, X's advanced AI assistant with real-time knowledge
-            <Badge variant="outline" className="ml-2">Premium</Badge>
-          </CardDescription>
+          <div className="flex items-center justify-between mb-4">
+            <CardDescription className="flex items-center gap-2">
+              <Zap className="w-4 h-4" />
+              Chat with Grok, X's advanced AI assistant with real-time knowledge
+              <Badge variant="outline" className="ml-2">Premium</Badge>
+            </CardDescription>
+            
+            <div className="flex items-center gap-2">
+              <PresenceIndicator />
+              <VoiceControls
+                isListening={isListening}
+                isSpeaking={isSpeaking}
+                onToggleListening={() => isListening ? stopListening() : startListening()}
+                onToggleSpeaking={() => {
+                  setVoiceEnabled(!voiceEnabled);
+                  if (isSpeaking) stopSpeaking();
+                }}
+              />
+            </div>
+          </div>
 
           {/* Model Selection & System Prompt */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">

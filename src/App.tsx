@@ -11,6 +11,7 @@ import { WorkspaceProvider } from "@/contexts/WorkspaceContext";
 import { WorkflowProvider } from "@/contexts/WorkflowContext";
 import { LoadingProvider } from "@/contexts/LoadingContext";
 import { OnboardingProvider } from "@/contexts/OnboardingContext";
+import { RealtimeProvider } from "@/contexts/RealtimeContext";
 import FloatingBadge from "@/components/FloatingBadge";
 import ScrollToTop from "@/components/ScrollToTop";
 import HomePage from "./pages/HomePage";
@@ -45,6 +46,7 @@ const Integrations = lazy(() => import("./pages/Integrations"));
 const APIDemos = lazy(() => import("./pages/APIDemos"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const MemoryPage = lazy(() => import("./pages/MemoryPage"));
+const UsageAnalyticsPage = lazy(() => import("./pages/UsageAnalyticsPage"));
 
 const queryClient = new QueryClient();
 
@@ -55,9 +57,10 @@ const App = () => (
         <AuthProvider>
           <LoadingProvider>
             <OnboardingProvider>
-              <WorkspaceProvider>
-                <WorkflowProvider>
-                  <TooltipProvider>
+              <RealtimeProvider>
+                <WorkspaceProvider>
+                  <WorkflowProvider>
+                    <TooltipProvider>
                     <Toaster />
                     <Sonner />
                     <FloatingBadge />
@@ -99,15 +102,17 @@ const App = () => (
                           <Route path="/integrations" element={<Integrations />} />
                           <Route path="/api-access" element={<APIAccess />} />
                           <Route path="/memory" element={<MemoryPage />} />
+                          <Route path="/analytics" element={<UsageAnalyticsPage />} />
                           
                           {/* 404 catch-all */}
                           <Route path="*" element={<NotFound />} />
                         </Routes>
                       </Suspense>
                     </BrowserRouter>
-                  </TooltipProvider>
-                </WorkflowProvider>
-              </WorkspaceProvider>
+                    </TooltipProvider>
+                  </WorkflowProvider>
+                </WorkspaceProvider>
+              </RealtimeProvider>
             </OnboardingProvider>
           </LoadingProvider>
         </AuthProvider>

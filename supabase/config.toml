@@ -77,3 +77,21 @@ verify_jwt = false
 
 [functions.execute-workflow]
 verify_jwt = false
+
+[functions.text-to-speech]
+verify_jwt = false
+
+[functions.prune-multimodal-sessions]
+verify_jwt = false
+
+[functions.save-multimodal-session]
+verify_jwt = false
+
+[functions.search-multimodal-sessions]
+verify_jwt = false
+
+[functions.analyze-multimodal-session]
+verify_jwt = false
+
+[functions.advanced-huggingface]
+verify_jwt = false
