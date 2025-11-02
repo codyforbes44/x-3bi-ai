@@ -9,6 +9,8 @@ import { Mail, TrendingUp, Lightbulb, Newspaper, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { newsletterSchema } from "@/utils/formValidation";
+import { logger } from "@/utils/logger";
 
 const Newsletter = () => {
   const { toast } = useToast();
@@ -24,9 +26,19 @@ const Newsletter = () => {
     e.preventDefault();
     
     try {
-      const { error } = await supabase.from("newsletter_subscriptions").insert({
+      // Validate form data
+      const interestArray = Object.entries(interests)
+        .filter(([_, value]) => value)
+        .map(([key]) => key);
+      
+      const validatedData = newsletterSchema.parse({
         email,
-        interests,
+        interests: interestArray
+      });
+
+      const { error } = await supabase.from("newsletter_subscriptions").insert({
+        email: validatedData.email,
+        interests: validatedData.interests,
       });
 
       if (error) {
@@ -46,13 +58,21 @@ const Newsletter = () => {
         });
         setEmail("");
       }
-    } catch (error) {
-      console.error("Newsletter subscription error:", error);
-      toast({
-        title: "Error",
-        description: "Failed to subscribe. Please try again.",
-        variant: "destructive",
-      });
+    } catch (error: any) {
+      if (error.name === 'ZodError') {
+        toast({
+          title: "Validation Error",
+          description: error.errors[0].message,
+          variant: "destructive",
+        });
+      } else {
+        logger.error("Newsletter subscription failed", error);
+        toast({
+          title: "Error",
+          description: "Failed to subscribe. Please try again.",
+          variant: "destructive",
+        });
+      }
     }
   };
 

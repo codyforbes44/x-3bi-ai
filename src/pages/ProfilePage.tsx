@@ -13,6 +13,8 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { uploadAvatar, deleteAvatar } from "@/utils/avatarUpload";
 import Header from "@/components/Header";
+import { profileSchema } from "@/utils/formValidation";
+import { logger } from "@/utils/logger";
 
 interface UserProfile {
   id: string;
@@ -94,12 +96,19 @@ const ProfilePage = () => {
       setError(null);
       setSuccess(null);
 
+      // Validate profile data
+      const validatedData = profileSchema.parse({
+        display_name: displayName,
+        bio,
+        avatar_url: avatarUrl || undefined
+      });
+
       const { error } = await supabase
         .from('profiles')
         .update({
-          display_name: displayName.trim() || null,
-          bio: bio.trim() || null,
-          avatar_url: avatarUrl.trim() || null,
+          display_name: validatedData.display_name,
+          bio: validatedData.bio || null,
+          avatar_url: validatedData.avatar_url || null,
         })
         .eq('user_id', user.id);
 
@@ -110,8 +119,13 @@ const ProfilePage = () => {
 
       setSuccess('Profile updated successfully!');
       loadProfile(); // Reload profile data
-    } catch (err) {
-      setError('An unexpected error occurred while updating your profile.');
+    } catch (err: any) {
+      if (err.name === 'ZodError') {
+        setError(err.errors[0].message);
+      } else {
+        logger.error("Profile update failed", err);
+        setError('An unexpected error occurred while updating your profile.');
+      }
     } finally {
       setUpdating(false);
     }

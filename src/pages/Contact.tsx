@@ -9,15 +9,8 @@ import { Mail, MapPin, Phone, Send } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-import { z } from "zod";
+import { contactSchema } from "@/utils/formValidation";
 import { logger } from "@/utils/logger";
-
-const contactSchema = z.object({
-  name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
-  email: z.string().trim().email("Invalid email address").max(255, "Email must be less than 255 characters"),
-  subject: z.string().trim().min(1, "Subject is required").max(200, "Subject must be less than 200 characters"),
-  message: z.string().trim().min(1, "Message is required").max(5000, "Message must be less than 5000 characters")
-});
 
 const Contact = () => {
   const { toast } = useToast();
@@ -52,14 +45,15 @@ const Contact = () => {
         description: "We'll get back to you within 24 hours.",
       });
       setFormData({ name: "", email: "", subject: "", message: "" });
-    } catch (error) {
-      if (error instanceof z.ZodError) {
+    } catch (error: any) {
+      if (error.name === 'ZodError') {
         toast({
           title: "Validation Error",
           description: error.errors[0].message,
           variant: "destructive",
         });
       } else {
+        logger.error("Contact form submission failed", error);
         toast({
           title: "Error",
           description: "Failed to send message. Please try again.",

@@ -1,5 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.53.0";
+import { requireAuth, createAuthErrorResponse } from '../_shared/auth.ts';
+import { validateString, createValidationErrorResponse } from '../_shared/validation.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,13 +14,26 @@ serve(async (req) => {
   }
 
   try {
+    // Require authentication
+    const user = await requireAuth(req);
+    
     const supabaseUrl = Deno.env.get('SUPABASE_URL')!;
     const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    const { execution_id, workflow_id, steps, input_data } = await req.json();
+    const body = await req.json();
+    
+    // Validate required fields
+    const execution_id = validateString(body.execution_id, 'execution_id');
+    const workflow_id = validateString(body.workflow_id, 'workflow_id');
+    const steps = body.steps;
+    const input_data = body.input_data || {};
+    
+    if (!Array.isArray(steps)) {
+      return createValidationErrorResponse('steps must be an array');
+    }
 
-    console.log('Starting workflow execution:', { execution_id, workflow_id, steps: steps.length });
+    console.log('Starting workflow execution:', { execution_id, workflow_id, steps: steps.length, user_id: user.id });
 
     let currentData = input_data || {};
     let completedSteps = 0;
@@ -148,6 +163,16 @@ serve(async (req) => {
     }
   } catch (error: any) {
     console.error('Error executing workflow:', error);
+    
+    // Return appropriate error response
+    if (error.message?.includes('Unauthorized')) {
+      return createAuthErrorResponse(error.message);
+    }
+    
+    if (error.message?.includes('Validation error') || error.message?.includes('must be')) {
+      return createValidationErrorResponse(error.message);
+    }
+    
     return new Response(
       JSON.stringify({ error: error.message }),
       { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
