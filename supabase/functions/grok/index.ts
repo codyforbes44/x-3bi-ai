@@ -1,5 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { isRateLimited, getRateLimitHeaders, createRateLimitResponse } from '../_shared/rateLimit.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,6 +14,31 @@ serve(async (req) => {
   }
 
   try {
+    // Get user from JWT for rate limiting
+    const authHeader = req.headers.get('Authorization');
+    let userId = 'anonymous';
+    
+    if (authHeader) {
+      try {
+        const supabaseClient = createClient(
+          Deno.env.get('SUPABASE_URL') ?? '',
+          Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+          { global: { headers: { Authorization: authHeader } } }
+        );
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        if (user) userId = user.id;
+      } catch (e) {
+        // Continue with anonymous if auth fails
+      }
+    }
+
+    // Rate limit: 60 requests per minute per user
+    const rateLimitResult = isRateLimited(userId, { windowMs: 60000, maxRequests: 60 });
+    const rateLimitHeaders = getRateLimitHeaders(userId, { windowMs: 60000, maxRequests: 60 });
+    
+    if (rateLimitResult.limited) {
+      return createRateLimitResponse(rateLimitResult.resetAt);
+    }
     const { 
       messages, 
       model = 'grok-3',
@@ -78,7 +105,7 @@ serve(async (req) => {
     const data = await response.json();
     
     return new Response(JSON.stringify(data), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { ...corsHeaders, ...rateLimitHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {
     console.error('Error in grok function:', error);

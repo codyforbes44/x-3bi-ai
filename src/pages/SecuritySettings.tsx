@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Shield, ShieldCheck, AlertTriangle, Clock } from "lucide-react";
 import { SEO } from "@/components/SEO";
+import { logger } from "@/utils/logger";
 import {
   Table,
   TableBody,
@@ -47,7 +48,7 @@ export default function SecuritySettings() {
       if (error) throw error;
       setMfaEnabled(data.totp.length > 0);
     } catch (error) {
-      console.error("Error checking MFA status:", error);
+      logger.error("Error checking MFA status", error);
     }
   };
 
@@ -62,7 +63,7 @@ export default function SecuritySettings() {
       if (error) throw error;
       setAuditLogs(data || []);
     } catch (error) {
-      console.error("Error fetching audit logs:", error);
+      logger.error("Error fetching audit logs", error);
     }
   };
 
@@ -152,7 +153,7 @@ export default function SecuritySettings() {
       });
       fetchAuditLogs();
     } catch (error) {
-      console.error("Error logging security event:", error);
+      logger.error("Error logging security event", error);
     }
   };
 
