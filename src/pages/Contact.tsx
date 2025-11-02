@@ -9,6 +9,14 @@ import { Mail, MapPin, Phone, Send } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { z } from "zod";
+
+const contactSchema = z.object({
+  name: z.string().trim().min(1, "Name is required").max(100, "Name must be less than 100 characters"),
+  email: z.string().trim().email("Invalid email address").max(255, "Email must be less than 255 characters"),
+  subject: z.string().trim().min(1, "Subject is required").max(200, "Subject must be less than 200 characters"),
+  message: z.string().trim().min(1, "Message is required").max(5000, "Message must be less than 5000 characters")
+});
 
 const Contact = () => {
   const { toast } = useToast();
@@ -23,14 +31,17 @@ const Contact = () => {
     e.preventDefault();
     
     try {
+      // Validate form data
+      const validatedData = contactSchema.parse(formData);
+      
       const { data: { user } } = await supabase.auth.getUser();
       
       const { error } = await supabase.from("contact_submissions").insert({
         user_id: user?.id,
-        name: formData.name,
-        email: formData.email,
-        subject: formData.subject,
-        message: formData.message,
+        name: validatedData.name,
+        email: validatedData.email,
+        subject: validatedData.subject,
+        message: validatedData.message,
       });
 
       if (error) throw error;
@@ -41,12 +52,19 @@ const Contact = () => {
       });
       setFormData({ name: "", email: "", subject: "", message: "" });
     } catch (error) {
-      console.error("Contact form error:", error);
-      toast({
-        title: "Error",
-        description: "Failed to send message. Please try again.",
-        variant: "destructive",
-      });
+      if (error instanceof z.ZodError) {
+        toast({
+          title: "Validation Error",
+          description: error.errors[0].message,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to send message. Please try again.",
+          variant: "destructive",
+        });
+      }
     }
   };
 

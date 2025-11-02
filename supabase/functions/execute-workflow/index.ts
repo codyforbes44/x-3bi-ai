@@ -214,8 +214,38 @@ async function executeDataTransform(config: any, inputData: any) {
 }
 
 async function executeCondition(config: any, inputData: any) {
-  // Evaluate condition
-  const result = config.condition ? eval(config.condition) : true;
+  // Safe condition evaluation using simple comparison operators
+  // Format: "field operator value" e.g., "status equals active"
+  let result = true;
+  
+  if (config.condition) {
+    const { field, operator, value } = config;
+    const fieldValue = getValueByPath(inputData, field);
+    
+    switch (operator) {
+      case 'equals':
+        result = fieldValue === value;
+        break;
+      case 'not_equals':
+        result = fieldValue !== value;
+        break;
+      case 'greater_than':
+        result = Number(fieldValue) > Number(value);
+        break;
+      case 'less_than':
+        result = Number(fieldValue) < Number(value);
+        break;
+      case 'contains':
+        result = String(fieldValue).includes(value);
+        break;
+      case 'exists':
+        result = fieldValue !== undefined && fieldValue !== null;
+        break;
+      default:
+        result = true;
+    }
+  }
+  
   return {
     condition_met: result,
     ...inputData,
@@ -358,12 +388,14 @@ async function executeMapData(config: any, inputData: any) {
           case 'date':
             value = new Date(value).toISOString();
             break;
-          case 'custom':
-            // Allow custom JavaScript expressions (be careful with this!)
+          case 'boolean':
+            value = Boolean(value);
+            break;
+          case 'json':
             try {
-              value = eval(`(${transform.expression})(${JSON.stringify(value)})`);
+              value = JSON.parse(value);
             } catch (e) {
-              console.error('Custom transform error:', e);
+              console.error('JSON parse error:', e);
             }
             break;
         }

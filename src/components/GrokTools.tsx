@@ -112,8 +112,15 @@ export const GrokTools = () => {
       
       case 'calculate':
         try {
-          // Simple safe eval for demo (in production, use a proper math parser)
-          const result = eval(args.expression);
+          // Safe calculation using Function constructor with restricted scope
+          // Only allow basic math operations
+          const sanitized = args.expression.replace(/[^0-9+\-*/().\s]/g, '');
+          if (sanitized !== args.expression) {
+            return JSON.stringify({ error: 'Invalid characters in expression' });
+          }
+          // Use Function constructor in safe context (no access to globals)
+          const calculate = new Function('return ' + sanitized);
+          const result = calculate();
           return JSON.stringify({ expression: args.expression, result });
         } catch (error) {
           return JSON.stringify({ error: 'Invalid expression' });
