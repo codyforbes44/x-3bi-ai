@@ -1,4 +1,7 @@
 import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
+import { requireAuth } from '../_shared/auth.ts';
+import { validateString } from '../_shared/validation.ts';
+import { isRateLimited, getRateLimitHeaders, createRateLimitResponse } from '../_shared/rateLimit.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -11,7 +14,22 @@ serve(async (req) => {
   }
 
   try {
+    // Require authentication
+    const user = await requireAuth(req);
+    
+    // Rate limiting: 30 requests per minute per user
+    const rateLimitResult = isRateLimited(user.id, { windowMs: 60000, maxRequests: 30 });
+    const rateLimitHeaders = getRateLimitHeaders(user.id, { windowMs: 60000, maxRequests: 30 });
+    
+    if (rateLimitResult.limited) {
+      return createRateLimitResponse(rateLimitResult.resetAt);
+    }
+
     const { text, voice = 'alloy' } = await req.json();
+
+    // Validate inputs
+    const validatedText = validateString(text, 'text', { maxLength: 4096 });
+    const validatedVoice = validateString(voice, 'voice', { maxLength: 50 });
 
     if (!text) {
       throw new Error('Text is required');
@@ -31,8 +49,8 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         model: 'tts-1',
-        input: text,
-        voice: voice,
+        input: validatedText,
+        voice: validatedVoice,
         response_format: 'mp3',
       }),
     });
@@ -51,7 +69,7 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ audioContent: base64Audio }),
       {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, ...rateLimitHeaders, 'Content-Type': 'application/json' },
       },
     );
   } catch (error) {

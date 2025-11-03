@@ -1,5 +1,8 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { requireAuth } from '../_shared/auth.ts';
+import { validateString } from '../_shared/validation.ts';
+import { isRateLimited, getRateLimitHeaders, createRateLimitResponse } from '../_shared/rateLimit.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,11 +15,24 @@ serve(async (req) => {
   }
 
   try {
+    // Require authentication
+    const user = await requireAuth(req);
+    
+    // Rate limiting: 20 requests per minute per user (premium voice is more resource-intensive)
+    const rateLimitResult = isRateLimited(user.id, { windowMs: 60000, maxRequests: 20 });
+    const rateLimitHeaders = getRateLimitHeaders(user.id, { windowMs: 60000, maxRequests: 20 });
+    
+    if (rateLimitResult.limited) {
+      return createRateLimitResponse(rateLimitResult.resetAt);
+    }
+
     const { text, voice = 'Aria', model = 'eleven_multilingual_v2', provider = 'elevenlabs' } = await req.json();
     
-    if (!text) {
-      throw new Error('Text is required');
-    }
+    // Validate inputs
+    const validatedText = validateString(text, 'text', { maxLength: 5000 });
+    const validatedVoice = validateString(voice, 'voice', { maxLength: 50 });
+    const validatedModel = validateString(model, 'model', { maxLength: 100 });
+    const validatedProvider = validateString(provider, 'provider', { maxLength: 50 });
 
     console.log(`Generating voice with ${provider}:`, { voice, model, textLength: text.length });
 
@@ -61,8 +77,8 @@ serve(async (req) => {
           'xi-api-key': elevenLabsApiKey,
         },
         body: JSON.stringify({
-          text,
-          model_id: model,
+          text: validatedText,
+          model_id: validatedModel,
           voice_settings: {
             stability: 0.5,
             similarity_boost: 0.75,
@@ -84,10 +100,10 @@ serve(async (req) => {
       return new Response(JSON.stringify({ 
         audioContent: base64Audio,
         provider: 'elevenlabs',
-        voice,
-        model 
+        voice: validatedVoice,
+        model: validatedModel 
       }), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, ...rateLimitHeaders, 'Content-Type': 'application/json' },
       });
 
     } else if (provider === 'openai') {
@@ -106,8 +122,8 @@ serve(async (req) => {
         },
         body: JSON.stringify({
           model: 'tts-1-hd',
-          input: text,
-          voice: voice.toLowerCase(),
+          input: validatedText,
+          voice: validatedVoice.toLowerCase(),
           response_format: 'mp3',
         }),
       });
@@ -123,10 +139,10 @@ serve(async (req) => {
       return new Response(JSON.stringify({ 
         audioContent: base64Audio,
         provider: 'openai',
-        voice,
+        voice: validatedVoice,
         model: 'tts-1-hd'
       }), {
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+        headers: { ...corsHeaders, ...rateLimitHeaders, 'Content-Type': 'application/json' },
       });
     }
 

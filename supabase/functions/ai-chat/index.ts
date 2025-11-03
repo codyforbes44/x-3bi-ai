@@ -1,5 +1,8 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { requireAuth } from '../_shared/auth.ts';
+import { validateArray, validateString, validateBoolean } from '../_shared/validation.ts';
+import { isRateLimited, getRateLimitHeaders, createRateLimitResponse } from '../_shared/rateLimit.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,12 +15,29 @@ serve(async (req) => {
   }
 
   try {
+    // Require authentication
+    const user = await requireAuth(req);
+    
+    // Rate limiting: 30 requests per minute per user
+    const rateLimitResult = isRateLimited(user.id, { windowMs: 60000, maxRequests: 30 });
+    const rateLimitHeaders = getRateLimitHeaders(user.id, { windowMs: 60000, maxRequests: 30 });
+    
+    if (rateLimitResult.limited) {
+      return createRateLimitResponse(rateLimitResult.resetAt);
+    }
+
     const { 
       messages, 
       model = 'claude-sonnet-4-20250514', 
       provider = 'anthropic',
       stream = false 
     } = await req.json();
+
+    // Validate inputs
+    validateArray(messages, 'messages', { minLength: 1, maxLength: 100 });
+    validateString(model, 'model', { maxLength: 100 });
+    validateString(provider, 'provider', { maxLength: 50 });
+    validateBoolean(stream, 'stream');
 
     console.log(`Using provider: ${provider}, model: ${model}`);
 

@@ -1,10 +1,15 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { requireAuth } from '../_shared/auth.ts';
+import { validateString, validateEnum } from '../_shared/validation.ts';
+import { isRateLimited, getRateLimitHeaders, createRateLimitResponse } from '../_shared/rateLimit.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
+
+const VALID_TASKS = ['explain', 'optimize', 'debug', 'convert'] as const;
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -12,7 +17,24 @@ serve(async (req) => {
   }
 
   try {
+    // Require authentication
+    const user = await requireAuth(req);
+    
+    // Rate limiting: 20 requests per minute per user
+    const rateLimitResult = isRateLimited(user.id, { windowMs: 60000, maxRequests: 20 });
+    const rateLimitHeaders = getRateLimitHeaders(user.id, { windowMs: 60000, maxRequests: 20 });
+    
+    if (rateLimitResult.limited) {
+      return createRateLimitResponse(rateLimitResult.resetAt);
+    }
+
     const { code, language, task, provider = 'anthropic' } = await req.json();
+
+    // Validate inputs
+    validateString(code, 'code', { maxLength: 50000 });
+    validateString(language, 'language', { maxLength: 50 });
+    validateEnum(task, 'task', VALID_TASKS);
+    validateString(provider, 'provider', { maxLength: 50 });
     
     let systemPrompt = '';
     let userPrompt = '';
