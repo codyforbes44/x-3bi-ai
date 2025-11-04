@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { SidebarProvider, SidebarTrigger, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
-import Header from "@/components/Header";
 import { DashboardMobileMenu } from "@/components/dashboard/DashboardMobileMenu";
 import { DashboardContent } from "@/components/dashboard/DashboardContent";
 import { DashboardBreadcrumbs } from "@/components/dashboard/DashboardBreadcrumbs";
@@ -54,65 +53,60 @@ const Dashboard = () => {
       />
       <ProductTour runTour={runTour} onComplete={() => setRunTour(false)} />
       <SidebarProvider defaultOpen={!isMobile}>
-        <div className="min-h-screen w-full flex flex-col bg-background">
-          <Header />
-          
-          <div className="flex-1 flex w-full pt-14 md:pt-16">
-            <AppSidebar activeTab={activeTab} onTabChange={setActiveTab} />
+        <div className="min-h-screen w-full flex bg-background">
+          <AppSidebar activeTab={activeTab} onTabChange={setActiveTab} />
 
-            <SidebarInset className="flex-1 min-w-0">
-              <div className="h-full">
-                {/* Top Bar - Sticky */}
-                <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
-                  <div className="container mx-auto px-3 md:px-4 py-3 md:py-4">
-                    <div className="flex items-center justify-between gap-4">
-                      <div className="flex items-center gap-2 md:gap-4 min-w-0 flex-1">
-                        <div className="flex items-center gap-2">
-                          <SidebarTrigger className="shrink-0 sidebar-trigger" />
-                          <span className="text-sm font-medium text-muted-foreground md:hidden animate-pulse">TAP HERE</span>
-                        </div>
-                        {!isMobile && <DashboardBreadcrumbs activeTab={activeTab} />}
+          <SidebarInset className="flex-1 min-w-0">
+            <div className="h-full">
+              {/* Top Bar - Sticky */}
+              <div className="sticky top-0 z-10 bg-background/95 backdrop-blur-sm border-b">
+                <div className="px-4 md:px-6 py-3 md:py-4">
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-2 md:gap-4 min-w-0 flex-1">
+                      <div className="flex items-center gap-2">
+                        <SidebarTrigger className="shrink-0 sidebar-trigger" />
                       </div>
-                      {!isMobile && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setActiveTab("overview")}
-                          className="shrink-0"
-                        >
-                          <LayoutDashboard className="w-4 h-4 mr-2" />
-                          Overview
-                        </Button>
-                      )}
+                      {!isMobile && <DashboardBreadcrumbs activeTab={activeTab} />}
                     </div>
-                    
-                    {/* Mobile Breadcrumbs */}
-                    {isMobile && activeTab !== "overview" && (
-                      <div className="mt-3">
-                        <DashboardBreadcrumbs activeTab={activeTab} />
-                      </div>
+                    {!isMobile && (
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => setActiveTab("overview")}
+                        className="shrink-0"
+                      >
+                        <LayoutDashboard className="w-4 h-4 mr-2" />
+                        Overview
+                      </Button>
                     )}
                   </div>
-                </div>
-
-                {/* Main Content */}
-                <div className="container mx-auto px-3 md:px-4 py-4 md:py-8 max-w-7xl">
-                  {activeTab !== "overview" && (
-                    <DashboardFeatureHeader activeTab={activeTab} />
-                  )}
-
-                  {activeTab === "overview" ? (
-                    <QuickAccess onFeatureSelect={setActiveTab} />
-                  ) : (
-                    <DashboardContent 
-                      activeTab={activeTab} 
-                      onTabChange={setActiveTab} 
-                    />
+                  
+                  {/* Mobile Breadcrumbs */}
+                  {isMobile && activeTab !== "overview" && (
+                    <div className="mt-3">
+                      <DashboardBreadcrumbs activeTab={activeTab} />
+                    </div>
                   )}
                 </div>
               </div>
-            </SidebarInset>
-          </div>
+
+              {/* Main Content */}
+              <div className="px-4 md:px-6 py-6 md:py-8 max-w-7xl mx-auto">
+                {activeTab !== "overview" && (
+                  <DashboardFeatureHeader activeTab={activeTab} />
+                )}
+
+                {activeTab === "overview" ? (
+                  <QuickAccess onFeatureSelect={setActiveTab} />
+                ) : (
+                  <DashboardContent 
+                    activeTab={activeTab} 
+                    onTabChange={setActiveTab} 
+                  />
+                )}
+              </div>
+            </div>
+          </SidebarInset>
         </div>
       </SidebarProvider>
     </>
