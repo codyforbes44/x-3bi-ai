@@ -1,4 +1,6 @@
 import { Heart, Github, Twitter, MessageCircle } from "lucide-react";
+import { Link } from "react-router-dom";
+import { FOOTER_NAV_GROUPS } from "@/config/routes";
 
 const Footer = () => {
   return (
@@ -18,38 +20,24 @@ const Footer = () => {
             </p>
           </div>
           
-          {/* Product */}
-          <div className="space-y-4">
-            <h3 className="font-semibold">Resources</h3>
-            <ul className="space-y-2 text-muted-foreground">
-              <li><a href="/free-ai-tools" className="hover:text-foreground transition-smooth">Free AI Tools</a></li>
-              <li><a href="/tutorials" className="hover:text-foreground transition-smooth">Tutorials</a></li>
-              <li><a href="/documentation" className="hover:text-foreground transition-smooth">Documentation</a></li>
-              <li><a href="/api-access" className="hover:text-foreground transition-smooth">API Access</a></li>
-            </ul>
-          </div>
-          
-          {/* Company */}
-          <div className="space-y-4">
-            <h3 className="font-semibold">Company</h3>
-            <ul className="space-y-2 text-muted-foreground">
-              <li><a href="/mission" className="hover:text-foreground transition-smooth">About Us</a></li>
-              <li><a href="/pricing" className="hover:text-foreground transition-smooth">Pricing</a></li>
-              <li><a href="/enterprise" className="hover:text-foreground transition-smooth">Enterprise</a></li>
-              <li><a href="/partners" className="hover:text-foreground transition-smooth">Partners</a></li>
-            </ul>
-          </div>
-          
-          {/* Support */}
-          <div className="space-y-4">
-            <h3 className="font-semibold">Support</h3>
-            <ul className="space-y-2 text-muted-foreground">
-              <li><a href="/contact" className="hover:text-foreground transition-smooth">Contact Sales</a></li>
-              <li><a href="/documentation" className="hover:text-foreground transition-smooth">Help Center</a></li>
-              <li><a href="/community" className="hover:text-foreground transition-smooth">Community</a></li>
-              <li><a href="/newsletter" className="hover:text-foreground transition-smooth">Newsletter</a></li>
-            </ul>
-          </div>
+          {/* Dynamic Navigation Groups */}
+          {FOOTER_NAV_GROUPS.map((group) => (
+            <div key={group.title} className="space-y-4">
+              <h3 className="font-semibold">{group.title}</h3>
+              <ul className="space-y-2 text-muted-foreground">
+                {group.items.map((item) => (
+                  <li key={item.name}>
+                    <Link 
+                      to={item.href} 
+                      className="hover:text-foreground transition-smooth"
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
         
         {/* Bottom */}

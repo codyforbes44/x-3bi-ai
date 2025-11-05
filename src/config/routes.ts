@@ -87,6 +87,7 @@ export const DASHBOARD_NAV_GROUPS = [
       { name: 'Profile', href: ROUTES.PROFILE, icon: 'User' },
       { name: 'Security', href: ROUTES.SECURITY, icon: 'Shield' },
       { name: 'Referrals', href: ROUTES.REFERRALS, icon: 'Gift' },
+      { name: 'Install App', href: ROUTES.INSTALL, icon: 'Download' },
     ],
   },
 ] as const;
@@ -109,6 +110,7 @@ export const FOOTER_NAV_GROUPS = [
       { name: 'Learn', href: ROUTES.LEARN },
       { name: 'Tutorials', href: ROUTES.TUTORIALS },
       { name: 'Documentation', href: ROUTES.DOCUMENTATION },
+      { name: 'API Access', href: ROUTES.API_ACCESS },
       { name: 'API Demos', href: ROUTES.API_DEMOS },
       { name: 'Community', href: ROUTES.COMMUNITY },
     ],
