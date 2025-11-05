@@ -3,13 +3,63 @@ User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /auth/
+Disallow: /dashboard/
+Disallow: /profile/
+Disallow: /workspaces/
+Disallow: /security-settings/
+Disallow: /referrals/
 
 # Sitemap
 Sitemap: https://3bi.ai/sitemap.xml
 
-# Crawl-delay for specific bots
+# Search Engine Crawlers
 User-agent: Googlebot
 Crawl-delay: 0
+Allow: /
 
 User-agent: Bingbot
 Crawl-delay: 1
+Allow: /
+
+User-agent: Slurp
+Crawl-delay: 1
+Allow: /
+
+# AI Crawlers - Allow documentation and tutorials only
+User-agent: GPTBot
+Allow: /documentation
+Allow: /tutorials
+Allow: /learn
+Allow: /api-demos
+Disallow: /
+
+User-agent: ChatGPT-User
+Allow: /documentation
+Allow: /tutorials
+Allow: /learn
+Allow: /api-demos
+Disallow: /
+
+User-agent: anthropic-ai
+Allow: /documentation
+Allow: /tutorials
+Allow: /learn
+Allow: /api-demos
+Disallow: /
+
+User-agent: Claude-Web
+Allow: /documentation
+Allow: /tutorials
+Allow: /learn
+Allow: /api-demos
+Disallow: /
+
+# Block aggressive scrapers
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: DotBot
+Crawl-delay: 10

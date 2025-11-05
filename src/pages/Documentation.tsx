@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { SEO } from "@/components/SEO";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -15,10 +16,19 @@ import {
   Key, Lock, AlertCircle, CheckCircle2, Info
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { generateTechArticleSchema } from "@/utils/structuredData";
 
 const Documentation = () => {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+
+  const structuredData = generateTechArticleSchema({
+    title: "3BI.AI API Documentation - Complete Developer Guide",
+    description: "Comprehensive API documentation for 3BI.AI. Access Grok, Claude 4, GPT-5, and more via REST API. Code examples, authentication, and best practices.",
+    url: "https://3bi.ai/documentation",
+    datePublished: "2024-01-01T00:00:00Z",
+    dateModified: new Date().toISOString()
+  });
 
   const apiEndpoints = [
     {
@@ -313,6 +323,15 @@ console.log(response.text);`;
 
   return (
     <>
+      <SEO
+        title="API Documentation - Developer Guide"
+        description="Complete API documentation for 3BI.AI. Access Grok, Claude 4, GPT-5 via REST API. Code examples in JavaScript, Python, cURL. Authentication, endpoints, SDKs."
+        keywords={['AI API', 'API documentation', 'developer guide', 'REST API', 'Grok API', 'Claude API', 'GPT-5 API', 'AI integration', 'API reference']}
+        ogImage="https://3bi.ai/og/documentation.png"
+        canonical="https://3bi.ai/documentation"
+        structuredData={structuredData}
+        preconnect={['https://jmazzsxnatfewblgpxfq.supabase.co']}
+      />
       <Header />
       <main className="min-h-screen pt-20 pb-16">
         {/* Hero Section */}

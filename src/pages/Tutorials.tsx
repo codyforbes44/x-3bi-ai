@@ -2,6 +2,7 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { PageHero } from "@/components/layout/PageHero";
 import { StatsGrid } from "@/components/layout/StatsGrid";
 import { CTASection } from "@/components/layout/CTASection";
+import { SEO } from "@/components/SEO";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,6 +11,7 @@ import {
   Clock, TrendingUp, Users 
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { generateBreadcrumbSchema } from "@/utils/structuredData";
 
 const Tutorials = () => {
   const navigate = useNavigate();
@@ -79,8 +81,22 @@ const Tutorials = () => {
     { icon: TrendingUp, value: "4.9/5", description: "Average Rating" }
   ];
 
+  const structuredData = generateBreadcrumbSchema([
+    { name: "Home", url: "https://3bi.ai/" },
+    { name: "Tutorials", url: "https://3bi.ai/tutorials" }
+  ]);
+
   return (
-    <PageLayout>
+    <>
+      <SEO
+        title="AI Tutorials - Learn AI Tools Step-by-Step"
+        description="Free AI tutorials for mastering Grok, Claude 4, GPT-5. Step-by-step guides for AI chat, code generation, image creation, voice AI, and system architecture."
+        keywords={['AI tutorials', 'AI learning', 'AI courses', 'learn AI', 'AI training', 'ChatGPT tutorial', 'Claude tutorial', 'AI guide', 'AI education']}
+        ogImage="https://3bi.ai/og/tutorials.png"
+        canonical="https://3bi.ai/tutorials"
+        structuredData={structuredData}
+      />
+      <PageLayout>
       <PageHero
         title="AI Tutorials"
         description="Step-by-step guides to master AI tools and unlock your creative potential with hands-on learning."
@@ -187,6 +203,7 @@ const Tutorials = () => {
         }
       />
     </PageLayout>
+    </>
   );
 };
 

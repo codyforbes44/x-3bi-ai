@@ -2,9 +2,11 @@ import { PageLayout } from "@/components/layout/PageLayout";
 import { PageHero } from "@/components/layout/PageHero";
 import { FeatureGrid } from "@/components/layout/FeatureGrid";
 import { CTASection } from "@/components/layout/CTASection";
+import { SEO } from "@/components/SEO";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Shield, Zap, Users, Settings, Lock, Cloud, Phone, Mail } from "lucide-react";
+import { generateOrganizationSchema } from "@/utils/structuredData";
 
 const Enterprise = () => {
   const features = [
@@ -40,9 +42,26 @@ const Enterprise = () => {
     }
   ];
 
+  const structuredData = generateOrganizationSchema({
+    contactPoint: {
+      "@type": "ContactPoint",
+      email: "enterprise@3bi.ai",
+      contactType: "Sales",
+    }
+  });
+
   return (
-    <PageLayout>
-      <PageHero
+    <>
+      <SEO
+        title="Enterprise AI Solutions - Business-Grade AI Platform"
+        description="Enterprise AI solutions from 3BI.AI. SOC 2 compliant, dedicated infrastructure, custom integrations. Grok, Claude 4, GPT-5 for business. Contact sales for custom pricing."
+        keywords={['enterprise AI', 'business AI platform', 'enterprise AI solutions', 'AI for business', 'custom AI', 'enterprise security', 'SOC 2 AI', 'dedicated AI infrastructure']}
+        ogImage="https://3bi.ai/og/enterprise.png"
+        canonical="https://3bi.ai/enterprise"
+        structuredData={structuredData}
+      />
+      <PageLayout>
+        <PageHero
         title="Enterprise Solutions"
         description="Powerful AI tools built for enterprise scale, security, and compliance. Transform your organization with custom AI solutions."
         actions={
@@ -152,6 +171,7 @@ const Enterprise = () => {
         </div>
       </div>
     </PageLayout>
+    </>
   );
 };
 

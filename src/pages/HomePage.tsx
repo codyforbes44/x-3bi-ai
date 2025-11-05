@@ -1,6 +1,7 @@
 import Header from "@/components/Header";
 import HeroSection from "@/components/HeroSection";
 import Footer from "@/components/Footer";
+import { SEO } from "@/components/SEO";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -23,10 +24,22 @@ import MiniImageGenerator from "@/components/home/MiniImageGenerator";
 import MiniCodeAssistant from "@/components/home/MiniCodeAssistant";
 import MiniVoiceInterface from "@/components/home/MiniVoiceInterface";
 import { ROUTES } from "@/config/routes";
+import { 
+  generateOrganizationSchema, 
+  generateWebsiteSchema, 
+  generateSoftwareAppSchema,
+  combineSchemas 
+} from "@/utils/structuredData";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
+
+  const structuredData = combineSchemas(
+    generateOrganizationSchema(),
+    generateWebsiteSchema(),
+    generateSoftwareAppSchema()
+  );
 
   const aiCapabilities = [
     {
@@ -84,9 +97,19 @@ const HomePage = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <HeroSection />
+    <>
+      <SEO
+        title="Enterprise AI Platform with Grok, Claude 4, GPT-5"
+        description="Transform your business with 3BI.AI's premium AI platform. Access Grok, Claude 4, GPT-5, and more. Advanced multi-modal memory, real-time collaboration, and enterprise-grade tools."
+        keywords={['AI platform', 'Grok AI', 'Claude 4', 'GPT-5', 'enterprise AI', 'AI chat', 'multi-modal AI', 'AI memory system', 'business AI', 'AI tools']}
+        ogImage="https://3bi.ai/og/home.png"
+        canonical="https://3bi.ai/"
+        structuredData={structuredData}
+        preconnect={['https://jmazzsxnatfewblgpxfq.supabase.co']}
+      />
+      <div className="min-h-screen bg-background">
+        <Header />
+        <HeroSection />
       
       {/* Grok AI Spotlight Section */}
       <section className="py-16 sm:py-20 md:py-24 px-4 sm:px-6 bg-gradient-to-br from-blue-950/20 via-background to-purple-950/20 border-y border-border/50">
@@ -303,6 +326,7 @@ const HomePage = () => {
 
       <Footer />
     </div>
+    </>
   );
 };
 

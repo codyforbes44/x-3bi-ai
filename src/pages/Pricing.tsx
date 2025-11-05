@@ -1,8 +1,10 @@
 import Header from "@/components/Header";
+import { SEO } from "@/components/SEO";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Check, Zap, Crown, Rocket } from "lucide-react";
+import { generateFAQSchema, generateProductSchema } from "@/utils/structuredData";
 
 const Pricing = () => {
   const plans = [
@@ -66,9 +68,36 @@ const Pricing = () => {
     }
   ];
 
+  const faqItems = [
+    { question: "Can I change plans anytime?", answer: "Yes, you can upgrade or downgrade your plan at any time. Changes take effect at the next billing cycle." },
+    { question: "What payment methods do you accept?", answer: "We accept all major credit cards, PayPal, and invoice billing for Enterprise customers." },
+    { question: "Is there a free trial?", answer: "Yes, all paid plans include a 14-day free trial with full access to features. No credit card required to start." },
+    { question: "What happens after I exceed my request limit?", answer: "You can purchase additional request packs or upgrade to a higher tier. We'll notify you before you reach your limit." }
+  ];
+
+  const structuredData = [
+    generateFAQSchema(faqItems),
+    generateProductSchema({
+      name: "3BI.AI Professional Plan",
+      price: "149",
+      priceCurrency: "USD",
+      description: "AI platform with Grok, Claude 4, GPT-5 access",
+      features: plans[1].features
+    })
+  ];
+
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
+    <>
+      <SEO
+        title="Pricing Plans - AI Platform"
+        description="Simple, transparent pricing for 3BI.AI. Access Grok, Claude 4, GPT-5, and more. Plans starting at $49/month with 14-day free trial. Enterprise solutions available."
+        keywords={['AI pricing', 'AI platform cost', 'Grok pricing', 'Claude 4 pricing', 'GPT-5 pricing', 'enterprise AI pricing', 'AI subscription', 'AI tools pricing']}
+        ogImage="https://3bi.ai/og/pricing.png"
+        canonical="https://3bi.ai/pricing"
+        structuredData={structuredData}
+      />
+      <div className="min-h-screen bg-background">
+        <Header />
       <div className="pt-20 pb-16">
         <div className="container mx-auto px-4">
           {/* Hero Section */}
@@ -167,7 +196,8 @@ const Pricing = () => {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </>
   );
 };
 
