@@ -1,6 +1,7 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { requireAuth } from '../_shared/auth.ts';
+import { validateArray, validateString, validateNumber } from '../_shared/validation.ts';
 import { isRateLimited, getRateLimitHeaders, createRateLimitResponse } from '../_shared/rateLimit.ts';
 
 const corsHeaders = {
@@ -14,27 +15,12 @@ serve(async (req) => {
   }
 
   try {
-    // Get user from JWT for rate limiting
-    const authHeader = req.headers.get('Authorization');
-    let userId = 'anonymous';
+    // Require authentication
+    const user = await requireAuth(req);
     
-    if (authHeader) {
-      try {
-        const supabaseClient = createClient(
-          Deno.env.get('SUPABASE_URL') ?? '',
-          Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-          { global: { headers: { Authorization: authHeader } } }
-        );
-        const { data: { user } } = await supabaseClient.auth.getUser();
-        if (user) userId = user.id;
-      } catch (e) {
-        // Continue with anonymous if auth fails
-      }
-    }
-
-    // Rate limit: 60 requests per minute per user
-    const rateLimitResult = isRateLimited(userId, { windowMs: 60000, maxRequests: 60 });
-    const rateLimitHeaders = getRateLimitHeaders(userId, { windowMs: 60000, maxRequests: 60 });
+    // Rate limit: 40 requests per minute per user
+    const rateLimitResult = isRateLimited(user.id, { windowMs: 60000, maxRequests: 40 });
+    const rateLimitHeaders = getRateLimitHeaders(user.id, { windowMs: 60000, maxRequests: 40 });
     
     if (rateLimitResult.limited) {
       return createRateLimitResponse(rateLimitResult.resetAt);
@@ -48,6 +34,12 @@ serve(async (req) => {
       tools,
       tool_choice
     } = await req.json();
+
+    // Validate inputs
+    validateArray(messages, 'messages', { minLength: 1, maxLength: 100 });
+    validateString(model, 'model', { maxLength: 100 });
+    validateNumber(temperature, 'temperature', { min: 0, max: 2 });
+    validateNumber(max_tokens, 'max_tokens', { min: 1, max: 32000 });
 
     const grokApiKey = Deno.env.get('GROK_API_KEY');
     if (!grokApiKey) {

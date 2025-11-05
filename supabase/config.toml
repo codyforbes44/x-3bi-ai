@@ -1,1 +1,28 @@
 project_id = "jmazzsxnatfewblgpxfq"
+
+[functions.ai-chat]
+verify_jwt = true
+
+[functions.ai-code]
+verify_jwt = true
+
+[functions.ai-image]
+verify_jwt = true
+
+[functions.google-gemini]
+verify_jwt = true
+
+[functions.grok]
+verify_jwt = true
+
+[functions.text-to-speech]
+verify_jwt = true
+
+[functions.premium-voice]
+verify_jwt = true
+
+[functions.web-scraper]
+verify_jwt = true
+
+[functions.execute-workflow]
+verify_jwt = true

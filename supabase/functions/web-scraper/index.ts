@@ -1,5 +1,8 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { requireAuth } from '../_shared/auth.ts';
+import { validateUrl } from '../_shared/validation.ts';
+import { isRateLimited, getRateLimitHeaders, createRateLimitResponse } from '../_shared/rateLimit.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -12,11 +15,21 @@ serve(async (req) => {
   }
 
   try {
+    // Require authentication
+    const user = await requireAuth(req);
+    
+    // Rate limiting: 10 requests per minute (scraping is resource-intensive)
+    const rateLimitResult = isRateLimited(user.id, { windowMs: 60000, maxRequests: 10 });
+    const rateLimitHeaders = getRateLimitHeaders(user.id, { windowMs: 60000, maxRequests: 10 });
+    
+    if (rateLimitResult.limited) {
+      return createRateLimitResponse(rateLimitResult.resetAt);
+    }
+
     const { url, options = {} } = await req.json();
     
-    if (!url) {
-      throw new Error('URL is required');
-    }
+    // Validate URL
+    validateUrl(url, 'url');
 
     console.log('Scraping website:', url);
     
@@ -80,7 +93,7 @@ serve(async (req) => {
       success: true,
       data: scrapedData
     }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      headers: { ...corsHeaders, ...rateLimitHeaders, 'Content-Type': 'application/json' },
     });
 
   } catch (error) {

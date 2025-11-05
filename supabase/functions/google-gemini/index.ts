@@ -1,4 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { requireAuth } from '../_shared/auth.ts';
+import { validateString } from '../_shared/validation.ts';
+import { isRateLimited, getRateLimitHeaders, createRateLimitResponse } from '../_shared/rateLimit.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -11,16 +14,26 @@ serve(async (req) => {
   }
 
   try {
-    const GOOGLE_AI_API_KEY = Deno.env.get('GEMINI_API_KEY');
+    // Require authentication
+    const user = await requireAuth(req);
     
-    if (!GOOGLE_AI_API_KEY) {
-      throw new Error('GEMINI_API_KEY not configured');
+    // Rate limiting: 25 requests per minute for multimodal
+    const rateLimitResult = isRateLimited(user.id, { windowMs: 60000, maxRequests: 25 });
+    const rateLimitHeaders = getRateLimitHeaders(user.id, { windowMs: 60000, maxRequests: 25 });
+    
+    if (rateLimitResult.limited) {
+      return createRateLimitResponse(rateLimitResult.resetAt);
     }
 
     const { prompt, model, image, video } = await req.json();
 
-    if (!prompt) {
-      throw new Error('Prompt is required');
+    // Validate inputs
+    validateString(prompt, 'prompt', { maxLength: 10000 });
+    validateString(model, 'model', { maxLength: 100 });
+
+    const GOOGLE_AI_API_KEY = Deno.env.get('GEMINI_API_KEY');
+    if (!GOOGLE_AI_API_KEY) {
+      throw new Error('GEMINI_API_KEY not configured');
     }
 
     console.log('Processing request with Gemini:', model);
@@ -92,7 +105,7 @@ serve(async (req) => {
         model,
         usage: data.usageMetadata,
       }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      { headers: { ...corsHeaders, ...rateLimitHeaders, 'Content-Type': 'application/json' } }
     );
 
   } catch (error) {
