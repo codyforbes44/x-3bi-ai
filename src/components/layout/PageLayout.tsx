@@ -11,7 +11,7 @@ export function PageLayout({ children, className = "" }: PageLayoutProps) {
   return (
     <div className={`min-h-screen flex flex-col bg-background ${className}`}>
       <Header />
-      <main className="flex-1 pt-16 md:pt-20">
+      <main className="flex-1 pt-14 md:pt-16 pb-16 md:pb-0">
         {children}
       </main>
       <Footer />

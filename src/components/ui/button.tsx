@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:scale-95 transition-transform touch-target",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 active:scale-95 touch-target",
   {
     variants: {
       variant: {
@@ -21,11 +21,11 @@ const buttonVariants = cva(
         hero: "bg-gradient-hero text-white hover:shadow-glow transition-spring border-0 shadow-lg",
       },
       size: {
-        default: "h-10 px-4 py-2",
-        sm: "h-9 rounded-md px-3",
-        lg: "h-12 rounded-md px-8 text-base",
-        icon: "h-10 w-10",
-        mobile: "h-12 px-6 text-base min-w-[120px]",
+        default: "h-12 px-5 py-2.5 text-base md:h-10 md:px-4 md:text-sm",
+        sm: "h-10 px-4 text-sm md:h-9 md:px-3 md:text-xs",
+        lg: "h-14 px-7 text-lg md:h-12 md:px-8 md:text-base",
+        icon: "h-12 w-12 md:h-10 md:w-10",
+        mobile: "h-14 px-6 text-base min-w-[140px]",
       },
     },
     defaultVariants: {
