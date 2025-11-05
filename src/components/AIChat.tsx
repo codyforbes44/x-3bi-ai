@@ -56,11 +56,34 @@ const AIChat = () => {
             role: msg.role,
             content: msg.content
           })),
-          model: 'gpt-4o-mini'
+          model: 'google/gemini-2.5-flash' // Modern Lovable AI model
         }
       });
 
-      if (error) throw error;
+      if (error) {
+        // Handle specific error types
+        if (error.message?.includes('Rate limit')) {
+          toast({
+            title: "Rate Limit Exceeded",
+            description: "Too many requests. Please wait a moment and try again.",
+            variant: "destructive"
+          });
+          setIsLoading(false);
+          return;
+        }
+        
+        if (error.message?.includes('credits depleted') || error.message?.includes('Payment required')) {
+          toast({
+            title: "AI Credits Depleted",
+            description: "Please add funds to your Lovable workspace to continue using AI features.",
+            variant: "destructive"
+          });
+          setIsLoading(false);
+          return;
+        }
+        
+        throw error;
+      }
 
       const assistantMessage: Message = {
         id: (Date.now() + 1).toString(),
@@ -92,7 +115,7 @@ const AIChat = () => {
   return (
     <Card className="h-[600px] md:h-[700px] flex flex-col">
       <CardHeader className="pb-3 md:pb-4 flex-row items-center justify-end">
-        <Badge variant="secondary" className="text-xs">GPT-4o Mini</Badge>
+        <Badge variant="secondary" className="text-xs">Gemini 2.5 Flash</Badge>
       </CardHeader>
       <CardContent className="flex-1 flex flex-col p-0 min-h-0">
         <ScrollArea className="flex-1 px-3 md:px-6" ref={scrollAreaRef}>
