@@ -46,6 +46,7 @@ const Documentation = lazy(() => import("./pages/Documentation"));
 const APIAccess = lazy(() => import("./pages/APIAccess"));
 const Workspaces = lazy(() => import("./pages/Workspaces"));
 const APIDemos = lazy(() => import("./pages/APIDemos"));
+const APIKeys = lazy(() => import("./pages/APIKeys"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const MemoryPage = lazy(() => import("./pages/MemoryPage"));
 const UsageAnalyticsPage = lazy(() => import("./pages/UsageAnalyticsPage"));
@@ -118,6 +119,7 @@ const App = () => (
                             <Route path="/workspaces" element={<Workspaces />} />
                             <Route path="/integrations-hub" element={<IntegrationsHub />} />
                             <Route path="/api-access" element={<APIAccess />} />
+                            <Route path="/api-keys" element={<APIKeys />} />
                             <Route path="/memory" element={<MemoryPage />} />
                             <Route path="/analytics" element={<UsageAnalyticsPage />} />
                             <Route path="/security" element={<SecuritySettings />} />

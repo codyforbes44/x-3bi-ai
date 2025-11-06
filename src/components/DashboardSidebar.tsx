@@ -20,7 +20,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { DASHBOARD_NAV_GROUPS } from "@/config/routes";
+import { DASHBOARD_NAV_GROUPS, ROUTES } from "@/config/routes";
 import * as LucideIcons from "lucide-react";
 import kalpeshLogo from "@/assets/kalpesh-logo.png";
 import { Button } from "@/components/ui/button";
@@ -134,6 +134,12 @@ export function DashboardSidebar() {
                 <Link to="/profile" className="cursor-pointer">
                   <LucideIcons.User className="mr-2 h-4 w-4" />
                   Profile
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link to={ROUTES.API_KEYS} className="cursor-pointer">
+                  <LucideIcons.Key className="mr-2 h-4 w-4" />
+                  API Keys
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>

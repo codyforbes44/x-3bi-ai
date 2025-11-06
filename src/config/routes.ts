@@ -43,6 +43,7 @@ export const ROUTES = {
   SECURITY: '/security',
   REFERRALS: '/referrals',
   INSTALL: '/install',
+  API_KEYS: '/api-keys',
 } as const;
 
 export const TUTORIAL_ROUTES = {
