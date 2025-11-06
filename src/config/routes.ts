@@ -58,7 +58,9 @@ export const MAIN_NAVIGATION = [
   { name: 'Dashboard', href: ROUTES.DASHBOARD, icon: 'LayoutDashboard' },
   { name: 'AI Tools', href: ROUTES.FREE_AI_TOOLS, icon: 'Sparkles' },
   { name: 'Learn', href: ROUTES.LEARN, icon: 'BookOpen' },
+  { name: 'Docs', href: ROUTES.DOCUMENTATION, icon: 'FileText' },
   { name: 'Pricing', href: ROUTES.PRICING, icon: 'DollarSign' },
+  { name: 'Enterprise', href: ROUTES.ENTERPRISE, icon: 'Building2' },
   { name: 'Community', href: ROUTES.COMMUNITY, icon: 'Users' },
 ] as const;
 

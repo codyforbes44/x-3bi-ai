@@ -45,7 +45,6 @@ const SystemArchitectureTutorial = lazy(() => import("./pages/tutorials/SystemAr
 const Documentation = lazy(() => import("./pages/Documentation"));
 const APIAccess = lazy(() => import("./pages/APIAccess"));
 const Workspaces = lazy(() => import("./pages/Workspaces"));
-const Integrations = lazy(() => import("./pages/Integrations"));
 const APIDemos = lazy(() => import("./pages/APIDemos"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const MemoryPage = lazy(() => import("./pages/MemoryPage"));
@@ -117,7 +116,6 @@ const App = () => (
                             {/* Other authenticated pages */}
                             <Route path="/profile" element={<ProfilePage />} />
                             <Route path="/workspaces" element={<Workspaces />} />
-                            <Route path="/integrations" element={<Integrations />} />
                             <Route path="/integrations-hub" element={<IntegrationsHub />} />
                             <Route path="/api-access" element={<APIAccess />} />
                             <Route path="/memory" element={<MemoryPage />} />
