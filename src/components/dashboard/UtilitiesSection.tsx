@@ -1,7 +1,7 @@
 import { TabsContent } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Globe, Code2, BarChart3, Code, Rocket, Volume2, FileText, Download } from "lucide-react";
+import { Globe, Code2, BarChart3, Code, Rocket, Volume2, FileText, Download, Key } from "lucide-react";
 import WebScraper from "@/components/WebScraper";
 import AIArchitect from "@/components/AIArchitect";
 import AIInsights from "@/components/AIInsights";
@@ -140,6 +140,32 @@ const UtilitiesSection = () => {
           </CardHeader>
         </Card>
         <ExportCenter />
+      </TabsContent>
+
+      <TabsContent value="api-keys" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Key className="w-5 h-5 text-amber-500" />
+              API Keys
+              <Badge variant="secondary">API</Badge>
+            </CardTitle>
+            <CardDescription>
+              Create and manage API keys for programmatic access to your account and third-party integrations.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground mb-4">
+              Visit the dedicated API Keys page to create and manage your keys.
+            </p>
+            <a 
+              href="/api-keys" 
+              className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+            >
+              Go to API Keys
+            </a>
+          </CardContent>
+        </Card>
       </TabsContent>
     </>
   );

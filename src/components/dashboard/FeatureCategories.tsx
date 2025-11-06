@@ -1,4 +1,4 @@
-import { Building2, GitBranch, Brain, Cpu, Bot, MessageSquare, Globe, Code2, BarChart3, Image, Mic, Volume2, Code, Sparkles, Rocket, Download, FileText, Wand2, Users, Music, Video, Phone, Zap, Eye, Wrench, Database } from "lucide-react";
+import { Building2, GitBranch, Brain, Cpu, Bot, MessageSquare, Globe, Code2, BarChart3, Image, Mic, Volume2, Code, Sparkles, Rocket, Download, FileText, Wand2, Users, Music, Video, Phone, Zap, Eye, Wrench, Database, Key } from "lucide-react";
 
 export interface Feature {
   id: string;
@@ -331,6 +331,15 @@ export const features: Feature[] = [
     icon: Download,
     color: "text-gray-500",
     badge: "Data",
+    category: "utilities"
+  },
+  {
+    id: "api-keys",
+    title: "API Keys",
+    description: "Manage API keys for third-party integrations",
+    icon: Key,
+    color: "text-amber-500",
+    badge: "API",
     category: "utilities"
   },
   {
