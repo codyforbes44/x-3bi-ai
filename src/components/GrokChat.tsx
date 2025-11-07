@@ -1,17 +1,13 @@
-import { useState } from 'react';
-import { Card, CardContent, CardDescription } from '@/components/ui/card';
+import { useState, useRef, useEffect } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Loader2, Send, Zap, Brain, Sparkles } from 'lucide-react';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Loader2, Send, Zap, Brain, Sparkles, Trash2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { routeAIRequest } from '@/utils/aiRouter';
-import { VoiceControls } from '@/components/voice/VoiceControls';
-import { useVoiceInput } from '@/hooks/useVoiceInput';
-import { useTextToSpeech } from '@/hooks/useTextToSpeech';
-import { PresenceIndicator } from '@/components/collaboration/PresenceIndicator';
-import { useRealtime } from '@/contexts/RealtimeContext';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -22,64 +18,118 @@ export const GrokChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [model, setModel] = useState('grok-3');
-  const [systemPrompt, setSystemPrompt] = useState('You are Grok, a witty and helpful AI assistant created by xAI. You provide accurate, engaging responses with a touch of humor.');
-  const [voiceEnabled, setVoiceEnabled] = useState(false);
+  const [model, setModel] = useState('grok-beta');
   const { toast } = useToast();
-  const { joinRoom, currentRoom, presenceUsers } = useRealtime();
+  const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Voice functionality
-  const { speak, stop: stopSpeaking, isSpeaking } = useTextToSpeech({
-    voice: 'alloy',
-  });
-
-  const { isListening, startListening, stopListening } = useVoiceInput({
-    onTranscript: (text) => {
-      setInput((prev) => prev + ' ' + text);
-    },
-  });
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
+    }
+  }, [messages]);
 
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
 
     const userMessage: Message = { role: 'user', content: input };
-    
-    const messagesToSend = messages.length === 0 && systemPrompt
-      ? [{ role: 'system' as const, content: systemPrompt }, userMessage]
-      : [...messages, userMessage];
-    
-    setMessages([...messages, userMessage]);
+    setMessages(prev => [...prev, userMessage]);
     setInput('');
     setIsLoading(true);
 
     try {
-      // Use AI router with fallbacks
-      const data = await routeAIRequest(messagesToSend, {
-        preferredModel: model,
-        task: 'chat',
-      });
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        throw new Error('Not authenticated');
+      }
 
-      const assistantMessage: Message = {
-        role: 'assistant',
-        content: data.response || data.choices?.[0]?.message?.content,
-      };
+      const response = await fetch(
+        `https://jmazzsxnatfewblgpxfq.supabase.co/functions/v1/grok`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${session.access_token}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            messages: [...messages, userMessage],
+            model,
+            stream: true,
+            temperature: 0.7,
+            max_tokens: 4096,
+          }),
+        }
+      );
 
-      setMessages([...messages, userMessage, assistantMessage]);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Failed to get response');
+      }
 
-      // Speak the response if voice is enabled
-      if (voiceEnabled && assistantMessage.content) {
-        speak(assistantMessage.content);
+      if (!response.body) {
+        throw new Error('No response body');
+      }
+
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let assistantMessage = '';
+
+      // Add empty assistant message that we'll update
+      setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split('\n');
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            const data = line.slice(6);
+            
+            if (data === '[DONE]') {
+              continue;
+            }
+
+            try {
+              const parsed = JSON.parse(data);
+              const delta = parsed.choices?.[0]?.delta?.content;
+              
+              if (delta) {
+                assistantMessage += delta;
+                setMessages(prev => {
+                  const newMessages = [...prev];
+                  newMessages[newMessages.length - 1] = {
+                    role: 'assistant',
+                    content: assistantMessage,
+                  };
+                  return newMessages;
+                });
+              }
+            } catch (e) {
+              // Skip invalid JSON
+              console.error('Failed to parse SSE data:', e);
+            }
+          }
+        }
       }
     } catch (error: any) {
-      console.error('Error calling AI:', error);
+      console.error('Grok chat error:', error);
       toast({
         title: 'Error',
-        description: error?.message || 'Failed to get response. Please try again.',
+        description: error?.message || 'Failed to send message',
         variant: 'destructive',
       });
+
+      // Remove the empty assistant message on error
+      setMessages(prev => prev.slice(0, -1));
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const clearMessages = () => {
+    setMessages([]);
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -90,74 +140,71 @@ export const GrokChat = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardContent className="pt-6">
-          <div className="flex items-center justify-between mb-4">
-            <CardDescription className="flex items-center gap-2">
-              <Zap className="w-4 h-4" />
-              Chat with Grok, X's advanced AI assistant with real-time knowledge
-              <Badge variant="outline" className="ml-2">Premium</Badge>
-            </CardDescription>
-            
-            <div className="flex items-center gap-2">
-              <PresenceIndicator />
-              <VoiceControls
-                isListening={isListening}
-                isSpeaking={isSpeaking}
-                onToggleListening={() => isListening ? stopListening() : startListening()}
-                onToggleSpeaking={() => {
-                  setVoiceEnabled(!voiceEnabled);
-                  if (isSpeaking) stopSpeaking();
-                }}
-              />
+    <Card className="w-full max-w-4xl mx-auto">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-6 h-6 text-primary" />
+            <div>
+              <CardTitle>Grok Chat</CardTitle>
+              <CardDescription className="flex items-center gap-2">
+                <Zap className="w-4 h-4" />
+                Chat with xAI's Grok model with streaming responses
+              </CardDescription>
             </div>
           </div>
-
-          {/* Model Selection & System Prompt */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div className="space-y-2">
-              <label className="text-sm font-medium">Model</label>
-              <Select value={model} onValueChange={setModel}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="grok-3">
-                    <div className="flex items-center gap-2">
-                      <Brain className="w-4 h-4" />
-                      Grok 3
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="grok-3">
-                    <div className="flex items-center gap-2">
-                      <Sparkles className="w-4 h-4" />
-                      Grok 3 (Vision Enabled)
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-medium">System Prompt</label>
-              <Textarea
-                value={systemPrompt}
-                onChange={(e) => setSystemPrompt(e.target.value)}
-                placeholder="Set Grok's personality and behavior..."
-                className="min-h-[80px]"
-                disabled={messages.length > 0}
-              />
-            </div>
+          <div className="flex items-center gap-2">
+            <Select value={model} onValueChange={setModel}>
+              <SelectTrigger className="w-[180px]">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="grok-beta">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-4 h-4" />
+                    Grok Beta
+                  </div>
+                </SelectItem>
+                <SelectItem value="grok-2">
+                  <div className="flex items-center gap-2">
+                    <Brain className="w-4 h-4" />
+                    Grok 2
+                  </div>
+                </SelectItem>
+                <SelectItem value="grok-2-mini">
+                  <div className="flex items-center gap-2">
+                    <Zap className="w-4 h-4" />
+                    Grok 2 Mini
+                  </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+            {messages.length > 0 && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={clearMessages}
+                disabled={isLoading}
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Clear
+              </Button>
+            )}
           </div>
-
-          <div className="space-y-4">
-            {/* Messages */}
-            <div className="min-h-[400px] max-h-[500px] overflow-y-auto space-y-4 p-4 border border-border rounded-lg bg-muted/30">
-              {messages.length === 0 && (
-                <div className="flex items-center justify-center h-[400px] text-muted-foreground text-sm">
-                  Start a conversation with Grok
-                </div>
-              )}
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <ScrollArea ref={scrollRef} className="h-[500px] pr-4">
+          {messages.length === 0 ? (
+            <div className="flex flex-col items-center justify-center h-full text-center text-muted-foreground">
+              <Sparkles className="w-12 h-12 mb-4 opacity-50" />
+              <p className="text-lg font-medium">Start a conversation with Grok</p>
+              <p className="text-sm mt-2">
+                Ask anything and get intelligent responses with real-time streaming
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-4">
               {messages.map((message, index) => (
                 <div
                   key={index}
@@ -166,51 +213,59 @@ export const GrokChat = () => {
                   }`}
                 >
                   <div
-                    className={`max-w-[80%] rounded-lg p-3 ${
+                    className={`max-w-[80%] rounded-lg px-4 py-2 ${
                       message.role === 'user'
                         ? 'bg-primary text-primary-foreground'
-                        : 'bg-background border border-border'
+                        : 'bg-muted'
                     }`}
                   >
-                    <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+                    <div className="flex items-center gap-2 mb-1">
+                      <Badge variant={message.role === 'user' ? 'secondary' : 'outline'}>
+                        {message.role === 'user' ? 'You' : 'Grok'}
+                      </Badge>
+                    </div>
+                    <p className="whitespace-pre-wrap break-words">{message.content}</p>
                   </div>
                 </div>
               ))}
-              {isLoading && (
-                <div className="flex justify-start">
-                  <div className="bg-background border border-border rounded-lg p-3">
-                    <Loader2 className="w-4 h-4 animate-spin" />
-                  </div>
-                </div>
-              )}
             </div>
+          )}
+        </ScrollArea>
 
-            {/* Input */}
-            <div className="flex gap-2">
-              <Textarea
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Ask Grok anything..."
-                className="min-h-[80px]"
-                disabled={isLoading}
-              />
-              <Button
-                onClick={sendMessage}
-                disabled={isLoading || !input.trim()}
-                size="icon"
-                className="h-[80px] w-[80px]"
-              >
-                {isLoading ? (
-                  <Loader2 className="w-5 h-5 animate-spin" />
-                ) : (
-                  <Send className="w-5 h-5" />
-                )}
-              </Button>
-            </div>
+        <form onSubmit={(e) => { e.preventDefault(); sendMessage(); }} className="space-y-2">
+          <Textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="Type your message..."
+            disabled={isLoading}
+            className="min-h-[100px] resize-none"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+              }
+            }}
+          />
+          <div className="flex justify-between items-center">
+            <p className="text-sm text-muted-foreground">
+              Press Enter to send, Shift+Enter for new line
+            </p>
+            <Button type="submit" disabled={isLoading || !input.trim()}>
+              {isLoading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Sending...
+                </>
+              ) : (
+                <>
+                  <Send className="w-4 h-4 mr-2" />
+                  Send
+                </>
+              )}
+            </Button>
           </div>
-        </CardContent>
-      </Card>
-    </div>
+        </form>
+      </CardContent>
+    </Card>
   );
 };
