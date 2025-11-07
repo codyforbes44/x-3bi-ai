@@ -31,6 +31,7 @@ const Launched = lazy(() => import("./pages/Launched"));
 
 const Mission = lazy(() => import("./pages/Mission"));
 const Team = lazy(() => import("./pages/Team"));
+const OGPreviewTester = lazy(() => import("./pages/OGPreviewTester"));
 const Impact = lazy(() => import("./pages/Impact"));
 const Partners = lazy(() => import("./pages/Partners"));
 const Contact = lazy(() => import("./pages/Contact"));
@@ -94,6 +95,7 @@ const App = () => (
                             {/* Company pages */}
                             <Route path="/mission" element={<Mission />} />
                             <Route path="/team" element={<Team />} />
+                            <Route path="/og-preview-tester" element={<OGPreviewTester />} />
                             <Route path="/impact" element={<Impact />} />
                             <Route path="/partners" element={<Partners />} />
                             <Route path="/contact" element={<Contact />} />
