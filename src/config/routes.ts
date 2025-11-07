@@ -142,7 +142,7 @@ export const FOOTER_NAV_GROUPS = [
 export const MOBILE_QUICK_NAV = [
   { name: 'Home', href: ROUTES.HOME, icon: 'Home' },
   { name: 'Dashboard', href: ROUTES.DASHBOARD, icon: 'LayoutDashboard' },
-  { name: 'AI Tools', href: ROUTES.FREE_AI_TOOLS, icon: 'Sparkles' },
+  { name: 'Grok', href: ROUTES.GROK_CHAT, icon: 'Sparkles' },
   { name: 'Learn', href: ROUTES.LEARN, icon: 'BookOpen' },
   { name: 'Profile', href: ROUTES.PROFILE, icon: 'User' },
 ] as const;

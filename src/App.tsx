@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import ThemeProvider from "@/components/ThemeProvider";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { WorkspaceProvider } from "@/contexts/WorkspaceContext";
@@ -126,6 +126,7 @@ const App = () => (
                             <Route path="/api-access" element={<ProtectedRoute><APIAccess /></ProtectedRoute>} />
                             <Route path="/api-keys" element={<ProtectedRoute><APIKeys /></ProtectedRoute>} />
                             <Route path="/grok-chat" element={<GrokChatPage />} />
+                            <Route path="/dashboard/grok-chat" element={<Navigate to="/grok-chat" replace />} />
                             <Route path="/grok-chat/shared/:shareToken" element={<SharedGrokChat />} />
                             <Route path="/memory" element={<ProtectedRoute><MemoryPage /></ProtectedRoute>} />
                             <Route path="/analytics" element={<ProtectedRoute><UsageAnalyticsPage /></ProtectedRoute>} />
