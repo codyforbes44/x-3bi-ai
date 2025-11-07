@@ -41,9 +41,9 @@ serve(async (req) => {
     validateNumber(temperature, 'temperature', { min: 0, max: 2 });
     validateNumber(max_tokens, 'max_tokens', { min: 1, max: 32000 });
 
-    const grokApiKey = Deno.env.get('GROK_API_KEY');
+    const grokApiKey = Deno.env.get('XAI_API_KEY');
     if (!grokApiKey) {
-      throw new Error('Grok API key not configured');
+      throw new Error('xAI API key not configured');
     }
 
     console.log(`Using Grok model: ${model}`);
