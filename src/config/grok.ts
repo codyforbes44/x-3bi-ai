@@ -8,6 +8,12 @@ export const GROK_MODELS = [
     description: 'Latest flagship model with 256K context and advanced reasoning',
   },
   {
+    id: 'grok-3',
+    name: 'Grok 3',
+    icon: Brain,
+    description: 'Advanced capabilities with excellent performance',
+  },
+  {
     id: 'grok-2',
     name: 'Grok 2',
     icon: Brain,
