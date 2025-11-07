@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -119,6 +120,13 @@ const Newsletter = () => {
 
   return (
     <>
+      <SEO
+        title="Subscribe to AI Newsletter"
+        description="Stay updated with AI news, product updates, tutorials, and case studies. Join thousands of subscribers."
+        keywords={['AI newsletter', 'AI news', 'AI updates', 'subscribe']}
+        ogImage="https://3bi.ai/og/newsletter.png"
+        canonical="https://3bi.ai/newsletter"
+      />
       <Header />
       <main className="min-h-screen pt-20 pb-16">
         {/* Hero Section */}

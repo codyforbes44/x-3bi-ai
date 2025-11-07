@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 
@@ -12,7 +13,16 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+    <>
+      <SEO
+        title="Page Not Found - 3BI.AI"
+        description="The page you're looking for doesn't exist. Return to our AI dashboard or explore our features."
+        keywords={['404', 'not found', 'error page']}
+        ogImage="https://3bi.ai/og/default.png"
+        canonical="https://3bi.ai/404"
+        robots="noindex, nofollow"
+      />
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="text-center">
         <h1 className="text-4xl font-bold mb-4">404</h1>
         <p className="text-xl text-gray-600 mb-4">Oops! Page not found</p>
@@ -21,6 +31,7 @@ const NotFound = () => {
         </a>
       </div>
     </div>
+    </>
   );
 };
 

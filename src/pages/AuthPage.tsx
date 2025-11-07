@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { SEO } from "@/components/SEO";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -163,7 +164,15 @@ const AuthPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <>
+      <SEO
+        title="Sign In - 3BI.AI"
+        description="Sign in to access your AI dashboard, tools, and workspace. Secure authentication with multiple options."
+        keywords={['sign in', 'login', 'authentication', 'account access']}
+        ogImage="https://3bi.ai/og/auth.png"
+        canonical="https://3bi.ai/auth"
+      />
+      <div className="min-h-screen bg-background flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="w-12 h-12 bg-gradient-hero rounded-lg flex items-center justify-center mx-auto mb-4">
@@ -324,6 +333,7 @@ const AuthPage = () => {
         </CardContent>
       </Card>
     </div>
+    </>
   );
 };
 

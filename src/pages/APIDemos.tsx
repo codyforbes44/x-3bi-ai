@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { SEO } from "@/components/SEO";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -132,6 +133,13 @@ const APIDemos = () => {
 
   return (
     <>
+      <SEO
+        title="API Demos - Interactive Examples"
+        description="Try our AI APIs with interactive demos. Test Grok, Claude 4, image generation, and more."
+        keywords={['API demos', 'AI examples', 'API testing', 'interactive demos']}
+        ogImage="https://3bi.ai/og/api-demos.png"
+        canonical="https://3bi.ai/api-demos"
+      />
       <Header />
       <main className="min-h-screen pt-20 pb-16 neural-bg">
         {/* Hero Section */}

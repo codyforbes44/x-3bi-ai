@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -29,6 +30,13 @@ const Mission = () => {
 
   return (
     <>
+      <SEO
+        title="Our Mission - Democratizing AI"
+        description="Learn about 3BI.AI's mission to make advanced AI accessible to everyone. Our vision, values, and promise."
+        keywords={['AI mission', 'company mission', 'AI vision', 'AI accessibility']}
+        ogImage="https://3bi.ai/og/mission.png"
+        canonical="https://3bi.ai/mission"
+      />
       <Header />
       <main className="min-h-screen pt-20 pb-16">
         {/* Hero Section */}

@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -164,7 +165,15 @@ const Learn = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background">
+    <>
+      <SEO
+        title="Learn AI - Courses & Resources"
+        description="Master AI with comprehensive courses, tutorials, and guides. From beginner to advanced AI techniques."
+        keywords={['AI courses', 'AI learning', 'AI education', 'AI training']}
+        ogImage="https://3bi.ai/og/learn.png"
+        canonical="https://3bi.ai/learn"
+      />
+      <div className="min-h-screen bg-background">
       <Header />
       <div className="pt-16 md:pt-20 pb-12 md:pb-16">
         <div className="container mx-auto px-4 md:px-6">
@@ -661,6 +670,7 @@ function ChatApp() {
       </div>
       <Footer />
     </div>
+    </>
   );
 };
 

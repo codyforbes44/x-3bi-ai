@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -73,6 +74,13 @@ const Impact = () => {
 
   return (
     <>
+      <SEO
+        title="Our Impact - Transforming Businesses"
+        description="See how 3BI.AI impacts businesses worldwide. Real metrics, customer success stories, and global reach."
+        keywords={['AI impact', 'business transformation', 'AI success', 'customer stories']}
+        ogImage="https://3bi.ai/og/impact.png"
+        canonical="https://3bi.ai/impact"
+      />
       <Header />
       <main className="min-h-screen pt-20 pb-16">
         {/* Hero Section */}

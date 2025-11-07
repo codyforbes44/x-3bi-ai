@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -135,6 +136,13 @@ const APIAccess = () => {
 
   return (
     <>
+      <SEO
+        title="API Access - Developer Tools"
+        description="Access 3BI.AI APIs for Grok, Claude 4, GPT-5, and more. Flexible pricing for developers and businesses."
+        keywords={['AI API', 'API access', 'developer tools', 'API pricing']}
+        ogImage="https://3bi.ai/og/api-access.png"
+        canonical="https://3bi.ai/api-access"
+      />
       <Header />
       <main className="min-h-screen pt-20 pb-16">
         {/* Hero Section */}

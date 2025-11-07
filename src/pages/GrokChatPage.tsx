@@ -335,6 +335,9 @@ export default function GrokChatPage() {
       <SEO
         title="Grok Chat - xAI Conversation"
         description="Chat with xAI's Grok model with streaming responses and conversation history"
+        keywords={['Grok AI', 'xAI chat', 'AI conversation', 'streaming chat']}
+        ogImage="https://3bi.ai/og/grok-chat.png"
+        canonical="https://3bi.ai/grok-chat"
       />
       <div className="container mx-auto p-4 max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

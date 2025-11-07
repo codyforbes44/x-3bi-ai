@@ -166,6 +166,9 @@ export default function SecuritySettings() {
       <SEO
         title="Security Settings"
         description="Manage your account security settings including two-factor authentication and audit logs"
+        keywords={['security settings', '2FA', 'account security', 'audit logs']}
+        ogImage="https://3bi.ai/og/security.png"
+        canonical="https://3bi.ai/security"
       />
       
       <div className="container mx-auto px-4 py-8 max-w-6xl">

@@ -110,6 +110,9 @@ export default function ReferralProgram() {
       <SEO
         title="Referral Program"
         description="Earn rewards by referring friends and colleagues"
+        keywords={['referral program', 'earn rewards', 'refer friends', 'affiliate']}
+        ogImage="https://3bi.ai/og/referrals.png"
+        canonical="https://3bi.ai/referrals"
       />
       
       <div className="container mx-auto px-4 py-8 max-w-6xl">

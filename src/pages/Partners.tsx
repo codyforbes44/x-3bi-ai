@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -74,6 +75,13 @@ const Partners = () => {
 
   return (
     <>
+      <SEO
+        title="Our Partners - AI Technology Leaders"
+        description="Partnering with Anthropic, OpenAI, ElevenLabs, and leading AI companies to deliver the best AI platform."
+        keywords={['AI partners', 'technology partners', 'integrations', 'partnerships']}
+        ogImage="https://3bi.ai/og/partners.png"
+        canonical="https://3bi.ai/partners"
+      />
       <Header />
       <main className="min-h-screen pt-20 pb-16">
         {/* Hero Section */}

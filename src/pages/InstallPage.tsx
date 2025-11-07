@@ -11,6 +11,8 @@ export default function InstallPage() {
         title="Install App"
         description="Install 3BI.AI on your device for offline access and faster performance"
         keywords={['install', 'PWA', 'app', 'offline', 'mobile']}
+        ogImage="https://3bi.ai/og/install.png"
+        canonical="https://3bi.ai/install"
       />
       <PageLayout>
         <PageHero

@@ -107,6 +107,8 @@ export default function SharedGrokChat() {
       <SEO
         title={`Shared Grok Chat - ${conversation.title}`}
         description="View a shared Grok AI conversation"
+        keywords={['shared chat', 'Grok AI', 'conversation sharing']}
+        ogImage="https://3bi.ai/og/grok-chat.png"
       />
       <div className="container mx-auto p-4 max-w-4xl">
         <div className="mb-4 flex items-center gap-2">

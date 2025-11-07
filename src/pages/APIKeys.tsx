@@ -145,6 +145,9 @@ export default function APIKeys() {
       <SEO
         title="API Keys - Manage Your API Access"
         description="Create and manage API keys for third-party integrations and programmatic access to your account."
+        keywords={['API keys', 'API management', 'developer tools', 'access tokens']}
+        ogImage="https://3bi.ai/og/api-keys.png"
+        canonical="https://3bi.ai/api-keys"
       />
       
       <div className="container mx-auto py-8 px-4 max-w-6xl">

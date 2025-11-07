@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { PageHero } from "@/components/layout/PageHero";
 import { StatsGrid } from "@/components/layout/StatsGrid";
@@ -16,7 +17,15 @@ const Community = () => {
   ];
 
   return (
-    <PageLayout>
+    <>
+      <SEO
+        title="Join Our AI Community"
+        description="Connect with thousands of developers using 3BI.AI. Share projects, get support, and collaborate on AI innovations."
+        keywords={['AI community', 'developer community', 'AI forum', 'AI collaboration']}
+        ogImage="https://3bi.ai/og/community.png"
+        canonical="https://3bi.ai/community"
+      />
+      <PageLayout>
       <div className="pb-12 md:pb-16">
         <PageHero
           title="Join Our Community"
@@ -167,7 +176,8 @@ const Community = () => {
           </>
         }
       />
-    </PageLayout>
+      </PageLayout>
+    </>
   );
 };
 

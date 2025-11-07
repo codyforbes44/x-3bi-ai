@@ -8,6 +8,9 @@ export default function IntegrationsHub() {
       <SEO
         title="Integrations Hub"
         description="Connect with Zapier, Slack, and other popular services"
+        keywords={['integrations', 'Zapier', 'Slack', 'automation']}
+        ogImage="https://3bi.ai/og/integrations.png"
+        canonical="https://3bi.ai/integrations"
       />
       
       <div className="container mx-auto px-4 py-8 max-w-6xl">

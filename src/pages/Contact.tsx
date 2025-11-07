@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -86,6 +87,13 @@ const Contact = () => {
 
   return (
     <>
+      <SEO
+        title="Contact Us - Get Support"
+        description="Get in touch with 3BI.AI support team. Questions about features, pricing, or enterprise solutions? We're here to help."
+        keywords={['contact support', 'AI support', 'customer service', 'help']}
+        ogImage="https://3bi.ai/og/contact.png"
+        canonical="https://3bi.ai/contact"
+      />
       <Header />
       <main className="min-h-screen pt-20 pb-16">
         {/* Hero Section */}

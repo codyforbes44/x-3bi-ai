@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -72,6 +73,13 @@ const Team = () => {
 
   return (
     <>
+      <SEO
+        title="Meet Our Team - AI Experts"
+        description="Meet the team behind 3BI.AI. AI researchers, engineers, and innovators building the future of AI."
+        keywords={['AI team', 'company team', 'AI experts', 'leadership']}
+        ogImage="https://3bi.ai/og/team.png"
+        canonical="https://3bi.ai/team"
+      />
       <Header />
       <main className="min-h-screen pt-20 pb-16">
         {/* Hero Section */}

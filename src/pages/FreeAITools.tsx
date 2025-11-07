@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card } from "@/components/ui/card";
@@ -109,6 +110,13 @@ const FreeAITools = () => {
 
   return (
     <>
+      <SEO
+        title="Free AI Tools - Chat, Code, Images & More"
+        description="Access free AI tools powered by Claude 4, GPT, and more. AI chat, code generation, image creation, and voice AI."
+        keywords={['free AI tools', 'AI chat', 'AI code', 'AI images', 'free AI']}
+        ogImage="https://3bi.ai/og/ai-tools.png"
+        canonical="https://3bi.ai/free-ai-tools"
+      />
       <Header />
       <main className="min-h-screen pt-20 pb-16">
         {/* Hero Section */}

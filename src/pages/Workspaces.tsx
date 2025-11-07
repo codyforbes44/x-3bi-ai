@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { SEO } from "@/components/SEO";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { WorkspaceSwitcher } from "@/components/workspaces/WorkspaceSwitcher";
 import { CreateWorkspaceDialog } from "@/components/workspaces/CreateWorkspaceDialog";
@@ -22,7 +23,15 @@ const Workspaces = () => {
   }
 
   return (
-    <PageLayout>
+    <>
+      <SEO
+        title="Team Workspaces - Collaborate on AI"
+        description="Create and manage team workspaces. Collaborate on AI projects with role-based access control."
+        keywords={['team workspaces', 'collaboration', 'team AI', 'workspace management']}
+        ogImage="https://3bi.ai/og/workspaces.png"
+        canonical="https://3bi.ai/workspaces"
+      />
+      <PageLayout>
       <div className="container mx-auto px-4 py-12">
         <div className="max-w-6xl mx-auto space-y-8">
           {/* Header */}
@@ -107,6 +116,7 @@ const Workspaces = () => {
         />
       </div>
     </PageLayout>
+    </>
   );
 };
 

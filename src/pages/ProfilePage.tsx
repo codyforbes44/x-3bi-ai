@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { SEO } from "@/components/SEO";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -233,7 +234,15 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <>
+      <SEO
+        title="User Profile - Account Settings"
+        description="Manage your profile, preferences, and account settings. Customize your 3BI.AI experience."
+        keywords={['user profile', 'account settings', 'preferences']}
+        ogImage="https://3bi.ai/og/profile.png"
+        canonical="https://3bi.ai/profile"
+      />
+      <div className="min-h-screen bg-background">
       <Header />
       <div className="pt-20 pb-16 px-4">
         <div className="container mx-auto max-w-2xl">
@@ -428,6 +437,7 @@ const ProfilePage = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

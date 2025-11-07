@@ -11,6 +11,8 @@ export default function UsageAnalyticsPage() {
         title="AI Usage Analytics"
         description="Track your AI usage, costs, and optimize your spending across models"
         keywords={['AI analytics', 'usage tracking', 'cost optimization', 'AI metrics']}
+        ogImage="https://3bi.ai/og/analytics.png"
+        canonical="https://3bi.ai/usage-analytics"
       />
       <PageLayout>
         <PageHero

@@ -1,3 +1,4 @@
+import { SEO } from "@/components/SEO";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -100,8 +101,16 @@ const Launched = () => {
   const categories = ["All", "Content Creation", "Analytics", "Developer Tools", "Productivity", "Design", "Customer Service"];
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
+    <>
+      <SEO
+        title="Launched Projects - Community Showcase"
+        description="Explore amazing projects built with 3BI.AI. Get inspired and share your own creations."
+        keywords={['AI projects', 'showcase', 'community projects', 'launched']}
+        ogImage="https://3bi.ai/og/launched.png"
+        canonical="https://3bi.ai/launched"
+      />
+      <div className="min-h-screen bg-background">
+        <Header />
       <div className="pt-16 md:pt-20 pb-12 md:pb-16">
         <div className="container mx-auto px-4 md:px-6">
           {/* Hero Section */}
@@ -342,7 +351,8 @@ const Launched = () => {
         </div>
       </div>
       <Footer />
-    </div>
+      </div>
+    </>
   );
 };
 
