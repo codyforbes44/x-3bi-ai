@@ -125,7 +125,7 @@ const App = () => (
                             <Route path="/integrations-hub" element={<ProtectedRoute><IntegrationsHub /></ProtectedRoute>} />
                             <Route path="/api-access" element={<ProtectedRoute><APIAccess /></ProtectedRoute>} />
                             <Route path="/api-keys" element={<ProtectedRoute><APIKeys /></ProtectedRoute>} />
-                            <Route path="/grok-chat" element={<ProtectedRoute><GrokChatPage /></ProtectedRoute>} />
+                            <Route path="/grok-chat" element={<GrokChatPage />} />
                             <Route path="/grok-chat/shared/:shareToken" element={<SharedGrokChat />} />
                             <Route path="/memory" element={<ProtectedRoute><MemoryPage /></ProtectedRoute>} />
                             <Route path="/analytics" element={<ProtectedRoute><UsageAnalyticsPage /></ProtectedRoute>} />

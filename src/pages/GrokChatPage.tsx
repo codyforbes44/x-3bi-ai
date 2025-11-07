@@ -10,6 +10,10 @@ import { SEO } from '@/components/SEO';
 import { useGrokStream } from '@/hooks/useGrokStream';
 import { useGrokConversations } from '@/hooks/useGrokConversations';
 import { useGrokMessages } from '@/hooks/useGrokMessages';
+import { useGrokGuestConversations } from '@/hooks/useGrokGuestConversations';
+import { useGrokGuestMessages } from '@/hooks/useGrokGuestMessages';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { LogIn } from 'lucide-react';
 import { GrokMessageList } from '@/components/grok/GrokMessageList';
 import { GrokInputArea } from '@/components/grok/GrokInputArea';
 import { GrokConversationList } from '@/components/grok/GrokConversationList';
@@ -30,19 +34,24 @@ export default function GrokChatPage() {
   const { streamMessage } = useGrokStream();
   const isMobile = useIsMobile();
   
+  // Use authenticated or guest hooks based on auth status
+  const authConversations = useGrokConversations(user?.id);
+  const guestConversations = useGrokGuestConversations();
   const {
     conversations,
     createConversation,
     deleteConversation,
     togglePublicSharing,
-  } = useGrokConversations(user?.id);
+  } = user ? authConversations : guestConversations;
   
+  const authMessages = useGrokMessages(currentConversation);
+  const guestMessages = useGrokGuestMessages(currentConversation);
   const {
     messages,
     setMessages,
     saveMessage,
     updateConversationTitleFromFirstMessage,
-  } = useGrokMessages(currentConversation);
+  } = user ? authMessages : guestMessages;
 
   // Swipe gesture support for mobile
   useSwipeGesture({
@@ -240,6 +249,25 @@ export default function GrokChatPage() {
               </CardHeader>
               
               <CardContent className="flex-1 flex flex-col space-y-3 pb-4">
+                {/* Guest user banner */}
+                {!user && (
+                  <Alert className="border-primary/50 bg-primary/5">
+                    <LogIn className="h-4 w-4" />
+                    <AlertDescription className="text-xs">
+                      <strong>Guest Mode:</strong> Conversations saved locally.{' '}
+                      <Button 
+                        variant="link" 
+                        size="sm" 
+                        className="h-auto p-0 text-xs font-medium underline"
+                        onClick={() => window.location.href = '/auth?redirect=/grok-chat'}
+                      >
+                        Sign in
+                      </Button>
+                      {' '}to sync across devices.
+                    </AlertDescription>
+                  </Alert>
+                )}
+                
                 {!currentConversation ? (
                   // Empty state (compact)
                   <div className="flex-1 flex flex-col items-center justify-center text-center px-4">
@@ -342,6 +370,25 @@ export default function GrokChatPage() {
                 </div>
               </CardHeader>
               <CardContent className="space-y-4">
+                {/* Guest user banner */}
+                {!user && (
+                  <Alert className="border-primary/50 bg-primary/5">
+                    <LogIn className="h-4 w-4" />
+                    <AlertDescription>
+                      You're using <strong>Guest Mode</strong>. Conversations are saved in your browser only.{' '}
+                      <Button 
+                        variant="link" 
+                        size="sm" 
+                        className="h-auto p-0 font-medium underline"
+                        onClick={() => window.location.href = '/auth?redirect=/grok-chat'}
+                      >
+                        Sign in to save conversations
+                      </Button>
+                      {' '}and access them from any device.
+                    </AlertDescription>
+                  </Alert>
+                )}
+                
                 {!currentConversation ? (
                   <div className="flex flex-col items-center justify-center h-[500px] text-center text-muted-foreground">
                     <MessageSquare className="w-12 h-12 mb-4 opacity-50" />
