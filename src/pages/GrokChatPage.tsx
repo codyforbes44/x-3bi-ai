@@ -1,173 +1,58 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Sparkles, Plus, MessageSquare } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { SEO } from '@/components/SEO';
 import { useGrokStream } from '@/hooks/useGrokStream';
+import { useGrokConversations } from '@/hooks/useGrokConversations';
+import { useGrokMessages } from '@/hooks/useGrokMessages';
 import { GrokMessageList } from '@/components/grok/GrokMessageList';
 import { GrokInputArea } from '@/components/grok/GrokInputArea';
 import { GrokConversationList } from '@/components/grok/GrokConversationList';
 import { GROK_MODELS } from '@/config/grok';
 
-interface Message {
-  role: 'user' | 'assistant';
-  content: string;
-}
-
-interface Conversation {
-  id: string;
-  title: string;
-  model: string;
-  created_at: string;
-  updated_at: string;
-  is_public: boolean;
-  share_token: string;
-}
-
 export default function GrokChatPage() {
-  const [conversations, setConversations] = useState<Conversation[]>([]);
   const [currentConversation, setCurrentConversation] = useState<string | null>(null);
-  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isStreaming, setIsStreaming] = useState(false);
   const [model, setModel] = useState<string>('grok-beta');
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
   const { streamMessage } = useGrokStream();
+  
+  const {
+    conversations,
+    createConversation,
+    deleteConversation,
+    togglePublicSharing,
+  } = useGrokConversations(user?.id);
+  
+  const {
+    messages,
+    setMessages,
+    saveMessage,
+    updateConversationTitleFromFirstMessage,
+  } = useGrokMessages(currentConversation);
 
-  useEffect(() => {
-    if (user) {
-      loadConversations();
-    }
-  }, [user]);
-
-  useEffect(() => {
-    if (currentConversation) {
-      loadMessages(currentConversation);
-    }
-  }, [currentConversation]);
-
-
-  const loadConversations = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('grok_conversations')
-        .select('*')
-        .order('updated_at', { ascending: false });
-
-      if (error) throw error;
-      setConversations(data || []);
-    } catch (error) {
-      console.error('Failed to load conversations:', error);
+  const handleCreateConversation = async () => {
+    const conversationId = await createConversation(model);
+    if (conversationId) {
+      setCurrentConversation(conversationId);
     }
   };
 
-  const loadMessages = async (conversationId: string) => {
-    try {
-      const { data, error } = await supabase
-        .from('grok_messages')
-        .select('*')
-        .eq('conversation_id', conversationId)
-        .order('created_at', { ascending: true });
-
-      if (error) throw error;
-      setMessages(data?.map(msg => ({ role: msg.role as 'user' | 'assistant', content: msg.content })) || []);
-    } catch (error) {
-      console.error('Failed to load messages:', error);
+  const handleDeleteConversation = async (id: string) => {
+    if (currentConversation === id) {
+      setCurrentConversation(null);
     }
+    await deleteConversation(id);
   };
 
-  const createNewConversation = async () => {
-    if (!user) return;
-
-    try {
-      const { data, error } = await supabase
-        .from('grok_conversations')
-        .insert({
-          user_id: user.id,
-          title: 'New Conversation',
-          model,
-        })
-        .select()
-        .single();
-
-      if (error) throw error;
-      
-      setConversations(prev => [data, ...prev]);
-      setCurrentConversation(data.id);
-      setMessages([]);
-    } catch (error) {
-      console.error('Failed to create conversation:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to create new conversation',
-        variant: 'destructive',
-      });
-    }
-  };
-
-  const deleteConversation = async (id: string) => {
-    try {
-      const { error } = await supabase
-        .from('grok_conversations')
-        .delete()
-        .eq('id', id);
-
-      if (error) throw error;
-
-      setConversations(prev => prev.filter(c => c.id !== id));
-      if (currentConversation === id) {
-        setCurrentConversation(null);
-        setMessages([]);
-      }
-
-      toast({
-        title: 'Success',
-        description: 'Conversation deleted',
-      });
-    } catch (error) {
-      console.error('Failed to delete conversation:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to delete conversation',
-        variant: 'destructive',
-      });
-    }
-  };
-
-  const togglePublicSharing = async (conversationId: string, currentIsPublic: boolean) => {
-    try {
-      const { error } = await supabase
-        .from('grok_conversations')
-        .update({ is_public: !currentIsPublic })
-        .eq('id', conversationId);
-
-      if (error) throw error;
-
-      setConversations(prev => prev.map(c => 
-        c.id === conversationId ? { ...c, is_public: !currentIsPublic } : c
-      ));
-
-      toast({
-        title: 'Success',
-        description: !currentIsPublic ? 'Conversation is now public' : 'Conversation is now private',
-      });
-    } catch (error) {
-      console.error('Failed to toggle sharing:', error);
-      toast({
-        title: 'Error',
-        description: 'Failed to update sharing settings',
-        variant: 'destructive',
-      });
-    }
-  };
-
-  const copyShareLink = async (shareToken: string) => {
+  const handleCopyShareLink = async (shareToken: string) => {
     const shareUrl = `${window.location.origin}/grok-chat/shared/${shareToken}`;
     
     try {
@@ -188,59 +73,30 @@ export default function GrokChatPage() {
     }
   };
 
-  const saveMessage = async (conversationId: string, role: 'user' | 'assistant', content: string) => {
-    try {
-      const { error } = await supabase
-        .from('grok_messages')
-        .insert({
-          conversation_id: conversationId,
-          role,
-          content,
-        });
-
-      if (error) throw error;
-
-      // Update conversation's updated_at
-      await supabase
-        .from('grok_conversations')
-        .update({ updated_at: new Date().toISOString() })
-        .eq('id', conversationId);
-
-      // Update title if it's the first user message
-      if (role === 'user' && messages.length === 0) {
-        const title = content.slice(0, 50) + (content.length > 50 ? '...' : '');
-        await supabase
-          .from('grok_conversations')
-          .update({ title })
-          .eq('id', conversationId);
-        
-        setConversations(prev => prev.map(c => 
-          c.id === conversationId ? { ...c, title } : c
-        ));
-      }
-    } catch (error) {
-      console.error('Failed to save message:', error);
-    }
-  };
-
   const handleSendMessage = async () => {
-    if (!input.trim() || isLoading || !currentConversation) return;
+    if (!input.trim() || isStreaming || !currentConversation) return;
 
-    const userMessage: Message = { role: 'user', content: input };
+    const userMessage = { role: 'user' as const, content: input };
+    const messagesCopy = [...messages, userMessage];
+    
     setMessages(prev => [...prev, userMessage]);
     setInput('');
-    setIsLoading(true);
+    setIsStreaming(true);
 
-    // Save user message
+    // Save user message and update title if needed
     await saveMessage(currentConversation, 'user', userMessage.content);
+    await updateConversationTitleFromFirstMessage(currentConversation, userMessage.content, messages.length);
 
     // Add empty assistant message that we'll update
     setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
 
+    let assistantContent = '';
+
     await streamMessage({
-      messages: [...messages, userMessage],
+      messages: messagesCopy,
       model,
       onChunk: (content) => {
+        assistantContent = content;
         setMessages(prev => {
           const newMessages = [...prev];
           newMessages[newMessages.length - 1] = {
@@ -252,11 +108,10 @@ export default function GrokChatPage() {
       },
       onComplete: async () => {
         // Save assistant message
-        const lastMessage = messages[messages.length - 1];
-        if (lastMessage?.role === 'assistant' && lastMessage.content) {
-          await saveMessage(currentConversation!, 'assistant', lastMessage.content);
+        if (assistantContent) {
+          await saveMessage(currentConversation!, 'assistant', assistantContent);
         }
-        setIsLoading(false);
+        setIsStreaming(false);
       },
       onError: (error) => {
         console.error('Grok chat error:', error);
@@ -266,7 +121,7 @@ export default function GrokChatPage() {
           variant: 'destructive',
         });
         setMessages(prev => prev.slice(0, -1));
-        setIsLoading(false);
+        setIsStreaming(false);
       },
     });
   };
@@ -287,7 +142,7 @@ export default function GrokChatPage() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg">Conversations</CardTitle>
-                <Button size="sm" onClick={createNewConversation}>
+                <Button size="sm" onClick={handleCreateConversation}>
                   <Plus className="w-4 h-4" />
                 </Button>
               </div>
@@ -298,9 +153,9 @@ export default function GrokChatPage() {
                 currentConversation={currentConversation}
                 copiedToken={copiedToken}
                 onSelect={setCurrentConversation}
-                onDelete={deleteConversation}
+                onDelete={handleDeleteConversation}
                 onToggleSharing={togglePublicSharing}
-                onCopyShareLink={copyShareLink}
+                onCopyShareLink={handleCopyShareLink}
               />
             </CardContent>
           </Card>
@@ -346,7 +201,7 @@ export default function GrokChatPage() {
                   <p className="text-sm mt-2">
                     Create a new conversation to get started
                   </p>
-                  <Button onClick={createNewConversation} className="mt-4">
+                  <Button onClick={handleCreateConversation} className="mt-4">
                     <Plus className="w-4 h-4 mr-2" />
                     New Conversation
                   </Button>
@@ -362,7 +217,7 @@ export default function GrokChatPage() {
                     value={input}
                     onChange={setInput}
                     onSubmit={handleSendMessage}
-                    isLoading={isLoading}
+                    isLoading={isStreaming}
                     disabled={!currentConversation}
                   />
                 </>
