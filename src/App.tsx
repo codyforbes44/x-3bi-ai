@@ -17,6 +17,7 @@ import { CommandPalette } from "@/components/CommandPalette";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
 import FloatingBadge from "@/components/FloatingBadge";
 import ScrollToTop from "@/components/ScrollToTop";
+import { ProtectedRoute } from "@/components/ProtectedRoute";
 import HomePage from "./pages/HomePage";
 
 // Lazy load all other pages for better performance
@@ -119,17 +120,17 @@ const App = () => (
                             </Route>
                             
                             {/* Other authenticated pages */}
-                            <Route path="/profile" element={<ProfilePage />} />
-                            <Route path="/workspaces" element={<Workspaces />} />
-                            <Route path="/integrations-hub" element={<IntegrationsHub />} />
-                            <Route path="/api-access" element={<APIAccess />} />
-                            <Route path="/api-keys" element={<APIKeys />} />
-                            <Route path="/grok-chat" element={<GrokChatPage />} />
+                            <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+                            <Route path="/workspaces" element={<ProtectedRoute><Workspaces /></ProtectedRoute>} />
+                            <Route path="/integrations-hub" element={<ProtectedRoute><IntegrationsHub /></ProtectedRoute>} />
+                            <Route path="/api-access" element={<ProtectedRoute><APIAccess /></ProtectedRoute>} />
+                            <Route path="/api-keys" element={<ProtectedRoute><APIKeys /></ProtectedRoute>} />
+                            <Route path="/grok-chat" element={<ProtectedRoute><GrokChatPage /></ProtectedRoute>} />
                             <Route path="/grok-chat/shared/:shareToken" element={<SharedGrokChat />} />
-                            <Route path="/memory" element={<MemoryPage />} />
-                            <Route path="/analytics" element={<UsageAnalyticsPage />} />
-                            <Route path="/security" element={<SecuritySettings />} />
-                            <Route path="/referrals" element={<ReferralProgram />} />
+                            <Route path="/memory" element={<ProtectedRoute><MemoryPage /></ProtectedRoute>} />
+                            <Route path="/analytics" element={<ProtectedRoute><UsageAnalyticsPage /></ProtectedRoute>} />
+                            <Route path="/security" element={<ProtectedRoute><SecuritySettings /></ProtectedRoute>} />
+                            <Route path="/referrals" element={<ProtectedRoute><ReferralProgram /></ProtectedRoute>} />
                             <Route path="/install" element={<InstallPage />} />
                             
                             {/* 404 catch-all */}

@@ -46,7 +46,14 @@ export function useGrokConversations(userId: string | undefined) {
   }, [loadConversations]);
 
   const createConversation = useCallback(async (model: string): Promise<string | null> => {
-    if (!userId) return null;
+    if (!userId) {
+      toast({
+        title: 'Authentication Required',
+        description: 'Please sign in to create conversations',
+        variant: 'destructive',
+      });
+      return null;
+    }
 
     try {
       const { data, error } = await supabase
