@@ -11,6 +11,14 @@ import { MobileSearchBar } from "./mobile/MobileSearchBar";
 import { MobileFeatureList } from "./mobile/MobileFeatureList";
 import { MobileCategorySection } from "./mobile/MobileCategorySection";
 import { EMPTY_STATES } from "@/config/dashboard-features";
+import { useNavigate } from "react-router-dom";
+
+// Map feature IDs to their standalone routes
+const STANDALONE_ROUTES: Record<string, string> = {
+  'grok': '/grok-chat',
+  'memory': '/memory',
+  'analytics': '/analytics',
+};
 
 interface MobileMenuProps {
   features: Feature[];
@@ -27,6 +35,7 @@ export const DashboardMobileMenu = ({
   onOpenChange,
   onTabSelect
 }: MobileMenuProps) => {
+  const navigate = useNavigate();
   const { favorites, toggleFavorite } = useFavoriteFeatures();
   const { recentFeatures, addRecentFeature } = useRecentFeatures(features);
   const { searchQuery, setSearchQuery, filteredFeatures } = useFeatureSearch(features);
@@ -34,8 +43,16 @@ export const DashboardMobileMenu = ({
   const favoriteFeatures = features.filter((f) => favorites.includes(f.id));
 
   const handleFeatureSelect = (featureId: string) => {
-    onTabSelect(featureId);
-    onOpenChange(false);
+    const standaloneRoute = STANDALONE_ROUTES[featureId];
+    
+    if (standaloneRoute) {
+      navigate(standaloneRoute);
+      onOpenChange(false);
+    } else {
+      onTabSelect(featureId);
+      onOpenChange(false);
+    }
+    
     addRecentFeature(featureId);
   };
 
