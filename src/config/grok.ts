@@ -2,10 +2,10 @@ import { Brain, Sparkles, Zap } from 'lucide-react';
 
 export const GROK_MODELS = [
   {
-    id: 'grok-3',
-    name: 'Grok 3',
+    id: 'grok-4',
+    name: 'Grok 4',
     icon: Brain,
-    description: 'Most advanced model with superior capabilities',
+    description: 'Latest flagship model with 256K context and advanced reasoning',
   },
   {
     id: 'grok-2',
@@ -23,7 +23,7 @@ export const GROK_MODELS = [
 
 export type GrokModel = typeof GROK_MODELS[number]['id'];
 
-export const DEFAULT_GROK_MODEL: GrokModel = 'grok-3';
+export const DEFAULT_GROK_MODEL: GrokModel = 'grok-4';
 
 export const GROK_CONFIG = {
   defaultTemperature: 0.7,
