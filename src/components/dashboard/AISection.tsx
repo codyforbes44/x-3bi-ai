@@ -55,6 +55,34 @@ const AISection = () => {
         <ClaudeChat />
       </TabsContent>
 
+      <TabsContent value="grok" className="space-y-4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Zap className="w-5 h-5 text-amber-500" />
+              Grok Chat
+              <Badge variant="secondary" className="bg-amber-500/20 text-amber-500 border-amber-500/30">xAI</Badge>
+            </CardTitle>
+            <CardDescription>
+              Chat with xAI's Grok model with streaming responses and conversation history.
+            </CardDescription>
+          </CardHeader>
+        </Card>
+        <div className="flex flex-col items-center justify-center p-8 bg-muted/30 rounded-lg border border-border">
+          <Zap className="w-12 h-12 text-amber-500 mb-4" />
+          <h3 className="text-lg font-semibold mb-2">Visit Dedicated Grok Chat</h3>
+          <p className="text-sm text-muted-foreground text-center mb-4">
+            Access the full Grok chat experience with conversation persistence
+          </p>
+          <a 
+            href="/grok-chat"
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+          >
+            Open Grok Chat
+          </a>
+        </div>
+      </TabsContent>
+
       <TabsContent value="local" className="space-y-4">
         <Card>
           <CardHeader>

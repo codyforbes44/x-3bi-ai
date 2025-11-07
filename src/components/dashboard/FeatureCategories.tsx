@@ -86,6 +86,15 @@ export const features: Feature[] = [
     badge: "Latest Model",
     category: "advanced-ai"
   },
+  {
+    id: "grok",
+    title: "Grok Chat",
+    description: "Chat with xAI's Grok model with streaming responses",
+    icon: Zap,
+    color: "text-amber-500",
+    badge: "xAI",
+    category: "advanced-ai"
+  },
 
   // AI Tools
   {

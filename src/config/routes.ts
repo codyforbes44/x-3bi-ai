@@ -44,6 +44,7 @@ export const ROUTES = {
   REFERRALS: '/referrals',
   INSTALL: '/install',
   API_KEYS: '/api-keys',
+  GROK_CHAT: '/grok-chat',
 } as const;
 
 export const TUTORIAL_ROUTES = {
