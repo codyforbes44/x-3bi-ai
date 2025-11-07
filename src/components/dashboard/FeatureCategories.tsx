@@ -253,15 +253,6 @@ export const features: Feature[] = [
     category: "advanced-ai"
   },
   {
-    id: "grok-chat",
-    title: "Grok Chat",
-    description: "Real-time AI conversations with X's Grok",
-    icon: Zap,
-    color: "text-blue-500",
-    badge: "xAI",
-    category: "advanced-ai"
-  },
-  {
     id: "grok-vision",
     title: "Grok Vision",
     description: "Image understanding with Grok Vision",

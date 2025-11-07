@@ -259,21 +259,6 @@ const AISection = () => {
         <RunwayML />
       </TabsContent>
 
-      <TabsContent value="grok-chat" className="space-y-4">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Zap className="w-5 h-5 text-blue-500" />
-              Grok Chat
-              <Badge variant="secondary" className="bg-blue-500/20 text-blue-500 border-blue-500/30">xAI</Badge>
-            </CardTitle>
-            <CardDescription>
-              Real-time AI conversations with X's Grok - witty, accurate, and powered by real-time information.
-            </CardDescription>
-          </CardHeader>
-        </Card>
-        <GrokChat />
-      </TabsContent>
 
       <TabsContent value="grok-vision" className="space-y-4">
         <Card>
