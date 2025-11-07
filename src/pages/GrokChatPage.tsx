@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -15,6 +15,7 @@ import { GrokInputArea } from '@/components/grok/GrokInputArea';
 import { GrokConversationList } from '@/components/grok/GrokConversationList';
 import { GROK_MODELS } from '@/config/grok';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useSwipeGesture } from '@/hooks/useSwipeGesture';
 import { cn } from '@/lib/utils';
 
 export default function GrokChatPage() {
@@ -42,6 +43,22 @@ export default function GrokChatPage() {
     saveMessage,
     updateConversationTitleFromFirstMessage,
   } = useGrokMessages(currentConversation);
+
+  // Swipe gesture support for mobile
+  useSwipeGesture({
+    onSwipeRight: () => {
+      if (isMobile && !isHistoryOpen) {
+        setIsHistoryOpen(true);
+      }
+    },
+    onSwipeLeft: () => {
+      if (isMobile && isHistoryOpen) {
+        setIsHistoryOpen(false);
+      }
+    },
+    threshold: 50,
+    edgeThreshold: 20,
+  });
 
   const handleCreateConversation = async () => {
     const conversationId = await createConversation(model);
