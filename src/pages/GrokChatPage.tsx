@@ -1,15 +1,17 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Loader2, Send, Sparkles, Trash2, Plus, MessageSquare, Share2, Check, Copy } from 'lucide-react';
+import { Sparkles, Plus, MessageSquare } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { SEO } from '@/components/SEO';
+import { useGrokStream } from '@/hooks/useGrokStream';
+import { GrokMessageList } from '@/components/grok/GrokMessageList';
+import { GrokInputArea } from '@/components/grok/GrokInputArea';
+import { GrokConversationList } from '@/components/grok/GrokConversationList';
+import { GROK_MODELS } from '@/config/grok';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -32,11 +34,11 @@ export default function GrokChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [model, setModel] = useState('grok-beta');
+  const [model, setModel] = useState<string>('grok-beta');
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const { streamMessage } = useGrokStream();
 
   useEffect(() => {
     if (user) {
@@ -50,11 +52,6 @@ export default function GrokChatPage() {
     }
   }, [currentConversation]);
 
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-    }
-  }, [messages]);
 
   const loadConversations = async () => {
     try {
@@ -226,7 +223,7 @@ export default function GrokChatPage() {
     }
   };
 
-  const sendMessage = async () => {
+  const handleSendMessage = async () => {
     if (!input.trim() || isLoading || !currentConversation) return;
 
     const userMessage: Message = { role: 'user', content: input };
@@ -237,97 +234,41 @@ export default function GrokChatPage() {
     // Save user message
     await saveMessage(currentConversation, 'user', userMessage.content);
 
-    try {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        throw new Error('Not authenticated');
-      }
+    // Add empty assistant message that we'll update
+    setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
 
-      const response = await fetch(
-        `https://jmazzsxnatfewblgpxfq.supabase.co/functions/v1/grok`,
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${session.access_token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            messages: [...messages, userMessage],
-            model,
-            stream: true,
-            temperature: 0.7,
-            max_tokens: 4096,
-          }),
+    await streamMessage({
+      messages: [...messages, userMessage],
+      model,
+      onChunk: (content) => {
+        setMessages(prev => {
+          const newMessages = [...prev];
+          newMessages[newMessages.length - 1] = {
+            role: 'assistant',
+            content,
+          };
+          return newMessages;
+        });
+      },
+      onComplete: async () => {
+        // Save assistant message
+        const lastMessage = messages[messages.length - 1];
+        if (lastMessage?.role === 'assistant' && lastMessage.content) {
+          await saveMessage(currentConversation!, 'assistant', lastMessage.content);
         }
-      );
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to get response');
-      }
-
-      if (!response.body) {
-        throw new Error('No response body');
-      }
-
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let assistantMessage = '';
-
-      setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split('\n');
-
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const data = line.slice(6);
-            
-            if (data === '[DONE]') {
-              continue;
-            }
-
-            try {
-              const parsed = JSON.parse(data);
-              const delta = parsed.choices?.[0]?.delta?.content;
-              
-              if (delta) {
-                assistantMessage += delta;
-                setMessages(prev => {
-                  const newMessages = [...prev];
-                  newMessages[newMessages.length - 1] = {
-                    role: 'assistant',
-                    content: assistantMessage,
-                  };
-                  return newMessages;
-                });
-              }
-            } catch (e) {
-              console.error('Failed to parse SSE data:', e);
-            }
-          }
-        }
-      }
-
-      // Save assistant message
-      if (assistantMessage) {
-        await saveMessage(currentConversation, 'assistant', assistantMessage);
-      }
-    } catch (error: any) {
-      console.error('Grok chat error:', error);
-      toast({
-        title: 'Error',
-        description: error?.message || 'Failed to send message',
-        variant: 'destructive',
-      });
-      setMessages(prev => prev.slice(0, -1));
-    } finally {
-      setIsLoading(false);
-    }
+        setIsLoading(false);
+      },
+      onError: (error) => {
+        console.error('Grok chat error:', error);
+        toast({
+          title: 'Error',
+          description: error.message || 'Failed to send message',
+          variant: 'destructive',
+        });
+        setMessages(prev => prev.slice(0, -1));
+        setIsLoading(false);
+      },
+    });
   };
 
   return (
@@ -352,84 +293,15 @@ export default function GrokChatPage() {
               </div>
             </CardHeader>
             <CardContent>
-              <ScrollArea className="h-[600px]">
-                {conversations.length === 0 ? (
-                  <p className="text-sm text-muted-foreground text-center py-4">
-                    No conversations yet
-                  </p>
-                ) : (
-                  <div className="space-y-2">
-                    {conversations.map((conv) => (
-                      <div
-                        key={conv.id}
-                        className={`p-3 rounded-lg cursor-pointer transition-colors ${
-                          currentConversation === conv.id
-                            ? 'bg-primary text-primary-foreground'
-                            : 'bg-muted hover:bg-muted/80'
-                        }`}
-                        onClick={() => setCurrentConversation(conv.id)}
-                      >
-                        <div className="flex items-start justify-between gap-2">
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                              <p className="text-sm font-medium truncate">{conv.title}</p>
-                              {conv.is_public && (
-                                <Badge variant="secondary" className="text-xs">Public</Badge>
-                              )}
-                            </div>
-                            <p className="text-xs opacity-70">
-                              {new Date(conv.updated_at).toLocaleDateString()}
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-1">
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                togglePublicSharing(conv.id, conv.is_public);
-                              }}
-                              className="h-6 w-6 p-0"
-                              title={conv.is_public ? 'Make private' : 'Make public'}
-                            >
-                              <Share2 className={`w-3 h-3 ${conv.is_public ? 'text-green-500' : ''}`} />
-                            </Button>
-                            {conv.is_public && (
-                              <Button
-                                size="sm"
-                                variant="ghost"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  copyShareLink(conv.share_token);
-                                }}
-                                className="h-6 w-6 p-0"
-                                title="Copy share link"
-                              >
-                                {copiedToken === conv.share_token ? (
-                                  <Check className="w-3 h-3 text-green-500" />
-                                ) : (
-                                  <Copy className="w-3 h-3" />
-                                )}
-                              </Button>
-                            )}
-                            <Button
-                              size="sm"
-                              variant="ghost"
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                deleteConversation(conv.id);
-                              }}
-                              className="h-6 w-6 p-0"
-                            >
-                              <Trash2 className="w-3 h-3" />
-                            </Button>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </ScrollArea>
+              <GrokConversationList
+                conversations={conversations}
+                currentConversation={currentConversation}
+                copiedToken={copiedToken}
+                onSelect={setCurrentConversation}
+                onDelete={deleteConversation}
+                onToggleSharing={togglePublicSharing}
+                onCopyShareLink={copyShareLink}
+              />
             </CardContent>
           </Card>
 
@@ -451,9 +323,17 @@ export default function GrokChatPage() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="grok-beta">Grok Beta</SelectItem>
-                    <SelectItem value="grok-2">Grok 2</SelectItem>
-                    <SelectItem value="grok-2-mini">Grok 2 Mini</SelectItem>
+                    {GROK_MODELS.map((modelOption) => {
+                      const Icon = modelOption.icon;
+                      return (
+                        <SelectItem key={modelOption.id} value={modelOption.id}>
+                          <div className="flex items-center gap-2">
+                            <Icon className="w-4 h-4" />
+                            {modelOption.name}
+                          </div>
+                        </SelectItem>
+                      );
+                    })}
                   </SelectContent>
                 </Select>
               </div>
@@ -473,77 +353,18 @@ export default function GrokChatPage() {
                 </div>
               ) : (
                 <>
-                  <ScrollArea ref={scrollRef} className="h-[500px] pr-4">
-                    {messages.length === 0 ? (
-                      <div className="flex flex-col items-center justify-center h-full text-center text-muted-foreground">
-                        <Sparkles className="w-12 h-12 mb-4 opacity-50" />
-                        <p className="text-lg font-medium">Start a conversation</p>
-                        <p className="text-sm mt-2">
-                          Ask anything and get intelligent responses
-                        </p>
-                      </div>
-                    ) : (
-                      <div className="space-y-4">
-                        {messages.map((message, index) => (
-                          <div
-                            key={index}
-                            className={`flex ${
-                              message.role === 'user' ? 'justify-end' : 'justify-start'
-                            }`}
-                          >
-                            <div
-                              className={`max-w-[80%] rounded-lg px-4 py-2 ${
-                                message.role === 'user'
-                                  ? 'bg-primary text-primary-foreground'
-                                  : 'bg-muted'
-                              }`}
-                            >
-                              <div className="flex items-center gap-2 mb-1">
-                                <Badge variant={message.role === 'user' ? 'secondary' : 'outline'}>
-                                  {message.role === 'user' ? 'You' : 'Grok'}
-                                </Badge>
-                              </div>
-                              <p className="whitespace-pre-wrap break-words">{message.content}</p>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </ScrollArea>
-
-                  <form onSubmit={(e) => { e.preventDefault(); sendMessage(); }} className="space-y-2">
-                    <Textarea
-                      value={input}
-                      onChange={(e) => setInput(e.target.value)}
-                      placeholder="Type your message..."
-                      disabled={isLoading}
-                      className="min-h-[100px] resize-none"
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter' && !e.shiftKey) {
-                          e.preventDefault();
-                          sendMessage();
-                        }
-                      }}
-                    />
-                    <div className="flex justify-between items-center">
-                      <p className="text-sm text-muted-foreground">
-                        Press Enter to send, Shift+Enter for new line
-                      </p>
-                      <Button type="submit" disabled={isLoading || !input.trim()}>
-                        {isLoading ? (
-                          <>
-                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                            Sending...
-                          </>
-                        ) : (
-                          <>
-                            <Send className="w-4 h-4 mr-2" />
-                            Send
-                          </>
-                        )}
-                      </Button>
-                    </div>
-                  </form>
+                  <GrokMessageList
+                    messages={messages}
+                    emptyMessage="Start a conversation"
+                    emptyDescription="Ask anything and get intelligent responses"
+                  />
+                  <GrokInputArea
+                    value={input}
+                    onChange={setInput}
+                    onSubmit={handleSendMessage}
+                    isLoading={isLoading}
+                    disabled={!currentConversation}
+                  />
                 </>
               )}
             </CardContent>
