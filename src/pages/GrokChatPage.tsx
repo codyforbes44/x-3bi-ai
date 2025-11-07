@@ -14,6 +14,7 @@ import { useGrokGuestConversations } from '@/hooks/useGrokGuestConversations';
 import { useGrokGuestMessages } from '@/hooks/useGrokGuestMessages';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { LogIn } from 'lucide-react';
+import { importGuestConversations, hasGuestConversations } from '@/utils/grokGuestImport';
 import { GrokMessageList } from '@/components/grok/GrokMessageList';
 import { GrokInputArea } from '@/components/grok/GrokInputArea';
 import { GrokConversationList } from '@/components/grok/GrokConversationList';
@@ -42,6 +43,7 @@ export default function GrokChatPage() {
     createConversation,
     deleteConversation,
     togglePublicSharing,
+    refreshConversations,
   } = user ? authConversations : guestConversations;
   
   const authMessages = useGrokMessages(currentConversation);
@@ -52,6 +54,38 @@ export default function GrokChatPage() {
     saveMessage,
     updateConversationTitleFromFirstMessage,
   } = user ? authMessages : guestMessages;
+
+  // Import guest conversations when user logs in
+  useEffect(() => {
+    if (user && hasGuestConversations()) {
+      const performImport = async () => {
+        const result = await importGuestConversations(user.id);
+        
+        if (result.success && result.imported > 0) {
+          toast({
+            title: 'Conversations Imported',
+            description: `Successfully imported ${result.imported} conversation${result.imported > 1 ? 's' : ''} from guest mode.`,
+          });
+          
+          // Refresh conversation list to show imported conversations
+          if (refreshConversations) {
+            refreshConversations();
+          }
+          
+          // Clear current conversation since guest IDs won't match
+          setCurrentConversation(null);
+        } else if (!result.success) {
+          toast({
+            title: 'Import Failed',
+            description: result.error || 'Failed to import guest conversations',
+            variant: 'destructive',
+          });
+        }
+      };
+      
+      performImport();
+    }
+  }, [user, toast, refreshConversations]);
 
   // Swipe gesture support for mobile
   useSwipeGesture({
