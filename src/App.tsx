@@ -48,6 +48,7 @@ const Workspaces = lazy(() => import("./pages/Workspaces"));
 const APIDemos = lazy(() => import("./pages/APIDemos"));
 const APIKeys = lazy(() => import("./pages/APIKeys"));
 const GrokChatPage = lazy(() => import("./pages/GrokChatPage"));
+const SharedGrokChat = lazy(() => import("./pages/SharedGrokChat"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const MemoryPage = lazy(() => import("./pages/MemoryPage"));
 const UsageAnalyticsPage = lazy(() => import("./pages/UsageAnalyticsPage"));
@@ -122,6 +123,7 @@ const App = () => (
                             <Route path="/api-access" element={<APIAccess />} />
                             <Route path="/api-keys" element={<APIKeys />} />
                             <Route path="/grok-chat" element={<GrokChatPage />} />
+                            <Route path="/grok-chat/shared/:shareToken" element={<SharedGrokChat />} />
                             <Route path="/memory" element={<MemoryPage />} />
                             <Route path="/analytics" element={<UsageAnalyticsPage />} />
                             <Route path="/security" element={<SecuritySettings />} />

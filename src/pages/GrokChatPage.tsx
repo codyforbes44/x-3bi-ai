@@ -5,7 +5,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Loader2, Send, Sparkles, Trash2, Plus, MessageSquare } from 'lucide-react';
+import { Loader2, Send, Sparkles, Trash2, Plus, MessageSquare, Share2, Check, Copy } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
@@ -22,6 +22,8 @@ interface Conversation {
   model: string;
   created_at: string;
   updated_at: string;
+  is_public: boolean;
+  share_token: string;
 }
 
 export default function GrokChatPage() {
@@ -31,6 +33,7 @@ export default function GrokChatPage() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [model, setModel] = useState('grok-beta');
+  const [copiedToken, setCopiedToken] = useState<string | null>(null);
   const { toast } = useToast();
   const { user } = useAuth();
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -135,6 +138,54 @@ export default function GrokChatPage() {
       toast({
         title: 'Error',
         description: 'Failed to delete conversation',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const togglePublicSharing = async (conversationId: string, currentIsPublic: boolean) => {
+    try {
+      const { error } = await supabase
+        .from('grok_conversations')
+        .update({ is_public: !currentIsPublic })
+        .eq('id', conversationId);
+
+      if (error) throw error;
+
+      setConversations(prev => prev.map(c => 
+        c.id === conversationId ? { ...c, is_public: !currentIsPublic } : c
+      ));
+
+      toast({
+        title: 'Success',
+        description: !currentIsPublic ? 'Conversation is now public' : 'Conversation is now private',
+      });
+    } catch (error) {
+      console.error('Failed to toggle sharing:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to update sharing settings',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const copyShareLink = async (shareToken: string) => {
+    const shareUrl = `${window.location.origin}/grok-chat/shared/${shareToken}`;
+    
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopiedToken(shareToken);
+      setTimeout(() => setCopiedToken(null), 2000);
+      
+      toast({
+        title: 'Link Copied',
+        description: 'Share link copied to clipboard',
+      });
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to copy link',
         variant: 'destructive',
       });
     }
@@ -317,22 +368,59 @@ export default function GrokChatPage() {
                       >
                         <div className="flex items-start justify-between gap-2">
                           <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium truncate">{conv.title}</p>
-                            <p className="text-xs opacity-70 mt-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <p className="text-sm font-medium truncate">{conv.title}</p>
+                              {conv.is_public && (
+                                <Badge variant="secondary" className="text-xs">Public</Badge>
+                              )}
+                            </div>
+                            <p className="text-xs opacity-70">
                               {new Date(conv.updated_at).toLocaleDateString()}
                             </p>
                           </div>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              deleteConversation(conv.id);
-                            }}
-                            className="h-6 w-6 p-0"
-                          >
-                            <Trash2 className="w-3 h-3" />
-                          </Button>
+                          <div className="flex items-center gap-1">
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                togglePublicSharing(conv.id, conv.is_public);
+                              }}
+                              className="h-6 w-6 p-0"
+                              title={conv.is_public ? 'Make private' : 'Make public'}
+                            >
+                              <Share2 className={`w-3 h-3 ${conv.is_public ? 'text-green-500' : ''}`} />
+                            </Button>
+                            {conv.is_public && (
+                              <Button
+                                size="sm"
+                                variant="ghost"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  copyShareLink(conv.share_token);
+                                }}
+                                className="h-6 w-6 p-0"
+                                title="Copy share link"
+                              >
+                                {copiedToken === conv.share_token ? (
+                                  <Check className="w-3 h-3 text-green-500" />
+                                ) : (
+                                  <Copy className="w-3 h-3" />
+                                )}
+                              </Button>
+                            )}
+                            <Button
+                              size="sm"
+                              variant="ghost"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                deleteConversation(conv.id);
+                              }}
+                              className="h-6 w-6 p-0"
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </Button>
+                          </div>
                         </div>
                       </div>
                     ))}
