@@ -24,19 +24,23 @@ export function useGrokStream() {
     onError,
   }: StreamOptions) => {
     try {
+      // Try to get session, but don't require it (guest mode)
       const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
-        throw new Error('Not authenticated');
+
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json',
+      };
+
+      // Add auth header if available
+      if (session) {
+        headers['Authorization'] = `Bearer ${session.access_token}`;
       }
 
       const response = await fetch(
         `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/grok`,
         {
           method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${session.access_token}`,
-            'Content-Type': 'application/json',
-          },
+          headers,
           body: JSON.stringify({
             messages,
             model,

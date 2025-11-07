@@ -22,6 +22,7 @@ interface GuestMessage {
 export async function importGuestConversations(userId: string): Promise<{
   success: boolean;
   imported: number;
+  failed?: string[];
   error?: string;
 }> {
   try {
@@ -38,6 +39,7 @@ export async function importGuestConversations(userId: string): Promise<{
     }
 
     let importedCount = 0;
+    const failedTitles: string[] = [];
 
     // Import each conversation
     for (const guestConv of guestConversations) {
@@ -57,6 +59,7 @@ export async function importGuestConversations(userId: string): Promise<{
 
         if (convError) {
           console.error('Failed to import conversation:', convError);
+          failedTitles.push(guestConv.title);
           continue;
         }
 
@@ -91,6 +94,7 @@ export async function importGuestConversations(userId: string): Promise<{
         importedCount++;
       } catch (error) {
         console.error('Error importing conversation:', error);
+        failedTitles.push(guestConv.title);
         // Continue with next conversation
       }
     }
@@ -98,7 +102,11 @@ export async function importGuestConversations(userId: string): Promise<{
     // Clear guest conversations from localStorage
     localStorage.removeItem(GUEST_CONVERSATIONS_KEY);
 
-    return { success: true, imported: importedCount };
+    return { 
+      success: true, 
+      imported: importedCount,
+      failed: failedTitles.length > 0 ? failedTitles : undefined
+    };
   } catch (error) {
     console.error('Error importing guest conversations:', error);
     return {

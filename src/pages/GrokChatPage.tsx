@@ -62,9 +62,14 @@ export default function GrokChatPage() {
         const result = await importGuestConversations(user.id);
         
         if (result.success && result.imported > 0) {
+          const description = result.failed && result.failed.length > 0
+            ? `Imported ${result.imported} conversation${result.imported > 1 ? 's' : ''}. Failed: ${result.failed.join(', ')}`
+            : `Successfully imported ${result.imported} conversation${result.imported > 1 ? 's' : ''} from guest mode.`;
+          
           toast({
             title: 'Conversations Imported',
-            description: `Successfully imported ${result.imported} conversation${result.imported > 1 ? 's' : ''} from guest mode.`,
+            description,
+            variant: result.failed && result.failed.length > 0 ? 'default' : 'default',
           });
           
           // Refresh conversation list to show imported conversations
@@ -183,9 +188,17 @@ export default function GrokChatPage() {
       },
       onError: (error) => {
         console.error('Grok chat error:', error);
+        
+        // Check for rate limit error
+        const isRateLimited = error.message.includes('Rate limit') || error.message.includes('Too many requests');
+        
         toast({
-          title: 'Error',
-          description: error.message || 'Failed to send message',
+          title: isRateLimited ? 'Rate Limit Exceeded' : 'Error',
+          description: isRateLimited 
+            ? (!user 
+              ? 'Guest mode limited to 5 messages/min. Sign in for 40/min.' 
+              : 'You\'ve reached the 40 messages/min limit. Please wait a moment.')
+            : error.message || 'Failed to send message',
           variant: 'destructive',
         });
         setMessages(prev => prev.slice(0, -1));
@@ -288,7 +301,7 @@ export default function GrokChatPage() {
                   <Alert className="border-primary/50 bg-primary/5">
                     <LogIn className="h-4 w-4" />
                     <AlertDescription className="text-xs">
-                      <strong>Guest Mode:</strong> Conversations saved locally.{' '}
+                      <strong>Guest Mode:</strong> 5 messages/min limit. Conversations saved locally.{' '}
                       <Button 
                         variant="link" 
                         size="sm" 
@@ -297,7 +310,7 @@ export default function GrokChatPage() {
                       >
                         Sign in
                       </Button>
-                      {' '}to sync across devices.
+                      {' '}to unlock 40/min and sync across devices.
                     </AlertDescription>
                   </Alert>
                 )}
@@ -409,16 +422,16 @@ export default function GrokChatPage() {
                   <Alert className="border-primary/50 bg-primary/5">
                     <LogIn className="h-4 w-4" />
                     <AlertDescription>
-                      You're using <strong>Guest Mode</strong>. Conversations are saved in your browser only.{' '}
+                      You're using <strong>Guest Mode</strong> with 5 messages per minute limit. Conversations are saved in your browser only.{' '}
                       <Button 
                         variant="link" 
                         size="sm" 
                         className="h-auto p-0 font-medium underline"
                         onClick={() => window.location.href = '/auth?redirect=/grok-chat'}
                       >
-                        Sign in to save conversations
+                        Sign in
                       </Button>
-                      {' '}and access them from any device.
+                      {' '}to unlock 40 messages/min and sync across devices.
                     </AlertDescription>
                   </Alert>
                 )}

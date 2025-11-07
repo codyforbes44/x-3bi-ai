@@ -1,6 +1,6 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-import { requireAuth } from '../_shared/auth.ts';
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
 import { validateArray, validateString, validateNumber } from '../_shared/validation.ts';
 import { isRateLimited, getRateLimitHeaders, createRateLimitResponse } from '../_shared/rateLimit.ts';
 
@@ -15,12 +15,39 @@ serve(async (req) => {
   }
 
   try {
-    // Require authentication
-    const user = await requireAuth(req);
+    // Try to get user from JWT, but don't require it
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+    );
     
-    // Rate limit: 40 requests per minute per user
-    const rateLimitResult = isRateLimited(user.id, { windowMs: 60000, maxRequests: 40 });
-    const rateLimitHeaders = getRateLimitHeaders(user.id, { windowMs: 60000, maxRequests: 40 });
+    const authHeader = req.headers.get('Authorization');
+    let userId: string | null = null;
+    
+    if (authHeader) {
+      try {
+        const jwt = authHeader.replace('Bearer ', '');
+        const { data: { user } } = await supabaseClient.auth.getUser(jwt);
+        userId = user?.id ?? null;
+      } catch (error) {
+        console.log('No valid auth token, treating as guest');
+      }
+    }
+    
+    // Apply different rate limits based on auth status
+    let rateLimitResult;
+    let rateLimitHeaders;
+    
+    if (userId) {
+      // Authenticated: 40 requests per minute
+      rateLimitResult = isRateLimited(userId, { windowMs: 60000, maxRequests: 40 });
+      rateLimitHeaders = getRateLimitHeaders(userId, { windowMs: 60000, maxRequests: 40 });
+    } else {
+      // Guest: 5 requests per minute (IP-based)
+      const clientIp = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown';
+      rateLimitResult = isRateLimited(`guest_${clientIp}`, { windowMs: 60000, maxRequests: 5 });
+      rateLimitHeaders = getRateLimitHeaders(`guest_${clientIp}`, { windowMs: 60000, maxRequests: 5 });
+    }
     
     if (rateLimitResult.limited) {
       return createRateLimitResponse(rateLimitResult.resetAt);
