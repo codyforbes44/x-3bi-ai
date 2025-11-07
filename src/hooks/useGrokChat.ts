@@ -13,7 +13,7 @@ export function useGrokChat() {
   const { toast } = useToast();
   const { streamMessage } = useGrokStream();
 
-  const sendMessage = useCallback(async (content: string, model: string = 'grok-beta') => {
+  const sendMessage = useCallback(async (content: string, model: string = 'grok-3') => {
     if (!content.trim()) return;
 
     const userMessage: Message = { role: 'user', content };

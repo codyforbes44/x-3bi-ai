@@ -27,7 +27,7 @@ export default function GrokChatPage() {
   const [currentConversation, setCurrentConversation] = useState<string | null>(null);
   const [input, setInput] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
-  const [model, setModel] = useState<string>('grok-beta');
+  const [model, setModel] = useState<string>('grok-3');
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const { toast } = useToast();
