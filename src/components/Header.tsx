@@ -10,6 +10,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import kalpeshLogo from "@/assets/kalpesh-logo.png";
 import { MAIN_NAVIGATION, ROUTES } from "@/config/routes";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { OnboardingProgressIndicator } from "@/components/onboarding/OnboardingProgressIndicator";
 const Header = () => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
@@ -34,8 +35,10 @@ const Header = () => {
   const isActiveRoute = (href: string) => location.pathname === href;
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border">
-      <div className="container mx-auto px-3 md:px-4 h-14 md:h-16 flex items-center justify-between">
+    <>
+      {user && <OnboardingProgressIndicator />}
+      <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border">
+        <div className="container mx-auto px-3 md:px-4 h-14 md:h-16 flex items-center justify-between">
         {/* Logo */}
         <Link 
           to={ROUTES.HOME} 
@@ -201,6 +204,7 @@ const Header = () => {
         )}
       </div>
     </header>
+    </>
   );
 };
 
