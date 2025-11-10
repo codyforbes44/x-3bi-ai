@@ -45,7 +45,7 @@ export function GrokSpotlightSection() {
             <Button 
               size="lg" 
               className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto group"
-              onClick={() => navigate(ROUTES.DASHBOARD)}
+              onClick={() => navigate('/grok-chat')}
             >
               Try Grok Now
               <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
