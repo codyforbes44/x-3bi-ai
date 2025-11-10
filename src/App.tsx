@@ -58,7 +58,6 @@ const InstallPage = lazy(() => import("./pages/InstallPage"));
 const SecuritySettings = lazy(() => import("./pages/SecuritySettings"));
 const ReferralProgram = lazy(() => import("./pages/ReferralProgram"));
 const IntegrationsHub = lazy(() => import("./pages/IntegrationsHub"));
-const DashboardLayout = lazy(() => import("./components/layouts/DashboardLayout"));
 
 const queryClient = new QueryClient();
 
@@ -114,10 +113,8 @@ const App = () => (
                             <Route path="/tutorials/voice-ai" element={<VoiceAITutorial />} />
                             <Route path="/tutorials/system-architecture" element={<SystemArchitectureTutorial />} />
                             
-                            {/* Dashboard and authenticated routes with sidebar layout */}
-                            <Route path="/dashboard/*" element={<DashboardLayout />}>
-                              <Route index element={<Dashboard />} />
-                            </Route>
+                            {/* Dashboard route */}
+                            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                             
                             {/* Other authenticated pages */}
                             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
