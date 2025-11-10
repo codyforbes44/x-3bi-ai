@@ -1,7 +1,9 @@
-import { ChevronLeft, ChevronRight, Maximize2, Minimize2, X, Sparkles } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Maximize2, Minimize2, X, Sparkles, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useNavigate } from 'react-router-dom';
+import { AISidebarSettingsPanel } from './AISidebarSettingsPanel';
 
 interface AISidebarHeaderProps {
   isCollapsed: boolean;
@@ -33,6 +35,26 @@ export function AISidebarHeader({
       
       <div className="flex items-center gap-1">
         <TooltipProvider>
+          <Popover>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8"
+                  >
+                    <Settings className="w-4 h-4" />
+                  </Button>
+                </PopoverTrigger>
+              </TooltipTrigger>
+              <TooltipContent>Settings</TooltipContent>
+            </Tooltip>
+            <PopoverContent align="end" className="w-80 p-0">
+              <AISidebarSettingsPanel />
+            </PopoverContent>
+          </Popover>
+
           <Tooltip>
             <TooltipTrigger asChild>
               <Button

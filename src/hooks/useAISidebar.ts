@@ -1,14 +1,16 @@
 import { useState, useCallback, useEffect } from 'react';
+import { useAISidebarSettings } from './useAISidebarSettings';
 
 type SidebarState = 'collapsed' | 'compact' | 'expanded';
 
 const STORAGE_KEY = 'ai-sidebar-state';
-const DEFAULT_STATE: SidebarState = 'collapsed';
 
 export function useAISidebar() {
+  const { settings } = useAISidebarSettings();
+  
   const [state, setState] = useState<SidebarState>(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
-    return (stored as SidebarState) || DEFAULT_STATE;
+    return (stored as SidebarState) || settings.defaultState;
   });
 
   const [isFirstVisit, setIsFirstVisit] = useState(() => {
@@ -46,10 +48,23 @@ export function useAISidebar() {
     setState(targetState);
   }, []);
 
-  // Keyboard shortcut handler
+  // Keyboard shortcut handler (respects settings)
   useEffect(() => {
+    if (!settings.enableGlobalShortcut) return;
+    
     const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === 'g') {
+      // Parse the keyboard shortcut from settings
+      const shortcut = settings.keyboardShortcut.toLowerCase();
+      const needsCtrl = shortcut.includes('ctrl');
+      const needsCmd = shortcut.includes('cmd') || shortcut.includes('command');
+      const needsShift = shortcut.includes('shift');
+      const key = shortcut.split('+').pop() || 'g';
+      
+      const modifierMatch = (needsCtrl && e.ctrlKey) || (needsCmd && e.metaKey);
+      const shiftMatch = !needsShift || e.shiftKey;
+      const keyMatch = e.key.toLowerCase() === key;
+      
+      if (modifierMatch && shiftMatch && keyMatch) {
         e.preventDefault();
         toggle();
       }
@@ -57,7 +72,7 @@ export function useAISidebar() {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [toggle]);
+  }, [toggle, settings.enableGlobalShortcut, settings.keyboardShortcut]);
 
   return {
     state,
@@ -69,5 +84,6 @@ export function useAISidebar() {
     open,
     close,
     setWidth,
+    settings,
   };
 }
