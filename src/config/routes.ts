@@ -40,6 +40,14 @@ export const ROUTES = {
   INTEGRATIONS_HUB: '/integrations-hub',
   PREDICTIVE_AI: '/predictive-ai',
   
+  // Phase 7: Platform Domination
+  REALTIME_ANALYTICS: '/analytics/realtime',
+  PERMISSIONS: '/enterprise/permissions',
+  MARKETPLACE: '/marketplace',
+  SECURITY_DASHBOARD: '/security-dashboard',
+  WEBHOOKS: '/webhooks',
+  WHITE_LABEL: '/enterprise/white-label',
+  
   // Account & Settings
   SECURITY: '/security',
   REFERRALS: '/referrals',

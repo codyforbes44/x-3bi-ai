@@ -61,6 +61,14 @@ const ReferralProgram = lazy(() => import("./pages/ReferralProgram"));
 const IntegrationsHub = lazy(() => import("./pages/IntegrationsHub"));
 const PredictiveAI = lazy(() => import("./pages/PredictiveAI"));
 
+// Phase 7: Platform Domination
+const RealTimeAnalyticsPage = lazy(() => import("./pages/RealTimeAnalyticsPage"));
+const PermissionsPage = lazy(() => import("./pages/PermissionsPage"));
+const MarketplacePage = lazy(() => import("./pages/MarketplacePage"));
+const SecurityDashboardPage = lazy(() => import("./pages/SecurityDashboardPage"));
+const WebhooksPage = lazy(() => import("./pages/WebhooksPage"));
+const WhiteLabelPage = lazy(() => import("./pages/WhiteLabelPage"));
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -134,6 +142,14 @@ const App = () => (
                             <Route path="/referrals" element={<ProtectedRoute><ReferralProgram /></ProtectedRoute>} />
                             <Route path="/install" element={<InstallPage />} />
                             <Route path="/predictive-ai" element={<ProtectedRoute><PredictiveAI /></ProtectedRoute>} />
+                            
+                            {/* Phase 7: Platform Domination */}
+                            <Route path="/analytics/realtime" element={<ProtectedRoute><RealTimeAnalyticsPage /></ProtectedRoute>} />
+                            <Route path="/enterprise/permissions" element={<ProtectedRoute><PermissionsPage /></ProtectedRoute>} />
+                            <Route path="/marketplace" element={<ProtectedRoute><MarketplacePage /></ProtectedRoute>} />
+                            <Route path="/security-dashboard" element={<ProtectedRoute><SecurityDashboardPage /></ProtectedRoute>} />
+                            <Route path="/webhooks" element={<ProtectedRoute><WebhooksPage /></ProtectedRoute>} />
+                            <Route path="/enterprise/white-label" element={<ProtectedRoute><WhiteLabelPage /></ProtectedRoute>} />
                             
                             {/* 404 catch-all */}
                             <Route path="*" element={<NotFound />} />
