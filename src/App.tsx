@@ -59,6 +59,7 @@ const InstallPage = lazy(() => import("./pages/InstallPage"));
 const SecuritySettings = lazy(() => import("./pages/SecuritySettings"));
 const ReferralProgram = lazy(() => import("./pages/ReferralProgram"));
 const IntegrationsHub = lazy(() => import("./pages/IntegrationsHub"));
+const PredictiveAI = lazy(() => import("./pages/PredictiveAI"));
 
 const queryClient = new QueryClient();
 
@@ -132,6 +133,7 @@ const App = () => (
                             <Route path="/ai-assistant-settings" element={<ProtectedRoute><AIAssistantSettings /></ProtectedRoute>} />
                             <Route path="/referrals" element={<ProtectedRoute><ReferralProgram /></ProtectedRoute>} />
                             <Route path="/install" element={<InstallPage />} />
+                            <Route path="/predictive-ai" element={<ProtectedRoute><PredictiveAI /></ProtectedRoute>} />
                             
                             {/* 404 catch-all */}
                             <Route path="*" element={<NotFound />} />

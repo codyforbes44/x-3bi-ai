@@ -29,3 +29,27 @@ verify_jwt = true
 
 [functions.validate-api-key]
 verify_jwt = false
+
+[functions.digital-twin-train]
+verify_jwt = true
+
+[functions.digital-twin-predict]
+verify_jwt = true
+
+[functions.multi-agent-orchestrator]
+verify_jwt = true
+
+[functions.temporal-analyzer]
+verify_jwt = true
+
+[functions.knowledge-graph-builder]
+verify_jwt = true
+
+[functions.semantic-search]
+verify_jwt = true
+
+[functions.ai-agent-executor]
+verify_jwt = true
+
+[functions.workflow-learn]
+verify_jwt = true

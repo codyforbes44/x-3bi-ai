@@ -38,6 +38,7 @@ export const ROUTES = {
   WORKSPACES: '/workspaces',
   INTEGRATIONS: '/integrations',
   INTEGRATIONS_HUB: '/integrations-hub',
+  PREDICTIVE_AI: '/predictive-ai',
   
   // Account & Settings
   SECURITY: '/security',

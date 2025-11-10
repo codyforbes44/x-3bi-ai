@@ -1,15 +1,13 @@
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
-
-const XAI_API_KEY = Deno.env.get('XAI_API_KEY');
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 };
 
-// Agent tool definitions
-const agentTools = [
+const AGENT_TOOLS = [
   {
     type: "function",
     function: {
@@ -21,7 +19,7 @@ const agentTools = [
           url: { type: "string", description: "The URL to make the request to" },
           method: { type: "string", enum: ["GET", "POST", "PUT", "DELETE"], description: "HTTP method" },
           headers: { type: "object", description: "Request headers" },
-          body: { type: "object", description: "Request body for POST/PUT" }
+          body: { type: "object", description: "Request body for POST/PUT requests" }
         },
         required: ["url", "method"]
       }
@@ -31,12 +29,12 @@ const agentTools = [
     type: "function",
     function: {
       name: "extract_data",
-      description: "Extract specific fields from complex data structures",
+      description: "Extract specific fields from data objects",
       parameters: {
         type: "object",
         properties: {
           data: { type: "object", description: "The data object to extract from" },
-          fields: { type: "array", items: { type: "string" }, description: "Field paths to extract (dot notation)" }
+          fields: { type: "array", items: { type: "string" }, description: "Field paths to extract (e.g., 'user.name')" }
         },
         required: ["data", "fields"]
       }
@@ -46,7 +44,7 @@ const agentTools = [
     type: "function",
     function: {
       name: "analyze_sentiment",
-      description: "Analyze the sentiment of text",
+      description: "Analyze sentiment of text data",
       parameters: {
         type: "object",
         properties: {
@@ -64,7 +62,7 @@ const agentTools = [
       parameters: {
         type: "object",
         properties: {
-          data: { type: "any", description: "The data to classify" },
+          data: { type: "string", description: "The data to classify" },
           categories: { type: "array", items: { type: "string" }, description: "Possible categories" }
         },
         required: ["data", "categories"]
@@ -79,90 +77,61 @@ serve(async (req) => {
   }
 
   try {
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
+    );
+
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    if (!user) throw new Error('Unauthorized');
+
     const { stepType, config, inputData } = await req.json();
-
-    console.log('AI Agent execution:', { stepType, config });
-
-    if (!XAI_API_KEY) {
-      throw new Error('XAI_API_KEY not configured');
-    }
 
     let systemPrompt = '';
     let userPrompt = '';
-    let tools = agentTools;
 
-    // Build prompts based on step type
     switch (stepType) {
       case 'ai_decision':
-        systemPrompt = `You are an AI decision-making agent. Your job is to analyze the provided data and make an intelligent decision based on the goal and available options.`;
-        userPrompt = `Goal: ${config.goal}
-        
-Available Options: ${JSON.stringify(config.options)}
-
-Input Data: ${JSON.stringify(inputData, null, 2)}
-
-Analyze the data and choose the best option. Explain your reasoning and return your decision.`;
+        systemPrompt = 'You are an AI decision maker. Analyze the input and make a logical decision based on the criteria provided.';
+        userPrompt = `Decision criteria: ${JSON.stringify(config.criteria)}\nInput data: ${JSON.stringify(inputData)}`;
         break;
-
-      case 'ai_data_analysis':
-        systemPrompt = `You are an AI data analyst. Your job is to analyze data and provide insights based on the specified analysis type.`;
-        userPrompt = `Analysis Type: ${config.analysis_type}
-Instructions: ${config.instructions}
-
-Data to analyze: ${JSON.stringify(inputData, null, 2)}
-
-Perform the requested analysis and provide detailed insights.`;
+      case 'data_analysis':
+        systemPrompt = 'You are a data analyst. Analyze the provided data and extract insights.';
+        userPrompt = `Analysis type: ${config.analysisType}\nData: ${JSON.stringify(inputData)}`;
         break;
-
-      case 'ai_content_generation':
-        systemPrompt = `You are an AI content generator. Create high-quality ${config.content_type} content based on the template and data provided.`;
-        userPrompt = `Template/Instructions: ${config.template}
-
-Available Data: ${JSON.stringify(inputData, null, 2)}
-
-Generate the requested content. Replace any {{fieldName}} placeholders with actual data values.`;
+      case 'content_generation':
+        systemPrompt = 'You are a content creator. Generate high-quality content based on the requirements.';
+        userPrompt = `Template: ${config.template}\nContext: ${JSON.stringify(inputData)}`;
         break;
-
-      case 'ai_api_orchestration':
-        systemPrompt = `You are an AI API orchestrator. You can call multiple APIs intelligently to accomplish complex tasks. Use the make_http_request tool to call APIs as needed.`;
-        userPrompt = `Goal: ${config.orchestration_goal}
-
-Available APIs: ${JSON.stringify(config.available_apis, null, 2)}
-
-Input Data: ${JSON.stringify(inputData, null, 2)}
-
-Determine which APIs to call, in what order, and how to use the data. Use the make_http_request function to make the calls.`;
+      case 'api_orchestration':
+        systemPrompt = 'You are an API orchestrator. Determine the sequence of API calls needed to achieve the goal.';
+        userPrompt = `Goal: ${config.goal}\nAvailable APIs: ${JSON.stringify(config.apis)}\nInput: ${JSON.stringify(inputData)}`;
         break;
-
-      case 'ai_web_scraping':
-        systemPrompt = `You are an AI web scraping agent. Extract structured data from web pages based on user requirements.`;
-        userPrompt = `URL to scrape: ${config.url}
-Extraction Goal: ${config.extraction_goal}
-
-Use the make_http_request tool to fetch the page, then extract the requested data and structure it properly.`;
-        break;
-
       default:
-        throw new Error(`Unknown AI agent step type: ${stepType}`);
+        systemPrompt = 'You are a helpful AI assistant.';
+        userPrompt = JSON.stringify(inputData);
     }
 
-    // Call Grok API with tool calling
+    const GROK_API_KEY = Deno.env.get('GROK_API_KEY');
+    if (!GROK_API_KEY) {
+      throw new Error('GROK_API_KEY not configured');
+    }
+
     const response = await fetch('https://api.x.ai/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${XAI_API_KEY}`,
+        'Authorization': `Bearer ${GROK_API_KEY}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'grok-4-0709',
+        model: 'grok-2-1212',
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: userPrompt }
         ],
-        tools: tools,
+        tools: AGENT_TOOLS,
         tool_choice: 'auto',
-        temperature: 0.7,
-        max_tokens: 4096,
       }),
     });
 
@@ -173,102 +142,94 @@ Use the make_http_request tool to fetch the page, then extract the requested dat
     }
 
     const data = await response.json();
-    console.log('Grok response:', JSON.stringify(data, null, 2));
-
-    let result: any = {
-      agent_response: data.choices[0].message.content,
-      step_type: stepType,
-    };
-
-    // Handle tool calls if any
-    if (data.choices[0].message.tool_calls) {
-      const toolCalls = data.choices[0].message.tool_calls;
+    const message = data.choices[0]?.message;
+    
+    if (message.tool_calls && message.tool_calls.length > 0) {
       const toolResults = [];
-
-      for (const toolCall of toolCalls) {
+      
+      for (const toolCall of message.tool_calls) {
         const functionName = toolCall.function.name;
-        const args = JSON.parse(toolCall.function.arguments);
-
-        console.log('Tool call:', functionName, args);
-
-        let toolResult;
+        const functionArgs = JSON.parse(toolCall.function.arguments);
+        
+        let result;
         switch (functionName) {
           case 'make_http_request':
-            toolResult = await executeHttpRequest(args);
+            result = await executeHttpRequest(functionArgs);
             break;
           case 'extract_data':
-            toolResult = executeExtractData(args);
+            result = await executeExtractData(functionArgs);
             break;
           case 'analyze_sentiment':
-            toolResult = analyzeSentiment(args);
+            result = analyzeSentiment(functionArgs);
             break;
           case 'classify_data':
-            toolResult = classifyData(args);
+            result = classifyData(functionArgs);
             break;
           default:
-            toolResult = { error: `Unknown tool: ${functionName}` };
+            result = { error: `Unknown tool: ${functionName}` };
         }
-
-        toolResults.push({
-          tool: functionName,
-          arguments: args,
-          result: toolResult,
-        });
+        
+        toolResults.push({ tool: functionName, result });
       }
-
-      result.tool_calls = toolResults;
+      
+      return new Response(
+        JSON.stringify({ 
+          success: true, 
+          toolCalls: toolResults,
+          message: message.content 
+        }),
+        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
-    return new Response(JSON.stringify(result), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
-  } catch (error) {
-    console.error('AI Agent error:', error);
     return new Response(
-      JSON.stringify({ error: error.message || 'AI Agent execution failed' }),
-      { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      JSON.stringify({ 
+        success: true, 
+        result: message.content 
+      }),
+      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+    );
+
+  } catch (error) {
+    console.error('Error in ai-agent-executor:', error);
+    return new Response(
+      JSON.stringify({ error: error.message }),
+      { 
+        status: 500,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+      }
     );
   }
 });
 
-// Tool execution functions
 async function executeHttpRequest(args: any) {
   try {
-    const response = await fetch(args.url, {
-      method: args.method,
-      headers: args.headers || {},
-      body: args.body ? JSON.stringify(args.body) : undefined,
+    const { url, method, headers = {}, body } = args;
+    
+    const response = await fetch(url, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+        ...headers,
+      },
+      body: body ? JSON.stringify(body) : undefined,
     });
 
-    const contentType = response.headers.get('content-type');
-    let data;
-    
-    if (contentType?.includes('application/json')) {
-      data = await response.json();
-    } else {
-      data = await response.text();
-    }
-
-    return {
-      status: response.status,
-      data: data,
-    };
+    const data = await response.json();
+    return { status: response.status, data };
   } catch (error) {
-    return {
-      error: error.message,
-    };
+    return { error: error.message };
   }
 }
 
-function executeExtractData(args: any) {
+async function executeExtractData(args: any) {
   const { data, fields } = args;
   const extracted: any = {};
-
+  
   for (const field of fields) {
-    const value = getValueByPath(data, field);
-    extracted[field] = value;
+    extracted[field] = getValueByPath(data, field);
   }
-
+  
   return extracted;
 }
 
@@ -278,42 +239,42 @@ function getValueByPath(obj: any, path: string): any {
 
 function analyzeSentiment(args: any) {
   const { text } = args;
-  // Simple sentiment analysis (in real implementation, could call another AI service)
-  const positiveWords = ['good', 'great', 'excellent', 'amazing', 'wonderful', 'fantastic'];
-  const negativeWords = ['bad', 'terrible', 'awful', 'horrible', 'poor', 'disappointing'];
-
+  const positiveWords = ['good', 'great', 'excellent', 'amazing', 'wonderful', 'fantastic', 'love', 'best'];
+  const negativeWords = ['bad', 'terrible', 'awful', 'horrible', 'worst', 'hate', 'poor', 'disappointing'];
+  
   const lowerText = text.toLowerCase();
   const positiveCount = positiveWords.filter(word => lowerText.includes(word)).length;
   const negativeCount = negativeWords.filter(word => lowerText.includes(word)).length;
-
+  
   let sentiment = 'neutral';
-  if (positiveCount > negativeCount) sentiment = 'positive';
-  if (negativeCount > positiveCount) sentiment = 'negative';
-
-  return {
-    sentiment,
-    confidence: Math.abs(positiveCount - negativeCount) / (positiveCount + negativeCount + 1),
-    positive_score: positiveCount,
-    negative_score: negativeCount,
-  };
+  let score = 0;
+  
+  if (positiveCount > negativeCount) {
+    sentiment = 'positive';
+    score = Math.min(positiveCount / (positiveCount + negativeCount), 1);
+  } else if (negativeCount > positiveCount) {
+    sentiment = 'negative';
+    score = -Math.min(negativeCount / (positiveCount + negativeCount), 1);
+  }
+  
+  return { sentiment, score, positiveCount, negativeCount };
 }
 
 function classifyData(args: any) {
   const { data, categories } = args;
-  // Simple classification based on string matching
-  const dataStr = JSON.stringify(data).toLowerCase();
+  const lowerData = data.toLowerCase();
+  const scores: any = {};
   
   for (const category of categories) {
-    if (dataStr.includes(category.toLowerCase())) {
-      return {
-        category,
-        confidence: 0.8,
-      };
-    }
+    const lowerCategory = category.toLowerCase();
+    scores[category] = lowerData.includes(lowerCategory) ? 1 : 0;
   }
-
-  return {
-    category: categories[0],
-    confidence: 0.5,
+  
+  const bestMatch = Object.entries(scores).reduce((a: any, b: any) => a[1] > b[1] ? a : b);
+  
+  return { 
+    category: bestMatch[0],
+    confidence: bestMatch[1],
+    allScores: scores 
   };
 }

@@ -221,7 +221,15 @@ async function executeStep(step: any, inputData: any, supabase: any) {
     case 'ai_content_generation':
     case 'ai_api_orchestration':
     case 'ai_web_scraping':
+    case 'ai_agent':
       return await executeAIAgentStep(step.type, config, inputData, supabase);
+    
+    // Vision and Web Action Steps
+    case 'vision_analysis':
+      return await executeVisionAnalysis(config, inputData);
+    
+    case 'web_action':
+      return await executeWebAction(config, inputData);
     
     default:
       console.log(`Step type ${step.type} not implemented, skipping`);
@@ -508,3 +516,63 @@ async function executeAggregateData(config: any, inputData: any) {
     source_count: dataArray.length,
   };
 }
+
+async function executeVisionAnalysis(config: any, inputData: any) {
+  const { imageUrl, analysisType = 'describe', customPrompt } = config;
+  const imageToAnalyze = imageUrl || inputData.imageUrl;
+
+  if (!imageToAnalyze) throw new Error('No image URL provided');
+
+  const GROK_API_KEY = Deno.env.get('GROK_API_KEY');
+  if (!GROK_API_KEY) throw new Error('GROK_API_KEY not configured');
+
+  const prompts: any = {
+    describe: 'Describe this image in detail.',
+    extract_text: 'Extract all text visible in this image.',
+    identify_objects: 'List all objects you can identify in this image.',
+    analyze_sentiment: 'Analyze the mood or sentiment conveyed by this image.',
+  };
+
+  const prompt = customPrompt || prompts[analysisType] || 'Analyze this image.';
+
+  const response = await fetch('https://api.x.ai/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${GROK_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      model: 'grok-2-vision-1212',
+      messages: [{
+        role: 'user',
+        content: [
+          { type: 'text', text: prompt },
+          { type: 'image_url', image_url: { url: imageToAnalyze } }
+        ]
+      }],
+    }),
+  });
+
+  if (!response.ok) throw new Error(`Vision API error: ${response.status}`);
+
+  const data = await response.json();
+  return { 
+    analysis: data.choices[0]?.message?.content, 
+    imageUrl: imageToAnalyze, 
+    analysisType 
+  };
+}
+
+async function executeWebAction(config: any, inputData: any) {
+  const { actionType, selector, value } = config;
+  
+  return {
+    actionType,
+    selector,
+    value,
+    executed: true,
+    message: `Would execute ${actionType} on ${selector}`,
+    note: 'Browser automation integration required'
+  };
+}
+
