@@ -66,6 +66,7 @@ const IntegrationsHub = lazy(() => import("./pages/IntegrationsHub"));
 const PredictiveAI = lazy(() => import("./pages/PredictiveAI"));
 const FeaturesPage = lazy(() => import("./pages/FeaturesPage"));
 const AIModelsPage = lazy(() => import("./pages/AIModelsPage"));
+const UnifiedSettingsPage = lazy(() => import("./pages/UnifiedSettingsPage"));
 
 // Phase 7: Platform Domination
 const RealTimeAnalyticsPage = lazy(() => import("./pages/RealTimeAnalyticsPage"));
@@ -154,6 +155,7 @@ const App = () => (
                             <Route path="/analytics" element={<ProtectedRoute><UsageAnalyticsPage /></ProtectedRoute>} />
                             <Route path="/security" element={<ProtectedRoute><SecuritySettings /></ProtectedRoute>} />
                             <Route path="/ai-assistant-settings" element={<ProtectedRoute><AIAssistantSettings /></ProtectedRoute>} />
+                            <Route path="/ai-settings" element={<ProtectedRoute><UnifiedSettingsPage /></ProtectedRoute>} />
                             <Route path="/referrals" element={<ProtectedRoute><ReferralProgram /></ProtectedRoute>} />
                             <Route path="/install" element={<InstallPage />} />
                             <Route path="/predictive-ai" element={<ProtectedRoute><PredictiveAI /></ProtectedRoute>} />
