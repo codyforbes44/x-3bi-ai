@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { useGrokStream } from './useGrokStream';
+import { DEFAULT_GROK_MODEL } from '@/config/grok';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -13,7 +14,7 @@ export function useGrokChat() {
   const { toast } = useToast();
   const { streamMessage } = useGrokStream();
 
-  const sendMessage = useCallback(async (content: string, model: string = 'grok-4-0709') => {
+  const sendMessage = useCallback(async (content: string, model?: string) => {
     if (!content.trim()) return;
 
     const userMessage: Message = { role: 'user', content };
@@ -25,7 +26,7 @@ export function useGrokChat() {
 
     await streamMessage({
       messages: [...messages, userMessage],
-      model,
+      model: model || DEFAULT_GROK_MODEL,
       onChunk: (content) => {
         setMessages(prev => {
           const newMessages = [...prev];

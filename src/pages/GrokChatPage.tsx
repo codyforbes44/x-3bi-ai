@@ -18,7 +18,7 @@ import { importGuestConversations, hasGuestConversations } from '@/utils/grokGue
 import { GrokMessageList } from '@/components/grok/GrokMessageList';
 import { GrokInputArea } from '@/components/grok/GrokInputArea';
 import { GrokConversationList } from '@/components/grok/GrokConversationList';
-import { GROK_MODELS } from '@/config/grok';
+import { GROK_MODELS, GROK_CONFIG, DEFAULT_GROK_MODEL } from '@/config/grok';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useSwipeGesture } from '@/hooks/useSwipeGesture';
 import { cn } from '@/lib/utils';
@@ -27,7 +27,7 @@ export default function GrokChatPage() {
   const [currentConversation, setCurrentConversation] = useState<string | null>(null);
   const [input, setInput] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
-  const [model, setModel] = useState<string>('grok-4-0709');
+  const [model, setModel] = useState<string>(DEFAULT_GROK_MODEL);
   const [copiedToken, setCopiedToken] = useState<string | null>(null);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const { toast } = useToast();
@@ -156,11 +156,11 @@ export default function GrokChatPage() {
     setInput('');
     setIsStreaming(true);
 
-    // Save user message and update title if needed
+    // Save user message and update title if first message
     await saveMessage(currentConversation, 'user', userMessage.content);
     await updateConversationTitleFromFirstMessage(currentConversation, userMessage.content, messages.length);
 
-    // Add empty assistant message that we'll update
+    // Add empty assistant message
     setMessages(prev => [...prev, { role: 'assistant', content: '' }]);
 
     let assistantContent = '';
@@ -171,16 +171,12 @@ export default function GrokChatPage() {
       onChunk: (content) => {
         assistantContent = content;
         setMessages(prev => {
-          const newMessages = [...prev];
-          newMessages[newMessages.length - 1] = {
-            role: 'assistant',
-            content,
-          };
-          return newMessages;
+          const updated = [...prev];
+          updated[updated.length - 1] = { role: 'assistant', content };
+          return updated;
         });
       },
       onComplete: async () => {
-        // Save assistant message
         if (assistantContent) {
           await saveMessage(currentConversation!, 'assistant', assistantContent);
         }
@@ -189,18 +185,16 @@ export default function GrokChatPage() {
       onError: (error) => {
         console.error('Grok chat error:', error);
         
-        // Check for rate limit error
         const isRateLimited = error.message.includes('Rate limit') || error.message.includes('Too many requests');
         
         toast({
           title: isRateLimited ? 'Rate Limit Exceeded' : 'Error',
           description: isRateLimited 
-            ? (!user 
-              ? 'Guest mode limited to 5 messages/min. Sign in for 40/min.' 
-              : 'You\'ve reached the 40 messages/min limit. Please wait a moment.')
+            ? `${user ? 'Authenticated' : 'Guest'} rate limit exceeded. ${user ? '40' : '5'} messages/min allowed.`
             : error.message || 'Failed to send message',
           variant: 'destructive',
         });
+        
         setMessages(prev => prev.slice(0, -1));
         setIsStreaming(false);
       },
@@ -301,7 +295,7 @@ export default function GrokChatPage() {
                   <Alert className="border-primary/50 bg-primary/5">
                     <LogIn className="h-4 w-4" />
                     <AlertDescription className="text-xs">
-                      <strong>Guest Mode:</strong> 5 messages/min limit. Conversations saved locally.{' '}
+                      <strong>Guest Mode:</strong> {GROK_CONFIG.guestRateLimit} messages/min. Stored locally.{' '}
                       <Button 
                         variant="link" 
                         size="sm" 
@@ -310,7 +304,7 @@ export default function GrokChatPage() {
                       >
                         Sign in
                       </Button>
-                      {' '}to unlock 40/min and sync across devices.
+                      {' '}for {GROK_CONFIG.authenticatedRateLimit}/min + cloud sync.
                     </AlertDescription>
                   </Alert>
                 )}
@@ -422,7 +416,7 @@ export default function GrokChatPage() {
                   <Alert className="border-primary/50 bg-primary/5">
                     <LogIn className="h-4 w-4" />
                     <AlertDescription>
-                      You're using <strong>Guest Mode</strong> with 5 messages per minute limit. Conversations are saved in your browser only.{' '}
+                      <strong>Guest Mode:</strong> {GROK_CONFIG.guestRateLimit} messages/min. Browser-only storage.{' '}
                       <Button 
                         variant="link" 
                         size="sm" 
@@ -431,7 +425,7 @@ export default function GrokChatPage() {
                       >
                         Sign in
                       </Button>
-                      {' '}to unlock 40 messages/min and sync across devices.
+                      {' '}for {GROK_CONFIG.authenticatedRateLimit}/min + cloud sync.
                     </AlertDescription>
                   </Alert>
                 )}
