@@ -15,16 +15,22 @@ import { RateLimitIndicator } from "@/components/usage/RateLimitIndicator";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard } from "lucide-react";
 import { SEO } from "@/components/SEO";
-import { AISidebar } from "@/components/ai-sidebar/AISidebar";
+import { useAISidebarContext } from "@/contexts/AISidebarContext";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
   const [runTour, setRunTour] = useState(false);
   const isMobile = useIsMobile();
   const { hasCompletedTour } = useOnboarding();
+  const { setCurrentFeature } = useAISidebarContext();
   
   // Enable keyboard shortcuts
   useKeyboardShortcuts();
+  
+  // Update AI sidebar context when tab changes
+  useEffect(() => {
+    setCurrentFeature(activeTab);
+  }, [activeTab, setCurrentFeature]);
   
   // Start tour for first-time users
   useEffect(() => {
@@ -108,9 +114,6 @@ const Dashboard = () => {
               </div>
             </div>
           </SidebarInset>
-
-          {/* AI Assistant Sidebar */}
-          <AISidebar currentFeature={activeTab} />
         </div>
       </SidebarProvider>
     </>

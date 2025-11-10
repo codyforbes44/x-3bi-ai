@@ -2,21 +2,32 @@
 
 ## Universal AI Command Layer
 
-A powerful browser extension that brings AI assistance to every webpage you visit.
+A powerful browser extension that brings AI assistance to every webpage you visit with **dual AI interfaces**:
+
+1. **🌐 Browser Side Panel** - Persistent AI assistant across ALL websites
+2. **📱 In-Page Sidebar** - Contextual AI helper injected into specific pages
 
 ### Features
 
-🎯 **AI Sidebar**
-- Inject AI assistant into any webpage
+#### 🎯 Browser Side Panel (NEW!)
+- **Cross-site persistence**: Access your AI assistant on ANY website
+- **Native browser integration**: Uses Chrome's Side Panel API
+- **Seamless Grok chat**: Stream responses with token-by-token rendering
+- **Always accessible**: Open via extension icon, context menu, or keyboard shortcut
+- **Syncs with platform**: Uses your Supabase credentials for authentication
+
+#### 🖱️ In-Page AI Sidebar
+- Inject AI assistant into specific webpages
 - Context-aware conversations about current page
 - Quick actions: Analyze, Summarize, Extract Data
 
-🖱️ **Context Menu Integration**
+#### 📋 Context Menu Integration
 - Right-click on selected text for instant AI actions
 - Explain, Summarize, Translate, Rewrite
 - Analyze pages, links, and images
+- **NEW**: Open Side Panel from any page
 
-🔍 **Advanced Page Scraping**
+#### 🔍 Advanced Page Scraping
 - Extract structured data from any webpage
 - Capture headings, links, images, forms
 - Get metadata, Open Graph data, schema.org
@@ -28,10 +39,74 @@ A powerful browser extension that brings AI assistance to every webpage you visi
 - Sync data across devices
 
 ⌨️ **Keyboard Shortcuts**
-- `Ctrl+Shift+G` (or `Cmd+Shift+G`): Toggle AI Sidebar
-- Fast access to AI features
+- `Ctrl+Shift+G` (or `Cmd+Shift+G`): Toggle In-Page AI Sidebar
+- Extension icon click: Open Browser Side Panel
+- Fast access to AI features from anywhere
 
-### Installation
+---
+
+## Dual AI Interface Explained
+
+### 1️⃣ Browser Side Panel (Recommended for Most Use Cases)
+
+**What it is:**
+A native browser side panel that persists across all tabs and websites. Think of it as your personal AI companion that travels with you across the web.
+
+**When to use:**
+- ✅ General AI conversations while browsing any website
+- ✅ Quick questions without leaving your current page
+- ✅ Multi-tab workflows where you need consistent AI access
+- ✅ Working across different websites/domains
+
+**How to access:**
+- Click the extension icon in your toolbar
+- Right-click → AI Assistant → Open AI Side Panel
+- Set to open automatically with extension icon
+
+**Benefits:**
+- Always available, no matter which website you're on
+- Separate from page content (won't interfere with page layout)
+- Persistent chat history during browsing session
+- Native browser performance
+
+---
+
+### 2️⃣ In-Page AI Sidebar (For Page-Specific Analysis)
+
+**What it is:**
+An AI sidebar injected directly into compatible webpages (mainly the AI Platform pages). It overlays on the page content and is context-aware.
+
+**When to use:**
+- ✅ Analyzing content on the current page
+- ✅ Page-specific AI assistance within the AI Platform
+- ✅ Quick actions on selected text
+- ✅ Feature-specific help within the dashboard
+
+**How to access:**
+- Available automatically on AI Platform pages
+- Press `Ctrl+Shift+G` (or `Cmd+Shift+G`)
+- Right-click → AI Assistant → Toggle AI Sidebar (on compatible pages)
+
+**Benefits:**
+- Contextual awareness of current page/feature
+- Integrated with platform features
+- Suggested prompts based on page context
+- Seamless within-platform experience
+
+---
+
+## Quick Comparison
+
+| Feature | Browser Side Panel | In-Page Sidebar |
+|---------|-------------------|-----------------|
+| **Availability** | All websites | AI Platform pages mainly |
+| **Persistence** | Across all tabs | Current page only |
+| **Page Context** | Limited | Full context awareness |
+| **Integration** | Browser-native | Page-injected |
+| **Best For** | General browsing | Platform features |
+| **Position** | Side panel (Chrome UI) | Overlays page |
+
+---
 
 #### Chrome / Edge / Brave
 

@@ -13,6 +13,8 @@ import { LoadingProvider } from "@/contexts/LoadingContext";
 import { OnboardingProvider } from "@/contexts/OnboardingContext";
 import { RealtimeProvider } from "@/contexts/RealtimeContext";
 import { AccessibilityProvider } from "@/components/AccessibilityProvider";
+import { AISidebarProvider } from "@/contexts/AISidebarContext";
+import { AppLayout } from "@/components/layout/AppLayout";
 import { CommandPalette } from "@/components/CommandPalette";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
 import FloatingBadge from "@/components/FloatingBadge";
@@ -88,8 +90,9 @@ const App = () => (
               <RealtimeProvider>
                 <WorkspaceProvider>
                   <WorkflowProvider>
-                    <TooltipProvider>
-                      <AccessibilityProvider>
+                    <AISidebarProvider>
+                      <TooltipProvider>
+                        <AccessibilityProvider>
                         <Toaster />
                         <Sonner />
                         <FloatingBadge />
@@ -100,6 +103,7 @@ const App = () => (
                           <div className="pb-16 md:pb-0">
                             <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div></div>}>
                               <Routes>
+                                <Route element={<AppLayout />}>
                             {/* Public routes */}
                             <Route path="/" element={<HomePage />} />
                             <Route path="/auth" element={<AuthPage />} />
@@ -167,13 +171,15 @@ const App = () => (
                             
                             {/* 404 catch-all */}
                             <Route path="*" element={<NotFound />} />
+                                </Route>
                               </Routes>
                             </Suspense>
                           </div>
                           <MobileBottomNav />
                         </BrowserRouter>
-                      </AccessibilityProvider>
-                    </TooltipProvider>
+                        </AccessibilityProvider>
+                      </TooltipProvider>
+                    </AISidebarProvider>
                   </WorkflowProvider>
                 </WorkspaceProvider>
               </RealtimeProvider>

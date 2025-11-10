@@ -4,7 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAISidebar } from '@/hooks/useAISidebar';
-import { getFeatureContext, FeatureContext } from '@/utils/aiSidebarContext';
+import { useAISidebarContext } from '@/contexts/AISidebarContext';
+import { getFeatureContext } from '@/utils/aiSidebarContext';
 import { AISidebarHeader } from './AISidebarHeader';
 import { AISidebarContextPanel } from './AISidebarContextPanel';
 import { AISidebarChat } from './AISidebarChat';
@@ -12,12 +13,9 @@ import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
-interface AISidebarProps {
-  currentFeature: string | null;
-}
-
-export function AISidebar({ currentFeature }: AISidebarProps) {
+export function AISidebar() {
   const { state, isCollapsed, isCompact, isExpanded, toggle, close, open } = useAISidebar();
+  const { currentFeature } = useAISidebarContext();
   const context = getFeatureContext(currentFeature);
   const isMobile = useIsMobile();
   const [selectedPrompt, setSelectedPrompt] = useState<string>('');

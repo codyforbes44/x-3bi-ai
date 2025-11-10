@@ -3,6 +3,11 @@
 // Initialize context menus on installation
 chrome.runtime.onInstalled.addListener(() => {
   createContextMenus();
+  
+  // Enable side panel for all tabs
+  chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true })
+    .catch(error => console.error('Side panel setup error:', error));
+  
   console.log('AI Platform Extension installed');
 });
 
@@ -83,12 +88,25 @@ function createContextMenus() {
       title: 'Toggle AI Sidebar',
       contexts: ['page']
     });
+    
+    // Add side panel option
+    chrome.contextMenus.create({
+      id: 'ai-open-sidepanel',
+      parentId: 'ai-root',
+      title: 'Open AI Side Panel',
+      contexts: ['all']
+    });
   });
 }
 
 // Handle context menu clicks
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-  handleContextMenuAction(info, tab);
+  if (info.menuItemId === 'ai-open-sidepanel') {
+    chrome.sidePanel.open({ windowId: tab.windowId })
+      .catch(error => console.error('Failed to open side panel:', error));
+  } else {
+    handleContextMenuAction(info, tab);
+  }
 });
 
 // Process context menu actions
