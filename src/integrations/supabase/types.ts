@@ -14,6 +14,151 @@ export type Database = {
   }
   public: {
     Tables: {
+      agent_collaborations: {
+        Row: {
+          agent_id: string
+          conversation_id: string
+          created_at: string | null
+          id: string
+          message: string
+          message_type: string
+          metadata: Json | null
+          target_agent_id: string | null
+        }
+        Insert: {
+          agent_id: string
+          conversation_id: string
+          created_at?: string | null
+          id?: string
+          message: string
+          message_type: string
+          metadata?: Json | null
+          target_agent_id?: string | null
+        }
+        Update: {
+          agent_id?: string
+          conversation_id?: string
+          created_at?: string | null
+          id?: string
+          message?: string
+          message_type?: string
+          metadata?: Json | null
+          target_agent_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "agent_collaborations_agent_id_fkey"
+            columns: ["agent_id"]
+            isOneToOne: false
+            referencedRelation: "ai_agents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agent_collaborations_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "agent_conversations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "agent_collaborations_target_agent_id_fkey"
+            columns: ["target_agent_id"]
+            isOneToOne: false
+            referencedRelation: "ai_agents"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      agent_conversations: {
+        Row: {
+          conversation_history: Json | null
+          created_at: string | null
+          final_output: Json | null
+          goal: string
+          id: string
+          metadata: Json | null
+          participating_agents: string[] | null
+          status: string | null
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          conversation_history?: Json | null
+          created_at?: string | null
+          final_output?: Json | null
+          goal: string
+          id?: string
+          metadata?: Json | null
+          participating_agents?: string[] | null
+          status?: string | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          conversation_history?: Json | null
+          created_at?: string | null
+          final_output?: Json | null
+          goal?: string
+          id?: string
+          metadata?: Json | null
+          participating_agents?: string[] | null
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      ai_agents: {
+        Row: {
+          capabilities: string[] | null
+          created_at: string | null
+          id: string
+          is_active: boolean | null
+          model: string | null
+          name: string
+          performance_metrics: Json | null
+          persona: Json
+          role: string
+          system_prompt: string
+          temperature: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          capabilities?: string[] | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          model?: string | null
+          name: string
+          performance_metrics?: Json | null
+          persona: Json
+          role: string
+          system_prompt: string
+          temperature?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          capabilities?: string[] | null
+          created_at?: string | null
+          id?: string
+          is_active?: boolean | null
+          model?: string | null
+          name?: string
+          performance_metrics?: Json | null
+          persona?: Json
+          role?: string
+          system_prompt?: string
+          temperature?: number | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
       ai_sidebar_settings: {
         Row: {
           created_at: string
@@ -143,6 +288,96 @@ export type Database = {
           subject?: string
           updated_at?: string
           user_id?: string | null
+        }
+        Relationships: []
+      }
+      digital_twin_interactions: {
+        Row: {
+          context: Json | null
+          created_at: string | null
+          id: string
+          interaction_type: string
+          metadata: Json | null
+          prediction_accuracy: number | null
+          twin_prediction: string | null
+          user_decision: string | null
+          user_id: string
+          user_input: string | null
+        }
+        Insert: {
+          context?: Json | null
+          created_at?: string | null
+          id?: string
+          interaction_type: string
+          metadata?: Json | null
+          prediction_accuracy?: number | null
+          twin_prediction?: string | null
+          user_decision?: string | null
+          user_id: string
+          user_input?: string | null
+        }
+        Update: {
+          context?: Json | null
+          created_at?: string | null
+          id?: string
+          interaction_type?: string
+          metadata?: Json | null
+          prediction_accuracy?: number | null
+          twin_prediction?: string | null
+          user_decision?: string | null
+          user_id?: string
+          user_input?: string | null
+        }
+        Relationships: []
+      }
+      digital_twin_profiles: {
+        Row: {
+          behavior_patterns: Json | null
+          communication_style: Json | null
+          confidence_score: number | null
+          created_at: string | null
+          decision_patterns: Json | null
+          expertise_areas: string[] | null
+          id: string
+          last_trained_at: string | null
+          learning_rate: number | null
+          personality_traits: Json | null
+          preferences: Json | null
+          total_interactions: number | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          behavior_patterns?: Json | null
+          communication_style?: Json | null
+          confidence_score?: number | null
+          created_at?: string | null
+          decision_patterns?: Json | null
+          expertise_areas?: string[] | null
+          id?: string
+          last_trained_at?: string | null
+          learning_rate?: number | null
+          personality_traits?: Json | null
+          preferences?: Json | null
+          total_interactions?: number | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          behavior_patterns?: Json | null
+          communication_style?: Json | null
+          confidence_score?: number | null
+          created_at?: string | null
+          decision_patterns?: Json | null
+          expertise_areas?: string[] | null
+          id?: string
+          last_trained_at?: string | null
+          learning_rate?: number | null
+          personality_traits?: Json | null
+          preferences?: Json | null
+          total_interactions?: number | null
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -280,6 +515,99 @@ export type Database = {
         }
         Relationships: []
       }
+      knowledge_entities: {
+        Row: {
+          access_count: number | null
+          created_at: string | null
+          embedding: string | null
+          entity_name: string
+          entity_type: string
+          id: string
+          last_accessed: string | null
+          properties: Json | null
+          source_apps: string[] | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          access_count?: number | null
+          created_at?: string | null
+          embedding?: string | null
+          entity_name: string
+          entity_type: string
+          id?: string
+          last_accessed?: string | null
+          properties?: Json | null
+          source_apps?: string[] | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          access_count?: number | null
+          created_at?: string | null
+          embedding?: string | null
+          entity_name?: string
+          entity_type?: string
+          id?: string
+          last_accessed?: string | null
+          properties?: Json | null
+          source_apps?: string[] | null
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      knowledge_relationships: {
+        Row: {
+          created_at: string | null
+          from_entity_id: string
+          id: string
+          properties: Json | null
+          relationship_type: string
+          strength: number | null
+          to_entity_id: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          from_entity_id: string
+          id?: string
+          properties?: Json | null
+          relationship_type: string
+          strength?: number | null
+          to_entity_id: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          from_entity_id?: string
+          id?: string
+          properties?: Json | null
+          relationship_type?: string
+          strength?: number | null
+          to_entity_id?: string
+          updated_at?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "knowledge_relationships_from_entity_id_fkey"
+            columns: ["from_entity_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_entities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "knowledge_relationships_to_entity_id_fkey"
+            columns: ["to_entity_id"]
+            isOneToOne: false
+            referencedRelation: "knowledge_entities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       multimodal_sessions: {
         Row: {
           alias: string
@@ -361,6 +689,57 @@ export type Database = {
           id?: string
           interests?: Json | null
           subscribed_at?: string
+        }
+        Relationships: []
+      }
+      predictive_insights: {
+        Row: {
+          accuracy_score: number | null
+          action_suggestions: Json | null
+          actual_outcome: string | null
+          based_on_patterns: string[] | null
+          confidence_score: number
+          created_at: string | null
+          description: string
+          id: string
+          insight_type: string
+          predicted_for: string
+          status: string | null
+          title: string
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          accuracy_score?: number | null
+          action_suggestions?: Json | null
+          actual_outcome?: string | null
+          based_on_patterns?: string[] | null
+          confidence_score: number
+          created_at?: string | null
+          description: string
+          id?: string
+          insight_type: string
+          predicted_for: string
+          status?: string | null
+          title: string
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          accuracy_score?: number | null
+          action_suggestions?: Json | null
+          actual_outcome?: string | null
+          based_on_patterns?: string[] | null
+          confidence_score?: number
+          created_at?: string | null
+          description?: string
+          id?: string
+          insight_type?: string
+          predicted_for?: string
+          status?: string | null
+          title?: string
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -460,6 +839,81 @@ export type Database = {
           referrer_id?: string | null
           reward_amount?: number | null
           status?: string | null
+        }
+        Relationships: []
+      }
+      semantic_searches: {
+        Row: {
+          created_at: string | null
+          id: string
+          query: string
+          query_embedding: string | null
+          result_count: number | null
+          results: Json | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          query: string
+          query_embedding?: string | null
+          result_count?: number | null
+          results?: Json | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          query?: string
+          query_embedding?: string | null
+          result_count?: number | null
+          results?: Json | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      temporal_patterns: {
+        Row: {
+          confidence_level: number | null
+          created_at: string | null
+          historical_data: Json | null
+          id: string
+          metadata: Json | null
+          next_predicted_occurrence: string | null
+          pattern_name: string
+          pattern_type: string
+          recurrence_rule: string | null
+          time_windows: Json | null
+          updated_at: string | null
+          user_id: string
+        }
+        Insert: {
+          confidence_level?: number | null
+          created_at?: string | null
+          historical_data?: Json | null
+          id?: string
+          metadata?: Json | null
+          next_predicted_occurrence?: string | null
+          pattern_name: string
+          pattern_type: string
+          recurrence_rule?: string | null
+          time_windows?: Json | null
+          updated_at?: string | null
+          user_id: string
+        }
+        Update: {
+          confidence_level?: number | null
+          created_at?: string | null
+          historical_data?: Json | null
+          id?: string
+          metadata?: Json | null
+          next_predicted_occurrence?: string | null
+          pattern_name?: string
+          pattern_type?: string
+          recurrence_rule?: string | null
+          time_windows?: Json | null
+          updated_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }
