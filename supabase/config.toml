@@ -53,3 +53,24 @@ verify_jwt = true
 
 [functions.workflow-learn]
 verify_jwt = true
+
+[functions.system-metrics]
+verify_jwt = true
+
+[functions.user-events]
+verify_jwt = true
+
+[functions.api-gateway]
+verify_jwt = false
+
+[functions.webhook-dispatcher]
+verify_jwt = true
+
+[functions.security-scan]
+verify_jwt = true
+
+[functions.compliance-export]
+verify_jwt = true
+
+[functions.integration-install]
+verify_jwt = true
