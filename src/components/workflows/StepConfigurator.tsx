@@ -399,6 +399,146 @@ export const StepConfigurator = ({ stepType, config, onChange }: StepConfigurato
     </div>
   );
 
+  const renderAIDecisionConfig = () => (
+    <div className="space-y-4">
+      <div>
+        <Label>Decision Goal</Label>
+        <Textarea
+          placeholder="What should the AI decide? e.g., 'Determine the best API endpoint to call based on the data'"
+          value={localConfig.goal || ''}
+          onChange={(e) => updateConfig({ goal: e.target.value })}
+          rows={3}
+        />
+      </div>
+      <div>
+        <Label>Available Options (JSON array)</Label>
+        <Textarea
+          placeholder='["option1", "option2", "option3"]'
+          value={JSON.stringify(localConfig.options || [], null, 2)}
+          onChange={(e) => {
+            try {
+              const options = JSON.parse(e.target.value);
+              updateConfig({ options });
+            } catch (err) {
+              // Invalid JSON, don't update
+            }
+          }}
+          rows={4}
+        />
+      </div>
+    </div>
+  );
+
+  const renderAIDataAnalysisConfig = () => (
+    <div className="space-y-4">
+      <div>
+        <Label>Analysis Type</Label>
+        <Select value={localConfig.analysis_type || 'summarize'} onValueChange={(value) => updateConfig({ analysis_type: value })}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="summarize">Summarize</SelectItem>
+            <SelectItem value="classify">Classify</SelectItem>
+            <SelectItem value="extract_insights">Extract Insights</SelectItem>
+            <SelectItem value="sentiment">Sentiment Analysis</SelectItem>
+            <SelectItem value="custom">Custom Analysis</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div>
+        <Label>Analysis Instructions</Label>
+        <Textarea
+          placeholder="Describe what analysis you want the AI to perform on the data..."
+          value={localConfig.instructions || ''}
+          onChange={(e) => updateConfig({ instructions: e.target.value })}
+          rows={4}
+        />
+      </div>
+    </div>
+  );
+
+  const renderAIContentGenerationConfig = () => (
+    <div className="space-y-4">
+      <div>
+        <Label>Content Type</Label>
+        <Select value={localConfig.content_type || 'text'} onValueChange={(value) => updateConfig({ content_type: value })}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="text">Text Content</SelectItem>
+            <SelectItem value="email">Email</SelectItem>
+            <SelectItem value="report">Report</SelectItem>
+            <SelectItem value="social_post">Social Media Post</SelectItem>
+            <SelectItem value="code">Code</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+      <div>
+        <Label>Content Template/Prompt</Label>
+        <Textarea
+          placeholder="Describe the content to generate. You can reference data fields with {{fieldName}}"
+          value={localConfig.template || ''}
+          onChange={(e) => updateConfig({ template: e.target.value })}
+          rows={6}
+        />
+      </div>
+    </div>
+  );
+
+  const renderAIAPIOrchestrationConfig = () => (
+    <div className="space-y-4">
+      <div>
+        <Label>Orchestration Goal</Label>
+        <Textarea
+          placeholder="What should the AI accomplish by calling APIs? e.g., 'Fetch user data from multiple sources and merge them'"
+          value={localConfig.orchestration_goal || ''}
+          onChange={(e) => updateConfig({ orchestration_goal: e.target.value })}
+          rows={3}
+        />
+      </div>
+      <div>
+        <Label>Available APIs (JSON)</Label>
+        <Textarea
+          placeholder='[{"name": "getUserData", "url": "https://api.example.com/users/{id}", "method": "GET"}]'
+          value={JSON.stringify(localConfig.available_apis || [], null, 2)}
+          onChange={(e) => {
+            try {
+              const available_apis = JSON.parse(e.target.value);
+              updateConfig({ available_apis });
+            } catch (err) {
+              // Invalid JSON, don't update
+            }
+          }}
+          rows={8}
+        />
+      </div>
+    </div>
+  );
+
+  const renderAIWebScrapingConfig = () => (
+    <div className="space-y-4">
+      <div>
+        <Label>Target URL</Label>
+        <Input
+          placeholder="https://example.com"
+          value={localConfig.url || ''}
+          onChange={(e) => updateConfig({ url: e.target.value })}
+        />
+      </div>
+      <div>
+        <Label>Data to Extract</Label>
+        <Textarea
+          placeholder="Describe what data you want to extract from the page. e.g., 'Extract all product names, prices, and descriptions'"
+          value={localConfig.extraction_goal || ''}
+          onChange={(e) => updateConfig({ extraction_goal: e.target.value })}
+          rows={4}
+        />
+      </div>
+    </div>
+  );
+
   switch (stepType) {
     case 'zapier_webhook':
       return renderZapierWebhookConfig();
@@ -414,6 +554,16 @@ export const StepConfigurator = ({ stepType, config, onChange }: StepConfigurato
       return renderHttpRequestConfig();
     case 'delay':
       return renderDelayConfig();
+    case 'ai_decision':
+      return renderAIDecisionConfig();
+    case 'ai_data_analysis':
+      return renderAIDataAnalysisConfig();
+    case 'ai_content_generation':
+      return renderAIContentGenerationConfig();
+    case 'ai_api_orchestration':
+      return renderAIAPIOrchestrationConfig();
+    case 'ai_web_scraping':
+      return renderAIWebScrapingConfig();
     default:
       return (
         <div className="text-sm text-muted-foreground">

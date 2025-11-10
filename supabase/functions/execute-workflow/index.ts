@@ -215,9 +215,39 @@ async function executeStep(step: any, inputData: any, supabase: any) {
     case 'http_request':
       return await executeHttpRequest(config, inputData);
     
+    // AI Agent Steps
+    case 'ai_decision':
+    case 'ai_data_analysis':
+    case 'ai_content_generation':
+    case 'ai_api_orchestration':
+    case 'ai_web_scraping':
+      return await executeAIAgentStep(step.type, config, inputData, supabase);
+    
     default:
       console.log(`Step type ${step.type} not implemented, skipping`);
       return { skipped: true, step_type: step.type };
+  }
+}
+
+async function executeAIAgentStep(stepType: string, config: any, inputData: any, supabase: any) {
+  try {
+    const { data, error } = await supabase.functions.invoke('ai-agent-executor', {
+      body: {
+        stepType,
+        config,
+        inputData,
+      },
+    });
+
+    if (error) throw error;
+
+    return {
+      ai_agent_result: data,
+      step_type: stepType,
+    };
+  } catch (error: any) {
+    console.error('AI Agent step error:', error);
+    throw new Error(`AI Agent execution failed: ${error.message}`);
   }
 }
 

@@ -1,12 +1,12 @@
 import { Card } from "@/components/ui/card";
-import { Zap, Database, Filter, Map, BarChart3, Code, Globe, Clock, GitBranch } from "lucide-react";
+import { Zap, Database, Filter, Map, BarChart3, Code, Globe, Clock, GitBranch, Brain, FileSearch, Bot, Sparkles, Network } from "lucide-react";
 
 interface StepType {
   id: string;
   name: string;
   description: string;
   icon: any;
-  category: 'integration' | 'etl' | 'control' | 'ai';
+  category: 'integration' | 'etl' | 'control' | 'ai' | 'ai_agent';
 }
 
 const stepTypes: StepType[] = [
@@ -73,6 +73,42 @@ const stepTypes: StepType[] = [
     icon: Clock,
     category: 'control',
   },
+  // AI Agent Steps
+  {
+    id: 'ai_decision',
+    name: 'AI Decision',
+    description: 'Let AI make intelligent decisions based on data and context',
+    icon: Brain,
+    category: 'ai_agent',
+  },
+  {
+    id: 'ai_data_analysis',
+    name: 'AI Data Analysis',
+    description: 'Analyze data and extract insights using AI',
+    icon: FileSearch,
+    category: 'ai_agent',
+  },
+  {
+    id: 'ai_content_generation',
+    name: 'AI Content Generation',
+    description: 'Generate content based on templates and data',
+    icon: Sparkles,
+    category: 'ai_agent',
+  },
+  {
+    id: 'ai_api_orchestration',
+    name: 'AI API Orchestration',
+    description: 'Intelligently call multiple APIs and coordinate responses',
+    icon: Network,
+    category: 'ai_agent',
+  },
+  {
+    id: 'ai_web_scraping',
+    name: 'AI Web Scraping',
+    description: 'Intelligently extract data from web pages',
+    icon: Globe,
+    category: 'ai_agent',
+  },
 ];
 
 interface StepTypeSelectorProps {
@@ -84,6 +120,7 @@ export const StepTypeSelector = ({ onSelect }: StepTypeSelectorProps) => {
     integration: 'Integration',
     etl: 'Data Transformation (ETL)',
     ai: 'AI Processing',
+    ai_agent: 'AI Agents (Autonomous)',
     control: 'Flow Control',
   };
 
