@@ -298,6 +298,45 @@ export type Database = {
           },
         ]
       }
+      application_logs: {
+        Row: {
+          context: Json | null
+          correlation_id: string | null
+          created_at: string
+          id: string
+          level: string
+          message: string
+          session_id: string | null
+          stack: string | null
+          timestamp: string
+          user_id: string | null
+        }
+        Insert: {
+          context?: Json | null
+          correlation_id?: string | null
+          created_at?: string
+          id?: string
+          level: string
+          message: string
+          session_id?: string | null
+          stack?: string | null
+          timestamp?: string
+          user_id?: string | null
+        }
+        Update: {
+          context?: Json | null
+          correlation_id?: string | null
+          created_at?: string
+          id?: string
+          level?: string
+          message?: string
+          session_id?: string | null
+          stack?: string | null
+          timestamp?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
       audit_logs: {
         Row: {
           created_at: string
@@ -869,6 +908,45 @@ export type Database = {
           id?: string
           interests?: Json | null
           subscribed_at?: string
+        }
+        Relationships: []
+      }
+      performance_metrics: {
+        Row: {
+          created_at: string
+          id: string
+          metric_name: string
+          metric_value: number
+          page_url: string | null
+          rating: string | null
+          session_id: string | null
+          timestamp: string
+          user_agent: string | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          metric_name: string
+          metric_value: number
+          page_url?: string | null
+          rating?: string | null
+          session_id?: string | null
+          timestamp?: string
+          user_agent?: string | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          metric_name?: string
+          metric_value?: number
+          page_url?: string | null
+          rating?: string | null
+          session_id?: string | null
+          timestamp?: string
+          user_agent?: string | null
+          user_id?: string | null
         }
         Relationships: []
       }

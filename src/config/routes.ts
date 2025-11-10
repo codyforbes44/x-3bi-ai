@@ -49,9 +49,11 @@ export const ROUTES = {
   WHITE_LABEL: '/enterprise/white-label',
   
   // Account & Settings
-  SECURITY: '/security',
+  SECURITY: '/security-settings',
   REFERRALS: '/referrals',
   INSTALL: '/install',
+  SHARED_GROK: '/shared/:shareId',
+  MONITORING: '/monitoring',
   API_KEYS: '/api-keys',
   GROK_CHAT: '/grok-chat',
 } as const;
@@ -89,6 +91,7 @@ export const DASHBOARD_NAV_GROUPS = [
       { name: 'Analytics', href: ROUTES.ANALYTICS, icon: 'BarChart3' },
       { name: 'Realtime Analytics', href: ROUTES.REALTIME_ANALYTICS, icon: 'Activity' },
       { name: 'Predictive AI', href: '/predictive-ai', icon: 'TrendingUp' },
+      { name: 'Monitoring', href: ROUTES.MONITORING, icon: 'Activity' },
     ],
   },
   {

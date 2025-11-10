@@ -84,9 +84,14 @@ export const logger = {
   error: logError,
   info: logInfo,
   warn: logWarning,
+  debug: logInfo,
+  fatal: logError,
   dev: (message: string, data?: any) => {
     if (isDevelopment) {
       console.log(`[DEV] ${message}`, data);
     }
-  }
+  },
+  setCorrelationId: () => {},
+  getCorrelationId: () => '',
+  setUserId: () => {},
 };

@@ -70,6 +70,9 @@ const SecurityDashboardPage = lazy(() => import("./pages/SecurityDashboardPage")
 const WebhooksPage = lazy(() => import("./pages/WebhooksPage"));
 const WhiteLabelPage = lazy(() => import("./pages/WhiteLabelPage"));
 
+// Phase 8: Monitoring & Observability
+const MonitoringDashboard = lazy(() => import("./pages/MonitoringDashboard"));
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -152,6 +155,9 @@ const App = () => (
                             <Route path="/security-dashboard" element={<ProtectedRoute><SecurityDashboardPage /></ProtectedRoute>} />
                             <Route path="/webhooks" element={<ProtectedRoute><WebhooksPage /></ProtectedRoute>} />
                             <Route path="/enterprise/white-label" element={<ProtectedRoute><WhiteLabelPage /></ProtectedRoute>} />
+                            
+                            {/* Phase 8: Monitoring & Observability */}
+                            <Route path="/monitoring" element={<ProtectedRoute><MonitoringDashboard /></ProtectedRoute>} />
                             
                             {/* 404 catch-all */}
                             <Route path="*" element={<NotFound />} />

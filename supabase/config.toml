@@ -74,3 +74,6 @@ verify_jwt = true
 
 [functions.integration-install]
 verify_jwt = true
+
+[functions.log-collector]
+verify_jwt = false

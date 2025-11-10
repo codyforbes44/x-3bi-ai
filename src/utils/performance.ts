@@ -172,17 +172,34 @@ export function optimizeImages() {
 /**
  * Monitor Web Vitals
  */
-export function monitorWebVitals(callback: (metric: { name: string; value: number }) => void) {
-  if (typeof window === 'undefined') return;
+export function monitorWebVitals(callback: (metric: { name: string; value: number; rating: 'good' | 'needs-improvement' | 'poor' }) => void) {
+  if (typeof window === 'undefined') return () => {};
+
+  const getRating = (name: string, value: number): 'good' | 'needs-improvement' | 'poor' => {
+    const thresholds: Record<string, { good: number; poor: number }> = {
+      LCP: { good: 2500, poor: 4000 },
+      FID: { good: 100, poor: 300 },
+      CLS: { good: 0.1, poor: 0.25 },
+      FCP: { good: 1800, poor: 3000 },
+      TTFB: { good: 800, poor: 1800 },
+    };
+    const threshold = thresholds[name];
+    if (!threshold) return 'good';
+    if (value <= threshold.good) return 'good';
+    if (value >= threshold.poor) return 'poor';
+    return 'needs-improvement';
+  };
 
   // Largest Contentful Paint (LCP)
   const observeLCP = () => {
     const observer = new PerformanceObserver((list) => {
       const entries = list.getEntries();
       const lastEntry = entries[entries.length - 1];
-      callback({ name: 'LCP', value: lastEntry.startTime });
+      const value = lastEntry.startTime;
+      callback({ name: 'LCP', value, rating: getRating('LCP', value) });
     });
     observer.observe({ entryTypes: ['largest-contentful-paint'] });
+    return () => observer.disconnect();
   };
 
   // First Input Delay (FID)
@@ -190,10 +207,12 @@ export function monitorWebVitals(callback: (metric: { name: string; value: numbe
     const observer = new PerformanceObserver((list) => {
       const entries = list.getEntries();
       entries.forEach((entry: any) => {
-        callback({ name: 'FID', value: entry.processingStart - entry.startTime });
+        const value = entry.processingStart - entry.startTime;
+        callback({ name: 'FID', value, rating: getRating('FID', value) });
       });
     });
     observer.observe({ entryTypes: ['first-input'] });
+    return () => observer.disconnect();
   };
 
   // Cumulative Layout Shift (CLS)
@@ -203,18 +222,20 @@ export function monitorWebVitals(callback: (metric: { name: string; value: numbe
       list.getEntries().forEach((entry: any) => {
         if (!entry.hadRecentInput) {
           clsValue += entry.value;
-          callback({ name: 'CLS', value: clsValue });
+          callback({ name: 'CLS', value: clsValue, rating: getRating('CLS', clsValue) });
         }
       });
     });
     observer.observe({ entryTypes: ['layout-shift'] });
+    return () => observer.disconnect();
   };
 
   if ('PerformanceObserver' in window) {
-    observeLCP();
-    observeFID();
-    observeCLS();
+    const cleanups = [observeLCP(), observeFID(), observeCLS()];
+    return () => cleanups.forEach(cleanup => cleanup());
   }
+  
+  return () => {};
 }
 
 /**
