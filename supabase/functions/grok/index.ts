@@ -11,10 +11,10 @@ serve(async (req) => {
   if (corsResponse) return corsResponse;
 
   try {
-    // Try to get user from JWT, but don't require it
+    // Create Supabase client with service role for rate limit management
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
     );
     
     const authHeader = req.headers.get('Authorization');
@@ -31,22 +31,67 @@ serve(async (req) => {
     }
     
     // Apply different rate limits based on auth status
-    let rateLimitResult;
-    let rateLimitHeaders;
-    
     if (userId) {
-      // Authenticated: 40 requests per minute
-      rateLimitResult = isRateLimited(userId, { windowMs: 60000, maxRequests: 40 });
-      rateLimitHeaders = getRateLimitHeaders(userId, { windowMs: 60000, maxRequests: 40 });
+      // Authenticated: 5 messages per day (resets at UTC-0)
+      const today = new Date().toISOString().split('T')[0]; // UTC date YYYY-MM-DD
+      
+      const { data: rateLimit } = await supabaseClient
+        .from('grok_rate_limits')
+        .select('*')
+        .eq('user_id', userId)
+        .eq('date', today)
+        .maybeSingle();
+      
+      const messageCount = rateLimit?.message_count || 0;
+      const DAILY_LIMIT = 5;
+      
+      if (messageCount >= DAILY_LIMIT) {
+        // Calculate time until UTC midnight
+        const now = new Date();
+        const tomorrow = new Date(Date.UTC(
+          now.getUTCFullYear(),
+          now.getUTCMonth(),
+          now.getUTCDate() + 1
+        ));
+        
+        return new Response(
+          JSON.stringify({
+            error: 'Daily limit reached',
+            message: `You've reached your daily limit of ${DAILY_LIMIT} messages. Your limit resets at midnight UTC.`,
+            limit: DAILY_LIMIT,
+            remaining: 0,
+            resetAt: tomorrow.toISOString(),
+          }),
+          {
+            status: 429,
+            headers: {
+              'Content-Type': 'application/json',
+              'X-RateLimit-Limit': String(DAILY_LIMIT),
+              'X-RateLimit-Remaining': '0',
+              'X-RateLimit-Reset': tomorrow.toISOString(),
+              'Retry-After': String(Math.ceil((tomorrow.getTime() - now.getTime()) / 1000)),
+            },
+          }
+        );
+      }
+      
+      // Increment counter
+      await supabaseClient.from('grok_rate_limits').upsert({
+        user_id: userId,
+        date: today,
+        message_count: messageCount + 1,
+        updated_at: new Date().toISOString()
+      }, {
+        onConflict: 'user_id,date'
+      });
     } else {
-      // Guest: 5 requests per minute (IP-based)
+      // Guest: 5 requests per minute (IP-based, rolling window)
       const clientIp = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown';
-      rateLimitResult = isRateLimited(`guest_${clientIp}`, { windowMs: 60000, maxRequests: 5 });
-      rateLimitHeaders = getRateLimitHeaders(`guest_${clientIp}`, { windowMs: 60000, maxRequests: 5 });
-    }
-    
-    if (rateLimitResult.limited) {
-      return createRateLimitResponse(rateLimitResult.resetAt);
+      const rateLimitResult = isRateLimited(`guest_${clientIp}`, { windowMs: 60000, maxRequests: 5 });
+      
+      if (rateLimitResult.limited) {
+        return createRateLimitResponse(rateLimitResult.resetAt);
+      }
     }
     const { 
       messages, 
@@ -120,7 +165,7 @@ serve(async (req) => {
     const data = await response.json();
     
     return new Response(JSON.stringify(data), {
-      headers: { ...corsHeaders, ...rateLimitHeaders, 'Content-Type': 'application/json' },
+      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {
     logError(error, 'grok');

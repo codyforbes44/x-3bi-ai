@@ -650,6 +650,33 @@ export type Database = {
           },
         ]
       }
+      grok_rate_limits: {
+        Row: {
+          created_at: string
+          date: string
+          id: string
+          message_count: number
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          date: string
+          id?: string
+          message_count?: number
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          date?: string
+          id?: string
+          message_count?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       integrations: {
         Row: {
           category: string
@@ -1868,6 +1895,7 @@ export type Database = {
         Returns: number
       }
       cleanup_old_audit_logs: { Args: never; Returns: undefined }
+      cleanup_old_grok_rate_limits: { Args: never; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
