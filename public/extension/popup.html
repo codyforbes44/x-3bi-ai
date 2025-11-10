@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Platform</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      width: 350px;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .container {
+      padding: 20px;
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+    
+    .header h1 {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    
+    .header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    
+    .quick-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    
+    .action-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      padding: 14px 16px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .action-btn:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+    
+    .action-btn .icon {
+      font-size: 20px;
+    }
+    
+    .action-btn .text {
+      flex: 1;
+    }
+    
+    .action-btn .text small {
+      display: block;
+      font-size: 12px;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+    
+    .stats {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+    
+    .stats h3 {
+      font-size: 14px;
+      margin-bottom: 12px;
+      opacity: 0.9;
+    }
+    
+    .stat-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .stat-item:last-child {
+      border-bottom: none;
+    }
+    
+    .stat-label {
+      font-size: 13px;
+      opacity: 0.8;
+    }
+    
+    .stat-value {
+      font-size: 14px;
+      font-weight: 600;
+    }
+    
+    .footer {
+      text-align: center;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .footer a {
+      color: white;
+      text-decoration: none;
+      font-size: 13px;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    
+    .footer a:hover {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🤖 AI Platform</h1>
+      <p>Universal AI Command Layer</p>
+    </div>
+    
+    <div class="quick-actions">
+      <button class="action-btn" id="toggleSidebar">
+        <span class="icon">💬</span>
+        <span class="text">
+          Toggle AI Sidebar
+          <small>Ctrl+Shift+G</small>
+        </span>
+      </button>
+      
+      <button class="action-btn" id="analyzePage">
+        <span class="icon">📊</span>
+        <span class="text">
+          Analyze Current Page
+          <small>Extract insights & data</small>
+        </span>
+      </button>
+      
+      <button class="action-btn" id="scrapePage">
+        <span class="icon">🔍</span>
+        <span class="text">
+          Scrape Page Data
+          <small>Get structured data</small>
+        </span>
+      </button>
+      
+      <button class="action-btn" id="openDashboard">
+        <span class="icon">🏠</span>
+        <span class="text">
+          Open Dashboard
+          <small>Go to main platform</small>
+        </span>
+      </button>
+    </div>
+    
+    <div class="stats">
+      <h3>Today's Activity</h3>
+      <div class="stat-item">
+        <span class="stat-label">AI Queries</span>
+        <span class="stat-value" id="queryCount">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Pages Analyzed</span>
+        <span class="stat-value" id="pageCount">0</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Workflows Run</span>
+        <span class="stat-value" id="workflowCount">0</span>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <a href="#" id="settings">⚙️ Settings</a>
+    </div>
+  </div>
+  
+  <script src="popup.js"></script>
+</body>
+</html>
