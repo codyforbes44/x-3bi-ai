@@ -8,6 +8,7 @@ import { CapabilitiesSection } from "@/components/home/sections/CapabilitiesSect
 import { PlatformStatsSection } from "@/components/home/sections/PlatformStatsSection";
 import { ComparisonSection } from "@/components/home/sections/ComparisonSection";
 import { TestimonialsSection } from "@/components/home/sections/TestimonialsSection";
+import { FAQSection, getFAQs } from "@/components/home/sections/FAQSection";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/config/routes";
@@ -17,6 +18,7 @@ import {
   generateOrganizationSchema, 
   generateWebsiteSchema, 
   generateSoftwareAppSchema,
+  generateFAQSchema,
   combineSchemas 
 } from "@/utils/structuredData";
 
@@ -26,7 +28,8 @@ const HomePage = () => {
   const structuredData = combineSchemas(
     generateOrganizationSchema(),
     generateWebsiteSchema(),
-    generateSoftwareAppSchema()
+    generateSoftwareAppSchema(),
+    generateFAQSchema(getFAQs())
   );
 
   const { seo, cta } = homeContent;
@@ -67,6 +70,7 @@ const HomePage = () => {
         <ComparisonSection />
         <QuickStartSection />
         <TestimonialsSection />
+        <FAQSection />
         <CTASection
           title={cta.title}
           description={`Get instant access to all ${PLATFORM_STATS.totalFeatures} AI features and ${PLATFORM_STATS.totalModels} models. Join thousands of teams building with the complete AI platform.`}
