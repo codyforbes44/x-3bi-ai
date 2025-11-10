@@ -9,7 +9,8 @@ import { Slider } from '@/components/ui/slider';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useAISettings } from '@/hooks/useAISettings';
-import { AVAILABLE_MODELS, VOICE_OPTIONS, VOICE_MODELS } from '@/types/aiSettings';
+import { ELEVENLABS_VOICES, ELEVENLABS_MODELS } from '@/types/unifiedAISettings';
+import { GROK_MODELS } from '@/config/grok';
 import { useToast } from '@/hooks/use-toast';
 
 export function UnifiedAISettings() {
@@ -86,9 +87,9 @@ export function UnifiedAISettings() {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    {AVAILABLE_MODELS.map((model) => (
-                      <SelectItem key={model.value} value={model.value}>
-                        {model.label} ({model.provider})
+                    {GROK_MODELS.map((model) => (
+                      <SelectItem key={model.id} value={model.id}>
+                        {model.name} - {model.description}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -324,8 +325,8 @@ export function UnifiedAISettings() {
                   </p>
                 </div>
                 <Switch
-                  checked={settings.enableVoiceInput}
-                  onCheckedChange={(checked) => handleSave({ enableVoiceInput: checked })}
+                  checked={settings.voiceInputEnabled}
+                  onCheckedChange={(checked) => handleSave({ voiceInputEnabled: checked })}
                 />
               </div>
 
@@ -337,12 +338,12 @@ export function UnifiedAISettings() {
                   </p>
                 </div>
                 <Switch
-                  checked={settings.enableVoiceOutput}
-                  onCheckedChange={(checked) => handleSave({ enableVoiceOutput: checked })}
+                  checked={settings.voiceOutputEnabled}
+                  onCheckedChange={(checked) => handleSave({ voiceOutputEnabled: checked })}
                 />
               </div>
 
-              {settings.enableVoiceOutput && (
+              {settings.voiceOutputEnabled && (
                 <>
                   <Separator />
 
@@ -356,7 +357,7 @@ export function UnifiedAISettings() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        {VOICE_OPTIONS.map((voice) => (
+                        {ELEVENLABS_VOICES.map((voice) => (
                           <SelectItem key={voice.value} value={voice.value}>
                             {voice.label}
                           </SelectItem>
@@ -375,7 +376,7 @@ export function UnifiedAISettings() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        {VOICE_MODELS.map((model) => (
+                        {ELEVENLABS_MODELS.map((model) => (
                           <SelectItem key={model.value} value={model.value}>
                             {model.label}
                           </SelectItem>

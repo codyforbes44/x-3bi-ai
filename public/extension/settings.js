@@ -1,24 +1,49 @@
-// Extension Settings Page
+// Extension Settings Page - Unified AI Settings
 const DEFAULT_SETTINGS = {
-  defaultModel: 'grok-beta',
+  // Model
+  defaultModel: 'grok-4-0709',
   temperature: 0.7,
   maxTokens: 2000,
   streamingEnabled: true,
+  
+  // Appearance
   theme: 'auto',
   sidebarPosition: 'right',
-  compactMode: false,
   fontSize: 'medium',
+  compactMode: false,
+  defaultState: 'collapsed',
+  
+  // Behavior
   autoOpen: false,
+  autoOpenOnDashboard: false,
   persistConversations: true,
+  contextAwarenessEnabled: true,
+  suggestionsEnabled: true,
   showSuggestedPrompts: true,
-  enableVoiceInput: false,
-  enableVoiceOutput: false,
+  enableMultiModel: true,
+  
+  // Voice
+  voiceInputEnabled: false,
+  voiceOutputEnabled: false,
+  voiceProvider: 'browser',
   voiceId: '9BWtsMINqrJLrRacOk9x',
   voiceModel: 'eleven_turbo_v2_5',
+  
+  // Keyboard
+  keyboardShortcut: 'Ctrl+Shift+G',
+  enableGlobalShortcut: true,
+  
+  // Privacy
+  analyticsEnabled: true,
+  saveHistory: true,
+  conversationHistory: 'all',
+  
+  // Extension
   enableExtensionSidePanel: true,
   extensionAutoOpenOnStartup: false,
-  saveHistory: true,
-  analyticsEnabled: true,
+  
+  // Version
+  version: 1,
 };
 
 // Load settings
@@ -50,9 +75,11 @@ async function populateForm() {
   document.getElementById('fontSize').value = settings.fontSize;
   document.getElementById('extensionAutoOpenOnStartup').checked = settings.extensionAutoOpenOnStartup;
   document.getElementById('showSuggestedPrompts').checked = settings.showSuggestedPrompts;
+  document.getElementById('persistConversations').checked = settings.persistConversations;
   document.getElementById('saveHistory').checked = settings.saveHistory;
-  document.getElementById('enableVoiceInput').checked = settings.enableVoiceInput;
-  document.getElementById('enableVoiceOutput').checked = settings.enableVoiceOutput;
+  document.getElementById('enableVoiceInput').checked = settings.voiceInputEnabled;
+  document.getElementById('enableVoiceOutput').checked = settings.voiceOutputEnabled;
+  document.getElementById('analyticsEnabled').checked = settings.analyticsEnabled;
 }
 
 // Show status message
@@ -79,9 +106,12 @@ document.getElementById('saveBtn').addEventListener('click', async () => {
     fontSize: document.getElementById('fontSize').value,
     extensionAutoOpenOnStartup: document.getElementById('extensionAutoOpenOnStartup').checked,
     showSuggestedPrompts: document.getElementById('showSuggestedPrompts').checked,
+    persistConversations: document.getElementById('persistConversations').checked,
     saveHistory: document.getElementById('saveHistory').checked,
-    enableVoiceInput: document.getElementById('enableVoiceInput').checked,
-    enableVoiceOutput: document.getElementById('enableVoiceOutput').checked,
+    voiceInputEnabled: document.getElementById('enableVoiceInput').checked,
+    voiceOutputEnabled: document.getElementById('enableVoiceOutput').checked,
+    analyticsEnabled: document.getElementById('analyticsEnabled').checked,
+    version: 1,
   };
 
   await saveSettings(newSettings);

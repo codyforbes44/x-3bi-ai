@@ -7,7 +7,7 @@ import { FeatureContext } from '@/utils/aiSidebarContext';
 import { VoiceInputButton } from './VoiceInputButton';
 import { VoiceControls } from './VoiceControls';
 import { useElevenLabsTTS } from '@/hooks/useElevenLabsTTS';
-import { useAISidebarSettings } from '@/hooks/useAISidebarSettings';
+import { useAISettings } from '@/hooks/useAISettings';
 import { Volume2 } from 'lucide-react';
 
 interface AISidebarChatProps {
@@ -25,7 +25,7 @@ export function AISidebarChat({
 }: AISidebarChatProps) {
   const [input, setInput] = useState('');
   const { messages, isLoading, sendMessage, clearMessages } = useGrokChat();
-  const { settings } = useAISidebarSettings();
+  const { settings } = useAISettings();
   const [isListeningVoice, setIsListeningVoice] = useState(false);
   const [lastAssistantMessage, setLastAssistantMessage] = useState<string>('');
 
@@ -42,7 +42,7 @@ export function AISidebarChat({
     volume,
     isMuted,
   } = useElevenLabsTTS({
-    voiceId: settings.selectedVoice,
+    voiceId: settings.voiceId,
   });
 
   // Handle initial prompt

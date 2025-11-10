@@ -55,7 +55,6 @@ const APIDemos = lazy(() => import("./pages/APIDemos"));
 const APIKeys = lazy(() => import("./pages/APIKeys"));
 const GrokChatPage = lazy(() => import("./pages/GrokChatPage"));
 const SharedGrokChat = lazy(() => import("./pages/SharedGrokChat"));
-const AIAssistantSettings = lazy(() => import("./pages/AIAssistantSettings"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const MemoryPage = lazy(() => import("./pages/MemoryPage"));
 const UsageAnalyticsPage = lazy(() => import("./pages/UsageAnalyticsPage"));
@@ -154,8 +153,9 @@ const App = () => (
                             <Route path="/memory" element={<ProtectedRoute><MemoryPage /></ProtectedRoute>} />
                             <Route path="/analytics" element={<ProtectedRoute><UsageAnalyticsPage /></ProtectedRoute>} />
                             <Route path="/security" element={<ProtectedRoute><SecuritySettings /></ProtectedRoute>} />
-                            <Route path="/ai-assistant-settings" element={<ProtectedRoute><AIAssistantSettings /></ProtectedRoute>} />
-                            <Route path="/ai-settings" element={<ProtectedRoute><UnifiedSettingsPage /></ProtectedRoute>} />
+            {/* Redirect old settings page to new unified page */}
+            <Route path="/ai-assistant-settings" element={<Navigate to="/settings/ai" replace />} />
+            <Route path="/settings/ai" element={<ProtectedRoute><UnifiedSettingsPage /></ProtectedRoute>} />
                             <Route path="/referrals" element={<ProtectedRoute><ReferralProgram /></ProtectedRoute>} />
                             <Route path="/install" element={<InstallPage />} />
                             <Route path="/predictive-ai" element={<ProtectedRoute><PredictiveAI /></ProtectedRoute>} />

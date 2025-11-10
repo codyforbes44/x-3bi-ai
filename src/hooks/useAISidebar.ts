@@ -1,12 +1,12 @@
 import { useState, useCallback, useEffect } from 'react';
-import { useAISidebarSettings } from './useAISidebarSettings';
+import { useAISettings } from './useAISettings';
 
 type SidebarState = 'collapsed' | 'compact' | 'expanded';
 
 const STORAGE_KEY = 'ai-sidebar-state';
 
 export function useAISidebar() {
-  const { settings } = useAISidebarSettings();
+  const { settings } = useAISettings();
   
   const [state, setState] = useState<SidebarState>(() => {
     const stored = localStorage.getItem(STORAGE_KEY);

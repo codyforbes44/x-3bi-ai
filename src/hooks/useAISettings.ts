@@ -2,16 +2,24 @@ import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
-import { AISettings, DEFAULT_AI_SETTINGS } from '@/types/aiSettings';
+import { UnifiedAISettings, DEFAULT_UNIFIED_AI_SETTINGS, migrateSettings } from '@/types/unifiedAISettings';
 
 const STORAGE_KEY = 'ai-settings';
 
 export function useAISettings() {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [settings, setSettings] = useState<AISettings>(() => {
+  const [settings, setSettings] = useState<UnifiedAISettings>(() => {
     const stored = localStorage.getItem(STORAGE_KEY);
-    return stored ? { ...DEFAULT_AI_SETTINGS, ...JSON.parse(stored) } : DEFAULT_AI_SETTINGS;
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        return migrateSettings({ ...DEFAULT_UNIFIED_AI_SETTINGS, ...parsed });
+      } catch {
+        return DEFAULT_UNIFIED_AI_SETTINGS;
+      }
+    }
+    return DEFAULT_UNIFIED_AI_SETTINGS;
   });
   const [isLoading, setIsLoading] = useState(false);
   const [isSyncing, setIsSyncing] = useState(false);
@@ -31,12 +39,12 @@ export function useAISettings() {
       if (error && error.code !== 'PGRST116') throw error;
 
       if (data?.settings) {
-        const merged = { ...DEFAULT_AI_SETTINGS, ...(data.settings as Partial<AISettings>) };
-        setSettings(merged);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+        const migrated = migrateSettings(data.settings as any);
+        setSettings(migrated);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
         
         // Sync to extension if available
-        syncToExtension(merged);
+        syncToExtension(migrated);
       }
     } catch (error) {
       console.error('Failed to load AI settings:', error);
@@ -46,7 +54,7 @@ export function useAISettings() {
   }, [user]);
 
   // Save settings to database and localStorage
-  const saveSettings = useCallback(async (newSettings: Partial<AISettings>) => {
+  const saveSettings = useCallback(async (newSettings: Partial<UnifiedAISettings>) => {
     const updated = { ...settings, ...newSettings };
     setSettings(updated);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
@@ -85,7 +93,7 @@ export function useAISettings() {
   }, [settings, user, toast]);
 
   // Sync settings to browser extension
-  const syncToExtension = (settings: AISettings) => {
+  const syncToExtension = (settings: UnifiedAISettings) => {
     if (typeof window !== 'undefined' && (window as any).chrome?.runtime?.id) {
       const chrome = (window as any).chrome;
       chrome.storage.sync.set({ aiSettings: settings }, () => {
@@ -98,7 +106,7 @@ export function useAISettings() {
 
   // Reset to defaults
   const resetSettings = useCallback(async () => {
-    await saveSettings(DEFAULT_AI_SETTINGS);
+    await saveSettings(DEFAULT_UNIFIED_AI_SETTINGS);
     toast({
       title: 'Settings reset',
       description: 'All settings have been reset to defaults.',

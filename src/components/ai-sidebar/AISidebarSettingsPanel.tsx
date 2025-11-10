@@ -3,13 +3,13 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
-import { useAISidebarSettings } from '@/hooks/useAISidebarSettings';
+import { useAISettings } from '@/hooks/useAISettings';
 import { GROK_MODELS } from '@/config/grok';
 import { ExternalLink } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export function AISidebarSettingsPanel() {
-  const { settings, saveSettings } = useAISidebarSettings();
+  const { settings, saveSettings } = useAISettings();
 
   return (
     <div className="p-4 space-y-6">
@@ -77,8 +77,8 @@ export function AISidebarSettingsPanel() {
       <div className="space-y-3">
         <Label className="text-sm">Sidebar Position</Label>
         <Select
-          value={settings.position}
-          onValueChange={(value) => saveSettings({ position: value as any })}
+          value={settings.sidebarPosition}
+          onValueChange={(value) => saveSettings({ sidebarPosition: value as any })}
         >
           <SelectTrigger className="h-9">
             <SelectValue />
@@ -93,7 +93,7 @@ export function AISidebarSettingsPanel() {
       <Separator />
 
       <Button variant="outline" className="w-full" size="sm" asChild>
-        <Link to="/ai-assistant-settings">
+        <Link to="/settings/ai">
           <ExternalLink className="h-4 w-4 mr-2" />
           All Settings
         </Link>
