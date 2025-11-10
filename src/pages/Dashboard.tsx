@@ -15,6 +15,7 @@ import { RateLimitIndicator } from "@/components/usage/RateLimitIndicator";
 import { Button } from "@/components/ui/button";
 import { LayoutDashboard } from "lucide-react";
 import { SEO } from "@/components/SEO";
+import { AISidebar } from "@/components/ai-sidebar/AISidebar";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -107,6 +108,9 @@ const Dashboard = () => {
               </div>
             </div>
           </SidebarInset>
+
+          {/* AI Assistant Sidebar */}
+          <AISidebar currentFeature={activeTab} />
         </div>
       </SidebarProvider>
     </>
