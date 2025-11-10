@@ -130,6 +130,10 @@ const AuthPage = () => {
         setSuccess('Please check your email and click the confirmation link to complete your registration.');
       } else if (data.session) {
         setSuccess('Account created successfully!');
+        // Redirect to profile completion wizard
+        setTimeout(() => {
+          navigate('/onboarding/profile');
+        }, 500);
       }
     } catch (err) {
       setError('An unexpected error occurred. Please try again.');

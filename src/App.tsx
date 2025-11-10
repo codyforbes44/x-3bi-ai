@@ -25,6 +25,7 @@ import HomePage from "./pages/HomePage";
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const AuthPage = lazy(() => import("./pages/AuthPage"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+const ProfileCompletionPage = lazy(() => import("./pages/ProfileCompletionPage"));
 const Community = lazy(() => import("./pages/Community"));
 const Pricing = lazy(() => import("./pages/Pricing"));
 const Enterprise = lazy(() => import("./pages/Enterprise"));
@@ -102,6 +103,7 @@ const App = () => (
                             {/* Public routes */}
                             <Route path="/" element={<HomePage />} />
                             <Route path="/auth" element={<AuthPage />} />
+                            <Route path="/onboarding/profile" element={<ProtectedRoute><ProfileCompletionPage /></ProtectedRoute>} />
                             <Route path="/community" element={<Community />} />
                             <Route path="/pricing" element={<Pricing />} />
                             <Route path="/enterprise" element={<Enterprise />} />
