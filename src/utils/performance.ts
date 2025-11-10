@@ -118,6 +118,124 @@ export function preloadCriticalResources(resources: string[]) {
 }
 
 /**
+ * Resource hints for better performance
+ */
+export function addResourceHints(domains: string[]) {
+  domains.forEach((domain) => {
+    // DNS prefetch
+    const dnsPrefetch = document.createElement("link");
+    dnsPrefetch.rel = "dns-prefetch";
+    dnsPrefetch.href = domain;
+    document.head.appendChild(dnsPrefetch);
+
+    // Preconnect for critical domains
+    const preconnect = document.createElement("link");
+    preconnect.rel = "preconnect";
+    preconnect.href = domain;
+    preconnect.crossOrigin = "anonymous";
+    document.head.appendChild(preconnect);
+  });
+}
+
+/**
+ * Optimize images for better performance
+ */
+export function optimizeImages() {
+  const images = document.querySelectorAll('img[data-src]');
+  
+  if ('IntersectionObserver' in window) {
+    const imageObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const img = entry.target as HTMLImageElement;
+          const src = img.dataset.src;
+          if (src) {
+            img.src = src;
+            img.classList.add('loaded');
+            imageObserver.unobserve(img);
+          }
+        }
+      });
+    });
+
+    images.forEach((img) => imageObserver.observe(img));
+  } else {
+    // Fallback for browsers without IntersectionObserver
+    images.forEach((img) => {
+      const imgElement = img as HTMLImageElement;
+      const src = imgElement.dataset.src;
+      if (src) imgElement.src = src;
+    });
+  }
+}
+
+/**
+ * Monitor Web Vitals
+ */
+export function monitorWebVitals(callback: (metric: { name: string; value: number }) => void) {
+  if (typeof window === 'undefined') return;
+
+  // Largest Contentful Paint (LCP)
+  const observeLCP = () => {
+    const observer = new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      const lastEntry = entries[entries.length - 1];
+      callback({ name: 'LCP', value: lastEntry.startTime });
+    });
+    observer.observe({ entryTypes: ['largest-contentful-paint'] });
+  };
+
+  // First Input Delay (FID)
+  const observeFID = () => {
+    const observer = new PerformanceObserver((list) => {
+      const entries = list.getEntries();
+      entries.forEach((entry: any) => {
+        callback({ name: 'FID', value: entry.processingStart - entry.startTime });
+      });
+    });
+    observer.observe({ entryTypes: ['first-input'] });
+  };
+
+  // Cumulative Layout Shift (CLS)
+  const observeCLS = () => {
+    let clsValue = 0;
+    const observer = new PerformanceObserver((list) => {
+      list.getEntries().forEach((entry: any) => {
+        if (!entry.hadRecentInput) {
+          clsValue += entry.value;
+          callback({ name: 'CLS', value: clsValue });
+        }
+      });
+    });
+    observer.observe({ entryTypes: ['layout-shift'] });
+  };
+
+  if ('PerformanceObserver' in window) {
+    observeLCP();
+    observeFID();
+    observeCLS();
+  }
+}
+
+/**
+ * Code splitting helper - dynamic import with retry
+ */
+export async function importWithRetry<T>(
+  importFn: () => Promise<T>,
+  retries: number = 3
+): Promise<T> {
+  try {
+    return await importFn();
+  } catch (error) {
+    if (retries > 0) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      return importWithRetry(importFn, retries - 1);
+    }
+    throw error;
+  }
+}
+
+/**
  * Memoize expensive calculations
  */
 export function memoize<T extends (...args: any[]) => any>(fn: T): T {

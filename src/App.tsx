@@ -18,6 +18,7 @@ import { MobileBottomNav } from "@/components/MobileBottomNav";
 import FloatingBadge from "@/components/FloatingBadge";
 import ScrollToTop from "@/components/ScrollToTop";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { RoutePreloader } from "@/components/RoutePreloader";
 import HomePage from "./pages/HomePage";
 
 // Lazy load all other pages for better performance
@@ -89,6 +90,7 @@ const App = () => (
                         <BrowserRouter>
                           <CommandPalette />
                           <ScrollToTop />
+                          <RoutePreloader />
                           <div className="pb-16 md:pb-0">
                             <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div></div>}>
                               <Routes>
