@@ -6,6 +6,10 @@ export const ROUTES = {
   AUTH: '/auth',
   PROFILE: '/profile',
   
+  // Platform Overview
+  FEATURES: '/features',
+  AI_MODELS: '/ai-models',
+  
   // AI Tools & Features
   FREE_AI_TOOLS: '/free-ai-tools',
   MEMORY: '/memory',
@@ -21,6 +25,7 @@ export const ROUTES = {
   DOCUMENTATION: '/documentation',
   API_ACCESS: '/api-access',
   API_DEMOS: '/api-demos',
+  API_DOCS: '/api-docs',
   
   // Community & Company
   COMMUNITY: '/community',
@@ -69,14 +74,13 @@ export const TUTORIAL_ROUTES = {
 // Main Header Navigation (visible to all users)
 export const MAIN_NAVIGATION = [
   { name: 'Dashboard', href: ROUTES.DASHBOARD, icon: 'LayoutDashboard' },
-  { name: 'AI Tools', href: ROUTES.FREE_AI_TOOLS, icon: 'Sparkles' },
+  { name: 'Features', href: ROUTES.FEATURES, icon: 'Sparkles' },
+  { name: 'AI Models', href: ROUTES.AI_MODELS, icon: 'Brain' },
   { name: 'Grok Chat', href: ROUTES.GROK_CHAT, icon: 'MessageSquare' },
   { name: 'Learn', href: ROUTES.LEARN, icon: 'BookOpen' },
-  { name: 'Tutorials', href: ROUTES.TUTORIALS, icon: 'GraduationCap' },
   { name: 'Docs', href: ROUTES.DOCUMENTATION, icon: 'FileText' },
   { name: 'Pricing', href: ROUTES.PRICING, icon: 'DollarSign' },
   { name: 'Enterprise', href: ROUTES.ENTERPRISE, icon: 'Building2' },
-  { name: 'Community', href: ROUTES.COMMUNITY, icon: 'Users' },
 ] as const;
 
 // Dashboard Sidebar Navigation (for authenticated users in dashboard)

@@ -61,6 +61,8 @@ const SecuritySettings = lazy(() => import("./pages/SecuritySettings"));
 const ReferralProgram = lazy(() => import("./pages/ReferralProgram"));
 const IntegrationsHub = lazy(() => import("./pages/IntegrationsHub"));
 const PredictiveAI = lazy(() => import("./pages/PredictiveAI"));
+const FeaturesPage = lazy(() => import("./pages/FeaturesPage"));
+const AIModelsPage = lazy(() => import("./pages/AIModelsPage"));
 
 // Phase 7: Platform Domination
 const RealTimeAnalyticsPage = lazy(() => import("./pages/RealTimeAnalyticsPage"));
@@ -106,6 +108,8 @@ const App = () => (
                             <Route path="/learn" element={<Learn />} />
                             <Route path="/launched" element={<Launched />} />
                             <Route path="/free-ai-tools" element={<FreeAITools />} />
+                            <Route path="/features" element={<FeaturesPage />} />
+                            <Route path="/ai-models" element={<AIModelsPage />} />
                             
                             {/* Company pages */}
                             <Route path="/mission" element={<Mission />} />
