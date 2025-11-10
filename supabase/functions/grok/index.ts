@@ -3,16 +3,12 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.39.3';
 import { validateArray, validateString, validateNumber } from '../_shared/validation.ts';
 import { isRateLimited, getRateLimitHeaders, createRateLimitResponse } from '../_shared/rateLimit.ts';
-
-const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-};
+import { handleCors, corsHeaders, successResponse, errorResponse } from '../_shared/cors.ts';
+import { logError, ValidationError } from '../_shared/errorHandling.ts';
 
 serve(async (req) => {
-  if (req.method === 'OPTIONS') {
-    return new Response(null, { headers: corsHeaders });
-  }
+  const corsResponse = handleCors(req);
+  if (corsResponse) return corsResponse;
 
   try {
     // Try to get user from JWT, but don't require it
@@ -127,10 +123,12 @@ serve(async (req) => {
       headers: { ...corsHeaders, ...rateLimitHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    console.error('Error in grok function:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    });
+    logError(error, 'grok');
+    
+    if (error instanceof ValidationError) {
+      return errorResponse(error.message, 400);
+    }
+    
+    return errorResponse(error instanceof Error ? error.message : 'Failed to process Grok request', 500);
   }
 });

@@ -3,10 +3,15 @@ import { SEO } from "@/components/SEO";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Check, Zap, Crown, Rocket } from "lucide-react";
+import { Check, Zap, Crown, Rocket, ArrowRight } from "lucide-react";
 import { generateFAQSchema, generateProductSchema } from "@/utils/structuredData";
+import { PLATFORM_STATS, AI_MODELS } from "@/config/platform-capabilities";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "@/config/routes";
 
 const Pricing = () => {
+  const navigate = useNavigate();
+
   const plans = [
     {
       name: "Starter",
@@ -15,12 +20,14 @@ const Pricing = () => {
       description: "Perfect for individuals and small teams",
       icon: Zap,
       features: [
+        `All ${PLATFORM_STATS.totalFeatures} AI features`,
+        `Access to ${PLATFORM_STATS.totalModels} AI models`,
         "50,000 AI requests/month",
-        "All AI models (Grok, Claude 4, GPT-5, Gemini 2.0)",
-        "Advanced image generation",
-        "Voice AI & synthesis",
+        "Grok, Claude 4, GPT-5, Gemini 2.0",
+        "Image & voice generation",
         "Priority email support",
-        "Basic analytics dashboard"
+        "Basic analytics dashboard",
+        "API access"
       ],
       buttonText: "Start Free Trial",
       buttonVariant: "outline" as const,
@@ -33,14 +40,16 @@ const Pricing = () => {
       description: "For growing businesses and power users",
       icon: Crown,
       features: [
+        `All ${PLATFORM_STATS.totalFeatures} AI features`,
+        `Priority access to all ${PLATFORM_STATS.totalModels} models`,
         "250,000 AI requests/month",
-        "Priority model access",
         "Team workspaces (up to 10 members)",
         "Advanced workflow automation",
-        "Custom integrations & API access",
+        "Custom integrations & webhooks",
         "24/7 priority support",
         "Advanced analytics & insights",
-        "Multi-modal memory system"
+        "Multi-modal memory system",
+        "White-label options"
       ],
       buttonText: "Start Pro Trial",
       buttonVariant: "default" as const,
@@ -53,6 +62,7 @@ const Pricing = () => {
       description: "For large teams and organizations",
       icon: Rocket,
       features: [
+        `All ${PLATFORM_STATS.totalFeatures} features + custom`,
         "Unlimited AI requests",
         "Custom AI model fine-tuning",
         "Unlimited team members",
@@ -60,7 +70,9 @@ const Pricing = () => {
         "99.9% SLA guarantee",
         "Advanced security & compliance",
         "On-premise deployment options",
-        "Custom integrations & white-label"
+        "Custom integrations & white-label",
+        "Priority model access",
+        "Custom rate limits"
       ],
       buttonText: "Contact Sales",
       buttonVariant: "outline" as const,
@@ -102,12 +114,33 @@ const Pricing = () => {
         <div className="container mx-auto px-4">
           {/* Hero Section */}
           <div className="text-center mb-16">
+            <Badge variant="secondary" className="mb-4">
+              {PLATFORM_STATS.totalFeatures} Features • {PLATFORM_STATS.totalModels} AI Models
+            </Badge>
             <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-hero bg-clip-text text-transparent">
               Simple, Transparent Pricing
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-              Choose the perfect plan for your needs. Start free and scale as you grow.
+              Access all {PLATFORM_STATS.totalFeatures} AI features and {PLATFORM_STATS.totalModels} models. Start free and scale as you grow.
             </p>
+            <div className="flex flex-wrap justify-center gap-3 mb-6">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => navigate(ROUTES.FEATURES)}
+              >
+                View All Features
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => navigate(ROUTES.AI_MODELS)}
+              >
+                Explore Models
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
           </div>
 
           {/* Pricing Cards */}
