@@ -68,7 +68,9 @@ export const TUTORIAL_ROUTES = {
 export const MAIN_NAVIGATION = [
   { name: 'Dashboard', href: ROUTES.DASHBOARD, icon: 'LayoutDashboard' },
   { name: 'AI Tools', href: ROUTES.FREE_AI_TOOLS, icon: 'Sparkles' },
+  { name: 'Grok Chat', href: ROUTES.GROK_CHAT, icon: 'MessageSquare' },
   { name: 'Learn', href: ROUTES.LEARN, icon: 'BookOpen' },
+  { name: 'Tutorials', href: ROUTES.TUTORIALS, icon: 'GraduationCap' },
   { name: 'Docs', href: ROUTES.DOCUMENTATION, icon: 'FileText' },
   { name: 'Pricing', href: ROUTES.PRICING, icon: 'DollarSign' },
   { name: 'Enterprise', href: ROUTES.ENTERPRISE, icon: 'Building2' },
@@ -82,8 +84,11 @@ export const DASHBOARD_NAV_GROUPS = [
     items: [
       { name: 'Dashboard', href: ROUTES.DASHBOARD, icon: 'LayoutDashboard' },
       { name: 'AI Tools', href: ROUTES.FREE_AI_TOOLS, icon: 'Sparkles' },
+      { name: 'Grok Chat', href: ROUTES.GROK_CHAT, icon: 'MessageSquare' },
       { name: 'Memory', href: ROUTES.MEMORY, icon: 'Brain' },
       { name: 'Analytics', href: ROUTES.ANALYTICS, icon: 'BarChart3' },
+      { name: 'Realtime Analytics', href: ROUTES.REALTIME_ANALYTICS, icon: 'Activity' },
+      { name: 'Predictive AI', href: '/predictive-ai', icon: 'TrendingUp' },
     ],
   },
   {
@@ -91,14 +96,25 @@ export const DASHBOARD_NAV_GROUPS = [
     items: [
       { name: 'Workspaces', href: ROUTES.WORKSPACES, icon: 'FolderKanban' },
       { name: 'Integrations', href: ROUTES.INTEGRATIONS_HUB, icon: 'Plug' },
+      { name: 'Marketplace', href: ROUTES.MARKETPLACE, icon: 'Store' },
       { name: 'API Access', href: ROUTES.API_ACCESS, icon: 'Code2' },
+      { name: 'API Keys', href: ROUTES.API_KEYS, icon: 'Key' },
+      { name: 'Webhooks', href: ROUTES.WEBHOOKS, icon: 'Webhook' },
+    ],
+  },
+  {
+    title: 'Enterprise',
+    items: [
+      { name: 'Permissions', href: ROUTES.PERMISSIONS, icon: 'UserCog' },
+      { name: 'Security Dashboard', href: ROUTES.SECURITY_DASHBOARD, icon: 'ShieldCheck' },
+      { name: 'White Label', href: ROUTES.WHITE_LABEL, icon: 'Palette' },
     ],
   },
   {
     title: 'Account',
     items: [
       { name: 'Profile', href: ROUTES.PROFILE, icon: 'User' },
-      { name: 'Security', href: ROUTES.SECURITY, icon: 'Shield' },
+      { name: 'Security Settings', href: ROUTES.SECURITY, icon: 'Shield' },
       { name: 'Referrals', href: ROUTES.REFERRALS, icon: 'Gift' },
       { name: 'Install App', href: ROUTES.INSTALL, icon: 'Download' },
     ],
@@ -112,9 +128,23 @@ export const FOOTER_NAV_GROUPS = [
     items: [
       { name: 'Dashboard', href: ROUTES.DASHBOARD },
       { name: 'AI Tools', href: ROUTES.FREE_AI_TOOLS },
+      { name: 'Grok Chat', href: ROUTES.GROK_CHAT },
+      { name: 'Memory', href: ROUTES.MEMORY },
+      { name: 'Analytics', href: ROUTES.ANALYTICS },
+      { name: 'Workspaces', href: ROUTES.WORKSPACES },
       { name: 'Pricing', href: ROUTES.PRICING },
       { name: 'Enterprise', href: ROUTES.ENTERPRISE },
+    ],
+  },
+  {
+    title: 'Platform',
+    items: [
       { name: 'Integrations', href: ROUTES.INTEGRATIONS_HUB },
+      { name: 'Marketplace', href: ROUTES.MARKETPLACE },
+      { name: 'API Access', href: ROUTES.API_ACCESS },
+      { name: 'API Demos', href: ROUTES.API_DEMOS },
+      { name: 'Security', href: ROUTES.SECURITY_DASHBOARD },
+      { name: 'Install App', href: ROUTES.INSTALL },
     ],
   },
   {
@@ -123,8 +153,6 @@ export const FOOTER_NAV_GROUPS = [
       { name: 'Learn', href: ROUTES.LEARN },
       { name: 'Tutorials', href: ROUTES.TUTORIALS },
       { name: 'Documentation', href: ROUTES.DOCUMENTATION },
-      { name: 'API Access', href: ROUTES.API_ACCESS },
-      { name: 'API Demos', href: ROUTES.API_DEMOS },
       { name: 'Community', href: ROUTES.COMMUNITY },
     ],
   },
@@ -151,7 +179,7 @@ export const FOOTER_NAV_GROUPS = [
 export const MOBILE_QUICK_NAV = [
   { name: 'Home', href: ROUTES.HOME, icon: 'Home' },
   { name: 'Dashboard', href: ROUTES.DASHBOARD, icon: 'LayoutDashboard' },
-  { name: 'Grok', href: ROUTES.GROK_CHAT, icon: 'Sparkles' },
+  { name: 'Grok', href: ROUTES.GROK_CHAT, icon: 'MessageSquare' },
   { name: 'Learn', href: ROUTES.LEARN, icon: 'BookOpen' },
   { name: 'Profile', href: ROUTES.PROFILE, icon: 'User' },
 ] as const;

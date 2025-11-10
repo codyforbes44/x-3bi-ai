@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { Home, LayoutDashboard, Sparkles, BookOpen, User } from "lucide-react";
+import { Home, LayoutDashboard, Sparkles, BookOpen, User, MessageSquare } from "lucide-react";
 import { MOBILE_QUICK_NAV } from "@/config/routes";
 
 export function MobileBottomNav() {
@@ -12,6 +12,7 @@ export function MobileBottomNav() {
       Sparkles,
       BookOpen,
       User,
+      MessageSquare,
     };
     return icons[iconName as keyof typeof icons] || Home;
   };
