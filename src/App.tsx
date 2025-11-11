@@ -68,6 +68,7 @@ const PredictiveAI = lazy(() => import("./pages/PredictiveAI"));
 const FeaturesPage = lazy(() => import("./pages/FeaturesPage"));
 const AIModelsPage = lazy(() => import("./pages/AIModelsPage"));
 const UnifiedSettingsPage = lazy(() => import("./pages/UnifiedSettingsPage"));
+const OGImageGenerator = lazy(() => import("./pages/OGImageGenerator"));
 
 // Phase 7: Platform Domination
 const RealTimeAnalyticsPage = lazy(() => import("./pages/RealTimeAnalyticsPage"));
@@ -174,6 +175,9 @@ const App = () => (
                             
                             {/* Phase 8: Monitoring & Observability */}
                             <Route path="/monitoring" element={<ProtectedRoute><MonitoringDashboard /></ProtectedRoute>} />
+                            
+                            {/* OG Image Generator - Internal Tool */}
+                            <Route path="/og-generator" element={<OGImageGenerator />} />
                             
                             {/* 404 catch-all */}
                             <Route path="*" element={<NotFound />} />
