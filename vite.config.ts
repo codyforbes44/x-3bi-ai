@@ -129,7 +129,22 @@ export default defineConfig(({ mode }) => ({
             }
           },
           {
-            urlPattern: /^https:\/\/jmazzsxnatfewblgpxfq\.supabase\.co\/functions\/(grok|ai-chat|advanced-ai)\/.*/i,
+            urlPattern: /^https:\/\/jmazzsxnatfewblgpxfq\.supabase\.co\/functions\/v1\/grok$/i,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'grok-streaming-cache',
+              expiration: {
+                maxEntries: 200,
+                maxAgeSeconds: 60 * 60 * 24 // 24 hours for offline support
+              },
+              networkTimeoutSeconds: 30,
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/jmazzsxnatfewblgpxfq\.supabase\.co\/functions\/(ai-chat|advanced-ai)\/.*/i,
             handler: 'NetworkFirst',
             options: {
               cacheName: 'ai-responses-cache',
