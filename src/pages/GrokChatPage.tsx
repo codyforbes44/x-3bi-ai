@@ -20,7 +20,8 @@ import { GrokInputArea } from '@/components/grok/GrokInputArea';
 import { GrokConversationList } from '@/components/grok/GrokConversationList';
 import { GROK_MODELS, GROK_CONFIG, DEFAULT_GROK_MODEL } from '@/config/grok';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useSwipeGesture } from '@/hooks/useSwipeGesture';
+import { useEnhancedSwipeGesture } from '@/hooks/useEnhancedSwipeGesture';
+import { PullToRefreshWrapper } from '@/components/mobile/PullToRefreshWrapper';
 import { cn } from '@/lib/utils';
 
 export default function GrokChatPage() {
@@ -92,8 +93,8 @@ export default function GrokChatPage() {
     }
   }, [user, toast, refreshConversations]);
 
-  // Swipe gesture support for mobile
-  useSwipeGesture({
+  // Enhanced swipe gesture support for mobile
+  const swipeRef = useEnhancedSwipeGesture<HTMLDivElement>({
     onSwipeRight: () => {
       if (isMobile && !isHistoryOpen) {
         setIsHistoryOpen(true);
@@ -104,9 +105,18 @@ export default function GrokChatPage() {
         setIsHistoryOpen(false);
       }
     },
-    threshold: 50,
-    edgeThreshold: 20,
-  });
+  }, { threshold: 75 });
+
+  // Pull to refresh conversations
+  const handleRefresh = async () => {
+    if (refreshConversations) {
+      await refreshConversations();
+      toast({
+        title: 'Refreshed',
+        description: 'Conversations updated',
+      });
+    }
+  };
 
   const handleCreateConversation = async () => {
     const conversationId = await createConversation(model);
@@ -210,13 +220,17 @@ export default function GrokChatPage() {
         ogImage="https://3bi.ai/og/grok-chat.png"
         canonical="https://3bi.ai/grok-chat"
       />
-      <div className={cn(
-        "container mx-auto max-w-7xl",
-        isMobile ? "p-0" : "p-4"
-      )}>
-        {isMobile ? (
-          // MOBILE LAYOUT - Full screen with collapsible side panel
-          <div className="flex flex-col h-[calc(100vh-4rem)] relative">
+      <PullToRefreshWrapper onRefresh={handleRefresh}>
+        <div 
+          ref={swipeRef}
+          className={cn(
+            "container mx-auto max-w-7xl",
+            isMobile ? "p-0" : "p-4"
+          )}
+        >
+          {isMobile ? (
+            // MOBILE LAYOUT - Full screen with collapsible side panel
+            <div className="flex flex-col h-[calc(100vh-4rem)] relative">
             {/* Floating Menu Button */}
             <div className="absolute top-4 left-4 z-10">
               <Sheet open={isHistoryOpen} onOpenChange={setIsHistoryOpen}>
@@ -462,7 +476,8 @@ export default function GrokChatPage() {
             </Card>
           </div>
         )}
-      </div>
+        </div>
+      </PullToRefreshWrapper>
     </>
   );
 }
