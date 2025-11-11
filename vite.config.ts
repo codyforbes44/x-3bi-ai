@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => ({
     strictPort: true,
   },
   build: {
-    target: 'es2015', // Better mobile browser support
+    target: 'es2020', // ES2020 for BigInt support (transformers) + good mobile browser support
     assetsInlineLimit: 4096, // Reduce HTTP requests
     rollupOptions: {
       output: {

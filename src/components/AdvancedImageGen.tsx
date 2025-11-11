@@ -7,9 +7,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Slider } from "@/components/ui/slider";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Loader2, Image as ImageIcon, Download, Wand2, Save } from "lucide-react";
+import { Loader2, Image as ImageIcon, Download, Wand2, Save, Share2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { useNativeShare } from "@/hooks/useNativeShare";
+import { ImageUploadButton } from "@/components/mobile/ImageUploadButton";
 
 interface StylePreset {
   id: string;
@@ -21,6 +23,7 @@ interface StylePreset {
 
 export default function AdvancedImageGen() {
   const [prompt, setPrompt] = useState("");
+  const [referenceImage, setReferenceImage] = useState("");
   const [size, setSize] = useState("1024x1024");
   const [quality, setQuality] = useState("auto");
   const [background, setBackground] = useState("auto");
@@ -30,6 +33,7 @@ export default function AdvancedImageGen() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedImages, setGeneratedImages] = useState<string[]>([]);
   const [savedPresets, setSavedPresets] = useState<StylePreset[]>([]);
+  const { share } = useNativeShare();
 
   const handleGenerate = async () => {
     if (!prompt.trim()) {
@@ -143,6 +147,15 @@ export default function AdvancedImageGen() {
           </TabsList>
 
           <TabsContent value="generate" className="space-y-4 mt-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Reference Image (Optional)</label>
+              <ImageUploadButton 
+                onImageSelect={setReferenceImage}
+                label="Add Reference Image"
+              />
+              <p className="text-xs text-muted-foreground">Upload a reference image to guide the generation</p>
+            </div>
+
             <div className="space-y-2">
               <label className="text-sm font-medium">Prompt</label>
               <Textarea
@@ -277,15 +290,26 @@ export default function AdvancedImageGen() {
                         alt={`Generated ${index + 1}`}
                         className="w-full rounded-lg border"
                       />
-                      <Button
-                        variant="secondary"
-                        size="sm"
-                        className="absolute bottom-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
-                        onClick={() => handleDownload(imageUrl, index)}
-                      >
-                        <Download className="mr-2 h-3 w-3" />
-                        Download
-                      </Button>
+                      <div className="absolute bottom-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => handleDownload(imageUrl, index)}
+                        >
+                          <Download className="h-3 w-3" />
+                        </Button>
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => share({ 
+                            title: '3BI.AI Generated Image',
+                            text: `Generated with prompt: ${prompt.substring(0, 100)}...`,
+                            url: imageUrl
+                          })}
+                        >
+                          <Share2 className="h-3 w-3" />
+                        </Button>
+                      </div>
                     </div>
                   ))}
                 </div>

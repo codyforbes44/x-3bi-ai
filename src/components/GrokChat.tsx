@@ -2,21 +2,34 @@ import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Sparkles, Trash2 } from 'lucide-react';
+import { Sparkles, Trash2, Share2 } from 'lucide-react';
 import { useGrokChat } from '@/hooks/useGrokChat';
 import { GrokMessageList } from './grok/GrokMessageList';
 import { GrokInputArea } from './grok/GrokInputArea';
 import { GROK_MODELS, DEFAULT_GROK_MODEL } from '@/config/grok';
+import { useNativeShare } from '@/hooks/useNativeShare';
 
 export const GrokChat = () => {
   const [input, setInput] = useState('');
   const [model, setModel] = useState<string>(DEFAULT_GROK_MODEL);
   const { messages, isLoading, sendMessage, clearMessages } = useGrokChat();
+  const { share } = useNativeShare();
 
   const handleSendMessage = async () => {
     if (!input.trim() || isLoading) return;
     await sendMessage(input, model);
     setInput('');
+  };
+
+  const handleShareConversation = () => {
+    const conversation = messages
+      .map(m => `${m.role === 'user' ? 'You' : 'Grok'}: ${m.content}`)
+      .join('\n\n');
+    
+    share({
+      title: '3BI.AI - Grok Conversation',
+      text: conversation
+    });
   };
 
   return (
@@ -52,15 +65,26 @@ export const GrokChat = () => {
               </SelectContent>
             </Select>
             {messages.length > 0 && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={clearMessages}
-                disabled={isLoading}
-              >
-                <Trash2 className="w-4 h-4 mr-2" />
-                Clear
-              </Button>
+              <>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleShareConversation}
+                  disabled={isLoading}
+                >
+                  <Share2 className="w-4 h-4 mr-2" />
+                  Share
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={clearMessages}
+                  disabled={isLoading}
+                >
+                  <Trash2 className="w-4 h-4 mr-2" />
+                  Clear
+                </Button>
+              </>
             )}
           </div>
         </div>

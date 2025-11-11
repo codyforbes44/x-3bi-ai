@@ -4,6 +4,7 @@ import { StatusBar, Style } from '@capacitor/status-bar';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { Keyboard } from '@capacitor/keyboard';
 import { supabase } from '@/integrations/supabase/client';
+import { initPushNotifications } from './pushNotifications';
 
 export async function initializeMobileApp() {
   if (!Capacitor.isNativePlatform()) {
@@ -53,6 +54,9 @@ export async function initializeMobileApp() {
         window.history.back();
       }
     });
+    
+    // Initialize push notifications
+    await initPushNotifications();
     
     // Hide splash screen after initialization
     await SplashScreen.hide();
