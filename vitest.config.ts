@@ -17,7 +17,15 @@ export default defineConfig({
         'src/tests/',
         '*.config.ts',
         '*.config.js',
+        'src/main.tsx',
+        '**/*.d.ts',
       ],
+      thresholds: {
+        lines: 80,
+        functions: 75,
+        branches: 75,
+        statements: 80,
+      },
     },
   },
   resolve: {
