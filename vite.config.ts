@@ -6,14 +6,18 @@ import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig(({ mode }) => ({
   server: {
-    host: "::",
+    host: '0.0.0.0', // Allow external connections for mobile testing
     port: 8080,
+    strictPort: true,
   },
   build: {
+    target: 'es2015', // Better mobile browser support
+    assetsInlineLimit: 4096, // Reduce HTTP requests
     rollupOptions: {
       output: {
         manualChunks: {
-          // Core vendor chunks
+          // Mobile-optimized core chunks
+          'mobile-core': ['@capacitor/core', '@capacitor/app'],
           'react-vendor': ['react', 'react-dom', 'react-router-dom'],
           'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-popover'],
           'supabase-vendor': ['@supabase/supabase-js'],
@@ -92,10 +96,25 @@ export default defineConfig(({ mode }) => ({
             options: {
               cacheName: 'supabase-api-cache',
               expiration: {
-                maxEntries: 100,
-                maxAgeSeconds: 60 * 5 // 5 minutes
+                maxEntries: 200,
+                maxAgeSeconds: 60 * 60 * 24 // 24 hours for offline support
               },
               networkTimeoutSeconds: 10,
+              cacheableResponse: {
+                statuses: [0, 200]
+              }
+            }
+          },
+          {
+            urlPattern: /^https:\/\/jmazzsxnatfewblgpxfq\.supabase\.co\/functions\/(grok|ai-chat|advanced-ai)\/.*/i,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'ai-responses-cache',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 60 * 60 // 1 hour for AI responses
+              },
+              networkTimeoutSeconds: 30,
               cacheableResponse: {
                 statuses: [0, 200]
               }

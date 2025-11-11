@@ -6,6 +6,11 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { SentryErrorBoundary } from './utils/sentry';
 import { PWAUpdateNotifier } from './components/pwa/PWAUpdateNotifier';
 import { addResourceHints, monitorWebVitals } from './utils/performance';
+import { initializeMobileApp } from './services/mobileInit';
+
+
+// Initialize mobile app features
+initializeMobileApp();
 
 // Add resource hints for critical domains
 addResourceHints([
