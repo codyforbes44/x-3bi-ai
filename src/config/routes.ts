@@ -27,6 +27,10 @@ export const ROUTES = {
   API_DEMOS: '/api-demos',
   API_DOCS: '/api-docs',
   
+  // Legal
+  PRIVACY: '/privacy',
+  TERMS: '/terms',
+  
   // Community & Company
   COMMUNITY: '/community',
   MISSION: '/mission',
@@ -171,6 +175,13 @@ export const FOOTER_NAV_GROUPS = [
       { name: 'Impact', href: ROUTES.IMPACT },
       { name: 'Partners', href: ROUTES.PARTNERS },
       { name: 'Launched', href: ROUTES.LAUNCHED },
+    ],
+  },
+  {
+    title: 'Legal',
+    items: [
+      { name: 'Privacy Policy', href: '/privacy' },
+      { name: 'Terms of Service', href: '/terms' },
     ],
   },
   {

@@ -43,6 +43,8 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Newsletter = lazy(() => import("./pages/Newsletter"));
 const FreeAITools = lazy(() => import("./pages/FreeAITools"));
 const Tutorials = lazy(() => import("./pages/Tutorials"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
+const TermsOfService = lazy(() => import("./pages/TermsOfService"));
 const AIChatTutorial = lazy(() => import("./pages/tutorials/AIChatTutorial"));
 const CodeGenerationTutorial = lazy(() => import("./pages/tutorials/CodeGenerationTutorial"));
 const ImageGenerationTutorial = lazy(() => import("./pages/tutorials/ImageGenerationTutorial"));
@@ -132,6 +134,8 @@ const App = () => (
                             
                             {/* Tutorial routes */}
                             <Route path="/tutorials" element={<Tutorials />} />
+                            <Route path="/privacy" element={<PrivacyPolicy />} />
+                            <Route path="/terms" element={<TermsOfService />} />
                             <Route path="/tutorials/ai-chat" element={<AIChatTutorial />} />
                             <Route path="/tutorials/code-generation" element={<CodeGenerationTutorial />} />
                             <Route path="/tutorials/image-generation" element={<ImageGenerationTutorial />} />
