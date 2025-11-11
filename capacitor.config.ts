@@ -4,6 +4,8 @@ const config: CapacitorConfig = {
   appId: 'ai.threebi.app',
   appName: '3BI.AI',
   webDir: 'dist',
+  // Production build - no hot-reload server
+  // For development, uncomment server block with sandbox URL
   server: {
     androidScheme: 'https',
     iosScheme: 'https',
