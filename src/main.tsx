@@ -7,6 +7,7 @@ import { SentryErrorBoundary } from './utils/sentry';
 import { PWAUpdateNotifier } from './components/pwa/PWAUpdateNotifier';
 import { addResourceHints, monitorWebVitals } from './utils/performance';
 import { initializeMobileApp } from './services/mobileInit';
+import { performanceMonitor } from './utils/performanceOptimizations';
 
 
 // Initialize mobile app features
@@ -25,6 +26,12 @@ if (import.meta.env.PROD) {
     console.log(`[Performance] ${metric.name}:`, metric.value);
     // Could send to analytics service
   });
+  
+  // Log initial metrics after 5 seconds
+  setTimeout(() => {
+    const metrics = performanceMonitor.getMetrics();
+    console.log('[Performance] Initial metrics:', metrics);
+  }, 5000);
 }
 
 createRoot(document.getElementById("root")!).render(

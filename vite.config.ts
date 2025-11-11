@@ -16,16 +16,26 @@ export default defineConfig(({ mode }) => ({
     rollupOptions: {
       output: {
         manualChunks: {
-          // Mobile-optimized core chunks
-          'mobile-core': ['@capacitor/core', '@capacitor/app'],
-          'react-vendor': ['react', 'react-dom', 'react-router-dom'],
-          'ui-vendor': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-popover'],
-          'supabase-vendor': ['@supabase/supabase-js'],
-          'query-vendor': ['@tanstack/react-query'],
-          // Heavy feature chunks
-          'workflow': ['src/components/WorkflowBuilder.tsx', 'src/components/EnhancedWorkflowBuilder.tsx'],
-          'ai-tools': ['src/components/MultiAgentCollaboration.tsx', 'src/components/DigitalTwin.tsx'],
-          'analytics': ['src/components/AnalyticsDashboard.tsx', 'src/components/UsageAnalytics.tsx'],
+          // Core vendor chunks (critical)
+          'react-core': ['react', 'react-dom', 'react-router-dom'],
+          'ui-core': ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-select'],
+          
+          // Backend chunks
+          'supabase': ['@supabase/supabase-js'],
+          'query': ['@tanstack/react-query'],
+          
+          // Heavy feature chunks (lazy loaded)
+          'charts': ['recharts'],
+          'forms': ['react-hook-form', '@hookform/resolvers', 'zod'],
+          'ai-heavy': ['@huggingface/transformers'],
+          
+          // UI components (grouped by usage)
+          'ui-advanced': [
+            '@radix-ui/react-tabs', 
+            '@radix-ui/react-accordion',
+            '@radix-ui/react-slider',
+            '@radix-ui/react-progress',
+          ],
         },
       },
     },
@@ -36,6 +46,13 @@ export default defineConfig(({ mode }) => ({
       compress: {
         drop_console: mode === 'production',
         drop_debugger: mode === 'production',
+        pure_funcs: mode === 'production' ? ['console.log', 'console.debug', 'console.trace'] : [],
+      },
+      mangle: {
+        safari10: true,
+      },
+      format: {
+        comments: false,
       },
     },
   },

@@ -1,7 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Sparkles } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo } from 'react';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -15,6 +15,32 @@ interface GrokMessageListProps {
   emptyDescription?: string;
 }
 
+// Memoized message component for better performance
+const MessageItem = memo(({ message }: { message: Message }) => (
+  <div
+    className={`flex ${
+      message.role === 'user' ? 'justify-end' : 'justify-start'
+    }`}
+  >
+    <div
+      className={`max-w-[80%] rounded-lg px-4 py-2 ${
+        message.role === 'user'
+          ? 'bg-primary text-primary-foreground'
+          : 'bg-muted'
+      }`}
+    >
+      <div className="flex items-center gap-2 mb-1">
+        <Badge variant={message.role === 'user' ? 'secondary' : 'outline'}>
+          {message.role === 'user' ? 'You' : 'Grok'}
+        </Badge>
+      </div>
+      <p className="whitespace-pre-wrap break-words">{message.content}</p>
+    </div>
+  </div>
+));
+
+MessageItem.displayName = 'MessageItem';
+
 export function GrokMessageList({ 
   messages, 
   height = 'h-[500px]',
@@ -23,6 +49,7 @@ export function GrokMessageList({
 }: GrokMessageListProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
 
+  // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -40,27 +67,7 @@ export function GrokMessageList({
       ) : (
         <div className="space-y-4">
           {messages.map((message, index) => (
-            <div
-              key={index}
-              className={`flex ${
-                message.role === 'user' ? 'justify-end' : 'justify-start'
-              }`}
-            >
-              <div
-                className={`max-w-[80%] rounded-lg px-4 py-2 ${
-                  message.role === 'user'
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted'
-                }`}
-              >
-                <div className="flex items-center gap-2 mb-1">
-                  <Badge variant={message.role === 'user' ? 'secondary' : 'outline'}>
-                    {message.role === 'user' ? 'You' : 'Grok'}
-                  </Badge>
-                </div>
-                <p className="whitespace-pre-wrap break-words">{message.content}</p>
-              </div>
-            </div>
+            <MessageItem key={index} message={message} />
           ))}
         </div>
       )}
