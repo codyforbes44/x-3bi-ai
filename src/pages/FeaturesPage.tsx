@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PLATFORM_FEATURES, FEATURE_CATEGORIES, getFeaturesByCategory, PLATFORM_STATS } from "@/config/platform-capabilities";
 import { Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { SEO_CONFIG, PAGE_SEO, BREADCRUMB_CONFIG } from "@/config/seo-config";
 
 export default function FeaturesPage() {
   const navigate = useNavigate();
@@ -15,11 +16,15 @@ export default function FeaturesPage() {
   return (
     <>
       <SEO
-        title="Platform Features - 27 AI Features"
-        description="Explore all 27 AI features: Grok, Claude 4, GPT-5, Image Gen, Voice AI, Workflows, Analytics, and more. Comprehensive AI platform for teams."
-        keywords={['AI features', 'AI platform', 'AI tools', 'Grok', 'Claude 4', 'workflow automation', 'team collaboration']}
-        ogImage="https://3bi.ai/og/ai-tools.png"
-        canonical="https://3bi.ai/features"
+        title={PAGE_SEO.features.title}
+        description={PAGE_SEO.features.description}
+        keywords={PAGE_SEO.features.keywords}
+        ogImage={SEO_CONFIG.ogImages.aiTools}
+        canonical={`${SEO_CONFIG.siteUrl}/features`}
+        breadcrumbs={[
+          { name: BREADCRUMB_CONFIG.home.label, url: BREADCRUMB_CONFIG.home.url },
+          { name: BREADCRUMB_CONFIG.features.label, url: BREADCRUMB_CONFIG.features.url }
+        ]}
       />
       <PageLayout>
         <PageHero

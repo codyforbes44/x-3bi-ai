@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { BookOpen, Video, FileText, Code, Lightbulb, Rocket, Clock, User, Search, Terminal, Zap, Database, Globe, Shield, CheckCircle2, ArrowRight, BookMarked, GraduationCap, PlayCircle } from "lucide-react";
+import { SEO_CONFIG, PAGE_SEO, BREADCRUMB_CONFIG } from "@/config/seo-config";
 
 const Learn = () => {
   const categories = [
@@ -167,11 +168,15 @@ const Learn = () => {
   return (
     <>
       <SEO
-        title="Learn AI - Courses & Resources"
-        description="Master AI with comprehensive courses, tutorials, and guides. From beginner to advanced AI techniques."
-        keywords={['AI courses', 'AI learning', 'AI education', 'AI training']}
-        ogImage="https://3bi.ai/og/learn.png"
-        canonical="https://3bi.ai/learn"
+        title={PAGE_SEO.learn.title}
+        description={PAGE_SEO.learn.description}
+        keywords={PAGE_SEO.learn.keywords}
+        ogImage={SEO_CONFIG.ogImages.learn}
+        canonical={`${SEO_CONFIG.siteUrl}/learn`}
+        breadcrumbs={[
+          { name: BREADCRUMB_CONFIG.home.label, url: BREADCRUMB_CONFIG.home.url },
+          { name: BREADCRUMB_CONFIG.learn.label, url: BREADCRUMB_CONFIG.learn.url }
+        ]}
       />
       <div className="min-h-screen bg-background">
       <Header />

@@ -17,6 +17,7 @@ import {
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { generateTechArticleSchema } from "@/utils/structuredData";
+import { SEO_CONFIG, PAGE_SEO, BREADCRUMB_CONFIG } from "@/config/seo-config";
 
 const Documentation = () => {
   const navigate = useNavigate();
@@ -324,13 +325,16 @@ console.log(response.text);`;
   return (
     <>
       <SEO
-        title="API Documentation - Developer Guide"
-        description="Complete API documentation for 3BI.AI. Access Grok, Claude 4, GPT-5 via REST API. Code examples in JavaScript, Python, cURL. Authentication, endpoints, SDKs."
-        keywords={['AI API', 'API documentation', 'developer guide', 'REST API', 'Grok API', 'Claude API', 'GPT-5 API', 'AI integration', 'API reference']}
-        ogImage="https://3bi.ai/og/documentation.png"
-        canonical="https://3bi.ai/documentation"
+        title={PAGE_SEO.documentation.title}
+        description={PAGE_SEO.documentation.description}
+        keywords={PAGE_SEO.documentation.keywords}
+        ogImage={SEO_CONFIG.ogImages.documentation}
+        canonical={`${SEO_CONFIG.siteUrl}/documentation`}
         structuredData={structuredData}
-        preconnect={['https://jmazzsxnatfewblgpxfq.supabase.co']}
+        breadcrumbs={[
+          { name: BREADCRUMB_CONFIG.home.label, url: BREADCRUMB_CONFIG.home.url },
+          { name: BREADCRUMB_CONFIG.documentation.label, url: BREADCRUMB_CONFIG.documentation.url }
+        ]}
       />
       <Header />
       <main className="min-h-screen pt-20 pb-16">

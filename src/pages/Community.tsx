@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Users, MessageCircle, Github, Heart, Star, Trophy, Quote } from "lucide-react";
+import { SEO_CONFIG, PAGE_SEO, BREADCRUMB_CONFIG } from "@/config/seo-config";
 
 const Community = () => {
   const stats = [
@@ -19,11 +20,15 @@ const Community = () => {
   return (
     <>
       <SEO
-        title="Join Our AI Community"
-        description="Connect with thousands of developers using 3BI.AI. Share projects, get support, and collaborate on AI innovations."
-        keywords={['AI community', 'developer community', 'AI forum', 'AI collaboration']}
-        ogImage="https://3bi.ai/og/community.png"
-        canonical="https://3bi.ai/community"
+        title={PAGE_SEO.community.title}
+        description={PAGE_SEO.community.description}
+        keywords={PAGE_SEO.community.keywords}
+        ogImage={SEO_CONFIG.ogImages.community}
+        canonical={`${SEO_CONFIG.siteUrl}/community`}
+        breadcrumbs={[
+          { name: BREADCRUMB_CONFIG.home.label, url: BREADCRUMB_CONFIG.home.url },
+          { name: BREADCRUMB_CONFIG.community.label, url: BREADCRUMB_CONFIG.community.url }
+        ]}
       />
       <PageLayout>
       <div className="pb-12 md:pb-16">

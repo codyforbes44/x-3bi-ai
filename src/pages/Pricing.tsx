@@ -8,6 +8,7 @@ import { generateFAQSchema, generateProductSchema } from "@/utils/structuredData
 import { PLATFORM_STATS, AI_MODELS } from "@/config/platform-capabilities";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/config/routes";
+import { SEO_CONFIG, PAGE_SEO, BREADCRUMB_CONFIG } from "@/config/seo-config";
 
 const Pricing = () => {
   const navigate = useNavigate();
@@ -101,12 +102,16 @@ const Pricing = () => {
   return (
     <>
       <SEO
-        title="Pricing Plans - AI Platform"
-        description="Simple, transparent pricing for 3BI.AI. Access Grok, Claude 4, GPT-5, and more. Plans starting at $49/month with 14-day free trial. Enterprise solutions available."
-        keywords={['AI pricing', 'AI platform cost', 'Grok pricing', 'Claude 4 pricing', 'GPT-5 pricing', 'enterprise AI pricing', 'AI subscription', 'AI tools pricing']}
-        ogImage="https://3bi.ai/og/pricing.png"
-        canonical="https://3bi.ai/pricing"
+        title={PAGE_SEO.pricing.title}
+        description={PAGE_SEO.pricing.description}
+        keywords={PAGE_SEO.pricing.keywords}
+        ogImage={SEO_CONFIG.ogImages.pricing}
+        canonical={`${SEO_CONFIG.siteUrl}/pricing`}
         structuredData={structuredData}
+        breadcrumbs={[
+          { name: BREADCRUMB_CONFIG.home.label, url: BREADCRUMB_CONFIG.home.url },
+          { name: BREADCRUMB_CONFIG.pricing.label, url: BREADCRUMB_CONFIG.pricing.url }
+        ]}
       />
       <div className="min-h-screen bg-background">
         <Header />

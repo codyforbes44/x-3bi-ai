@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 import { LayoutDashboard } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import { useAISidebarContext } from "@/contexts/AISidebarContext";
+import { SEO_CONFIG, BREADCRUMB_CONFIG } from "@/config/seo-config";
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState("overview");
@@ -54,9 +55,15 @@ const Dashboard = () => {
   return (
     <>
       <SEO
-        title="AI Dashboard"
-        description="Access Grok AI, Claude 4, GPT-5, and more. Multi-modal memory, workflow automation, and enterprise AI tools."
-        keywords={['AI dashboard', 'Grok chat', 'Claude 4', 'GPT-5', 'AI tools', 'enterprise AI']}
+        title="AI Dashboard - 27 Features & Tools"
+        description="Access Grok AI, Claude 4, GPT-5, and 27+ AI features. Multi-modal memory, workflow automation, analytics, and enterprise AI tools in one platform."
+        keywords={['AI dashboard', 'Grok chat', 'Claude 4', 'GPT-5', 'AI tools', 'enterprise AI', 'workflow automation', 'AI analytics']}
+        ogImage={SEO_CONFIG.ogImages.dashboard}
+        noIndex={true}
+        breadcrumbs={[
+          { name: BREADCRUMB_CONFIG.home.label, url: BREADCRUMB_CONFIG.home.url },
+          { name: BREADCRUMB_CONFIG.dashboard.label, url: BREADCRUMB_CONFIG.dashboard.url }
+        ]}
       />
       <ProductTour runTour={runTour} onComplete={() => setRunTour(false)} />
       <SidebarProvider defaultOpen={!isMobile}>

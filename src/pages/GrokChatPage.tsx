@@ -23,6 +23,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useEnhancedSwipeGesture } from '@/hooks/useEnhancedSwipeGesture';
 import { PullToRefreshWrapper } from '@/components/mobile/PullToRefreshWrapper';
 import { cn } from '@/lib/utils';
+import { SEO_CONFIG, PAGE_SEO, BREADCRUMB_CONFIG } from '@/config/seo-config';
 
 export default function GrokChatPage() {
   const [currentConversation, setCurrentConversation] = useState<string | null>(null);
@@ -214,11 +215,15 @@ export default function GrokChatPage() {
   return (
     <>
       <SEO
-        title="Grok Chat - xAI Conversation"
-        description="Chat with xAI's Grok model with streaming responses and conversation history"
-        keywords={['Grok AI', 'xAI chat', 'AI conversation', 'streaming chat']}
-        ogImage="https://3bi.ai/og/grok-chat.png"
-        canonical="https://3bi.ai/grok-chat"
+        title={PAGE_SEO.grokChat.title}
+        description={PAGE_SEO.grokChat.description}
+        keywords={PAGE_SEO.grokChat.keywords}
+        ogImage={SEO_CONFIG.ogImages.grokChat}
+        canonical={`${SEO_CONFIG.siteUrl}/grok-chat`}
+        breadcrumbs={[
+          { name: BREADCRUMB_CONFIG.home.label, url: BREADCRUMB_CONFIG.home.url },
+          { name: BREADCRUMB_CONFIG.grokChat.label, url: BREADCRUMB_CONFIG.grokChat.url }
+        ]}
       />
       <PullToRefreshWrapper onRefresh={handleRefresh}>
         <div 

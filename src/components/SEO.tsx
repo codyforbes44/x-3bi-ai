@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { SEO_CONFIG } from '@/config/seo-config';
 
 interface SEOProps {
   title?: string;
@@ -25,36 +26,53 @@ interface SEOProps {
   structuredData?: object | object[];
   preconnect?: string[];
   dnsPrefetch?: string[];
+  noIndex?: boolean;
+  breadcrumbs?: Array<{ name: string; url: string }>;
 }
-
-const defaultTitle = '3BI.AI - Enterprise AI Platform with Grok, Claude 4, GPT-5';
-const defaultDescription = 'Premium AI platform integrating Grok, Claude 4, GPT-5, and more. Advanced multi-modal memory, real-time collaboration, and enterprise-grade AI tools.';
-const defaultKeywords = ['AI platform', 'Grok AI', 'Claude 4', 'GPT-5', 'enterprise AI', 'AI chat', 'multi-modal AI', 'AI memory system'];
-const defaultOgImage = 'https://3bi.ai/og-image.png';
 
 export function SEO({
   title,
-  description = defaultDescription,
-  keywords = defaultKeywords,
+  description = SEO_CONFIG.defaultDescription,
+  keywords = SEO_CONFIG.coreKeywords,
   canonical,
-  ogImage = defaultOgImage,
+  ogImage = SEO_CONFIG.ogImages.default,
   ogImageAlt,
   ogImageWidth = '1200',
   ogImageHeight = '630',
   ogType = 'website',
   twitterCard = 'summary_large_image',
-  twitterSite = '@3bi_ai',
-  twitterCreator = '@3bi_ai',
+  twitterSite = SEO_CONFIG.twitterSite,
+  twitterCreator = SEO_CONFIG.twitterHandle,
   article,
-  robots = 'index, follow',
+  robots = 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1',
   lang = 'en',
   structuredData,
-  preconnect = [],
-  dnsPrefetch = [],
+  preconnect = SEO_CONFIG.preconnectDomains,
+  dnsPrefetch = SEO_CONFIG.dnsPrefetchDomains,
+  noIndex = false,
+  breadcrumbs,
 }: SEOProps) {
-  const fullTitle = title ? `${title} | 3BI.AI` : defaultTitle;
+  const fullTitle = title ? `${title} | ${SEO_CONFIG.siteName}` : SEO_CONFIG.defaultTitle;
   const currentUrl = canonical || window.location.href;
   const imageAlt = ogImageAlt || fullTitle;
+  
+  // Generate breadcrumb structured data
+  const breadcrumbSchema = breadcrumbs ? {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: breadcrumbs.map((crumb, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: crumb.name,
+      item: `${SEO_CONFIG.siteUrl}${crumb.url}`,
+    })),
+  } : null;
+  
+  // Combine all structured data
+  const allStructuredData = [
+    structuredData,
+    breadcrumbSchema,
+  ].filter(Boolean);
 
   return (
     <Helmet>
@@ -65,9 +83,28 @@ export function SEO({
       <meta name="description" content={description} />
       <meta name="keywords" content={keywords.join(', ')} />
       <link rel="canonical" href={currentUrl} />
-      <meta name="robots" content={robots} />
+      <meta name="robots" content={noIndex ? 'noindex, nofollow' : robots} />
+      <meta name="googlebot" content={noIndex ? 'noindex, nofollow' : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'} />
+      <meta name="bingbot" content={noIndex ? 'noindex, nofollow' : 'index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1'} />
       <meta name="language" content="English" />
-      <meta name="author" content="3BI.AI" />
+      <meta name="author" content={SEO_CONFIG.siteName} />
+      <meta name="geo.region" content="US" />
+      <meta name="geo.placename" content="United States" />
+      
+      {/* Mobile Optimization */}
+      <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+      <meta name="mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+      <meta name="apple-mobile-web-app-title" content={SEO_CONFIG.siteName} />
+      
+      {/* Performance & Security */}
+      <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="referrer" content="no-referrer-when-downgrade" />
+      
+      {/* Theme Color */}
+      <meta name="theme-color" content="#7C3AED" />
+      <meta name="msapplication-TileColor" content="#7C3AED" />
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content={ogType} />
@@ -121,11 +158,21 @@ export function SEO({
       ))}
 
       {/* Structured Data */}
-      {structuredData && (
+      {allStructuredData.length > 0 && (
         <script type="application/ld+json">
-          {JSON.stringify(Array.isArray(structuredData) ? structuredData : structuredData)}
+          {JSON.stringify(
+            allStructuredData.length === 1 
+              ? allStructuredData[0] 
+              : { '@graph': allStructuredData }
+          )}
         </script>
       )}
+      
+      {/* Additional SEO enhancements */}
+      <link rel="alternate" hrefLang="en" href={currentUrl} />
+      <link rel="alternate" hrefLang="es" href={currentUrl.replace('3bi.ai', '3bi.ai/es')} />
+      <link rel="alternate" hrefLang="fr" href={currentUrl.replace('3bi.ai', '3bi.ai/fr')} />
+      <link rel="alternate" hrefLang="x-default" href={currentUrl} />
     </Helmet>
   );
 }

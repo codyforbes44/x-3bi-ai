@@ -1,207 +1,380 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <!-- Homepage -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <!-- Homepage - Highest Priority -->
   <url>
     <loc>https://3bi.ai/</loc>
-    <lastmod>2025-11-05</lastmod>
+    <lastmod>2025-01-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/home.png</image:loc>
+      <image:title>3BI.AI - Enterprise AI Platform with Grok, Claude 4, GPT-5</image:title>
+    </image:image>
   </url>
   
-  <!-- Main Features -->
-  <url>
-    <loc>https://3bi.ai/dashboard</loc>
-    <lastmod>2025-11-05</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-  </url>
+  <!-- Main Features - High Priority -->
   <url>
     <loc>https://3bi.ai/pricing</loc>
-    <lastmod>2025-11-05</lastmod>
+    <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://3bi.ai/enterprise</loc>
-    <lastmod>2025-11-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/pricing.png</image:loc>
+      <image:title>AI Platform Pricing Plans</image:title>
+    </image:image>
   </url>
   
-  <!-- Documentation & Learning -->
+  <url>
+    <loc>https://3bi.ai/features</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/ai-tools.png</image:loc>
+      <image:title>27 AI Features & Tools</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://3bi.ai/grok-chat</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/grok-chat.png</image:loc>
+      <image:title>Grok AI Chat - xAI Conversation Platform</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://3bi.ai/enterprise</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/enterprise.png</image:loc>
+      <image:title>Enterprise AI Solutions</image:title>
+    </image:image>
+  </url>
+  
+  <!-- Documentation & Learning - High Priority -->
   <url>
     <loc>https://3bi.ai/documentation</loc>
-    <lastmod>2025-11-05</lastmod>
+    <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/documentation.png</image:loc>
+      <image:title>API Documentation - Developer Guide</image:title>
+    </image:image>
   </url>
-  <url>
-    <loc>https://3bi.ai/api-access</loc>
-    <lastmod>2025-11-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://3bi.ai/api-demos</loc>
-    <lastmod>2025-11-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://3bi.ai/tutorials</loc>
-    <lastmod>2025-11-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://3bi.ai/tutorials/ai-chat</loc>
-    <lastmod>2025-11-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://3bi.ai/tutorials/code-generation</loc>
-    <lastmod>2025-11-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://3bi.ai/tutorials/image-generation</loc>
-    <lastmod>2025-11-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://3bi.ai/tutorials/voice-ai</loc>
-    <lastmod>2025-11-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://3bi.ai/tutorials/system-architecture</loc>
-    <lastmod>2025-11-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
+  
   <url>
     <loc>https://3bi.ai/learn</loc>
-    <lastmod>2025-11-05</lastmod>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/learn.png</image:loc>
+      <image:title>Learn AI - Courses & Resources</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://3bi.ai/tutorials</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/tutorials.png</image:loc>
+      <image:title>AI Tutorials & Guides</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://3bi.ai/api-access</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/api-access.png</image:loc>
+      <image:title>API Access & Integration</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://3bi.ai/api-demos</loc>
+    <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/api-demos.png</image:loc>
+      <image:title>API Demos & Examples</image:title>
+    </image:image>
+  </url>
+  
+  <!-- Tutorial Pages -->
+  <url>
+    <loc>https://3bi.ai/tutorials/ai-chat</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/tutorial-ai-chat.png</image:loc>
+      <image:title>AI Chat Tutorial</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://3bi.ai/tutorials/code-generation</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/tutorial-code.png</image:loc>
+      <image:title>Code Generation Tutorial</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://3bi.ai/tutorials/image-generation</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/tutorial-image.png</image:loc>
+      <image:title>Image Generation Tutorial</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://3bi.ai/tutorials/voice-ai</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/tutorial-voice.png</image:loc>
+      <image:title>Voice AI Tutorial</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://3bi.ai/tutorials/system-architecture</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/tutorial-architecture.png</image:loc>
+      <image:title>System Architecture Tutorial</image:title>
+    </image:image>
   </url>
   
   <!-- Features & Tools -->
   <url>
     <loc>https://3bi.ai/free-ai-tools</loc>
-    <lastmod>2025-11-05</lastmod>
+    <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
+  
   <url>
     <loc>https://3bi.ai/integrations</loc>
-    <lastmod>2025-11-05</lastmod>
+    <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/integrations.png</image:loc>
+      <image:title>AI Integrations</image:title>
+    </image:image>
   </url>
+  
   <url>
     <loc>https://3bi.ai/integrations-hub</loc>
-    <lastmod>2025-11-05</lastmod>
+    <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
+  
   <url>
     <loc>https://3bi.ai/memory</loc>
-    <lastmod>2025-11-05</lastmod>
+    <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/memory.png</image:loc>
+      <image:title>Multi-Modal AI Memory</image:title>
+    </image:image>
   </url>
+  
   <url>
     <loc>https://3bi.ai/workspaces</loc>
-    <lastmod>2025-11-05</lastmod>
+    <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/workspaces.png</image:loc>
+      <image:title>Team Workspaces</image:title>
+    </image:image>
   </url>
+  
   <url>
     <loc>https://3bi.ai/usage-analytics</loc>
-    <lastmod>2025-11-05</lastmod>
+    <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/analytics.png</image:loc>
+      <image:title>Usage Analytics</image:title>
+    </image:image>
   </url>
   
   <!-- Company Pages -->
   <url>
     <loc>https://3bi.ai/mission</loc>
-    <lastmod>2025-11-05</lastmod>
+    <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/mission.png</image:loc>
+      <image:title>Our Mission</image:title>
+    </image:image>
   </url>
+  
   <url>
     <loc>https://3bi.ai/team</loc>
-    <lastmod>2025-11-05</lastmod>
+    <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/team.png</image:loc>
+      <image:title>Our Team</image:title>
+    </image:image>
   </url>
+  
   <url>
     <loc>https://3bi.ai/impact</loc>
-    <lastmod>2025-11-05</lastmod>
+    <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/impact.png</image:loc>
+      <image:title>Our Impact</image:title>
+    </image:image>
   </url>
+  
   <url>
     <loc>https://3bi.ai/partners</loc>
-    <lastmod>2025-11-05</lastmod>
+    <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/partners.png</image:loc>
+      <image:title>Partner Program</image:title>
+    </image:image>
   </url>
+  
   <url>
     <loc>https://3bi.ai/launched</loc>
-    <lastmod>2025-11-05</lastmod>
+    <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/launched.png</image:loc>
+      <image:title>Product Launch</image:title>
+    </image:image>
   </url>
   
   <!-- Community & Support -->
   <url>
     <loc>https://3bi.ai/community</loc>
-    <lastmod>2025-11-05</lastmod>
+    <lastmod>2025-01-15</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/community.png</image:loc>
+      <image:title>AI Developer Community</image:title>
+    </image:image>
   </url>
+  
   <url>
     <loc>https://3bi.ai/contact</loc>
-    <lastmod>2025-11-05</lastmod>
+    <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/contact.png</image:loc>
+      <image:title>Contact Us</image:title>
+    </image:image>
   </url>
+  
   <url>
     <loc>https://3bi.ai/newsletter</loc>
-    <lastmod>2025-11-05</lastmod>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/newsletter.png</image:loc>
+      <image:title>Newsletter Signup</image:title>
+    </image:image>
+  </url>
+  
+  <!-- User & Security Pages -->
+  <url>
+    <loc>https://3bi.ai/profile</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.4</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/profile.png</image:loc>
+      <image:title>User Profile</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://3bi.ai/security-settings</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.4</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/security.png</image:loc>
+      <image:title>Security Settings</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://3bi.ai/referrals</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/referrals.png</image:loc>
+      <image:title>Referral Program</image:title>
+    </image:image>
+  </url>
+  
+  <url>
+    <loc>https://3bi.ai/install</loc>
+    <lastmod>2025-01-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+    <image:image>
+      <image:loc>https://3bi.ai/og/install.png</image:loc>
+      <image:title>Install Mobile App</image:title>
+    </image:image>
+  </url>
+  
+  <!-- Legal Pages - Required for App Store -->
+  <url>
+    <loc>https://3bi.ai/privacy</loc>
+    <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
-  <!-- User Pages (Lower Priority) -->
   <url>
-    <loc>https://3bi.ai/profile</loc>
-    <lastmod>2025-11-05</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://3bi.ai/security-settings</loc>
-    <lastmod>2025-11-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.4</priority>
-  </url>
-  <url>
-    <loc>https://3bi.ai/referrals</loc>
-    <lastmod>2025-11-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://3bi.ai/install</loc>
-    <lastmod>2025-11-05</lastmod>
+    <loc>https://3bi.ai/terms</loc>
+    <lastmod>2025-01-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

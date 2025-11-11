@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/config/routes";
 import { homeContent } from "@/config/home-content";
 import { PLATFORM_STATS } from "@/config/platform-capabilities";
+import { SEO_CONFIG, PAGE_SEO, BREADCRUMB_CONFIG } from "@/config/seo-config";
 import { 
   generateOrganizationSchema, 
   generateWebsiteSchema, 
@@ -37,30 +38,16 @@ const HomePage = () => {
   return (
     <>
       <SEO
-        title={`${PLATFORM_STATS.totalFeatures} AI Features & ${PLATFORM_STATS.totalModels} Models - Enterprise AI Platform`}
-        description={`Access Grok 3, Claude Opus 4, GPT-5, Gemini 2.0, and ${PLATFORM_STATS.totalModels - 4}+ models. ${PLATFORM_STATS.totalFeatures} AI features including chat, image, voice, workflows, and analytics—all in one platform.`}
-        keywords={[
-          'AI platform', 
-          'Grok AI', 
-          'Claude 4', 
-          'GPT-5', 
-          'Gemini 2.0',
-          'enterprise AI', 
-          'AI chat', 
-          'image generation',
-          'voice AI',
-          'AI workflows',
-          'multi-modal AI', 
-          'AI memory system', 
-          'business AI', 
-          'AI tools',
-          'unified AI platform',
-          'AI automation'
-        ]}
-        ogImage={seo.ogImage}
-        canonical={seo.canonical}
+        title={PAGE_SEO.home.title}
+        description={PAGE_SEO.home.description}
+        keywords={PAGE_SEO.home.keywords}
+        ogImage={SEO_CONFIG.ogImages.default}
+        ogType="website"
+        canonical={SEO_CONFIG.siteUrl}
         structuredData={structuredData}
-        preconnect={['https://jmazzsxnatfewblgpxfq.supabase.co', 'https://ai.gateway.lovable.dev']}
+        breadcrumbs={[
+          { name: 'Home', url: '/' }
+        ]}
       />
       <PageLayout className="p-0">
         <HeroSection />
