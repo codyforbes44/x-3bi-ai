@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { fetchWithRetry, handleAPIError } from '../_shared/apiRetry.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -22,8 +23,8 @@ serve(async (req) => {
     let response;
     let result;
 
-    // Use Hugging Face's free inference API
-    const HF_API_URL = 'https://api-inference.huggingface.co/models/';
+    // Use Hugging Face's inference API
+    const HF_API_URL = 'https://router.huggingface.co/hf-inference/models/';
     
     // Fetch the audio file
     const audioResponse = await fetch(audio_url);
@@ -35,7 +36,7 @@ serve(async (req) => {
     
     switch (task) {
       case 'automatic-speech-recognition':
-        response = await fetch(`${HF_API_URL}openai/whisper-small`, {
+        response = await fetchWithRetry(`${HF_API_URL}openai/whisper-small`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/octet-stream',
@@ -45,7 +46,7 @@ serve(async (req) => {
         break;
         
       case 'audio-classification':
-        response = await fetch(`${HF_API_URL}superb/hubert-base-superb-er`, {
+        response = await fetchWithRetry(`${HF_API_URL}superb/hubert-base-superb-er`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/octet-stream',
@@ -59,6 +60,10 @@ serve(async (req) => {
     }
 
     if (!response.ok) {
+      // Handle common API errors
+      const errorResponse = handleAPIError(response, corsHeaders);
+      if (errorResponse) return errorResponse;
+
       const errorText = await response.text();
       console.error(`Hugging Face API error for ${task}:`, errorText);
       

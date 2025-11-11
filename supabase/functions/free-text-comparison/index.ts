@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { fetchWithRetry, handleAPIError } from '../_shared/apiRetry.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -19,14 +20,14 @@ serve(async (req) => {
 
     console.log(`Comparing texts in language: ${language}`);
 
-    const HF_API_URL = 'https://api-inference.huggingface.co/models/';
+    const HF_API_URL = 'https://router.huggingface.co/hf-inference/models/';
     
     // Use a multilingual model for text similarity
     const model = language === 'en' 
       ? 'sentence-transformers/all-MiniLM-L6-v2'
       : 'sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2';
 
-    const response = await fetch(`${HF_API_URL}${model}`, {
+    const response = await fetchWithRetry(`${HF_API_URL}${model}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -40,6 +41,10 @@ serve(async (req) => {
     });
 
     if (!response.ok) {
+      // Handle common API errors
+      const errorResponse = handleAPIError(response, corsHeaders);
+      if (errorResponse) return errorResponse;
+
       const errorText = await response.text();
       console.error(`Hugging Face API error for text comparison:`, errorText);
       

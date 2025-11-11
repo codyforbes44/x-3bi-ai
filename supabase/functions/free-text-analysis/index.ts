@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { fetchWithRetry, handleAPIError } from '../_shared/apiRetry.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -22,12 +23,12 @@ serve(async (req) => {
     let response;
     let result;
 
-    // Use Hugging Face's free inference API
-    const HF_API_URL = 'https://api-inference.huggingface.co/models/';
+    // Use Hugging Face's inference API
+    const HF_API_URL = 'https://router.huggingface.co/hf-inference/models/';
     
     switch (task) {
       case 'sentiment-analysis':
-        response = await fetch(`${HF_API_URL}cardiffnlp/twitter-roberta-base-sentiment-latest`, {
+        response = await fetchWithRetry(`${HF_API_URL}cardiffnlp/twitter-roberta-base-sentiment-latest`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -37,7 +38,7 @@ serve(async (req) => {
         break;
         
       case 'text-classification':
-        response = await fetch(`${HF_API_URL}facebook/bart-large-mnli`, {
+        response = await fetchWithRetry(`${HF_API_URL}facebook/bart-large-mnli`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -52,7 +53,7 @@ serve(async (req) => {
         break;
         
       case 'summarization':
-        response = await fetch(`${HF_API_URL}facebook/bart-large-cnn`, {
+        response = await fetchWithRetry(`${HF_API_URL}facebook/bart-large-cnn`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -72,7 +73,7 @@ serve(async (req) => {
         if (!question || !context) {
           throw new Error('Question and context are required for QA task');
         }
-        response = await fetch(`${HF_API_URL}distilbert-base-cased-distilled-squad`, {
+        response = await fetchWithRetry(`${HF_API_URL}distilbert-base-cased-distilled-squad`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -87,7 +88,7 @@ serve(async (req) => {
         break;
         
       case 'text-generation':
-        response = await fetch(`${HF_API_URL}gpt2`, {
+        response = await fetchWithRetry(`${HF_API_URL}gpt2`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -108,6 +109,10 @@ serve(async (req) => {
     }
 
     if (!response.ok) {
+      // Handle common API errors
+      const errorResponse = handleAPIError(response, corsHeaders);
+      if (errorResponse) return errorResponse;
+
       const errorText = await response.text();
       console.error(`Hugging Face API error for ${task}:`, errorText);
       
