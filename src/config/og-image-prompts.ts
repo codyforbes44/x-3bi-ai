@@ -70,12 +70,26 @@ Aspect ratio: Exactly 1200x630px (16:9)`,
     title: 'Pricing Plans',
     prompt: `${basePrompt}
     
-Main text: "Simple, Transparent Pricing"
-Subtitle: "Plans starting at $49/month"
-Visual elements: Three pricing tiers represented as elegant cards, upward trending graph
-Background: Purple gradient with pricing table silhouettes
-Add: Dollar sign icon, checkmark badges, premium badge
-Style: Clean, professional, trust-building`,
+Main text: "Access 12 AI Models"
+Subtitle: "Transparent Pricing for Every Team"
+Secondary text: "Grok 3 • Claude Opus 4 • GPT-5 • Gemini 2.0 Pro"
+
+Visual elements: 
+- Clean pricing cards showing different plan tiers
+- Model icons arranged in a grid formation
+- Checkmark badges for included features
+- Professional pricing table elements
+- Subtle connection lines between features
+
+Background: 
+- Purple (#7C3AED) to blue (#3B82F6) gradient
+- Clean, organized layout with card shadows
+- Minimal geometric patterns
+- Professional business aesthetic
+
+Add: Feature checkmarks, plan comparison elements, value indicators
+Style: Clean, professional, trust-building, transparent, business-focused
+Mood: Professional, clear, trustworthy, value-driven`,
     priority: 2,
   },
   {
@@ -84,12 +98,26 @@ Style: Clean, professional, trust-building`,
     title: '27 AI Features & Tools',
     prompt: `${basePrompt}
     
-Main text: "27 Powerful AI Features"
-Subtitle: "Chat • Image • Voice • Workflows • Analytics"
-Visual elements: Grid of colorful AI tool icons, connected nodes
-Background: Dynamic purple-blue gradient with floating tool icons
-Add: AI brain icon, workflow diagram, analytics charts
-Style: Dynamic, feature-rich, comprehensive`,
+Main text: "27 AI Capabilities"
+Subtitle: "12 Models • One Unified Platform"
+Secondary text: "Chat • Code • Image • Voice • Workflows • Analytics"
+
+Visual elements: 
+- Grid showcase of AI model icons (Grok, Claude, GPT, Gemini logos)
+- Connected nodes showing unified platform integration
+- Feature category icons (chat bubble, code brackets, image, microphone, workflow diagram, chart)
+- Holographic UI elements displaying capabilities
+- Interconnected neural network pattern
+
+Background: 
+- Dynamic purple (#7C3AED) to blue (#3B82F6) gradient
+- Floating technology elements and icons
+- Subtle grid with connection lines
+- Energy particles linking features
+
+Add: AI model badges, capability icons, integration lines, feature indicators
+Style: Dynamic, feature-rich, comprehensive, modern, energetic
+Mood: Powerful, versatile, unified, professional, innovative`,
     priority: 3,
   },
   {
@@ -98,12 +126,27 @@ Style: Dynamic, feature-rich, comprehensive`,
     title: 'Grok AI Chat',
     prompt: `${basePrompt}
     
-Main text: "Grok AI Chat"
-Subtitle: "xAI's Advanced Conversational AI"
-Visual elements: Chat bubbles with AI responses, Grok logo-inspired elements
-Background: Dark purple gradient with chat interface mockup
-Add: Lightning bolt for speed, message bubbles, AI avatar
-Style: Conversational, modern, fast-paced`,
+Main text: "Grok 3"
+Subtitle: "xAI Conversational AI"
+Secondary text: "Real-Time Streaming • Multi-Modal • Persistent History"
+
+Visual elements: 
+- Modern chat interface mockup with streaming message bubbles
+- Grok logo or xAI branding elements
+- Conversation flow visualization
+- Message bubbles with AI responses
+- Streaming indicator (typing animation visual)
+- Multi-modal icons (text, image analysis)
+
+Background: 
+- Deep purple (#7C3AED) gradient with dark base
+- Chat interface backdrop
+- Subtle message bubble patterns
+- Professional conversation UI aesthetic
+
+Add: Lightning bolt for real-time speed, chat bubbles, vision icon for Grok Vision, streaming indicators
+Style: Conversational, modern, fast, responsive, intelligent
+Mood: Advanced, real-time, conversational, powerful, accessible`,
     priority: 4,
   },
   {
