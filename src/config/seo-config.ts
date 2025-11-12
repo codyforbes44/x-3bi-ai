@@ -6,8 +6,8 @@
 export const SEO_CONFIG = {
   siteName: '3BI.AI',
   siteUrl: 'https://3bi.ai',
-  defaultTitle: '3BI.AI - Enterprise AI Platform with Grok, Claude 4, GPT-5',
-  defaultDescription: 'Premium AI platform integrating Grok, Claude 4, GPT-5, and 27+ AI models. Advanced multi-modal memory, real-time collaboration, and enterprise-grade AI tools.',
+  defaultTitle: '3BI.AI - Access 12 AI Models in One Platform',
+  defaultDescription: 'Access 12 premium AI models in one unified platform. Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, and more. Enterprise workflows, team collaboration, and advanced analytics for serious AI work.',
   twitterHandle: '@3bi_ai',
   twitterSite: '@3bi_ai',
   
@@ -106,23 +106,43 @@ export const SEO_CONFIG = {
 // Page-specific SEO configurations
 export const PAGE_SEO = {
   home: {
-    title: '3BI.AI - Enterprise AI Platform with Grok, Claude 4, GPT-5',
-    description: 'Premium AI platform integrating Grok, Claude 4, GPT-5, and 27+ AI models. Advanced multi-modal memory, real-time collaboration, and enterprise-grade AI tools. Start free.',
+    title: 'Access Multiple AI Models in One Platform',
+    description: 'All-in-one AI platform with Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, and 8 more premium models. Enterprise workflows, team collaboration, and advanced analytics. Built for teams who need real AI capabilities.',
     keywords: [
+      // Core Platform
       'AI platform',
+      'multi-model AI',
+      'unified AI platform',
+      'enterprise AI tools',
+      
+      // Specific Models (factual)
+      'Grok 3',
       'Grok AI',
-      'Claude 4',
+      'Claude Opus 4',
+      'Claude Sonnet 4',
       'GPT-5',
-      'Gemini 2.0',
-      'enterprise AI',
-      'AI chat',
+      'Gemini 2.0 Pro',
+      'DALL-E 3',
+      'Stable Diffusion 3',
+      
+      // Actual Features
+      'AI workflow automation',
+      'team AI workspace',
       'multi-modal AI',
-      'AI memory',
-      'AI collaboration',
-      'workflow automation',
+      'AI collaboration tools',
+      'AI analytics dashboard',
+      
+      // Use Cases
+      'AI code generation',
       'AI image generation',
       'AI voice synthesis',
-      'AI code assistant',
+      'AI chat platform',
+      'system architecture AI',
+      
+      // Target Audience
+      'business AI platform',
+      'developer AI tools',
+      'team AI solution',
     ],
     ogType: 'website',
   },

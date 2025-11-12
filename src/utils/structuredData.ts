@@ -154,11 +154,6 @@ export function generateProductSchema(plan: PricingPlan) {
       priceCurrency: plan.priceCurrency,
       availability: "https://schema.org/InStock",
     },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      reviewCount: "127",
-    },
   };
 }
 
@@ -177,12 +172,7 @@ export function generateSoftwareAppSchema() {
       price: "0",
       priceCurrency: "USD",
     },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: "4.8",
-      ratingCount: "127",
-    },
-    description: "Enterprise AI platform with Grok, Claude 4, GPT-5 integration. Multi-modal memory, real-time collaboration, and advanced AI tools.",
+    description: "Unified AI platform with 12 premium models including Grok 3, Claude Opus 4, GPT-5, and Gemini 2.0 Pro. Enterprise workflows, team collaboration, and advanced analytics.",
   };
 }
 

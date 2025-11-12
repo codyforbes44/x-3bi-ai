@@ -20,15 +20,48 @@ export const OG_IMAGE_CONFIGS: OGImageConfig[] = [
   {
     route: '/',
     filename: 'home.png',
-    title: 'Home - Enterprise AI Platform',
+    title: 'Home - Unified AI Platform',
     prompt: `${basePrompt}
-    
-Main text: "3BI.AI - Enterprise AI Platform"
-Subtitle: "Grok, Claude 4, GPT-5 & 27+ AI Models"
-Visual elements: Abstract AI neural network pattern, floating holographic UI elements
-Background: Deep purple to blue gradient with subtle grid pattern
-Add: Glowing AI particles, modern tech iconography
-Style: Futuristic, professional, premium feel`,
+
+Main text: "3BI.AI"
+Subtitle: "Access 12 AI Models in One Platform"
+Secondary text: "Grok 3 • Claude Opus 4 • GPT-5 • Gemini 2.0 Pro"
+
+Visual elements: 
+- Multi-layered energy background with flowing particles and neural network patterns
+- Abstract representation of AI models connecting in a unified hub
+- Glowing energy orbs representing different AI capabilities (chat, code, image, voice)
+- Subtle grid pattern with pulsing connections between nodes
+- Floating holographic interface elements showing model names
+
+Background: 
+- Deep purple (#7C3AED) to dark blue (#3B82F6) gradient
+- Dark base (near-black #0F0F23) with luminous accents
+- Energy particles flowing from corners toward center
+- Diagonal light rays emanating from central hub
+- Neural network mesh pattern overlay with glow effect
+
+Technical style:
+- Sleek, modern, premium tech aesthetic
+- High-energy, dynamic composition
+- Professional enterprise feel with futuristic elements
+- Glass morphism effects on UI elements
+- Neon glow accents on key elements
+
+Color palette:
+- Primary: Purple (#7C3AED) and Blue (#3B82F6) gradients
+- Accents: Cyan (#06B6D4), Pink (#EC4899), Orange (#F97316)
+- Base: Very dark blue/black (#0F0F23, #1A1A2E)
+- Highlights: White (#FFFFFF) with high contrast
+
+Typography:
+- Main title: Bold, modern sans-serif, large (96-120px)
+- Subtitle: Medium weight, 36-48px
+- Model names: Clean, tech font, 24-32px with separator dots
+
+Mood: Energetic, innovative, professional, powerful, unified
+Quality: Ultra-sharp, high-resolution, production-ready
+Aspect ratio: Exactly 1200x630px (16:9)`,
     priority: 1,
   },
   {

@@ -68,7 +68,7 @@ const HomePage = () => {
         <FAQSection />
         <CTASection
           title={cta.title}
-          description={`Get instant access to all ${PLATFORM_STATS.totalFeatures} AI features and ${PLATFORM_STATS.totalModels} models. Join thousands of teams building with the complete AI platform.`}
+          description={`Access all ${PLATFORM_STATS.totalFeatures} AI features and ${PLATFORM_STATS.totalModels} premium models in one unified platform. Enterprise workflows, team collaboration, and advanced analytics for serious AI work.`}
           variant="gradient"
           actions={
             <>
