@@ -116,7 +116,7 @@ const Header = () => {
               <Button variant="ghost" asChild>
                 <Link to={ROUTES.AUTH}>Sign In</Link>
               </Button>
-              <Button className="bg-gradient-hero text-white" asChild>
+              <Button className="bg-gradient-hero text-primary-foreground" asChild>
                 <Link to={ROUTES.AUTH}>Get Started</Link>
               </Button>
             </>
@@ -192,7 +192,7 @@ const Header = () => {
                       <Button variant="ghost" className="justify-start" asChild>
                         <Link to={ROUTES.AUTH}>Sign In</Link>
                       </Button>
-                      <Button className="bg-gradient-hero text-white justify-start" asChild>
+                      <Button className="bg-gradient-hero text-primary-foreground justify-start" asChild>
                         <Link to={ROUTES.AUTH}>Get Started</Link>
                       </Button>
                     </>

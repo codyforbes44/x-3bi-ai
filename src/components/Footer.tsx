@@ -11,7 +11,7 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <div className="w-8 h-8 bg-gradient-hero rounded-lg flex items-center justify-center">
-                <Heart className="w-5 h-5 text-white" />
+                <Heart className="w-5 h-5 text-primary" />
               </div>
               <span className="text-xl font-bold">3BI.AI</span>
             </div>

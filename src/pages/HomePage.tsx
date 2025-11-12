@@ -75,7 +75,7 @@ const HomePage = () => {
               <Button 
                 size="lg" 
                 variant="outline" 
-                className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 border-white text-white hover:bg-white/10 touch-target"
+                className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 border-border hover:bg-accent touch-target"
                 onClick={() => navigate(cta.secondaryButton.route)}
               >
                 {cta.secondaryButton.text}
