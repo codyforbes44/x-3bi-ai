@@ -10,6 +10,7 @@ import { PlatformHighlights } from "@/components/home/sections/PlatformHighlight
 import { ComparisonSection } from "@/components/home/sections/ComparisonSection";
 import { PlatformRoadmap } from "@/components/home/sections/PlatformRoadmap";
 import { InteractiveDemos } from "@/components/home/sections/InteractiveDemos";
+import { AdvancedFeaturesShowcase } from "@/components/home/sections/AdvancedFeaturesShowcase";
 import { TestimonialsSection } from "@/components/home/sections/TestimonialsSection";
 import { FAQSection, getFAQs } from "@/components/home/sections/FAQSection";
 import { Button } from "@/components/ui/button";
@@ -58,6 +59,7 @@ const HomePage = () => {
         <PlatformHighlights />
       <GrokSpotlightSection />
       <InteractiveDemos />
+      <AdvancedFeaturesShowcase />
       <CapabilitiesSection />
       <ComparisonSection />
       <PlatformRoadmap />
