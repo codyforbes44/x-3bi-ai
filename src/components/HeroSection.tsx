@@ -1,15 +1,10 @@
 import { Badge } from "@/components/ui/badge";
-import { Sparkles, Brain, Code2, ImagePlus, Eye, Zap, Shield, Users, TrendingUp } from "lucide-react";
-import { PLATFORM_STATS, getModelsByCategory } from "@/config/platform-capabilities";
+import { Sparkles, Brain, Code2, ImagePlus, Eye, Zap, Shield } from "lucide-react";
+import { PLATFORM_STATS } from "@/config/platform-capabilities";
 import { EnergyBackground } from "@/components/hero/EnergyBackground";
-import { HeroMetrics } from "@/components/hero/HeroMetrics";
 import { HeroCTAs } from "@/components/hero/HeroCTAs";
 
 const HeroSection = () => {
-  const chatModels = getModelsByCategory('chat');
-  const imageModels = getModelsByCategory('image');
-  const voiceModels = getModelsByCategory('voice');
-
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 pb-16">
       {/* Energy animated background with multiple layers */}
@@ -17,11 +12,11 @@ const HeroSection = () => {
       
       <div className="container mx-auto px-4 sm:px-6 text-center relative z-10">
         <div className="max-w-6xl mx-auto">
-          {/* Enhanced trust indicators with social proof */}
+          {/* Trust indicators */}
           <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 mb-6 animate-fade-in">
             <Badge variant="secondary" className="bg-primary/10 backdrop-blur-sm border-primary/20 hover:bg-primary/20 transition-all">
               <Sparkles className="w-4 h-4 mr-2" />
-              Join 50,000+ Teams Worldwide
+              All-in-One AI Platform
             </Badge>
             <Badge variant="secondary" className="bg-success/10 backdrop-blur-sm border-success/20 hover:bg-success/20 transition-all">
               <div className="w-2 h-2 bg-success rounded-full animate-pulse mr-2" aria-label="Live indicator"></div>
@@ -35,31 +30,26 @@ const HeroSection = () => {
           
           {/* Pre-headline */}
           <div className="text-sm md:text-base text-primary font-semibold mb-3 animate-fade-in uppercase tracking-wider" style={{ animationDelay: '50ms' }}>
-            The AI Platform That Does It All
+            The Complete AI Platform
           </div>
 
-          {/* Main heading - conversion focused */}
+          {/* Main heading */}
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-foreground mb-6 leading-[1.1] animate-fade-in" style={{ animationDelay: '100ms' }}>
             <span className="block mb-2">
-              Save 15 Hours Every Week
+              Access Multiple AI Models
             </span>
             <span className="gradient-text block">
-              With AI That Actually Works
+              In One Unified Platform
             </span>
           </h1>
           
-          {/* Enhanced subtitle with specific value props */}
+          {/* Subtitle */}
           <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground mb-10 max-w-4xl mx-auto leading-relaxed px-4 animate-fade-in" style={{ animationDelay: '200ms' }}>
-            Access <strong className="text-foreground">Grok 3</strong>, <strong className="text-foreground">Claude Opus 4</strong>, <strong className="text-foreground">GPT-5</strong>, <strong className="text-foreground">Gemini 2.0 Pro</strong>, and {PLATFORM_STATS.totalModels - 4}+ more models. All unified with enterprise workflows, team collaboration, and real-time analytics.
+            Access <strong className="text-foreground">Grok 3</strong>, <strong className="text-foreground">Claude Opus 4</strong>, <strong className="text-foreground">GPT-5</strong>, <strong className="text-foreground">Gemini 2.0 Pro</strong>, and {PLATFORM_STATS.totalModels - 4}+ more models. Unified with enterprise workflows, team collaboration, and analytics.
           </p>
-          
-          {/* Live metrics showcase */}
-          <div className="animate-fade-in" style={{ animationDelay: '300ms' }}>
-            <HeroMetrics />
-          </div>
 
-          {/* Enhanced model showcase pills with interactive hover */}
-          <div className="flex flex-wrap justify-center gap-3 mb-10 px-4 animate-fade-in" style={{ animationDelay: '400ms' }}>
+          {/* Model showcase pills */}
+          <div className="flex flex-wrap justify-center gap-3 mb-10 px-4 animate-fade-in" style={{ animationDelay: '300ms' }}>
             <div 
               className="flex items-center gap-2 bg-primary/10 backdrop-blur-sm px-4 py-2.5 rounded-full border border-primary/20 hover:bg-primary/15 hover:border-primary/30 hover:shadow-glow transition-all cursor-pointer group"
               role="button"
@@ -112,21 +102,9 @@ const HeroSection = () => {
             </div>
           </div>
           
-          {/* Progressive CTA hierarchy */}
-          <div className="animate-fade-in" style={{ animationDelay: '500ms' }}>
+          {/* Call to action */}
+          <div className="animate-fade-in" style={{ animationDelay: '400ms' }}>
             <HeroCTAs />
-          </div>
-
-          {/* Additional social proof */}
-          <div className="flex flex-wrap items-center justify-center gap-6 md:gap-8 text-muted-foreground text-sm mt-8 animate-fade-in" style={{ animationDelay: '600ms' }}>
-            <div className="flex items-center gap-2">
-              <Users className="w-4 h-4 text-primary" />
-              <span>Used by Startups to Fortune 500</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4 text-success" />
-              <span>4.9/5 from 2,400+ reviews</span>
-            </div>
           </div>
         </div>
       </div>

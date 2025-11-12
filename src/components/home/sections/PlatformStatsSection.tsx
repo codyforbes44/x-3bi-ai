@@ -29,7 +29,7 @@ export function PlatformStatsSection() {
         </div>
 
         {/* Stats grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16 max-w-2xl mx-auto">
           <Card className="text-center hover:shadow-elegant transition-spring">
             <CardHeader>
               <div className="mx-auto w-12 h-12 bg-gradient-hero rounded-full flex items-center justify-center mb-4">
@@ -38,7 +38,7 @@ export function PlatformStatsSection() {
               <CardTitle className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
                 {PLATFORM_STATS.totalModels}
               </CardTitle>
-              <CardDescription>AI Models</CardDescription>
+              <CardDescription>AI Models Available</CardDescription>
             </CardHeader>
           </Card>
 
@@ -50,31 +50,7 @@ export function PlatformStatsSection() {
               <CardTitle className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
                 {PLATFORM_STATS.totalFeatures}
               </CardTitle>
-              <CardDescription>AI Features</CardDescription>
-            </CardHeader>
-          </Card>
-
-          <Card className="text-center hover:shadow-elegant transition-spring">
-            <CardHeader>
-              <div className="mx-auto w-12 h-12 bg-gradient-hero rounded-full flex items-center justify-center mb-4">
-                <Zap className="w-6 h-6 text-primary-foreground" />
-              </div>
-              <CardTitle className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-                &lt;100ms
-              </CardTitle>
-              <CardDescription>Average Latency</CardDescription>
-            </CardHeader>
-          </Card>
-
-          <Card className="text-center hover:shadow-elegant transition-spring">
-            <CardHeader>
-              <div className="mx-auto w-12 h-12 bg-gradient-hero rounded-full flex items-center justify-center mb-4">
-                <TrendingUp className="w-6 h-6 text-primary-foreground" />
-              </div>
-              <CardTitle className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
-                99.9%
-              </CardTitle>
-              <CardDescription>Uptime SLA</CardDescription>
+              <CardDescription>Platform Features</CardDescription>
             </CardHeader>
           </Card>
         </div>

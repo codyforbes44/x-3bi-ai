@@ -13,42 +13,14 @@ export const homeContent = {
   hero: {
     badge: {
       icon: Sparkles,
-      text: "Join 50,000+ Teams Worldwide"
+      text: "All-in-One AI Platform"
     },
-    preHeadline: "The AI Platform That Does It All",
+    preHeadline: "The Complete AI Platform",
     title: {
-      line1: "Save 15 Hours Every Week",
-      line2: "With AI That Actually Works"
+      line1: "Access Multiple AI Models",
+      line2: "In One Unified Platform"
     },
-    description: "Access Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, and 8 more premium models. All unified with enterprise workflows, team collaboration, and real-time analytics. Built for teams who demand results.",
-    valueProps: [
-      {
-        metric: "15+",
-        unit: "hours saved",
-        description: "per team member weekly"
-      },
-      {
-        metric: "60%",
-        unit: "cost reduction",
-        description: "vs. managing separate tools"
-      },
-      {
-        metric: "99.9%",
-        unit: "uptime",
-        description: "SLA guaranteed"
-      },
-      {
-        metric: "<2s",
-        unit: "response time",
-        description: "average across all models"
-      }
-    ],
-    socialProof: {
-      users: "50,000+",
-      companies: ["Startups", "Scale-ups", "Fortune 500"],
-      rating: 4.9,
-      reviews: "2,400+"
-    },
+    description: "Access Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, and more premium models. Unified with enterprise workflows, team collaboration, and analytics.",
     capabilities: [
       { icon: Zap, label: "Grok AI", color: "text-blue-300" },
       { icon: Brain, label: "Claude 4", color: "text-purple-300" },
@@ -60,7 +32,7 @@ export const homeContent = {
     trustIndicators: [
       { type: "live", text: "Premium X Verified" },
       { type: "text", text: "27 AI Features" },
-      { type: "text", text: "ApplyAI" }
+      { type: "text", text: "Built by ApplyAI" }
     ]
   },
 
@@ -172,16 +144,16 @@ export const homeContent = {
 
   cta: {
     title: "Ready to Transform Your Workflow?",
-    description: "Join thousands of teams using 3BI.AI's complete platform. Get instant access to Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, and 8 more premium models. Plus 27 enterprise features including workflows, analytics, and team collaboration. All with enterprise-grade security and dedicated support.",
+    description: "Access Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, and more premium models in one platform. Features include workflows, analytics, and team collaboration with enterprise-grade security.",
     primaryButton: {
-      text: "Start Free Trial",
+      text: "Get Started",
       route: "/pricing"
     },
     secondaryButton: {
-      text: "Enterprise Solutions",
-      route: "/enterprise"
+      text: "View Features",
+      route: "/features"
     },
-    footer: "14-day free trial • No credit card required • Cancel anytime"
+    footer: "Try it now • No commitments"
   },
 
   seo: {
