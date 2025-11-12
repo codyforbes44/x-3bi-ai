@@ -102,7 +102,7 @@ export function ComparisonSection() {
           </div>
           <Button 
             size="lg" 
-            className="bg-gradient-hero text-white"
+            className="bg-gradient-hero text-primary-foreground"
             onClick={() => navigate(ROUTES.PRICING)}
           >
             View Pricing Plans

@@ -33,7 +33,7 @@ export function PlatformStatsSection() {
           <Card className="text-center hover:shadow-elegant transition-spring">
             <CardHeader>
               <div className="mx-auto w-12 h-12 bg-gradient-hero rounded-full flex items-center justify-center mb-4">
-                <Brain className="w-6 h-6 text-white" />
+                <Brain className="w-6 h-6 text-primary-foreground" />
               </div>
               <CardTitle className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
                 {PLATFORM_STATS.totalModels}
@@ -45,7 +45,7 @@ export function PlatformStatsSection() {
           <Card className="text-center hover:shadow-elegant transition-spring">
             <CardHeader>
               <div className="mx-auto w-12 h-12 bg-gradient-hero rounded-full flex items-center justify-center mb-4">
-                <Sparkles className="w-6 h-6 text-white" />
+                <Sparkles className="w-6 h-6 text-primary-foreground" />
               </div>
               <CardTitle className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
                 {PLATFORM_STATS.totalFeatures}
@@ -57,7 +57,7 @@ export function PlatformStatsSection() {
           <Card className="text-center hover:shadow-elegant transition-spring">
             <CardHeader>
               <div className="mx-auto w-12 h-12 bg-gradient-hero rounded-full flex items-center justify-center mb-4">
-                <Zap className="w-6 h-6 text-white" />
+                <Zap className="w-6 h-6 text-primary-foreground" />
               </div>
               <CardTitle className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
                 &lt;100ms
@@ -69,7 +69,7 @@ export function PlatformStatsSection() {
           <Card className="text-center hover:shadow-elegant transition-spring">
             <CardHeader>
               <div className="mx-auto w-12 h-12 bg-gradient-hero rounded-full flex items-center justify-center mb-4">
-                <TrendingUp className="w-6 h-6 text-white" />
+                <TrendingUp className="w-6 h-6 text-primary-foreground" />
               </div>
               <CardTitle className="text-3xl font-bold bg-gradient-hero bg-clip-text text-transparent">
                 99.9%

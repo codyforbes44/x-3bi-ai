@@ -6,7 +6,9 @@ import { GrokSpotlightSection } from "@/components/home/sections/GrokSpotlightSe
 import { QuickStartSection } from "@/components/home/sections/QuickStartSection";
 import { CapabilitiesSection } from "@/components/home/sections/CapabilitiesSection";
 import { PlatformStatsSection } from "@/components/home/sections/PlatformStatsSection";
+import { PlatformHighlights } from "@/components/home/sections/PlatformHighlights";
 import { ComparisonSection } from "@/components/home/sections/ComparisonSection";
+import { PlatformRoadmap } from "@/components/home/sections/PlatformRoadmap";
 import { TestimonialsSection } from "@/components/home/sections/TestimonialsSection";
 import { FAQSection, getFAQs } from "@/components/home/sections/FAQSection";
 import { Button } from "@/components/ui/button";
@@ -52,9 +54,11 @@ const HomePage = () => {
       <PageLayout className="p-0">
         <HeroSection />
         <PlatformStatsSection />
+        <PlatformHighlights />
         <GrokSpotlightSection />
         <CapabilitiesSection />
         <ComparisonSection />
+        <PlatformRoadmap />
         <QuickStartSection />
         <TestimonialsSection />
         <FAQSection />

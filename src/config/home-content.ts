@@ -13,13 +13,13 @@ export const homeContent = {
   hero: {
     badge: {
       icon: Sparkles,
-      text: "27 AI Features"
+      text: "27 AI Features • 12 Premium Models"
     },
     title: {
-      line1: "Premium AI Platform",
+      line1: "Complete AI Platform",
       line2: "Built for Excellence"
     },
-    description: "Claude 4, Grok, GPT-5, Gemini 2.0, DALL-E, Stable Diffusion, ElevenLabs, and more—all in one unified platform with enterprise features.",
+    description: "Access Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, DALL-E 3, FLUX Pro, ElevenLabs Turbo, and more. All premium AI models unified with enterprise features, team collaboration, and workflow automation.",
     capabilities: [
       { icon: Zap, label: "Grok AI", color: "text-blue-300" },
       { icon: Brain, label: "Claude 4", color: "text-purple-300" },
@@ -129,18 +129,21 @@ export const homeContent = {
   ],
 
   platformBenefits: [
-    "27 Advanced AI Features - Grok, Claude 4, GPT-5, Gemini 2.0, image, voice, and more",
-    "Latest AI Models - Premium access to cutting-edge models with real-time updates",
-    "X Premium Integration - Verified organization with Grok AI capabilities",
-    "Team Workspaces - Collaborate with unlimited members and role-based access",
-    "Workflow Builder - Automate complex AI tasks with visual workflow editor",
-    "Usage Analytics - Track performance, costs, and optimize AI usage",
-    "Enterprise Security - Row-level security, audit logs, and compliance ready"
+    "12 Premium AI Models - Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, DALL-E 3, FLUX Pro, Stable Diffusion 3, ElevenLabs Turbo, Whisper Large v3, Runway Gen-3, Suno v4, and more",
+    "27 Advanced AI Features - Chat, code generation, image creation, voice synthesis, system architecture, workflow automation, analytics, and enterprise tools",
+    "Real-Time AI Access - Grok 3 with live data up to October 2025, Gemini 2.0 Pro with 1M context window",
+    "X Premium Integration - Verified organization account with exclusive Grok AI capabilities and function calling",
+    "Team Workspaces - Unlimited team members, role-based access control (RBAC), shared resources, and real-time collaboration",
+    "Visual Workflow Builder - Drag-and-drop automation with conditional logic, multi-step workflows, and 50+ integrations",
+    "Multi-Modal Memory System - Cross-session memory for text, images, voice, and context with semantic search",
+    "Usage Analytics & Optimization - Track costs across all models, optimize spending, performance metrics, and detailed reporting",
+    "Enterprise Security & Compliance - Row-level security (RLS), audit logs, SOC 2 compliance, GDPR ready, and SSO support",
+    "API Access & Webhooks - Full REST API, SDKs in 5 languages, webhook automation, and comprehensive developer documentation"
   ],
 
   cta: {
     title: "Ready to Transform Your Workflow?",
-    description: "Join thousands of professionals using our platform with Grok, Claude 4, GPT-5, and 24+ other AI features. Enterprise-grade security, team collaboration, and dedicated support.",
+    description: "Join thousands of teams using 3BI.AI's complete platform. Get instant access to Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, and 8 more premium models. Plus 27 enterprise features including workflows, analytics, and team collaboration. All with enterprise-grade security and dedicated support.",
     primaryButton: {
       text: "Start Free Trial",
       route: "/pricing"
@@ -153,9 +156,16 @@ export const homeContent = {
   },
 
   seo: {
-    title: "Enterprise AI Platform with Grok, Claude 4, GPT-5",
-    description: "Transform your business with 3BI.AI's premium AI platform. Access Grok, Claude 4, GPT-5, and more. Advanced multi-modal memory, real-time collaboration, and enterprise-grade tools.",
-    keywords: ['AI platform', 'Grok AI', 'Claude 4', 'GPT-5', 'enterprise AI', 'AI chat', 'multi-modal AI', 'AI memory system', 'business AI', 'AI tools'],
+    title: "3BI.AI - Complete AI Platform | Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, 27 Features",
+    description: "The complete AI platform for teams. Access 12 premium models: Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro (1M context), DALL-E 3, FLUX Pro, ElevenLabs Turbo, and more. 27 enterprise features including workflow automation, multi-modal memory, team collaboration, and real-time analytics. Enterprise security, unlimited teams, and full API access.",
+    keywords: [
+      'AI platform', 'Grok 3', 'Claude Opus 4', 'GPT-5', 'Gemini 2.0 Pro', 'enterprise AI', 
+      'AI chat', 'multi-modal AI', 'AI memory system', 'business AI', 'AI tools',
+      'DALL-E 3', 'FLUX Pro', 'Stable Diffusion 3', 'ElevenLabs', 'AI voice synthesis',
+      'workflow automation', 'team collaboration', 'AI analytics', 'API access',
+      'X AI', 'xAI Grok', 'Anthropic Claude', 'OpenAI GPT-5', 'Google Gemini',
+      'AI image generation', 'AI code assistant', 'system architect AI'
+    ],
     ogImage: "https://3bi.ai/og/home.png",
     canonical: "https://3bi.ai/"
   }
