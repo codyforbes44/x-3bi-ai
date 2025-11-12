@@ -155,12 +155,27 @@ Mood: Advanced, real-time, conversational, powerful, accessible`,
     title: 'API Documentation',
     prompt: `${basePrompt}
     
-Main text: "Complete API Documentation"
-Subtitle: "REST API • SDKs • Code Examples"
-Visual elements: Code snippets, API endpoint diagrams, developer tools
-Background: Purple gradient with code editor mockup
-Add: Terminal window, code brackets, documentation icon
-Style: Technical, developer-focused, comprehensive`,
+Main text: "API Documentation"
+Subtitle: "Complete Developer Guide"
+Secondary text: "REST API • Code Examples • SDKs"
+
+Visual elements: 
+- Code editor interface mockup with syntax highlighting
+- API endpoint diagrams showing request/response flow
+- Code snippets in multiple languages (JavaScript, Python, cURL)
+- Terminal window with example commands
+- Developer tool icons and symbols
+- Documentation structure visualization
+
+Background: 
+- Purple (#7C3AED) to blue (#3B82F6) gradient
+- Code editor backdrop with subtle syntax highlighting
+- Developer-focused tech aesthetic
+- Geometric patterns suggesting code structure
+
+Add: Code brackets </>, terminal icon, API key symbol, SDK badges, documentation icon
+Style: Technical, developer-focused, comprehensive, clear, professional
+Mood: Developer-friendly, detailed, accessible, well-documented`,
     priority: 5,
   },
   {
@@ -169,12 +184,27 @@ Style: Technical, developer-focused, comprehensive`,
     title: 'Learn AI - Courses & Resources',
     prompt: `${basePrompt}
     
-Main text: "Master AI"
-Subtitle: "500+ Courses, Tutorials & Resources"
-Visual elements: Books, video play buttons, graduation cap, learning path diagram
-Background: Bright purple-blue gradient with education icons
-Add: Checkmark for completed courses, star ratings, certificate badge
-Style: Educational, inspiring, comprehensive`,
+Main text: "Learn AI"
+Subtitle: "Tutorials • Guides • Best Practices"
+Secondary text: "Master AI Platform Features"
+
+Visual elements: 
+- Educational icons (books, video play buttons, graduation cap)
+- Learning path diagram showing progression
+- Tutorial completion checkmarks
+- Video thumbnail mockups
+- Course module representations
+- Interactive learning elements
+
+Background: 
+- Bright purple (#7C3AED) to blue (#3B82F6) gradient
+- Educational theme with clean design
+- Subtle patterns suggesting knowledge and growth
+- Upward progression visual elements
+
+Add: Play button icons, checkmarks, tutorial steps (1-2-3), lightbulb for learning, certificate/badge elements
+Style: Educational, inspiring, approachable, organized, progressive
+Mood: Learning-focused, encouraging, comprehensive, accessible`,
     priority: 6,
   },
   {
@@ -183,12 +213,27 @@ Style: Educational, inspiring, comprehensive`,
     title: 'AI Developer Community',
     prompt: `${basePrompt}
     
-Main text: "Join Our Community"
-Subtitle: "50K+ Developers • 25K+ Projects Built"
-Visual elements: Connected user avatars, chat bubbles, collaboration icons
-Background: Warm purple gradient with network connections
-Add: People icons, Discord logo, GitHub icon
-Style: Welcoming, collaborative, vibrant`,
+Main text: "Developer Community"
+Subtitle: "Connect • Collaborate • Share Knowledge"
+Secondary text: "Join AI Developers & Experts"
+
+Visual elements: 
+- Connected user avatar circles forming a network
+- Chat and collaboration icons
+- Discussion forum elements
+- Knowledge sharing symbols (lightbulb, question marks, answers)
+- Network connection lines between community members
+- Collaboration workspace visualization
+
+Background: 
+- Warm purple (#7C3AED) gradient with connecting lines
+- Network pattern showing interconnected nodes
+- Community-focused design with human element
+- Collaborative atmosphere with energy flow
+
+Add: People icons, chat bubbles, connection lines, collaboration symbols, community badges
+Style: Welcoming, collaborative, vibrant, social, engaging
+Mood: Connected, supportive, collaborative, inclusive, active`,
     priority: 7,
   },
   {
@@ -197,12 +242,27 @@ Style: Welcoming, collaborative, vibrant`,
     title: 'Enterprise AI Solutions',
     prompt: `${basePrompt}
     
-Main text: "Enterprise Solutions"
-Subtitle: "Scalable AI for Large Organizations"
-Visual elements: Corporate building, security shield, team collaboration icons
-Background: Professional dark purple gradient with enterprise graphics
-Add: Security badge, scale icon, SLA guarantee badge
-Style: Professional, corporate, trustworthy`,
+Main text: "Enterprise AI"
+Subtitle: "Scalable Solutions for Organizations"
+Secondary text: "Security • Compliance • Team Collaboration"
+
+Visual elements: 
+- Corporate/enterprise iconography (building, organization chart)
+- Security shield with lock symbol
+- Team collaboration visualization
+- Scalability indicators (growth arrows, expanding networks)
+- Professional dashboard mockup
+- Enterprise feature badges (SSO, audit logs, admin controls)
+
+Background: 
+- Professional dark purple (#7C3AED) to blue (#3B82F6) gradient
+- Enterprise-grade aesthetic with structure
+- Secure, stable, corporate design elements
+- Organized grid patterns suggesting scale
+
+Add: Security shields, team icons, scale indicators, compliance badges, admin controls
+Style: Professional, corporate, trustworthy, secure, scalable
+Mood: Enterprise-ready, robust, secure, professional, reliable`,
     priority: 8,
   },
   {
@@ -211,12 +271,27 @@ Style: Professional, corporate, trustworthy`,
     title: 'API Access & Integration',
     prompt: `${basePrompt}
     
-Main text: "Powerful API Access"
-Subtitle: "Integrate AI into Any Application"
-Visual elements: API key, webhook icons, integration diagram
-Background: Tech purple gradient with API connection lines
-Add: Lock for security, plug icon for integration, code symbols
-Style: Technical, secure, integration-focused`,
+Main text: "API Integration"
+Subtitle: "Connect AI to Your Applications"
+Secondary text: "REST API • Webhooks • Real-Time Access"
+
+Visual elements: 
+- API key icon with lock for security
+- Integration diagram showing connections between systems
+- Webhook flow visualization
+- Code integration snippets
+- Plug/socket icons representing connectivity
+- Data flow arrows between applications
+
+Background: 
+- Tech purple (#7C3AED) to blue (#3B82F6) gradient
+- API connection lines forming network
+- Integration-focused design
+- Secure, connected aesthetic
+
+Add: Lock symbols for security, plug icons, API endpoint badges, integration flow arrows, code brackets
+Style: Technical, secure, integration-focused, developer-friendly, connected
+Mood: Powerful, flexible, secure, developer-centric, accessible`,
     priority: 9,
   },
   {
@@ -226,11 +301,26 @@ Style: Technical, secure, integration-focused`,
     prompt: `${basePrompt}
     
 Main text: "Step-by-Step Tutorials"
-Subtitle: "From Beginner to Advanced AI"
-Visual elements: Tutorial steps (1-2-3), video tutorials, how-to guides
-Background: Educational purple-blue gradient with learning icons
-Add: Play button, checklist, lightbulb for ideas
-Style: Educational, approachable, step-by-step`,
+Subtitle: "Learn AI Platform Features"
+Secondary text: "Beginner to Advanced Guides"
+
+Visual elements: 
+- Tutorial step indicators (numbered 1-2-3 progression)
+- Video tutorial thumbnails with play buttons
+- How-to guide representations
+- Checklist with completion marks
+- Learning path flow diagram
+- Progress indicators
+
+Background: 
+- Educational purple (#7C3AED) to blue (#3B82F6) gradient
+- Learning-focused design
+- Step progression visual flow
+- Approachable, friendly aesthetic
+
+Add: Play button icons, numbered steps, checkmarks, lightbulb for insights, forward arrows showing progress
+Style: Educational, approachable, step-by-step, clear, guiding
+Mood: Helpful, instructive, encouraging, progressive, accessible`,
     priority: 10,
   },
   {
@@ -239,12 +329,27 @@ Style: Educational, approachable, step-by-step`,
     title: 'Our Mission',
     prompt: `${basePrompt}
     
-Main text: "Democratizing AI"
-Subtitle: "Making Advanced AI Accessible to Everyone"
-Visual elements: Globe with connection points, people reaching goals, mission statement
-Background: Inspirational purple gradient with world map
-Add: Target icon, upward arrow, diversity of people icons
-Style: Inspirational, mission-driven, global`,
+Main text: "Our Mission"
+Subtitle: "Making AI Accessible"
+Secondary text: "Unified Platform • Multiple Models • One Vision"
+
+Visual elements: 
+- Globe with connection points showing global reach
+- Target/goal icon representing mission focus
+- Upward arrows suggesting progress and accessibility
+- Diverse representation through abstract people icons
+- Connection lines showing unified approach
+- Vision/mission statement design elements
+
+Background: 
+- Inspirational purple (#7C3AED) gradient with blue accents
+- World map outline or global connection pattern
+- Uplifting, forward-looking design
+- Unity and accessibility theme
+
+Add: Target icon, upward progress arrows, global connection points, unity symbols
+Style: Inspirational, mission-driven, purposeful, global, unified
+Mood: Purposeful, accessible, forward-thinking, unified, ambitious`,
     priority: 11,
   },
   {
@@ -253,12 +358,27 @@ Style: Inspirational, mission-driven, global`,
     title: 'Our Team',
     prompt: `${basePrompt}
     
-Main text: "Meet Our Team"
-Subtitle: "AI Experts & Innovators"
-Visual elements: Team silhouettes, collaboration icons, diverse team representation
-Background: Warm purple gradient with team collaboration visuals
-Add: People icons, handshake, star team members
-Style: Professional, personable, team-oriented`,
+Main text: "Our Team"
+Subtitle: "AI Engineers & Innovators"
+Secondary text: "Building the Future of AI Platforms"
+
+Visual elements: 
+- Team member silhouettes or abstract representations
+- Collaboration icons (handshake, teamwork symbols)
+- Diverse team representation through varied icons
+- Professional workspace elements
+- Innovation symbols (lightbulb, gear, forward arrows)
+- Team structure or organization visualization
+
+Background: 
+- Warm purple (#7C3AED) to blue gradient
+- Collaborative atmosphere design
+- Professional yet approachable aesthetic
+- Human-centered focus with technical elements
+
+Add: People icons, collaboration symbols, innovation indicators, professional badges
+Style: Professional, personable, team-oriented, collaborative, innovative
+Mood: Collaborative, expert, approachable, innovative, unified`,
     priority: 12,
   },
   {
@@ -267,12 +387,27 @@ Style: Professional, personable, team-oriented`,
     title: 'Partner Program',
     prompt: `${basePrompt}
     
-Main text: "Partner with 3BI.AI"
-Subtitle: "Grow Together with AI Innovation"
-Visual elements: Partnership handshake, connected companies, growth chart
-Background: Professional purple gradient with partnership icons
-Add: Handshake icon, growth arrow, partner badges
-Style: Professional, collaborative, growth-focused`,
+Main text: "Partner Program"
+Subtitle: "Grow with 3BI.AI"
+Secondary text: "Collaboration • Integration • Success"
+
+Visual elements: 
+- Partnership handshake icon
+- Connected company/organization symbols
+- Growth chart showing mutual success
+- Integration pathway visualization
+- Partner badge/certification elements
+- Collaboration network diagram
+
+Background: 
+- Professional purple (#7C3AED) to blue gradient
+- Partnership connection patterns
+- Growth-oriented design
+- Professional B2B aesthetic
+
+Add: Handshake icon, growth arrows, partner badges, connection lines, success indicators
+Style: Professional, collaborative, growth-focused, trustworthy, partnership-oriented
+Mood: Collaborative, mutually beneficial, growth-driven, professional, opportunity-focused`,
     priority: 13,
   },
   {
@@ -282,11 +417,26 @@ Style: Professional, collaborative, growth-focused`,
     prompt: `${basePrompt}
     
 Main text: "Usage Analytics"
-Subtitle: "Real-Time AI Performance Insights"
-Visual elements: Analytics dashboards, charts, graphs, data visualization
-Background: Data-driven purple gradient with chart backgrounds
-Add: Bar charts, line graphs, pie charts, metric badges
-Style: Data-focused, analytical, insightful`,
+Subtitle: "Real-Time Platform Insights"
+Secondary text: "Track • Analyze • Optimize"
+
+Visual elements: 
+- Analytics dashboard mockup with charts
+- Bar charts showing usage metrics
+- Line graphs tracking trends over time
+- Pie charts for distribution visualization
+- Data points and metric badges
+- Real-time data flow indicators
+
+Background: 
+- Data-driven purple (#7C3AED) to blue (#3B82F6) gradient
+- Dashboard backdrop with chart elements
+- Analytical, metrics-focused design
+- Professional data visualization aesthetic
+
+Add: Bar charts, line graphs, pie charts, metric badges, data points, trend indicators
+Style: Data-focused, analytical, insightful, professional, metrics-driven
+Mood: Insightful, data-driven, actionable, comprehensive, real-time`,
     priority: 14,
   },
   {
@@ -296,11 +446,26 @@ Style: Data-focused, analytical, insightful`,
     prompt: `${basePrompt}
     
 Main text: "Multi-Modal Memory"
-Subtitle: "Persistent Context Across All AI Interactions"
-Visual elements: Memory chips, brain neural network, data storage visualization
-Background: Tech purple gradient with memory patterns
-Add: Brain icon, database cylinders, connection nodes
-Style: Technical, innovative, memory-focused`,
+Subtitle: "Persistent AI Context"
+Secondary text: "Text • Images • Voice • Code"
+
+Visual elements: 
+- Memory chip/circuit board icons
+- Brain neural network pattern showing memory connections
+- Data storage visualization (database cylinders, memory blocks)
+- Multi-modal indicators (text, image, audio, code icons)
+- Connection nodes showing persistent context
+- Memory retrieval flow diagram
+
+Background: 
+- Tech purple (#7C3AED) to blue (#3B82F6) gradient
+- Neural network pattern overlay
+- Memory/storage theme with digital aesthetic
+- Connected data visualization
+
+Add: Brain icon, database symbols, memory chips, neural connections, multi-modal icons, storage indicators
+Style: Technical, innovative, memory-focused, intelligent, persistent
+Mood: Advanced, persistent, intelligent, comprehensive, contextual`,
     priority: 15,
   },
 ];
