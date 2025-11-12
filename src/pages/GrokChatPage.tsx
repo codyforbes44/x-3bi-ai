@@ -201,7 +201,7 @@ export default function GrokChatPage() {
         toast({
           title: isRateLimited ? 'Rate Limit Exceeded' : 'Error',
           description: isRateLimited 
-            ? `${user ? 'Authenticated' : 'Guest'} rate limit exceeded. ${user ? '40' : '5'} messages/min allowed.`
+            ? `${user ? 'Authenticated' : 'Guest'} rate limit exceeded. ${user ? '5 messages per day (resets at midnight UTC)' : '5 messages per minute'} allowed.`
             : error.message || 'Failed to send message',
           variant: 'destructive',
         });
@@ -323,7 +323,7 @@ export default function GrokChatPage() {
                       >
                         Sign in
                       </Button>
-                      {' '}for {GROK_CONFIG.authenticatedRateLimit}/min + cloud sync.
+                      {' '}for {GROK_CONFIG.authenticatedRateLimit} messages/day (resets at midnight UTC) + cloud sync.
                     </AlertDescription>
                   </Alert>
                 )}
@@ -444,7 +444,7 @@ export default function GrokChatPage() {
                       >
                         Sign in
                       </Button>
-                      {' '}for {GROK_CONFIG.authenticatedRateLimit}/min + cloud sync.
+                      {' '}for {GROK_CONFIG.authenticatedRateLimit} messages/day (resets at midnight UTC) + cloud sync + history.
                     </AlertDescription>
                   </Alert>
                 )}

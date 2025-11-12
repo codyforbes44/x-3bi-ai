@@ -11,6 +11,8 @@ serve(async (req) => {
   if (corsResponse) return corsResponse;
 
   try {
+    console.log('[Grok] Request received');
+    
     // Create Supabase client with service role for rate limit management
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
@@ -25,9 +27,12 @@ serve(async (req) => {
         const jwt = authHeader.replace('Bearer ', '');
         const { data: { user } } = await supabaseClient.auth.getUser(jwt);
         userId = user?.id ?? null;
+        console.log(`[Grok] Authenticated user: ${userId}`);
       } catch (error) {
-        console.log('No valid auth token, treating as guest');
+        console.log('[Grok] No valid auth token, treating as guest');
       }
+    } else {
+      console.log('[Grok] No auth header, treating as guest');
     }
     
     // Apply different rate limits based on auth status
@@ -111,10 +116,11 @@ serve(async (req) => {
 
     const grokApiKey = Deno.env.get('XAI_API_KEY');
     if (!grokApiKey) {
+      console.error('[Grok] XAI_API_KEY not configured');
       throw new Error('xAI API key not configured');
     }
 
-    console.log(`Using Grok model: ${model}`);
+    console.log(`[Grok] Using model: ${model}, stream: ${stream}, userId: ${userId || 'guest'}`);
 
     // Build request body
     const requestBody: any = {
@@ -133,9 +139,10 @@ serve(async (req) => {
       }
     }
 
-    console.log('Grok request:', JSON.stringify(requestBody, null, 2));
+    console.log('[Grok] Request body:', JSON.stringify(requestBody, null, 2));
 
     // Grok API follows OpenAI-compatible format
+    console.log('[Grok] Calling xAI API...');
     const response = await fetch('https://api.x.ai/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -145,13 +152,16 @@ serve(async (req) => {
       body: JSON.stringify(requestBody),
     });
 
+    console.log(`[Grok] xAI API response status: ${response.status}`);
+
     if (!response.ok) {
       const error = await response.text();
-      console.error('Grok API error:', error);
-      throw new Error(`Grok API error: ${error}`);
+      console.error('[Grok] xAI API error:', response.status, error);
+      throw new Error(`Grok API error (${response.status}): ${error}`);
     }
 
     if (stream) {
+      console.log('[Grok] Streaming response');
       return new Response(response.body, {
         headers: {
           ...corsHeaders,
@@ -163,6 +173,7 @@ serve(async (req) => {
     }
 
     const data = await response.json();
+    console.log('[Grok] Non-streaming response received');
     
     return new Response(JSON.stringify(data), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },

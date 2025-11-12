@@ -23,6 +23,8 @@ export function useGrokStream() {
     onComplete,
     onError,
   }: StreamOptions) => {
+    console.log('[useGrokStream] Starting stream request', { model, messageCount: messages.length });
+    
     try {
       // Try to get session, but don't require it (guest mode)
       const { data: { session } } = await supabase.auth.getSession();
@@ -34,68 +36,107 @@ export function useGrokStream() {
       // Add auth header if available
       if (session) {
         headers['Authorization'] = `Bearer ${session.access_token}`;
+        console.log('[useGrokStream] Using authenticated mode');
+      } else {
+        console.log('[useGrokStream] Using guest mode');
       }
 
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/grok`,
-        {
-          method: 'POST',
-          headers,
-          body: JSON.stringify({
-            messages,
-            model,
-            stream: GROK_CONFIG.streamingEnabled,
-            temperature: GROK_CONFIG.defaultTemperature,
-            max_tokens: GROK_CONFIG.defaultMaxTokens,
-          }),
-        }
-      );
+      const url = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/grok`;
+      console.log('[useGrokStream] Calling edge function:', url);
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({
+          messages,
+          model,
+          stream: GROK_CONFIG.streamingEnabled,
+          temperature: GROK_CONFIG.defaultTemperature,
+          max_tokens: GROK_CONFIG.defaultMaxTokens,
+        }),
+      });
+
+      console.log('[useGrokStream] Response status:', response.status);
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to get response');
+        let errorMessage = 'Failed to get response';
+        let errorDetails: any = {};
+        
+        try {
+          errorDetails = await response.json();
+          errorMessage = errorDetails.error || errorDetails.message || errorMessage;
+          
+          // Handle rate limit errors specifically
+          if (response.status === 429) {
+            console.error('[useGrokStream] Rate limit exceeded:', errorDetails);
+            throw new Error(errorDetails.message || 'Daily message limit reached. Please try again tomorrow.');
+          }
+          
+          console.error('[useGrokStream] API error:', response.status, errorDetails);
+        } catch (jsonError) {
+          const textError = await response.text();
+          console.error('[useGrokStream] Non-JSON error response:', textError);
+          errorMessage = textError || errorMessage;
+        }
+        
+        throw new Error(errorMessage);
       }
 
       if (!response.body) {
+        console.error('[useGrokStream] No response body');
         throw new Error('No response body');
       }
 
+      console.log('[useGrokStream] Starting to read stream');
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
       let fullContent = '';
+      let chunkCount = 0;
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) {
+            console.log('[useGrokStream] Stream complete, total chunks:', chunkCount);
+            break;
+          }
 
-        const chunk = decoder.decode(value, { stream: true });
-        const lines = chunk.split('\n');
+          const chunk = decoder.decode(value, { stream: true });
+          const lines = chunk.split('\n');
 
-        for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            const data = line.slice(6);
-            
-            if (data === '[DONE]') {
-              continue;
-            }
-
-            try {
-              const parsed = JSON.parse(data);
-              const delta = parsed.choices?.[0]?.delta?.content;
+          for (const line of lines) {
+            if (line.startsWith('data: ')) {
+              const data = line.slice(6);
               
-              if (delta) {
-                fullContent += delta;
-                onChunk(fullContent);
+              if (data === '[DONE]') {
+                console.log('[useGrokStream] Received [DONE] signal');
+                continue;
               }
-            } catch (e) {
-              console.error('Failed to parse SSE data:', e);
+
+              try {
+                const parsed = JSON.parse(data);
+                const delta = parsed.choices?.[0]?.delta?.content;
+                
+                if (delta) {
+                  chunkCount++;
+                  fullContent += delta;
+                  onChunk(fullContent);
+                }
+              } catch (e) {
+                console.error('[useGrokStream] Failed to parse SSE data:', e, 'Line:', line);
+              }
             }
           }
         }
-      }
 
-      onComplete();
+        console.log('[useGrokStream] Stream finished successfully');
+        onComplete();
+      } catch (streamError) {
+        console.error('[useGrokStream] Stream reading error:', streamError);
+        throw streamError;
+      }
     } catch (error) {
+      console.error('[useGrokStream] Error in streamMessage:', error);
       onError(error instanceof Error ? error : new Error('Unknown error'));
     }
   }, []);
