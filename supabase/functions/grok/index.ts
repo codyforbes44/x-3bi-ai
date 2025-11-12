@@ -97,6 +97,19 @@ serve(async (req) => {
         return createRateLimitResponse(rateLimitResult.resetAt);
       }
     }
+    
+    console.log('[Grok] Rate limit checks passed');
+    
+    // Parse request body with explicit error handling
+    let requestBody;
+    try {
+      requestBody = await req.json();
+      console.log('[Grok] Request body parsed successfully');
+    } catch (parseError) {
+      console.error('[Grok] Failed to parse request body:', parseError);
+      return errorResponse('Invalid request body. Expected JSON.', 400);
+    }
+    
     const { 
       messages, 
       model = 'grok-4-0709',
@@ -105,7 +118,7 @@ serve(async (req) => {
       max_tokens = 4096,
       tools,
       tool_choice
-    } = await req.json();
+    } = requestBody;
 
     // Validate inputs
     validateArray(messages, 'messages', { minLength: 1, maxLength: 100 });
