@@ -357,6 +357,67 @@ All colors MUST be HSL.
     animation: pulse-primary 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 
+  /* Energy particle animation */
+  @keyframes energy-float {
+    0%, 100% {
+      transform: translate(0, 0) rotate(0deg);
+      opacity: 0.3;
+    }
+    25% {
+      transform: translate(10px, -15px) rotate(90deg);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translate(-5px, -30px) rotate(180deg);
+      opacity: 0.3;
+    }
+    75% {
+      transform: translate(-15px, -15px) rotate(270deg);
+      opacity: 0.6;
+    }
+  }
+
+  /* Neural network pulse */
+  @keyframes neural-pulse {
+    0%, 100% {
+      opacity: 0.05;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.15;
+      transform: scale(1.05);
+    }
+  }
+
+  /* Gradient wave */
+  @keyframes gradient-wave {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+
+  /* Electric current */
+  @keyframes electric-flow {
+    0% {
+      opacity: 0;
+      transform: translateY(0) scaleY(0);
+    }
+    50% {
+      opacity: 0.4;
+      transform: translateY(-50%) scaleY(1);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-100%) scaleY(0);
+    }
+  }
+
   @keyframes pulse-primary {
     0%, 100% {
       background-color: hsl(var(--primary) / 0.1);
@@ -364,6 +425,36 @@ All colors MUST be HSL.
     50% {
       background-color: hsl(var(--primary) / 0.2);
     }
+  }
+
+  .energy-particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: hsl(var(--primary));
+    border-radius: 50%;
+    filter: blur(1px);
+    animation: energy-float 8s infinite;
+    will-change: transform, opacity;
+  }
+
+  .neural-pulse-layer {
+    animation: neural-pulse 4s ease-in-out infinite;
+  }
+
+  .gradient-wave-bg {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary) / 0.1),
+      hsl(var(--accent) / 0.1),
+      hsl(var(--primary) / 0.1)
+    );
+    background-size: 200% 200%;
+    animation: gradient-wave 15s ease infinite;
+  }
+
+  .electric-current {
+    animation: electric-flow 3s ease-in-out infinite;
   }
 
   /* Neural network background effect */

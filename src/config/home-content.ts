@@ -13,13 +13,42 @@ export const homeContent = {
   hero: {
     badge: {
       icon: Sparkles,
-      text: "27 AI Features • 12 Premium Models"
+      text: "Join 50,000+ Teams Worldwide"
     },
+    preHeadline: "The AI Platform That Does It All",
     title: {
-      line1: "Complete AI Platform",
-      line2: "Built for Excellence"
+      line1: "Save 15 Hours Every Week",
+      line2: "With AI That Actually Works"
     },
-    description: "Access Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, DALL-E 3, FLUX Pro, ElevenLabs Turbo, and more. All premium AI models unified with enterprise features, team collaboration, and workflow automation.",
+    description: "Access Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, and 8 more premium models. All unified with enterprise workflows, team collaboration, and real-time analytics. Built for teams who demand results.",
+    valueProps: [
+      {
+        metric: "15+",
+        unit: "hours saved",
+        description: "per team member weekly"
+      },
+      {
+        metric: "60%",
+        unit: "cost reduction",
+        description: "vs. managing separate tools"
+      },
+      {
+        metric: "99.9%",
+        unit: "uptime",
+        description: "SLA guaranteed"
+      },
+      {
+        metric: "<2s",
+        unit: "response time",
+        description: "average across all models"
+      }
+    ],
+    socialProof: {
+      users: "50,000+",
+      companies: ["Startups", "Scale-ups", "Fortune 500"],
+      rating: 4.9,
+      reviews: "2,400+"
+    },
     capabilities: [
       { icon: Zap, label: "Grok AI", color: "text-blue-300" },
       { icon: Brain, label: "Claude 4", color: "text-purple-300" },
