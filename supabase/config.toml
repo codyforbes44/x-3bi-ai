@@ -77,3 +77,12 @@ verify_jwt = true
 
 [functions.log-collector]
 verify_jwt = false
+
+[functions.demo-chat]
+verify_jwt = false
+
+[functions.demo-image]
+verify_jwt = false
+
+[functions.demo-voice]
+verify_jwt = false

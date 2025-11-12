@@ -9,6 +9,7 @@ import { PlatformStatsSection } from "@/components/home/sections/PlatformStatsSe
 import { PlatformHighlights } from "@/components/home/sections/PlatformHighlights";
 import { ComparisonSection } from "@/components/home/sections/ComparisonSection";
 import { PlatformRoadmap } from "@/components/home/sections/PlatformRoadmap";
+import { InteractiveDemos } from "@/components/home/sections/InteractiveDemos";
 import { TestimonialsSection } from "@/components/home/sections/TestimonialsSection";
 import { FAQSection, getFAQs } from "@/components/home/sections/FAQSection";
 import { Button } from "@/components/ui/button";
@@ -55,10 +56,11 @@ const HomePage = () => {
         <HeroSection />
         <PlatformStatsSection />
         <PlatformHighlights />
-        <GrokSpotlightSection />
-        <CapabilitiesSection />
-        <ComparisonSection />
-        <PlatformRoadmap />
+      <GrokSpotlightSection />
+      <InteractiveDemos />
+      <CapabilitiesSection />
+      <ComparisonSection />
+      <PlatformRoadmap />
         <QuickStartSection />
         <TestimonialsSection />
         <FAQSection />
