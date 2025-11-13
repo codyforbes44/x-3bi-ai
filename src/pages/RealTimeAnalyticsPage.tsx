@@ -3,10 +3,11 @@ import { PageHero } from '@/components/layout/PageHero';
 import { RealTimeMonitoring } from '@/components/RealTimeMonitoring';
 import { Activity } from 'lucide-react';
 import { SEO } from '@/components/SEO';
+import { RequireRole } from '@/components/auth/RequireRole';
 
 export default function RealTimeAnalyticsPage() {
   return (
-    <>
+    <RequireRole role="admin">
       <SEO
         title="Real-Time Analytics"
         description="Monitor system health, performance metrics, and live activity in real-time"
@@ -27,6 +28,6 @@ export default function RealTimeAnalyticsPage() {
           <RealTimeMonitoring />
         </div>
       </PageLayout>
-    </>
+    </RequireRole>
   );
 }

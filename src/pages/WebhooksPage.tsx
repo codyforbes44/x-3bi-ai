@@ -3,10 +3,11 @@ import { PageHero } from '@/components/layout/PageHero';
 import { WebhookManager } from '@/components/WebhookManager';
 import { Webhook } from 'lucide-react';
 import { SEO } from '@/components/SEO';
+import { RequireRole } from '@/components/auth/RequireRole';
 
 export default function WebhooksPage() {
   return (
-    <>
+    <RequireRole role="admin">
       <SEO
         title="Webhook Management"
         description="Configure webhooks for real-time event notifications and integrations"
@@ -27,6 +28,6 @@ export default function WebhooksPage() {
           <WebhookManager />
         </div>
       </PageLayout>
-    </>
+    </RequireRole>
   );
 }

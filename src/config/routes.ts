@@ -65,6 +65,7 @@ export const ROUTES = {
   MONITORING: '/monitoring',
   API_KEYS: '/api-keys',
   GROK: '/grok',
+  SUPER_ADMIN_DASHBOARD: '/admin/super',
 } as const;
 
 export const TUTORIAL_ROUTES = {
@@ -97,9 +98,9 @@ export const DASHBOARD_NAV_GROUPS = [
       { name: 'Grok Chat', href: ROUTES.GROK, icon: 'MessageSquare' },
       { name: 'Memory', href: ROUTES.MEMORY, icon: 'Brain' },
       { name: 'Analytics', href: ROUTES.ANALYTICS, icon: 'BarChart3' },
-      { name: 'Realtime Analytics', href: ROUTES.REALTIME_ANALYTICS, icon: 'Activity' },
+      { name: 'Realtime Analytics', href: ROUTES.REALTIME_ANALYTICS, icon: 'Activity', requiredRole: 'admin' as const },
       { name: 'Predictive AI', href: '/predictive-ai', icon: 'TrendingUp' },
-      { name: 'Monitoring', href: ROUTES.MONITORING, icon: 'Activity' },
+      { name: 'Monitoring', href: ROUTES.MONITORING, icon: 'Activity', requiredRole: 'admin' as const },
     ],
   },
   {
@@ -110,15 +111,31 @@ export const DASHBOARD_NAV_GROUPS = [
       { name: 'Marketplace', href: ROUTES.MARKETPLACE, icon: 'Store' },
       { name: 'API Access', href: ROUTES.API_ACCESS, icon: 'Code2' },
       { name: 'API Keys', href: ROUTES.API_KEYS, icon: 'Key' },
-      { name: 'Webhooks', href: ROUTES.WEBHOOKS, icon: 'Webhook' },
+      { name: 'Webhooks', href: ROUTES.WEBHOOKS, icon: 'Webhook', requiredRole: 'admin' as const },
     ],
   },
   {
     title: 'Enterprise',
     items: [
-      { name: 'Permissions', href: ROUTES.PERMISSIONS, icon: 'UserCog' },
-      { name: 'Security Dashboard', href: ROUTES.SECURITY_DASHBOARD, icon: 'ShieldCheck' },
-      { name: 'White Label', href: ROUTES.WHITE_LABEL, icon: 'Palette' },
+      { name: 'Permissions', href: ROUTES.PERMISSIONS, icon: 'UserCog', requiredRole: 'admin' as const },
+      { name: 'Security Dashboard', href: ROUTES.SECURITY_DASHBOARD, icon: 'ShieldCheck', requiredRole: 'admin' as const },
+      { name: 'White Label', href: ROUTES.WHITE_LABEL, icon: 'Palette', requiredRole: 'super_admin' as const },
+    ],
+  },
+  {
+    title: 'Admin',
+    requiredRole: 'super_admin' as const,
+    items: [
+      { name: 'Super Admin Dashboard', href: ROUTES.SUPER_ADMIN_DASHBOARD, icon: 'Crown', requiredRole: 'super_admin' as const },
+    ],
+  },
+  {
+    title: 'Account',
+    items: [
+      { name: 'Profile', href: ROUTES.PROFILE, icon: 'User' },
+      { name: 'Security Settings', href: ROUTES.SECURITY, icon: 'Shield' },
+      { name: 'Referrals', href: ROUTES.REFERRALS, icon: 'Gift' },
+      { name: 'Install App', href: ROUTES.INSTALL, icon: 'Download' },
     ],
   },
   {

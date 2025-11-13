@@ -3,11 +3,12 @@ import { APMDashboard } from '@/components/monitoring/APMDashboard';
 import { AlertingSystem } from '@/components/monitoring/AlertingSystem';
 import { SEO } from '@/components/SEO';
 import { Activity, Bell, BarChart3 } from 'lucide-react';
+import { RequireRole } from '@/components/auth/RequireRole';
 
 export default function MonitoringDashboard() {
   return (
-    <>
-      <SEO 
+    <RequireRole role="admin">
+      <SEO
         title="Monitoring Dashboard - Real-time Performance Monitoring"
         description="Monitor application performance, web vitals, and set up custom alerts for your platform."
       />
@@ -50,6 +51,6 @@ export default function MonitoringDashboard() {
           </TabsContent>
         </Tabs>
       </div>
-    </>
+    </RequireRole>
   );
 }
