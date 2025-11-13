@@ -9,7 +9,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { User, Mail, Camera, LogOut, Loader2 } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { User, Mail, Camera, LogOut, Loader2, CheckCircle, XCircle, AlertCircle } from "lucide-react";
 import { uploadAvatar, deleteAvatar } from "@/utils/avatarUpload";
 import { SimpleFormField } from "@/components/forms/SimpleFormField";
 import { FormSuccess } from "@/components/forms/FormSuccess";
@@ -36,7 +37,9 @@ const ProfilePage = () => {
   const [displayName, setDisplayName] = useState("");
   const [bio, setBio] = useState("");
   const [email, setEmail] = useState("");
+  const [emailVerified, setEmailVerified] = useState(false);
   const [avatarUrl, setAvatarUrl] = useState("");
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
   const [initialData, setInitialData] = useState<ProfileFormData | null>(null);
   const [successMessage, setSuccessMessage] = useState("");
 
@@ -65,6 +68,7 @@ const ProfilePage = () => {
 
       setUserId(user.id);
       setEmail(user.email || "");
+      setEmailVerified(user.email_confirmed_at !== null);
 
       const { data: profile } = await supabase
         .from("profiles")
@@ -132,6 +136,25 @@ const ProfilePage = () => {
     const file = event.target.files?.[0];
     if (!file || !userId) return;
 
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image must be less than 5MB");
+      return;
+    }
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      toast.error("Please upload an image file");
+      return;
+    }
+
+    // Create preview
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setAvatarPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+
     setUploadingAvatar(true);
     setSuccessMessage("");
     
@@ -150,11 +173,15 @@ const ProfilePage = () => {
       if (error) throw error;
 
       setAvatarUrl(publicUrl);
+      setAvatarPreview(null);
       toast.success("Avatar updated successfully!");
     } catch (error: any) {
+      setAvatarPreview(null);
       toast.error(error.message || "Failed to upload avatar");
     } finally {
       setUploadingAvatar(false);
+      // Clear the input
+      event.target.value = '';
     }
   };
 
@@ -163,6 +190,7 @@ const ProfilePage = () => {
 
     setUploadingAvatar(true);
     setSuccessMessage("");
+    setAvatarPreview(null);
     
     try {
       await deleteAvatar(avatarUrl, userId);
@@ -181,6 +209,12 @@ const ProfilePage = () => {
     } finally {
       setUploadingAvatar(false);
     }
+  };
+
+  const handleCancelPreview = () => {
+    setAvatarPreview(null);
+    const fileInput = document.getElementById("avatar-upload") as HTMLInputElement;
+    if (fileInput) fileInput.value = '';
   };
 
   const handleSignOut = async () => {
@@ -216,33 +250,71 @@ const ProfilePage = () => {
         noIndex={true}
       />
 
-      <div className="container max-w-4xl mx-auto py-8 px-4">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold mb-2">Profile Settings</h1>
+      <div className="container max-w-4xl mx-auto py-6 sm:py-8 px-4">
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-3xl sm:text-4xl font-bold mb-2">Profile Settings</h1>
           <p className="text-muted-foreground">Manage your account information and preferences</p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Account Information</CardTitle>
-            <CardDescription>Update your profile details and avatar</CardDescription>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div>
+                <CardTitle>Account Information</CardTitle>
+                <CardDescription>Update your profile details and avatar</CardDescription>
+              </div>
+              {emailVerified && (
+                <Badge variant="default" className="w-fit">
+                  <CheckCircle className="h-3 w-3 mr-1" />
+                  Email Verified
+                </Badge>
+              )}
+              {!emailVerified && (
+                <Badge variant="secondary" className="w-fit">
+                  <AlertCircle className="h-3 w-3 mr-1" />
+                  Email Not Verified
+                </Badge>
+              )}
+            </div>
           </CardHeader>
           <CardContent className="space-y-6">
             {/* Avatar Section */}
             <div className="flex flex-col items-center gap-4">
-              <Avatar className="h-24 w-24">
-                <AvatarImage src={avatarUrl} alt={displayName} />
-                <AvatarFallback>
-                  <User className="h-12 w-12" />
-                </AvatarFallback>
-              </Avatar>
+              <div className="relative">
+                <Avatar className="h-28 w-28 sm:h-32 sm:w-32">
+                  <AvatarImage src={avatarPreview || avatarUrl} alt={displayName} />
+                  <AvatarFallback className="text-2xl">
+                    <User className="h-14 w-14 sm:h-16 sm:w-16" />
+                  </AvatarFallback>
+                </Avatar>
+                {uploadingAvatar && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-background/80 rounded-full">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                  </div>
+                )}
+              </div>
               
-              <div className="flex gap-2">
+              {avatarPreview && !uploadingAvatar && (
+                <div className="text-center space-y-2">
+                  <p className="text-sm text-muted-foreground">Preview - uploading now...</p>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleCancelPreview}
+                    className="text-xs"
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              )}
+              
+              <div className="flex flex-wrap gap-2 justify-center">
                 <Button
                   variant="outline"
                   size="sm"
                   disabled={uploadingAvatar}
                   onClick={() => document.getElementById("avatar-upload")?.click()}
+                  className="min-h-[44px]"
                 >
                   {uploadingAvatar ? (
                     <>
@@ -252,22 +324,27 @@ const ProfilePage = () => {
                   ) : (
                     <>
                       <Camera className="mr-2 h-4 w-4" />
-                      Upload Avatar
+                      {avatarUrl ? 'Change' : 'Upload'} Avatar
                     </>
                   )}
                 </Button>
                 
-                {avatarUrl && (
+                {avatarUrl && !avatarPreview && (
                   <Button
                     variant="outline"
                     size="sm"
                     disabled={uploadingAvatar}
                     onClick={handleDeleteAvatar}
+                    className="min-h-[44px]"
                   >
                     Remove
                   </Button>
                 )}
               </div>
+              
+              <p className="text-xs text-muted-foreground text-center max-w-xs">
+                JPG, PNG, GIF or WEBP. Max 5MB.
+              </p>
               
               <input
                 id="avatar-upload"
@@ -281,7 +358,7 @@ const ProfilePage = () => {
             <Separator />
 
             {/* Profile Form */}
-            <div className="space-y-4">
+            <div className="space-y-4 sm:space-y-5">
               <SimpleFormField
                 label="Display Name"
                 error={errors.displayName}
@@ -295,7 +372,14 @@ const ProfilePage = () => {
                     clearFieldError("displayName");
                   }}
                   onBlur={() => validateField("displayName", displayName.trim())}
+                  className="min-h-[44px]"
                 />
+                {!errors.displayName && displayName.trim().length >= 2 && (
+                  <div className="flex items-center gap-1 text-xs text-green-600 mt-1">
+                    <CheckCircle className="h-3 w-3" />
+                    Looks good!
+                  </div>
+                )}
               </SimpleFormField>
 
               <SimpleFormField
@@ -313,6 +397,7 @@ const ProfilePage = () => {
                   onBlur={() => validateField("bio", bio.trim())}
                   rows={4}
                   maxLength={500}
+                  className="resize-none"
                 />
                 <CharacterCounter current={bio.length} max={500} />
               </SimpleFormField>
@@ -320,19 +405,29 @@ const ProfilePage = () => {
               <SimpleFormField
                 label="Email"
                 error={errors.email}
-                helper="Contact support to change your email address"
+                helper={!emailVerified ? "Please verify your email address" : "Contact support to change your email address"}
               >
-                <Input
-                  type="email"
-                  value={email}
-                  disabled
-                  className="bg-muted"
-                />
+                <div className="relative">
+                  <Input
+                    type="email"
+                    value={email}
+                    disabled
+                    className="bg-muted min-h-[44px] pr-10"
+                  />
+                  <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                    {emailVerified ? (
+                      <CheckCircle className="h-4 w-4 text-green-600" />
+                    ) : (
+                      <XCircle className="h-4 w-4 text-muted-foreground" />
+                    )}
+                  </div>
+                </div>
               </SimpleFormField>
 
               {errors.form && (
-                <div className="text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md p-3">
-                  {errors.form}
+                <div className="text-sm text-destructive bg-destructive/10 border border-destructive/20 rounded-md p-3 flex items-start gap-2">
+                  <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
+                  <span>{errors.form}</span>
                 </div>
               )}
 
@@ -340,11 +435,11 @@ const ProfilePage = () => {
                 <FormSuccess message={successMessage} variant="inline" />
               )}
 
-              <div className="flex gap-3 pt-4">
+              <div className="flex flex-col sm:flex-row gap-3 pt-4">
                 <Button
                   onClick={updateProfile}
                   disabled={updating || !hasUnsavedChanges}
-                  className="flex-1"
+                  className="flex-1 min-h-[44px] order-1"
                 >
                   {updating ? (
                     <>
@@ -359,11 +454,18 @@ const ProfilePage = () => {
                 <Button
                   variant="outline"
                   onClick={handleSignOut}
+                  className="min-h-[44px] order-2"
                 >
                   <LogOut className="mr-2 h-4 w-4" />
                   Sign Out
                 </Button>
               </div>
+
+              {hasUnsavedChanges && (
+                <p className="text-xs text-muted-foreground text-center">
+                  You have unsaved changes
+                </p>
+              )}
             </div>
           </CardContent>
         </Card>
