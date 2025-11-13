@@ -7,7 +7,7 @@ import { WebVitalsWidget } from '@/components/dashboard/widgets/WebVitalsWidget'
 import { AIUsageWidget } from '@/components/dashboard/widgets/AIUsageWidget';
 import { PredictiveInsightsWidget } from '@/components/dashboard/widgets/PredictiveInsightsWidget';
 import { RecentActivityWidget } from '@/components/dashboard/widgets/RecentActivityWidget';
-import { SortableWidget } from '@/components/dashboard/SortableWidget';
+import { DraggableDashboardWidget } from '@/components/dashboard/DraggableDashboardWidget';
 import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
@@ -323,9 +323,9 @@ export default function DashboardOverview() {
                 {enabledWidgets.map((widget) => {
                   const WidgetComponent = widget.component;
                   return (
-                    <SortableWidget key={widget.id} id={widget.id}>
+                    <DraggableDashboardWidget key={widget.id} id={widget.id}>
                       <WidgetComponent />
-                    </SortableWidget>
+                    </DraggableDashboardWidget>
                   );
                 })}
               </div>
