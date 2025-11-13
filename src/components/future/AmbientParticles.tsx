@@ -1,5 +1,7 @@
 import { useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
+import { useDevice } from "@/hooks/useDevice";
+import { useAccessibilityPreferences } from "@/hooks/useAccessibilityPreferences";
 
 interface AmbientParticlesProps {
   count?: number;
@@ -13,6 +15,16 @@ export function AmbientParticles({
   interactive = true,
 }: AmbientParticlesProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const { shouldEnableParticles, performanceTier } = useDevice();
+  const { reducedMotion } = useAccessibilityPreferences();
+  
+  // Don't render if device can't handle it or user prefers reduced motion
+  if (!shouldEnableParticles || reducedMotion) {
+    return null;
+  }
+  
+  // Adjust particle count based on performance tier
+  const adjustedCount = performanceTier === 'high' ? count : performanceTier === 'medium' ? Math.floor(count / 2) : Math.floor(count / 4);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -39,7 +51,7 @@ export function AmbientParticles({
       hue: number;
     }
 
-    const particles: Particle[] = Array.from({ length: count }, () => ({
+    const particles: Particle[] = Array.from({ length: adjustedCount }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       vx: (Math.random() - 0.5) * 0.5,
@@ -121,7 +133,7 @@ export function AmbientParticles({
         window.removeEventListener("mousemove", handleMouseMove);
       }
     };
-  }, [count, interactive]);
+  }, [adjustedCount, interactive]);
 
   return (
     <canvas

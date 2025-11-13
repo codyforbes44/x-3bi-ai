@@ -146,6 +146,15 @@ const App = () => (
                             <Route path="/tutorials/voice-ai" element={<VoiceAITutorial />} />
                             <Route path="/tutorials/system-architecture" element={<SystemArchitectureTutorial />} />
                             
+                            {/* Legacy AI feature route redirects */}
+                            <Route path="/ai-chat" element={<Navigate to="/dashboard?tab=chat" replace />} />
+                            <Route path="/ai-image" element={<Navigate to="/dashboard?tab=image" replace />} />
+                            <Route path="/ai-code" element={<Navigate to="/dashboard?tab=code" replace />} />
+                            <Route path="/ai-voice" element={<Navigate to="/dashboard?tab=voice" replace />} />
+                            <Route path="/ai-video" element={<Navigate to="/dashboard?tab=video-gen" replace />} />
+                            <Route path="/ai-enhance" element={<Navigate to="/dashboard?tab=image-enhance" replace />} />
+                            <Route path="/ai-summary" element={<Navigate to="/dashboard?tab=summarizer" replace />} />
+                            
                             {/* Dashboard route */}
                             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                             

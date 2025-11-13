@@ -3,22 +3,25 @@ import { Home, MessageSquare, Image, LayoutDashboard, Settings } from "lucide-re
 import { cn } from "@/lib/utils";
 import { CategoryDot } from "./visual/CategoryDot";
 import { useLongPress } from "@/hooks/useLongPress";
+import { getFeatureRoute, isRouteActive } from "@/utils/routeMapper";
+import { useHaptics } from "@/hooks/useHaptics";
 
 const NAV_ITEMS = [
-  { icon: Home, route: '/', label: 'Home', category: 'utilities' as const },
-  { icon: MessageSquare, route: '/ai-chat', label: 'Chat', category: 'ai-tools' as const },
-  { icon: Image, route: '/ai-image', label: 'Image', category: 'ai-tools' as const },
-  { icon: LayoutDashboard, route: '/dashboard', label: 'Dashboard', category: 'workspace' as const },
-  { icon: Settings, route: '/settings', label: 'Settings', category: 'account' as const },
+  { icon: Home, route: '/', label: 'Home', category: 'utilities' as const, featureId: null },
+  { icon: MessageSquare, route: getFeatureRoute('chat'), label: 'Chat', category: 'ai-tools' as const, featureId: 'chat' },
+  { icon: Image, route: getFeatureRoute('image'), label: 'Image', category: 'ai-tools' as const, featureId: 'image' },
+  { icon: LayoutDashboard, route: '/dashboard', label: 'Dashboard', category: 'workspace' as const, featureId: null },
+  { icon: Settings, route: '/settings', label: 'Settings', category: 'account' as const, featureId: null },
 ];
 
 export function MobileBottomNav() {
   const navigate = useNavigate();
   const location = useLocation();
+  const haptics = useHaptics();
 
   const isActive = (route: string) => {
     if (route === '/') return location.pathname === '/';
-    return location.pathname.startsWith(route);
+    return isRouteActive(location.pathname, location.search, route);
   };
 
   return (
@@ -31,7 +34,7 @@ export function MobileBottomNav() {
           const longPressHandlers = useLongPress({
             onLongPress: () => {},
             onClick: () => {
-              if ('vibrate' in navigator) navigator.vibrate(10);
+              haptics.light();
               navigate(item.route);
             },
           });
