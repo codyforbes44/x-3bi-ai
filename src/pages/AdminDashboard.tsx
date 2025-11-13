@@ -11,6 +11,7 @@ import { ContactSubmissionsTable } from "@/components/admin/ContactSubmissionsTa
 import { NewsletterSubscribersTable } from "@/components/admin/NewsletterSubscribersTable";
 import { Shield, Users, Mail, Calendar, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import ErrorBoundary from "@/components/ErrorBoundary";
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -216,15 +217,45 @@ const AdminDashboard = () => {
           </TabsList>
 
           <TabsContent value="demos">
-            <DemoRequestsTable onUpdate={loadStats} />
+            <ErrorBoundary fallback={
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error Loading Demo Requests</AlertTitle>
+                <AlertDescription>
+                  Failed to load demo requests table. Please refresh the page.
+                </AlertDescription>
+              </Alert>
+            }>
+              <DemoRequestsTable onUpdate={loadStats} />
+            </ErrorBoundary>
           </TabsContent>
 
           <TabsContent value="contacts">
-            <ContactSubmissionsTable onUpdate={loadStats} />
+            <ErrorBoundary fallback={
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error Loading Contact Submissions</AlertTitle>
+                <AlertDescription>
+                  Failed to load contact submissions table. Please refresh the page.
+                </AlertDescription>
+              </Alert>
+            }>
+              <ContactSubmissionsTable onUpdate={loadStats} />
+            </ErrorBoundary>
           </TabsContent>
 
           <TabsContent value="subscribers">
-            <NewsletterSubscribersTable onUpdate={loadStats} />
+            <ErrorBoundary fallback={
+              <Alert variant="destructive">
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>Error Loading Newsletter Subscribers</AlertTitle>
+                <AlertDescription>
+                  Failed to load newsletter subscribers table. Please refresh the page.
+                </AlertDescription>
+              </Alert>
+            }>
+              <NewsletterSubscribersTable onUpdate={loadStats} />
+            </ErrorBoundary>
           </TabsContent>
         </Tabs>
       </div>
