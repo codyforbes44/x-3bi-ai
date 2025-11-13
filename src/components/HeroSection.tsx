@@ -1,12 +1,12 @@
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, Brain, Code2, ImagePlus, Eye, Zap, Shield } from "lucide-react";
 import { PLATFORM_STATS } from "@/config/platform-capabilities";
-import { EnergyBackground } from "@/components/hero/EnergyBackground";
+import { HeroBackground } from "@/components/hero/background";
 import { HeroCTAs } from "@/components/hero/HeroCTAs";
 const HeroSection = () => {
   return <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20 pb-16">
-      {/* Energy animated background with multiple layers */}
-      <EnergyBackground />
+      {/* Energy animated background with modular layer system */}
+      <HeroBackground intensity="medium" />
       
       <div className="container mx-auto px-4 sm:px-6 text-center relative z-10">
         <div className="max-w-6xl mx-auto">
