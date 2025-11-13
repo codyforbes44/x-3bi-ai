@@ -53,12 +53,12 @@ export function DemoRequestsTable({ onUpdate }: DemoRequestsTableProps) {
   const loadRequests = async () => {
     try {
       const { data, error } = await supabase
-        .from('demo_requests')
+        .from('demo_requests' as any)
         .select('*')
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setRequests(data || []);
+      setRequests((data as any) || []);
     } catch (error) {
       console.error('Error loading demo requests:', error);
       toast({
@@ -92,7 +92,7 @@ export function DemoRequestsTable({ onUpdate }: DemoRequestsTableProps) {
   const updateStatus = async (id: string, newStatus: string) => {
     try {
       const { error } = await supabase
-        .from('demo_requests')
+        .from('demo_requests' as any)
         .update({ status: newStatus, updated_at: new Date().toISOString() })
         .eq('id', id);
 
