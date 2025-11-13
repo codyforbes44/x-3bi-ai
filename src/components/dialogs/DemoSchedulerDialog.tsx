@@ -85,6 +85,23 @@ export function DemoSchedulerDialog({ open, onOpenChange }: DemoSchedulerDialogP
 
       if (error) throw error;
 
+      // Send email notifications
+      try {
+        await supabase.functions.invoke('send-demo-notification', {
+          body: {
+            name: formData.name,
+            email: formData.email,
+            company: formData.company,
+            phone: formData.phone,
+            preferredDate: formData.preferredDate,
+            message: formData.message
+          }
+        });
+      } catch (emailError) {
+        console.error('Email notification failed:', emailError);
+        // Don't block the form submission if email fails
+      }
+
       setSubmitSuccess(true);
       
       toast({
@@ -102,9 +119,9 @@ export function DemoSchedulerDialog({ open, onOpenChange }: DemoSchedulerDialogP
     } catch (error) {
       console.error('Error submitting demo request:', error);
       toast({
-        title: "Submission Failed",
-        description: "There was an error submitting your request. Please try again.",
-        variant: "destructive",
+        title: "Error",
+        description: "Failed to submit demo request. Please try again.",
+        variant: "destructive"
       });
     } finally {
       setIsSubmitting(false);

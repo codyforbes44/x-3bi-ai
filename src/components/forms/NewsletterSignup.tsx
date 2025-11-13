@@ -83,14 +83,24 @@ export function NewsletterSignup({
 
       if (error) throw error;
 
+      // Send welcome email
+      try {
+        await supabase.functions.invoke('send-newsletter-welcome', {
+          body: { email }
+        });
+      } catch (emailError) {
+        console.error('Welcome email failed:', emailError);
+        // Don't block the subscription if email fails
+      }
+
       setSubmitSuccess(true);
       
       toast({
         title: "Successfully Subscribed!",
-        description: "Check your email for confirmation.",
+        description: "Check your email for a welcome message.",
       });
       
-      // Reset after success
+      // Reset form after success
       setTimeout(() => {
         setEmail("");
         setSubmitSuccess(false);
@@ -99,8 +109,8 @@ export function NewsletterSignup({
       console.error('Error subscribing to newsletter:', error);
       toast({
         title: "Subscription Failed",
-        description: "There was an error subscribing. Please try again.",
-        variant: "destructive",
+        description: "Please try again later.",
+        variant: "destructive"
       });
     } finally {
       setIsSubmitting(false);
