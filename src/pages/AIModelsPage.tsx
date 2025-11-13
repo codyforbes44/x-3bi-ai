@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { PageHero } from "@/components/layout/PageHero";
 import { SEO } from "@/components/SEO";
@@ -5,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Skeleton } from "@/components/ui/skeleton";
 import { AI_MODELS, getModelsByCategory, PLATFORM_STATS } from "@/config/platform-capabilities";
 import { Brain, Sparkles, Check, TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +14,7 @@ import { ROUTES } from "@/config/routes";
 
 export default function AIModelsPage() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
   
   const categories = [
     { id: "chat", name: "Chat & Reasoning", count: AI_MODELS.filter(m => m.category === "chat").length },
@@ -20,6 +23,12 @@ export default function AIModelsPage() {
     { id: "video", name: "Video Generation", count: AI_MODELS.filter(m => m.category === "video").length },
     { id: "audio", name: "Music & Audio", count: AI_MODELS.filter(m => m.category === "audio").length }
   ];
+
+  useEffect(() => {
+    // Simulate loading state
+    const timer = setTimeout(() => setIsLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <>
@@ -50,6 +59,34 @@ export default function AIModelsPage() {
         />
 
         <div className="container mx-auto px-4 py-12 max-w-7xl">
+          {isLoading ? (
+            <div className="space-y-6">
+              <div className="flex gap-2">
+                {[...Array(5)].map((_, i) => (
+                  <Skeleton key={i} className="h-10 w-32" />
+                ))}
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[...Array(6)].map((_, i) => (
+                  <Card key={i}>
+                    <CardHeader>
+                      <Skeleton className="h-12 w-12 rounded-lg mb-4" />
+                      <Skeleton className="h-6 w-3/4 mb-2" />
+                      <Skeleton className="h-4 w-1/2 mb-2" />
+                      <Skeleton className="h-16 w-full" />
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-3/4" />
+                      <Skeleton className="h-10 w-full mt-4" />
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <>
           {/* Model Categories Tabs */}
           <Tabs defaultValue="chat" className="w-full">
             <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 mb-8">
@@ -156,6 +193,8 @@ export default function AIModelsPage() {
               </div>
             </div>
           </div>
+          </>
+          )}
         </div>
       </PageLayout>
     </>

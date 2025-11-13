@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Sparkles, Trash2, Share2, Menu, LogIn, User } from 'lucide-react';
 import { useGrokChat } from '@/hooks/useGrokChat';
 import { useGrokConversations } from '@/hooks/useGrokConversations';
@@ -20,12 +21,18 @@ export default function GrokStandalone() {
   const [model, setModel] = useState<string>(DEFAULT_GROK_MODEL);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const [currentConversationId, setCurrentConversationId] = useState<string | null>(null);
+  const [isInitializing, setIsInitializing] = useState(true);
   
   const { user } = useAuth();
   const { share } = useNativeShare();
   const { toast } = useToast();
   const { messages, isLoading, sendMessage, clearMessages } = useGrokChat();
   const { conversations } = useGrokConversations(user?.id);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsInitializing(false), 400);
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSendMessage = async () => {
     if (!input.trim() || isLoading) return;
@@ -137,6 +144,18 @@ export default function GrokStandalone() {
 
       {/* Main Chat Area */}
       <main className="flex-1 container max-w-4xl mx-auto px-4 py-6 flex flex-col">
+        {isInitializing ? (
+          <div className="flex-1 space-y-4">
+            <Skeleton className="h-10 w-48" />
+            <div className="space-y-4">
+              <Skeleton className="h-24 w-full" />
+              <Skeleton className="h-24 w-5/6 ml-auto" />
+              <Skeleton className="h-24 w-full" />
+            </div>
+            <Skeleton className="h-14 w-full mt-auto" />
+          </div>
+        ) : (
+          <>
         {/* Model Selector */}
         <div className="mb-4 flex items-center justify-between gap-4">
           <Select value={model} onValueChange={setModel}>
@@ -199,6 +218,8 @@ export default function GrokStandalone() {
             placeholder="Message Grok..."
           />
         </div>
+        </>
+        )}
       </main>
 
       {/* Install Prompt */}

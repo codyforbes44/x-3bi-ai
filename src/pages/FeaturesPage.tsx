@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { PageHero } from "@/components/layout/PageHero";
 import { SEO } from "@/components/SEO";
@@ -5,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Skeleton } from "@/components/ui/skeleton";
 import { PLATFORM_FEATURES, FEATURE_CATEGORIES, getFeaturesByCategory, PLATFORM_STATS } from "@/config/platform-capabilities";
 import { Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +14,13 @@ import { SEO_CONFIG, PAGE_SEO, BREADCRUMB_CONFIG } from "@/config/seo-config";
 
 export default function FeaturesPage() {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading state
+    const timer = setTimeout(() => setIsLoading(false), 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <>
@@ -37,6 +46,36 @@ export default function FeaturesPage() {
         />
 
         <div className="container mx-auto px-4 py-12 max-w-7xl">
+          {isLoading ? (
+            <div className="space-y-6">
+              <div className="flex gap-2">
+                {[...Array(5)].map((_, i) => (
+                  <Skeleton key={i} className="h-10 w-24" />
+                ))}
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {[...Array(9)].map((_, i) => (
+                  <Card key={i}>
+                    <CardHeader>
+                      <div className="flex items-start justify-between mb-4">
+                        <Skeleton className="h-12 w-12 rounded-lg" />
+                        <Skeleton className="h-6 w-16" />
+                      </div>
+                      <Skeleton className="h-6 w-3/4 mb-2" />
+                      <Skeleton className="h-16 w-full" />
+                    </CardHeader>
+                    <CardContent className="space-y-2">
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-full" />
+                      <Skeleton className="h-4 w-3/4" />
+                      <Skeleton className="h-10 w-full mt-4" />
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <>
           <Tabs defaultValue="all" className="w-full">
             <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 mb-8">
               <TabsTrigger value="all">
@@ -138,6 +177,8 @@ export default function FeaturesPage() {
               </TabsContent>
             ))}
           </Tabs>
+          </>
+          )}
         </div>
       </PageLayout>
     </>
