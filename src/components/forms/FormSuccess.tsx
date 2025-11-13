@@ -1,92 +1,73 @@
 import { CheckCircle2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 
 interface FormSuccessProps {
-  /**
-   * Success message
-   */
   message: string;
-  /**
-   * Variant
-   */
   variant?: 'inline' | 'alert' | 'toast';
-  /**
-   * Custom className
-   */
   className?: string;
-  /**
-   * Dismiss callback
-   */
   onDismiss?: () => void;
-  /**
-   * Auto-dismiss after duration (ms)
-   */
   autoDismiss?: number;
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
 }
 
-/**
- * Form Success Component
- * Displays success messages after form submission
- */
-export function FormSuccess({
-  message,
-  variant = 'inline',
-  className,
-  onDismiss,
-  autoDismiss,
-}: FormSuccessProps) {
-  // Auto-dismiss functionality
+export function FormSuccess({ message, variant = 'inline', className, onDismiss, autoDismiss, action }: FormSuccessProps) {
   if (autoDismiss && onDismiss) {
     setTimeout(onDismiss, autoDismiss);
   }
 
   if (variant === 'inline') {
     return (
-      <p
-        className={cn(
-          "text-sm font-medium text-success flex items-center gap-1.5 mt-1",
-          className
+      <div className={cn("space-y-2", className)}>
+        <p className="text-sm font-medium text-success flex items-center gap-1.5" role="status" aria-live="polite">
+          <CheckCircle2 className="h-3.5 w-3.5 flex-shrink-0" />
+          {message}
+        </p>
+        {action && (
+          <Button variant="outline" size="sm" onClick={action.onClick} className="w-full">
+            {action.label}
+          </Button>
         )}
-        role="status"
-        aria-live="polite"
-      >
-        <CheckCircle2 className="h-3.5 w-3.5 flex-shrink-0" />
-        {message}
-      </p>
+      </div>
     );
   }
 
   if (variant === 'alert') {
     return (
-      <Alert
-        className={cn(
-          "border-success/50 bg-success/10 text-success",
-          className
+      <div className={cn("space-y-2", className)}>
+        <Alert className="border-success/50 bg-success/10 text-success">
+          <CheckCircle2 className="h-4 w-4 text-success" />
+          <AlertDescription className="ml-2 text-success-foreground">{message}</AlertDescription>
+          {onDismiss && (
+            <button onClick={onDismiss} className="absolute top-3 right-3 text-success/70 hover:text-success" aria-label="Dismiss">
+              <X className="h-4 w-4" />
+            </button>
+          )}
+        </Alert>
+        {action && (
+          <Button variant="outline" size="sm" onClick={action.onClick} className="w-full">
+            {action.label}
+          </Button>
         )}
-      >
-        <CheckCircle2 className="h-4 w-4 text-success" />
-        <AlertDescription className="ml-2 text-success-foreground">
-          {message}
-        </AlertDescription>
-        {onDismiss && (
-          <button
-            onClick={onDismiss}
-            className="absolute top-3 right-3 text-success/70 hover:text-success"
-            aria-label="Dismiss success message"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        )}
-      </Alert>
+      </div>
     );
   }
 
-  // Toast variant
   return (
-    <div className={cn("flex items-start gap-2", className)}>
-      <CheckCircle2 className="h-4 w-4 text-success flex-shrink-0 mt-0.5" />
-      <span className="text-sm text-foreground">{message}</span>
+    <div className={cn("space-y-2", className)}>
+      <div className="flex items-start gap-2">
+        <CheckCircle2 className="h-4 w-4 text-success flex-shrink-0 mt-0.5" />
+        <span className="text-sm text-foreground">{message}</span>
+      </div>
+      {action && (
+        <Button variant="outline" size="sm" onClick={action.onClick} className="w-full">
+          {action.label}
+        </Button>
+      )}
     </div>
   );
 }
