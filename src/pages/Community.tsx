@@ -1,5 +1,5 @@
 import { SEO } from "@/components/SEO";
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PublicPageLayout } from "@/components/layout/PublicPageLayout";
 import { PageHero } from "@/components/layout/PageHero";
 import { StatsGrid } from "@/components/layout/StatsGrid";
 import { CTASection } from "@/components/layout/CTASection";
@@ -30,8 +30,8 @@ const Community = () => {
           { name: BREADCRUMB_CONFIG.community.label, url: BREADCRUMB_CONFIG.community.url }
         ]}
       />
-      <PageLayout>
-      <div className="pb-12 md:pb-16">
+      <PublicPageLayout maxWidth="7xl">
+        <div className="pb-12 md:pb-16">
         <PageHero
           title="Join Our Community"
           description="Connect with thousands of developers, designers, and creators building the future with AI-powered tools."
@@ -181,7 +181,7 @@ const Community = () => {
           </>
         }
       />
-      </PageLayout>
+      </PublicPageLayout>
     </>
   );
 };

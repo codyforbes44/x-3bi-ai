@@ -10,7 +10,7 @@ interface PublicPageLayoutProps {
   /**
    * Maximum width of content container
    */
-  maxWidth?: keyof typeof LAYOUT_CONFIG.maxWidth;
+  maxWidth?: keyof typeof LAYOUT_CONFIG.maxWidth | '7xl';
   /**
    * Vertical padding
    */
@@ -37,7 +37,7 @@ export function PublicPageLayout({
   className = '',
   showFooter = true,
 }: PublicPageLayoutProps) {
-  const maxWidthClass = LAYOUT_CONFIG.maxWidth[maxWidth];
+  const maxWidthClass = maxWidth === '7xl' ? 'max-w-7xl' : LAYOUT_CONFIG.maxWidth[maxWidth];
   const paddingClass = LAYOUT_CONFIG.padding[padding];
   const horizontalPadding = LAYOUT_CONFIG.horizontalPadding.combined;
 

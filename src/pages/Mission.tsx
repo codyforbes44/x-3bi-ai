@@ -1,6 +1,5 @@
 import { SEO } from "@/components/SEO";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import { PublicPageLayout } from "@/components/layout/PublicPageLayout";
 import { Card } from "@/components/ui/card";
 import { Target, Eye, Heart, Sparkles } from "lucide-react";
 
@@ -37,8 +36,7 @@ const Mission = () => {
         ogImage="https://3bi.ai/og/mission.png"
         canonical="https://3bi.ai/mission"
       />
-      <Header />
-      <main className="min-h-screen pt-20 pb-16">
+      <PublicPageLayout maxWidth="7xl">
         {/* Hero Section */}
         <section className="container mx-auto px-4 py-16 text-center">
           <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-hero bg-clip-text text-transparent">
@@ -104,8 +102,7 @@ const Mission = () => {
             </a>
           </div>
         </section>
-      </main>
-      <Footer />
+      </PublicPageLayout>
     </>
   );
 };

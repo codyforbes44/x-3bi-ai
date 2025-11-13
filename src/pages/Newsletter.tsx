@@ -1,6 +1,5 @@
 import { SEO } from "@/components/SEO";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import { PublicPageLayout } from "@/components/layout/PublicPageLayout";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -127,8 +126,7 @@ const Newsletter = () => {
         ogImage="https://3bi.ai/og/newsletter.png"
         canonical="https://3bi.ai/newsletter"
       />
-      <Header />
-      <main className="min-h-screen pt-20 pb-16">
+      <PublicPageLayout maxWidth="7xl">
         {/* Hero Section */}
         <section className="container mx-auto px-4 py-16 text-center">
           <Mail className="w-20 h-20 mx-auto mb-6 text-primary" />
@@ -275,8 +273,7 @@ const Newsletter = () => {
             </div>
           </div>
         </section>
-      </main>
-      <Footer />
+      </PublicPageLayout>
     </>
   );
 };

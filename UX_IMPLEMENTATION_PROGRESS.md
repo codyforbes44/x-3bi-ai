@@ -70,14 +70,14 @@
 **Timeline**: Days 5-8  
 **Status**: ⚪ Not Started
 
-### Batch 1: Public Marketing Pages (7 pages)
-- [ ] Mission.tsx → PublicPageLayout
-- [ ] Impact.tsx → PublicPageLayout
-- [ ] Team.tsx → PublicPageLayout
-- [ ] Partners.tsx → PublicPageLayout
-- [ ] Community.tsx → PublicPageLayout
-- [ ] Newsletter.tsx → PublicPageLayout
-- [ ] Contact.tsx → PublicPageLayout
+### Batch 1: Public Marketing Pages (7 pages) - ✅ COMPLETE
+- [x] Mission.tsx → PublicPageLayout
+- [x] Impact.tsx → PublicPageLayout
+- [x] Team.tsx → PublicPageLayout
+- [x] Partners.tsx → PublicPageLayout
+- [x] Community.tsx → PublicPageLayout (updated from PageLayout)
+- [x] Newsletter.tsx → PublicPageLayout (form functionality preserved)
+- [x] Contact.tsx → PublicPageLayout (form functionality preserved)
 
 ### Batch 2: Auth & Tools Pages (4 pages)
 - [ ] AuthPage.tsx → MinimalPageLayout
