@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SEO } from '@/components/SEO';
 import { Button } from '@/components/ui/button';
 import { LayoutDashboard, Settings, Plus } from 'lucide-react';
@@ -7,6 +7,7 @@ import { WebVitalsWidget } from '@/components/dashboard/widgets/WebVitalsWidget'
 import { AIUsageWidget } from '@/components/dashboard/widgets/AIUsageWidget';
 import { PredictiveInsightsWidget } from '@/components/dashboard/widgets/PredictiveInsightsWidget';
 import { RecentActivityWidget } from '@/components/dashboard/widgets/RecentActivityWidget';
+import { SortableWidget } from '@/components/dashboard/SortableWidget';
 import { Badge } from '@/components/ui/badge';
 import {
   DropdownMenu,
@@ -16,6 +17,21 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  rectSortingStrategy,
+} from '@dnd-kit/sortable';
 
 type WidgetKey = 'systemHealth' | 'webVitals' | 'aiUsage' | 'predictive' | 'activity';
 
@@ -26,21 +42,64 @@ interface WidgetConfig {
   enabled: boolean;
 }
 
+const STORAGE_KEY = 'dashboard-widget-config';
+
+const defaultWidgets: WidgetConfig[] = [
+  { id: 'systemHealth', name: 'System Health', component: SystemHealthWidget, enabled: true },
+  { id: 'webVitals', name: 'Web Vitals', component: WebVitalsWidget, enabled: true },
+  { id: 'aiUsage', name: 'AI Usage', component: AIUsageWidget, enabled: true },
+  { id: 'predictive', name: 'Predictive Insights', component: PredictiveInsightsWidget, enabled: true },
+  { id: 'activity', name: 'Recent Activity', component: RecentActivityWidget, enabled: true },
+];
+
 export default function DashboardOverview() {
-  const [widgets, setWidgets] = useState<WidgetConfig[]>([
-    { id: 'systemHealth', name: 'System Health', component: SystemHealthWidget, enabled: true },
-    { id: 'webVitals', name: 'Web Vitals', component: WebVitalsWidget, enabled: true },
-    { id: 'aiUsage', name: 'AI Usage', component: AIUsageWidget, enabled: true },
-    { id: 'predictive', name: 'Predictive Insights', component: PredictiveInsightsWidget, enabled: true },
-    { id: 'activity', name: 'Recent Activity', component: RecentActivityWidget, enabled: true },
-  ]);
+  const [widgets, setWidgets] = useState<WidgetConfig[]>(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        // Merge with defaults to handle new widgets
+        return defaultWidgets.map(defaultWidget => {
+          const savedWidget = parsed.find((w: WidgetConfig) => w.id === defaultWidget.id);
+          return savedWidget ? { ...defaultWidget, enabled: savedWidget.enabled } : defaultWidget;
+        });
+      } catch {
+        return defaultWidgets;
+      }
+    }
+    return defaultWidgets;
+  });
 
   const [lastUpdated, setLastUpdated] = useState(new Date());
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  // Save to localStorage whenever widgets change
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(widgets));
+  }, [widgets]);
 
   const toggleWidget = (id: WidgetKey) => {
     setWidgets(prev => 
       prev.map(w => w.id === id ? { ...w, enabled: !w.enabled } : w)
     );
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+
+    if (over && active.id !== over.id) {
+      setWidgets((items) => {
+        const oldIndex = items.findIndex((item) => item.id === active.id);
+        const newIndex = items.findIndex((item) => item.id === over.id);
+        return arrayMove(items, oldIndex, newIndex);
+      });
+    }
   };
 
   const enabledWidgets = widgets.filter(w => w.enabled);
@@ -141,12 +200,27 @@ export default function DashboardOverview() {
             </DropdownMenu>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {enabledWidgets.map((widget) => {
-              const WidgetComponent = widget.component;
-              return <WidgetComponent key={widget.id} />;
-            })}
-          </div>
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={enabledWidgets.map(w => w.id)}
+              strategy={rectSortingStrategy}
+            >
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {enabledWidgets.map((widget) => {
+                  const WidgetComponent = widget.component;
+                  return (
+                    <SortableWidget key={widget.id} id={widget.id}>
+                      <WidgetComponent />
+                    </SortableWidget>
+                  );
+                })}
+              </div>
+            </SortableContext>
+          </DndContext>
         )}
 
         {/* Quick Actions */}
