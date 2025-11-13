@@ -71,7 +71,7 @@ export function DemoSchedulerDialog({ open, onOpenChange }: DemoSchedulerDialogP
       
       // Insert demo request into database
       const { error } = await supabase
-        .from('demo_requests')
+        .from('demo_requests' as any)
         .insert({
           user_id: user?.id || null,
           name: formData.name,

@@ -70,7 +70,7 @@ const AdminDashboard = () => {
     try {
       // Get pending demo requests count
       const { count: demosCount } = await supabase
-        .from('demo_requests')
+        .from('demo_requests' as any)
         .select('*', { count: 'exact', head: true })
         .eq('status', 'pending');
 
