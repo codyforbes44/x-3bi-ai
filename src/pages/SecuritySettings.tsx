@@ -11,6 +11,7 @@ import { toast } from "sonner";
 import { Shield, ShieldCheck, AlertTriangle, Clock } from "lucide-react";
 import { SEO } from "@/components/SEO";
 import { logger } from "@/utils/logger";
+import { AuthenticatedPageLayout } from "@/components/layout/AuthenticatedPageLayout";
 import {
   Table,
   TableBody,
@@ -172,7 +173,7 @@ export default function SecuritySettings() {
         canonical="https://3bi.ai/security"
       />
       
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
+      <AuthenticatedPageLayout maxWidth="xl" showBreadcrumbs={true}>
         <div className="mb-8">
           <h1 className="text-4xl font-bold mb-2">Security Settings</h1>
           <p className="text-muted-foreground">
@@ -324,7 +325,8 @@ export default function SecuritySettings() {
             )}
           </CardContent>
         </Card>
-      </div>
+        </div>
+      </AuthenticatedPageLayout>
     </>
   );
 }

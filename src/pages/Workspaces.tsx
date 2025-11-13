@@ -31,7 +31,7 @@ const Workspaces = () => {
         ogImage="https://3bi.ai/og/workspaces.png"
         canonical="https://3bi.ai/workspaces"
       />
-      <AuthenticatedPageLayout maxWidth="xl" showBreadcrumbs={false}>
+      <AuthenticatedPageLayout maxWidth="xl" showBreadcrumbs={true}>
         <div className="max-w-6xl mx-auto space-y-8">
           {/* Header */}
           <div className="space-y-4">

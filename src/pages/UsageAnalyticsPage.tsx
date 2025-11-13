@@ -14,7 +14,7 @@ export default function UsageAnalyticsPage() {
         ogImage="https://3bi.ai/og/analytics.png"
         canonical="https://3bi.ai/usage-analytics"
       />
-      <AuthenticatedPageLayout maxWidth="2xl" showBreadcrumbs={false}>
+      <AuthenticatedPageLayout maxWidth="2xl" showBreadcrumbs={true}>
         <PageHero
           title="AI Usage Analytics"
           description="Track usage, optimize costs, and gain insights into your AI consumption"
@@ -22,6 +22,7 @@ export default function UsageAnalyticsPage() {
             icon: BarChart,
             text: 'Analytics Dashboard',
           }}
+          compact
         />
         <div className="mt-8">
           <AIUsageAnalytics />
