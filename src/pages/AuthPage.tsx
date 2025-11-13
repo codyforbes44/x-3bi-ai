@@ -18,14 +18,27 @@ import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
 import { z } from "zod";
 
 const signInSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters")
+  email: z.string()
+    .trim()
+    .email("Please enter a valid email address")
+    .max(255, "Email must be less than 255 characters"),
+  password: z.string()
+    .min(6, "Password must be at least 6 characters")
+    .max(128, "Password must be less than 128 characters")
 });
 
 const signUpSchema = z.object({
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  displayName: z.string().optional()
+  email: z.string()
+    .trim()
+    .email("Please enter a valid email address")
+    .max(255, "Email must be less than 255 characters"),
+  password: z.string()
+    .min(6, "Password must be at least 6 characters")
+    .max(128, "Password must be less than 128 characters"),
+  displayName: z.string()
+    .trim()
+    .max(100, "Display name must be less than 100 characters")
+    .optional()
 });
 
 const AuthPage = () => {
@@ -160,14 +173,16 @@ const AuthPage = () => {
         canonical="https://3bi.ai/auth"
       />
       <MinimalPageLayout>
-        <div className="min-h-screen flex items-center justify-center px-4 py-12">
-          <Card className="w-full max-w-md">
-            <CardHeader className="space-y-1 text-center">
+        <div className="min-h-screen flex items-center justify-center px-4 py-8 sm:py-12">
+          <Card className="w-full max-w-md shadow-lg">
+            <CardHeader className="space-y-1 text-center pb-4">
               <div className="flex justify-center mb-4">
-                <Heart className="w-12 h-12 text-primary" />
+                <Heart className="w-10 h-10 sm:w-12 sm:h-12 text-primary" />
               </div>
-              <CardTitle className="text-2xl">Welcome to 3BI.AI</CardTitle>
-              <CardDescription>Sign in or create an account</CardDescription>
+              <CardTitle className="text-xl sm:text-2xl">Welcome to 3BI.AI</CardTitle>
+              <CardDescription className="text-sm sm:text-base">
+                Sign in or create an account to get started
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -176,8 +191,14 @@ const AuthPage = () => {
                   <TabsTrigger value="signup">Sign Up</TabsTrigger>
                 </TabsList>
 
-                <TabsContent value="signin">
-                  {success && <FormSuccess message={success} className="mb-4" />}
+                <TabsContent value="signin" className="space-y-4">
+                  {success && (
+                    <FormSuccess 
+                      message={success} 
+                      variant="alert"
+                      className="mb-4"
+                    />
+                  )}
                   {signInErrors._form && (
                     <Alert variant="destructive" className="mb-4">
                       <AlertCircle className="h-4 w-4" />
@@ -198,6 +219,8 @@ const AuthPage = () => {
                         }}
                         onBlur={() => validateSignInField("email", signInEmail)}
                         disabled={loading}
+                        maxLength={255}
+                        autoComplete="email"
                       />
                     </SimpleFormField>
 
@@ -213,25 +236,37 @@ const AuthPage = () => {
                           }}
                           onBlur={() => validateSignInField("password", signInPassword)}
                           disabled={loading}
+                          className="pr-10"
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground touch-target"
+                          aria-label={showPassword ? "Hide password" : "Show password"}
                         >
                           {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
                       </div>
                     </SimpleFormField>
 
-                    <Button type="submit" className="w-full" disabled={loading}>
+                    <Button 
+                      type="submit" 
+                      className="w-full h-12 sm:h-10 text-base sm:text-sm touch-target" 
+                      disabled={loading}
+                    >
                       {loading ? "Signing in..." : "Sign In"}
                     </Button>
                   </form>
                 </TabsContent>
 
-                <TabsContent value="signup">
-                  {success && <FormSuccess message={success} className="mb-4" />}
+                <TabsContent value="signup" className="space-y-4">
+                  {success && (
+                    <FormSuccess 
+                      message={success} 
+                      variant="alert"
+                      className="mb-4"
+                    />
+                  )}
                   {signUpErrors._form && (
                     <Alert variant="destructive" className="mb-4">
                       <AlertCircle className="h-4 w-4" />
@@ -240,13 +275,17 @@ const AuthPage = () => {
                   )}
                   
                   <form onSubmit={handleSignUp} className="space-y-4">
-                    <SimpleFormField label="Display Name" helper="How should we address you?">
+                    <SimpleFormField 
+                      label="Display Name" 
+                      helper="How should we address you? (Optional)"
+                    >
                       <Input
                         type="text"
                         placeholder="Your name"
                         value={signUpDisplayName}
                         onChange={(e) => setSignUpDisplayName(e.target.value)}
                         disabled={loading}
+                        maxLength={100}
                       />
                     </SimpleFormField>
 
@@ -261,6 +300,8 @@ const AuthPage = () => {
                         }}
                         onBlur={() => validateSignUpField("email", signUpEmail)}
                         disabled={loading}
+                        maxLength={255}
+                        autoComplete="email"
                       />
                     </SimpleFormField>
 
@@ -276,11 +317,14 @@ const AuthPage = () => {
                           }}
                           onBlur={() => validateSignUpField("password", signUpPassword)}
                           disabled={loading}
+                          className="pr-10"
+                          maxLength={128}
                         />
                         <button
                           type="button"
                           onClick={() => setShowPassword(!showPassword)}
-                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground touch-target"
+                          aria-label={showPassword ? "Hide password" : "Show password"}
                         >
                           {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
@@ -288,7 +332,11 @@ const AuthPage = () => {
                       <PasswordStrength password={signUpPassword} />
                     </SimpleFormField>
 
-                    <Button type="submit" className="w-full" disabled={loading}>
+                    <Button 
+                      type="submit" 
+                      className="w-full h-12 sm:h-10 text-base sm:text-sm touch-target" 
+                      disabled={loading}
+                    >
                       {loading ? "Creating account..." : "Create Account"}
                     </Button>
                   </form>
