@@ -86,6 +86,7 @@ const SuperAdminDashboardPage = lazy(() => import("./pages/SuperAdminDashboardPa
 // Phase 8: Monitoring & Observability
 const MonitoringDashboard = lazy(() => import("./pages/MonitoringDashboard"));
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+const DashboardOverview = lazy(() => import("./pages/DashboardOverview"));
 
 const queryClient = new QueryClient();
 
@@ -159,8 +160,9 @@ const App = () => (
                             <Route path="/ai-enhance" element={<Navigate to="/dashboard?tab=image-enhance" replace />} />
                             <Route path="/ai-summary" element={<Navigate to="/dashboard?tab=summarizer" replace />} />
                             
-                            {/* Dashboard route */}
+                            {/* Dashboard routes */}
                             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                            <Route path="/dashboard-overview" element={<ProtectedRoute><DashboardOverview /></ProtectedRoute>} />
                             
                             {/* Other authenticated pages */}
                             <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />

@@ -2,7 +2,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { 
   Sparkles, MessageSquare, Image, Code, Mic, Video, 
   Brain, Zap, FileText, Calculator, Settings, User,
-  LayoutDashboard, Users, Workflow, Shield, Key, Palette
+  LayoutDashboard, Users, Workflow, Shield, Key, Palette, BarChart3
 } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarMenu, SidebarMenuItem, SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
 import { CategoryDot } from "@/components/visual/CategoryDot";
@@ -20,6 +20,7 @@ const FEATURES = [
   { id: 'brain', icon: Brain, route: getFeatureRoute('grok'), category: 'advanced-ai' as const, label: 'Grok' },
   { id: 'enhance', icon: Zap, route: getFeatureRoute('enhance'), category: 'ai-tools' as const, label: 'Enhance' },
   { id: 'summary', icon: FileText, route: getFeatureRoute('summary'), category: 'utilities' as const, label: 'Summary' },
+  { id: 'overview', icon: BarChart3, route: '/dashboard-overview', category: 'workspace' as const, label: 'Overview' },
   { id: 'dashboard', icon: LayoutDashboard, route: '/dashboard', category: 'workspace' as const, label: 'Dashboard' },
   { id: 'workflows', icon: Workflow, route: '/workflow-automation', category: 'enterprise' as const, label: 'Workflows' },
   { id: 'team', icon: Users, route: '/team-collaboration', category: 'enterprise' as const, label: 'Team' },
