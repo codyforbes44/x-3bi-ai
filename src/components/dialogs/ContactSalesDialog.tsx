@@ -8,6 +8,8 @@ import { FormSuccess } from "@/components/forms/FormSuccess";
 import { CharacterCounter } from "@/components/forms/CharacterCounter";
 import { useFormValidation } from "@/hooks/useFormValidation";
 import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { Mail, Loader2 } from "lucide-react";
 
@@ -25,6 +27,7 @@ interface ContactSalesDialogProps {
 }
 
 export function ContactSalesDialog({ open, onOpenChange }: ContactSalesDialogProps) {
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -60,19 +63,50 @@ export function ContactSalesDialog({ open, onOpenChange }: ContactSalesDialogPro
 
     setIsSubmitting(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    setSubmitSuccess(true);
-    
-    // Reset form after success
-    setTimeout(() => {
-      setFormData({ name: "", email: "", company: "", phone: "", message: "" });
-      clearErrors();
-      setSubmitSuccess(false);
-      onOpenChange(false);
-    }, 2000);
+    try {
+      // Get current user if logged in
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      // Insert contact submission into database
+      const { error } = await supabase
+        .from('contact_submissions')
+        .insert({
+          user_id: user?.id || null,
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          phone: formData.phone || null,
+          subject: 'Sales Inquiry',
+          message: formData.message,
+          status: 'pending'
+        });
+
+      if (error) throw error;
+
+      setSubmitSuccess(true);
+      
+      toast({
+        title: "Message Sent!",
+        description: "Our sales team will contact you within 24 hours.",
+      });
+      
+      // Reset form after success
+      setTimeout(() => {
+        setFormData({ name: "", email: "", company: "", phone: "", message: "" });
+        clearErrors();
+        setSubmitSuccess(false);
+        onOpenChange(false);
+      }, 2000);
+    } catch (error) {
+      console.error('Error submitting contact form:', error);
+      toast({
+        title: "Submission Failed",
+        description: "There was an error sending your message. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleClose = (open: boolean) => {
