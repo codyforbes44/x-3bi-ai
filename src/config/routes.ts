@@ -66,6 +66,7 @@ export const ROUTES = {
   API_KEYS: '/api-keys',
   GROK: '/grok',
   SUPER_ADMIN_DASHBOARD: '/admin/super',
+  ADMIN_DASHBOARD: '/admin',
 } as const;
 
 export const TUTORIAL_ROUTES = {
