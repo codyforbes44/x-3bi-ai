@@ -2,15 +2,24 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Menu, User, Settings, LogOut, FileText, Building2 } from "lucide-react";
+import { Menu, User, Settings, LogOut, Home, LayoutDashboard, FileText, Sparkles } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useAuth } from "@/contexts/AuthContext";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import kalpeshLogo from "@/assets/kalpesh-logo.png";
+import { AnimatedLogo } from "@/components/visual/AnimatedLogo";
 import { MAIN_NAVIGATION, ROUTES } from "@/config/routes";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import { OnboardingProgressIndicator } from "@/components/onboarding/OnboardingProgressIndicator";
+import { IconNavButton } from "@/components/visual/IconNavButton";
+
+// Map navigation items to icons
+const NAV_ICONS: Record<string, any> = {
+  "Home": Home,
+  "Dashboard": LayoutDashboard,
+  "Features": Sparkles,
+  "Documentation": FileText,
+};
 const Header = () => {
   const isMobile = useIsMobile();
   const navigate = useNavigate();
@@ -39,35 +48,29 @@ const Header = () => {
       {user && <OnboardingProgressIndicator />}
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border">
         <div className="container mx-auto px-3 md:px-4 h-14 md:h-16 flex items-center justify-between">
-        {/* Logo */}
-        <Link 
-          to={ROUTES.HOME} 
-          className="flex items-center space-x-2 md:space-x-3 hover:opacity-80 transition-opacity"
-        >
-          <img 
-            src={kalpeshLogo} 
-            alt="3BI.AI Logo" 
-            className="w-8 h-8 md:w-10 md:h-10 object-contain"
-          />
-          <span className="text-base md:text-xl font-bold">3BI.AI</span>
-        </Link>
-        
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
-          {MAIN_NAVIGATION.map(item => (
-            <Link 
-              key={item.name} 
-              to={item.href} 
-              className={`text-sm lg:text-base transition-smooth ${
-                isActiveRoute(item.href) 
-                  ? 'text-foreground font-medium' 
-                  : 'text-muted-foreground hover:text-foreground'
-              }`}
-            >
-              {item.name}
-            </Link>
-          ))}
-        </nav>
+          {/* Logo - Icon Only */}
+          <Link 
+            to={ROUTES.HOME} 
+            className="flex items-center hover:opacity-80 transition-opacity"
+          >
+            <AnimatedLogo size="md" />
+          </Link>
+          
+          {/* Desktop Navigation - Icons Only */}
+          <nav className="hidden md:flex items-center space-x-2">
+            {MAIN_NAVIGATION.map(item => {
+              const Icon = NAV_ICONS[item.name] || Sparkles;
+              return (
+                <IconNavButton
+                  key={item.name}
+                  icon={Icon}
+                  label={item.name}
+                  href={item.href}
+                  isActive={isActiveRoute(item.href)}
+                />
+              );
+            })}
+          </nav>
         
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center space-x-4">
@@ -134,70 +137,45 @@ const Header = () => {
             </SheetTrigger>
             <SheetContent side="right" className="w-[280px] sm:w-[320px]">
               <div className="flex flex-col space-y-6 mt-6">
-                <div className="flex items-center space-x-2">
-                  <img 
-                    src={kalpeshLogo} 
-                    alt="3BI.AI Logo" 
-                    className="w-10 h-10 object-contain"
-                  />
-                  <span className="text-lg font-bold">3BI.AI</span>
-                </div>
+                <AnimatedLogo size="lg" />
                 
                 <nav className="flex flex-col space-y-3">
-                  {MAIN_NAVIGATION.map(item => (
-                    <Link 
-                      key={item.name} 
-                      to={item.href} 
-                      className={`text-base py-2 touch-target transition-smooth ${
-                        isActiveRoute(item.href)
-                          ? 'text-foreground font-medium'
-                          : 'text-muted-foreground hover:text-foreground'
-                      }`}
-                    >
-                      {item.name}
-                    </Link>
-                  ))}
-                </nav>
-                
-                <div className="flex flex-col space-y-3 pt-4 border-t border-border">
-                  {/* Mobile Theme Toggle */}
-                  <ThemeToggle variant="mobile" />
-                  
-                  {/* Mobile Auth */}
-                  {user ? (
-                    <>
-                      <Button variant="ghost" className="justify-start" asChild>
-                        <Link to={ROUTES.DASHBOARD}>
-                          <User className="mr-2 h-4 w-4" />
-                          Dashboard
-                        </Link>
-                      </Button>
-                      <Button variant="ghost" className="justify-start" asChild>
-                        <Link to={ROUTES.PROFILE}>
-                          <Settings className="mr-2 h-4 w-4" />
-                          Profile Settings
-                        </Link>
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        className="justify-start text-destructive hover:text-destructive"
-                        onClick={signOut}
+                  {MAIN_NAVIGATION.map(item => {
+                    const Icon = NAV_ICONS[item.name] || Sparkles;
+                    return (
+                      <Link 
+                        key={item.name} 
+                        to={item.href}
+                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent transition-all"
                       >
-                        <LogOut className="mr-2 h-4 w-4" />
-                        Sign Out
-                      </Button>
-                    </>
-                  ) : (
+                        <Icon className="w-5 h-5" />
+                        <span>{item.name}</span>
+                      </Link>
+                    );
+                  })}
+                  {user && (
                     <>
-                      <Button variant="ghost" className="justify-start" asChild>
-                        <Link to={ROUTES.AUTH}>Sign In</Link>
-                      </Button>
-                      <Button className="bg-gradient-hero text-primary-foreground justify-start" asChild>
-                        <Link to={ROUTES.AUTH}>Get Started</Link>
-                      </Button>
+                      <div className="border-t border-border my-2" />
+                      <Link 
+                        to={"/settings"}
+                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent transition-all"
+                      >
+                        <Settings className="w-5 h-5" />
+                        <span>Settings</span>
+                      </Link>
+                      <button
+                        onClick={() => {
+                          signOut();
+                          navigate(ROUTES.HOME);
+                        }}
+                        className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent transition-all text-left w-full"
+                      >
+                        <LogOut className="w-5 h-5" />
+                        <span>Sign Out</span>
+                      </button>
                     </>
                   )}
-                </div>
+                </nav>
               </div>
             </SheetContent>
           </Sheet>
