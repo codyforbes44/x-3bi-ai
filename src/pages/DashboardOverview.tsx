@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { SEO } from '@/components/SEO';
 import { Button } from '@/components/ui/button';
-import { LayoutDashboard, Settings, Plus } from 'lucide-react';
+import { LayoutDashboard, Settings, Plus, Briefcase, Code, Shield } from 'lucide-react';
 import { SystemHealthWidget } from '@/components/dashboard/widgets/SystemHealthWidget';
 import { WebVitalsWidget } from '@/components/dashboard/widgets/WebVitalsWidget';
 import { AIUsageWidget } from '@/components/dashboard/widgets/AIUsageWidget';
@@ -13,6 +13,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuCheckboxItem,
+  DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
@@ -43,6 +44,7 @@ interface WidgetConfig {
 }
 
 const STORAGE_KEY = 'dashboard-widget-config';
+const TEMPLATE_KEY = 'dashboard-template';
 
 const defaultWidgets: WidgetConfig[] = [
   { id: 'systemHealth', name: 'System Health', component: SystemHealthWidget, enabled: true },
@@ -52,7 +54,46 @@ const defaultWidgets: WidgetConfig[] = [
   { id: 'activity', name: 'Recent Activity', component: RecentActivityWidget, enabled: true },
 ];
 
+type DashboardTemplate = 'custom' | 'executive' | 'developer' | 'admin';
+
+interface Template {
+  id: DashboardTemplate;
+  name: string;
+  icon: React.ComponentType<{ className?: string }>;
+  description: string;
+  enabledWidgets: WidgetKey[];
+}
+
+const templates: Template[] = [
+  {
+    id: 'executive',
+    name: 'Executive',
+    icon: Briefcase,
+    description: 'High-level insights and KPIs',
+    enabledWidgets: ['predictive', 'aiUsage', 'activity'],
+  },
+  {
+    id: 'developer',
+    name: 'Developer',
+    icon: Code,
+    description: 'Technical metrics and performance',
+    enabledWidgets: ['systemHealth', 'webVitals', 'activity'],
+  },
+  {
+    id: 'admin',
+    name: 'Admin',
+    icon: Shield,
+    description: 'Complete system overview',
+    enabledWidgets: ['systemHealth', 'webVitals', 'aiUsage', 'predictive', 'activity'],
+  },
+];
+
 export default function DashboardOverview() {
+  const [currentTemplate, setCurrentTemplate] = useState<DashboardTemplate>(() => {
+    const saved = localStorage.getItem(TEMPLATE_KEY);
+    return (saved as DashboardTemplate) || 'custom';
+  });
+
   const [widgets, setWidgets] = useState<WidgetConfig[]>(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
@@ -84,10 +125,34 @@ export default function DashboardOverview() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(widgets));
   }, [widgets]);
 
+  // Save template selection
+  useEffect(() => {
+    localStorage.setItem(TEMPLATE_KEY, currentTemplate);
+  }, [currentTemplate]);
+
   const toggleWidget = (id: WidgetKey) => {
     setWidgets(prev => 
       prev.map(w => w.id === id ? { ...w, enabled: !w.enabled } : w)
     );
+    setCurrentTemplate('custom'); // Switch to custom when manually toggling
+  };
+
+  const applyTemplate = (templateId: DashboardTemplate) => {
+    if (templateId === 'custom') {
+      setCurrentTemplate('custom');
+      return;
+    }
+
+    const template = templates.find(t => t.id === templateId);
+    if (!template) return;
+
+    setWidgets(prev => 
+      prev.map(w => ({
+        ...w,
+        enabled: template.enabledWidgets.includes(w.id),
+      }))
+    );
+    setCurrentTemplate(templateId);
   };
 
   const handleDragEnd = (event: DragEndEvent) => {
@@ -126,7 +191,7 @@ export default function DashboardOverview() {
               </p>
             </div>
             
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
               <Badge variant="outline" className="text-xs">
                 <span className="relative flex h-2 w-2 mr-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
@@ -134,6 +199,51 @@ export default function DashboardOverview() {
                 </span>
                 Live
               </Badge>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" size="sm" className="min-h-[44px]">
+                    <LayoutDashboard className="h-4 w-4 mr-2" />
+                    Template: {currentTemplate === 'custom' ? 'Custom' : templates.find(t => t.id === currentTemplate)?.name}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-64">
+                  <DropdownMenuLabel>Dashboard Templates</DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  {templates.map((template) => {
+                    const Icon = template.icon;
+                    return (
+                      <DropdownMenuItem
+                        key={template.id}
+                        onClick={() => applyTemplate(template.id)}
+                        className="cursor-pointer"
+                      >
+                        <Icon className="h-4 w-4 mr-2" />
+                        <div className="flex-1">
+                          <div className="font-medium">{template.name}</div>
+                          <div className="text-xs text-muted-foreground">{template.description}</div>
+                        </div>
+                        {currentTemplate === template.id && (
+                          <Badge variant="secondary" className="ml-2">Active</Badge>
+                        )}
+                      </DropdownMenuItem>
+                    );
+                  })}
+                  {currentTemplate === 'custom' && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem className="cursor-default">
+                        <LayoutDashboard className="h-4 w-4 mr-2" />
+                        <div className="flex-1">
+                          <div className="font-medium">Custom</div>
+                          <div className="text-xs text-muted-foreground">Your personalized layout</div>
+                        </div>
+                        <Badge variant="secondary" className="ml-2">Active</Badge>
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                </DropdownMenuContent>
+              </DropdownMenu>
               
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
