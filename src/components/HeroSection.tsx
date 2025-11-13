@@ -12,15 +12,15 @@ const HeroSection = () => {
         <div className="max-w-6xl mx-auto">
           {/* Trust indicators */}
           <div className="flex flex-wrap items-center justify-center gap-3 md:gap-4 mb-6 animate-fade-in">
-            <Badge variant="secondary" className="bg-primary/10 backdrop-blur-sm border-primary/20 hover:bg-primary/20 transition-all">
+            <Badge variant="neon-purple" className="glass-card">
               <Sparkles className="w-4 h-4 mr-2" />
               All-in-One AI Platform
             </Badge>
-            <Badge variant="secondary" className="bg-success/10 backdrop-blur-sm border-success/20 hover:bg-success/20 transition-all">
-              <div className="w-2 h-2 bg-success rounded-full animate-pulse mr-2" aria-label="Live indicator"></div>
+            <Badge variant="neon-cyan" className="glass-card">
+              <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse mr-2" aria-label="Live indicator"></div>
               Premium X Verified
             </Badge>
-            <Badge variant="secondary" className="bg-primary/10 backdrop-blur-sm border-primary/20 hover:bg-primary/20 transition-all">
+            <Badge variant="neon-pink" className="glass-card">
               <Shield className="w-4 h-4 mr-2" />
               Enterprise-Grade Security
             </Badge>
@@ -56,12 +56,12 @@ const HeroSection = () => {
           <div className="flex flex-wrap justify-center gap-3 mb-10 px-4 animate-fade-in" style={{
           animationDelay: '300ms'
         }}>
-            <div className="flex items-center gap-2 bg-primary/10 backdrop-blur-sm px-4 py-2.5 rounded-full border border-primary/20 hover:bg-primary/15 hover:border-primary/30 hover:shadow-glow transition-all cursor-pointer group" role="button" tabIndex={0} aria-label="Grok 3 - Real-time AI with X verification">
-              <Zap className="w-4 h-4 text-primary group-hover:scale-110 transition-transform" />
+            <div className="flex items-center gap-2 glass-card px-4 py-2.5 rounded-full border border-purple-500/30 neon-glow-purple hover:border-purple-500/50 transition-all cursor-pointer group" role="button" tabIndex={0} aria-label="Grok 4 - Real-time AI with X verification">
+              <Zap className="w-4 h-4 text-purple-500 group-hover:scale-110 transition-transform" />
               <span className="text-foreground text-sm font-medium">Grok 4</span>
-              <Badge variant="outline" className="text-xs border-success/50 bg-success/10 text-success">Real-time</Badge>
+              <Badge variant="neon-cyan" className="text-xs">Real-time</Badge>
             </div>
-            <div className="flex items-center gap-2 bg-primary/10 backdrop-blur-sm px-4 py-2.5 rounded-full border border-primary/20 hover:bg-primary/15 hover:border-primary/30 hover:shadow-glow transition-all cursor-pointer group" role="button" tabIndex={0} aria-label="Claude Opus 4 - 200K context window">
+            <div className="flex items-center gap-2 glass-card px-4 py-2.5 rounded-full border border-purple-500/30 neon-glow-purple hover:border-purple-500/50 transition-all cursor-pointer group" role="button" tabIndex={0} aria-label="Claude Opus 4 - 200K context window">
               <Brain className="w-4 h-4 text-primary group-hover:scale-110 transition-transform" />
               <span className="text-foreground text-sm font-medium">Claude Opus 4</span>
               <Badge variant="outline" className="text-xs border-primary/50 bg-primary/10">200K</Badge>

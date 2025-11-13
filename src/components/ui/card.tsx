@@ -1,20 +1,47 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
+import { NeonCard } from "./neon-card"
 
-const Card = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      "rounded-lg border bg-card text-card-foreground shadow-sm",
-      className
-    )}
-    {...props}
-  />
-))
+type NeonVariant = 'pink' | 'cyan' | 'purple' | 'blue' | 'mixed' | 'none';
+
+interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+  variant?: 'default' | 'neon-pink' | 'neon-cyan' | 'neon-purple' | 'neon-blue' | 'neon-mixed';
+  glass?: boolean;
+  glow?: boolean;
+}
+
+const Card = React.forwardRef<HTMLDivElement, CardProps>(
+  ({ className, variant = 'default', glass = false, glow = false, ...props }, ref) => {
+    // If variant is neon-*, use NeonCard internally
+    if (variant.startsWith('neon-')) {
+      const neonVariant = variant.replace('neon-', '') as NeonVariant;
+      return (
+        <NeonCard
+          variant={neonVariant}
+          glass={glass}
+          glow={glow}
+          className={className}
+          {...props}
+        />
+      );
+    }
+    
+    // Otherwise use standard card (backward compatible)
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "rounded-lg border bg-card text-card-foreground shadow-sm",
+          glass && "glass-card",
+          glow && "neon-glow-mixed",
+          className
+        )}
+        {...props}
+      />
+    );
+  }
+);
 Card.displayName = "Card"
 
 const CardHeader = React.forwardRef<

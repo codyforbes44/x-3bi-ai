@@ -1,7 +1,10 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { BentoGrid, BentoItem } from "@/components/ui/bento-grid";
+import { AccentDot } from "@/components/ui/accent-dot";
 import { AI_MODELS } from "@/config/platform-capabilities";
 import { CheckCircle2 } from "lucide-react";
+import { getBentoSpan } from "@/config/neon-config";
 
 export function PlatformHighlights() {
   const modelsByCategory = {
@@ -23,8 +26,8 @@ export function PlatformHighlights() {
       <div className="container mx-auto max-w-7xl px-4 sm:px-6">
         {/* Section header */}
         <div className="text-center mb-16">
-          <Badge variant="secondary" className="mb-4">
-            <CheckCircle2 className="w-4 h-4 mr-2 text-success" />
+          <Badge variant="neon-purple" className="mb-4">
+            <CheckCircle2 className="w-4 h-4 mr-2" />
             12 Premium AI Models
           </Badge>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
@@ -46,21 +49,29 @@ export function PlatformHighlights() {
                 <h3 className={`text-2xl font-bold mb-6 ${category.color}`}>
                   {category.title}
                 </h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {models.map(model => (
-                    <Card key={model.id} className="hover:shadow-elegant transition-spring group">
-                      <CardHeader>
-                        <div className="flex items-start justify-between mb-4">
-                          <div className={`p-3 bg-${model.color}-500/10 rounded-lg group-hover:bg-${model.color}-500/20 transition-smooth`}>
-                            <model.icon className={`w-6 h-6 text-${model.color}-500`} />
+                <BentoGrid>
+                  {models.map((model, index) => (
+                    <BentoItem key={model.id} span={getBentoSpan(index, models.length)}>
+                      <Card 
+                        variant={index === 0 ? 'neon-purple' : 'default'} 
+                        glass={true}
+                        glow={model.verified}
+                        className="h-full hover:shadow-elegant transition-spring group"
+                      >
+                        <CardHeader>
+                          <div className="flex items-start justify-between mb-4">
+                            <div className={`p-3 bg-${model.color}-500/10 rounded-lg group-hover:bg-${model.color}-500/20 transition-smooth`}>
+                              <model.icon className={`w-6 h-6 text-${model.color}-500`} />
+                            </div>
+                            {model.verified && (
+                              <>
+                                <AccentDot color="cyan" />
+                                <Badge variant="neon-cyan" className="text-xs">
+                                  Verified
+                                </Badge>
+                              </>
+                            )}
                           </div>
-                          {model.verified && (
-                            <Badge variant="secondary" className="text-xs">
-                              <CheckCircle2 className="w-3 h-3 mr-1 text-success" />
-                              Verified
-                            </Badge>
-                          )}
-                        </div>
                         <CardTitle className="text-lg group-hover:text-primary transition-smooth">
                           {model.name}
                         </CardTitle>
@@ -85,9 +96,10 @@ export function PlatformHighlights() {
                           ))}
                         </div>
                       </CardContent>
-                    </Card>
+                      </Card>
+                    </BentoItem>
                   ))}
-                </div>
+                </BentoGrid>
               </div>
             );
           })}

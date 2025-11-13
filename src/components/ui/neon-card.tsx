@@ -4,14 +4,14 @@ import { ReactNode } from "react";
 type NeonVariant = 'pink' | 'cyan' | 'purple' | 'blue' | 'mixed' | 'none';
 type CardSize = 'sm' | 'md' | 'lg' | 'xl';
 
-interface NeonCardProps {
-  children: ReactNode;
+interface NeonCardProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: ReactNode;
   variant?: NeonVariant;
   size?: CardSize;
   glass?: boolean;
   glow?: boolean;
   className?: string;
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
 const SIZE_CLASSES = {

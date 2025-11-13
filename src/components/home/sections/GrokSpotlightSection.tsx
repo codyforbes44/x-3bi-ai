@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { NeonCard } from "@/components/ui/neon-card";
+import { AccentDot } from "@/components/ui/accent-dot";
 import { ArrowRight, CheckCircle2, Sparkles } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/config/routes";
@@ -16,7 +17,7 @@ export function GrokSpotlightSection() {
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           {/* Left Content */}
           <div className="animate-fade-in">
-            <Badge variant="secondary" className="mb-4 bg-blue-500/10 text-blue-500 border-blue-500/20">
+            <Badge variant="neon-purple" className="mb-4">
               <grokSpotlight.badge.icon className="w-4 h-4 mr-2" />
               {grokSpotlight.badge.text}
             </Badge>
@@ -44,7 +45,8 @@ export function GrokSpotlightSection() {
 
             <Button 
               size="lg" 
-              className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto group"
+              variant="neon-primary"
+              className="w-full sm:w-auto group"
               onClick={() => navigate('/grok')}
             >
               Try Grok Now

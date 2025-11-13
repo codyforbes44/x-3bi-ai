@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
+import { cn } from "@/lib/utils";
 import {
   Sidebar,
   SidebarContent,
@@ -18,6 +19,8 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { getAllFeatures, Feature } from "@/components/dashboard/FeatureCategories";
 import { Star, Clock, Sparkles, ChevronDown } from "lucide-react";
+import { CATEGORY_NEON_MAP, CATEGORY_LABELS } from "@/config/neon-config";
+import { AccentDot } from "./ui/accent-dot";
 
 interface AppSidebarProps {
   activeTab: string;
@@ -96,6 +99,15 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
   const renderFeatureButton = (feature: Feature) => {
     const isActive = activeTab === feature.id;
     const isFavorite = favorites.includes(feature.id);
+    
+    // Determine category for neon styling
+    let category: keyof typeof CATEGORY_NEON_MAP | undefined;
+    for (const [key, items] of Object.entries(categories)) {
+      if (items.some(f => f.id === feature.id)) {
+        category = key as keyof typeof CATEGORY_NEON_MAP;
+        break;
+      }
+    }
 
     return (
       <SidebarMenuItem key={feature.id}>
@@ -206,8 +218,8 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
               <Collapsible open={openCategory === 'favorites'} onOpenChange={(isOpen) => isOpen && setOpenCategory('favorites')}>
                 <SidebarGroup>
                   <CollapsibleTrigger asChild>
-                    <SidebarGroupLabel className="flex items-center gap-2 cursor-pointer hover:bg-accent/50 transition-colors rounded-md group">
-                      <Star className="w-3.5 h-3.5 flex-shrink-0" />
+                    <SidebarGroupLabel className="flex items-center gap-2 cursor-pointer hover:bg-pink-500/10 transition-colors rounded-md group border border-transparent hover:border-pink-500/30">
+                      <Star className="w-3.5 h-3.5 flex-shrink-0 text-pink-500" />
                       {open && (
                         <>
                           <span className="flex-1">Favorites</span>
@@ -241,7 +253,13 @@ export function AppSidebar({ activeTab, onTabChange }: AppSidebarProps) {
               >
                 <SidebarGroup>
                   <CollapsibleTrigger asChild>
-                    <SidebarGroupLabel className="flex items-center gap-2 cursor-pointer hover:bg-accent/50 transition-colors rounded-md group">
+                    <SidebarGroupLabel className={cn(
+                      "flex items-center gap-2 cursor-pointer transition-colors rounded-md group border border-transparent",
+                      categoryKey === 'enterprise' && "hover:bg-pink-500/10 hover:border-pink-500/30",
+                      categoryKey === 'advanced-ai' && "hover:bg-purple-500/10 hover:border-purple-500/30",
+                      categoryKey === 'ai-tools' && "hover:bg-cyan-400/10 hover:border-cyan-400/30",
+                      categoryKey === 'utilities' && "hover:bg-blue-500/10 hover:border-blue-500/30"
+                    )}>
                       {open ? (
                         <>
                           <div className="flex-1 flex flex-col items-start gap-0.5">

@@ -1,6 +1,8 @@
 import { DemoChatSection } from './DemoChatSection';
 import { DemoImageSection } from './DemoImageSection';
 import { DemoVoiceSection } from './DemoVoiceSection';
+import { NeonCard } from '@/components/ui/neon-card';
+import { Badge } from '@/components/ui/badge';
 import { Sparkles } from 'lucide-react';
 
 export function InteractiveDemos() {
@@ -8,10 +10,10 @@ export function InteractiveDemos() {
     <section className="py-24 px-4">
       <div className="container mx-auto max-w-7xl">
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 mb-6">
-            <Sparkles className="h-4 w-4 text-primary" />
-            <span className="text-sm font-medium text-primary">Try It Free</span>
-          </div>
+          <Badge variant="neon-cyan" className="mb-6">
+            <Sparkles className="h-4 w-4 mr-2" />
+            <span className="text-sm font-medium">Try It Free</span>
+          </Badge>
           <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
             Experience AI in Action
           </h2>

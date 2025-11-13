@@ -10,16 +10,16 @@ All colors MUST be HSL.
   :root {
     /* Enhanced Dark Mode - Deeper blacks for neon design */
     /* Deep neutral backgrounds */
-    --background: 0 0% 2%;
-    --foreground: 215 30% 75%;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
 
     /* Card with subtle elevation */
-    --card: 0 0% 5%;
-    --card-foreground: 215 30% 75%;
+    --card: 0 0% 3%;
+    --card-foreground: 0 0% 98%;
 
     /* Elevated popover */
-    --popover: 0 0% 6%;
-    --popover-foreground: 215 30% 75%;
+    --popover: 0 0% 3%;
+    --popover-foreground: 0 0% 98%;
 
     /* Refined primary - Vibrant Purple */
     --primary: 262 83% 58%;
@@ -39,8 +39,8 @@ All colors MUST be HSL.
     --secondary-glow: 240 5% 35%;
 
     /* Muted states - Better Readability */
-    --muted: 215 30% 12%;
-    --muted-foreground: 240 5% 70%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 65%;
 
     /* Accent - Vibrant Teal */
     --accent: 180 30% 65%;
@@ -64,9 +64,9 @@ All colors MUST be HSL.
     --info-foreground: 0 0% 98%;
 
     /* Borders and inputs */
-    --border: 240 5% 18%;
-    --input: 240 5% 18%;
-    --ring: 262 83% 58%;
+    --border: 0 0% 10%;
+    --input: 0 0% 10%;
+    --ring: 180 100% 60%;
 
     /* Border radius */
     --radius: 0.5rem;

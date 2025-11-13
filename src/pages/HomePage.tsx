@@ -6,6 +6,7 @@ import { GrokSpotlightSection } from "@/components/home/sections/GrokSpotlightSe
 import { QuickStartSection } from "@/components/home/sections/QuickStartSection";
 import { CapabilitiesSection } from "@/components/home/sections/CapabilitiesSection";
 import { PlatformStatsSection } from "@/components/home/sections/PlatformStatsSection";
+import { NeonPlatformStatsSection } from "@/components/home/sections/NeonPlatformStats";
 import { PlatformHighlights } from "@/components/home/sections/PlatformHighlights";
 import { ComparisonSection } from "@/components/home/sections/ComparisonSection";
 import { PlatformRoadmap } from "@/components/home/sections/PlatformRoadmap";
@@ -55,7 +56,7 @@ const HomePage = () => {
       />
       <PageLayout className="p-0">
         <HeroSection />
-        <PlatformStatsSection />
+        <NeonPlatformStatsSection />
         <PlatformHighlights />
       <GrokSpotlightSection />
       <InteractiveDemos />
@@ -74,7 +75,7 @@ const HomePage = () => {
             <>
               <Button 
                 size="lg" 
-                variant="secondary" 
+                variant="neon-primary" 
                 className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 touch-target"
                 onClick={() => navigate(cta.primaryButton.route)}
               >
@@ -82,8 +83,8 @@ const HomePage = () => {
               </Button>
               <Button 
                 size="lg" 
-                variant="outline" 
-                className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 border-border hover:bg-accent touch-target"
+                variant="glass" 
+                className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 touch-target"
                 onClick={() => navigate(cta.secondaryButton.route)}
               >
                 {cta.secondaryButton.text}
