@@ -108,7 +108,7 @@ export default function SharedGrokChat() {
         title={`Shared Grok Chat - ${conversation.title}`}
         description="View a shared Grok AI conversation"
         keywords={['shared chat', 'Grok AI', 'conversation sharing']}
-        ogImage="https://3bi.ai/og/grok-chat.png"
+        ogImage="https://3bi.ai/og/grok.png"
       />
       <div className="container mx-auto p-4 max-w-4xl">
         <div className="mb-4 flex items-center gap-2">
@@ -116,7 +116,7 @@ export default function SharedGrokChat() {
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back
           </Button>
-          <Button variant="outline" size="sm" onClick={() => navigate('/grok-chat')}>
+          <Button variant="outline" size="sm" onClick={() => navigate('/grok')}>
             <ExternalLink className="w-4 h-4 mr-2" />
             Start Your Own Chat
           </Button>
@@ -177,7 +177,7 @@ export default function SharedGrokChat() {
               <p className="text-sm text-muted-foreground mb-2">
                 This is a read-only shared conversation
               </p>
-              <Button onClick={() => navigate('/grok-chat')}>
+              <Button onClick={() => navigate('/grok')}>
                 Start Your Own Grok Chat
               </Button>
             </div>

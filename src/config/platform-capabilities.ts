@@ -162,7 +162,7 @@ export const AI_MODELS = [
 // Platform Features Configuration (27 AI Features)
 export const PLATFORM_FEATURES = [
   {
-    id: "grok-chat",
+    id: "grok",
     name: "Grok AI Chat",
     category: "ai-tools",
     icon: Zap,
@@ -171,7 +171,7 @@ export const PLATFORM_FEATURES = [
     description: "X's premium AI with real-time knowledge, vision capabilities, and advanced function calling",
     models: ["grok-3"],
     capabilities: ["Real-time data", "Vision analysis", "Function calling", "Web search"],
-    route: "/grok-chat",
+    route: "/grok",
     featured: true
   },
   {

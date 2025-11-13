@@ -121,8 +121,8 @@ Mood: Powerful, versatile, unified, professional, innovative`,
     priority: 3,
   },
   {
-    route: '/grok-chat',
-    filename: 'grok-chat.png',
+    route: '/grok',
+    filename: 'grok.png',
     title: 'Grok AI Chat',
     prompt: `${basePrompt}
     

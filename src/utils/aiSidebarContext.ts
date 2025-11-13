@@ -75,8 +75,8 @@ const FEATURE_CONTEXTS: Record<string, FeatureContext> = {
       'Explain workspace organization strategies',
     ],
   },
-  'grok-chat': {
-    featureId: 'grok-chat',
+  'grok': {
+    featureId: 'grok',
     featureName: 'Grok Chat',
     category: 'AI Tools',
     description: 'Conversation with xAI Grok models',

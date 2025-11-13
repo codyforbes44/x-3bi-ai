@@ -45,7 +45,7 @@ export function useVoiceCommands(commands: VoiceCommand[]) {
       // Navigation commands
       if (transcript.includes('go to') || transcript.includes('open')) {
         if (transcript.includes('dashboard')) navigate('/dashboard');
-        else if (transcript.includes('grok') || transcript.includes('chat')) navigate('/grok-chat');
+        else if (transcript.includes('grok') || transcript.includes('chat')) navigate('/grok');
         else if (transcript.includes('settings')) navigate('/settings');
         else if (transcript.includes('home')) navigate('/');
       }

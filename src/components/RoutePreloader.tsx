@@ -13,7 +13,7 @@ export const RoutePreloader = () => {
       const preloadMap: Record<string, string[]> = {
         '/': ['/auth', '/dashboard', '/pricing'],
         '/auth': ['/dashboard'],
-        '/dashboard': ['/grok-chat', '/profile', '/workspaces'],
+        '/dashboard': ['/grok', '/profile', '/workspaces'],
         '/pricing': ['/auth', '/enterprise'],
       };
 

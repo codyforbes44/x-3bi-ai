@@ -12,7 +12,7 @@ export function AppLayout() {
     const getFeatureFromRoute = (pathname: string): string | null => {
       if (pathname === '/') return 'home';
       if (pathname.includes('/dashboard')) return 'dashboard';
-      if (pathname.includes('/grok-chat')) return 'grok';
+      if (pathname.includes('/grok')) return 'grok';
       if (pathname.includes('/analytics')) return 'analytics';
       if (pathname.includes('/memory')) return 'memory';
       if (pathname.includes('/api')) return 'api';

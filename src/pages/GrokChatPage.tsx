@@ -137,7 +137,7 @@ export default function GrokChatPage() {
   };
 
   const handleCopyShareLink = async (shareToken: string) => {
-    const shareUrl = `${window.location.origin}/grok-chat/shared/${shareToken}`;
+    const shareUrl = `${window.location.origin}/grok/shared/${shareToken}`;
     
     try {
       await navigator.clipboard.writeText(shareUrl);
@@ -215,14 +215,14 @@ export default function GrokChatPage() {
   return (
     <>
       <SEO
-        title={PAGE_SEO.grokChat.title}
-        description={PAGE_SEO.grokChat.description}
-        keywords={PAGE_SEO.grokChat.keywords}
-        ogImage={SEO_CONFIG.ogImages.grokChat}
-        canonical={`${SEO_CONFIG.siteUrl}/grok-chat`}
+        title={PAGE_SEO.grok.title}
+        description={PAGE_SEO.grok.description}
+        keywords={PAGE_SEO.grok.keywords}
+        ogImage={SEO_CONFIG.ogImages.grok}
+        canonical={`${SEO_CONFIG.siteUrl}/grok`}
         breadcrumbs={[
           { name: BREADCRUMB_CONFIG.home.label, url: BREADCRUMB_CONFIG.home.url },
-          { name: BREADCRUMB_CONFIG.grokChat.label, url: BREADCRUMB_CONFIG.grokChat.url }
+          { name: BREADCRUMB_CONFIG.grok.label, url: BREADCRUMB_CONFIG.grok.url }
         ]}
       />
       <PullToRefreshWrapper onRefresh={handleRefresh}>

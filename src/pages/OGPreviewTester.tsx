@@ -17,7 +17,7 @@ const OGPreviewTester = () => {
     { path: "/", title: "Home", ogImage: "/og/home.png" },
     { path: "/dashboard", title: "Dashboard", ogImage: "/og/dashboard.png" },
     { path: "/ai-tools", title: "Free AI Tools", ogImage: "/og/ai-tools.png" },
-    { path: "/grok-chat", title: "Grok Chat", ogImage: "/og/grok-chat.png" },
+    { path: "/grok", title: "Grok Chat", ogImage: "/og/grok.png" },
     { path: "/community", title: "Community", ogImage: "/og/community.png" },
     { path: "/contact", title: "Contact", ogImage: "/og/contact.png" },
     { path: "/learn", title: "Learn", ogImage: "/og/learn.png" },

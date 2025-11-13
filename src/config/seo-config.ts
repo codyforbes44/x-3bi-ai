@@ -30,7 +30,7 @@ export const SEO_CONFIG = {
     default: 'https://3bi.ai/og/default.png',
     dashboard: 'https://3bi.ai/og/dashboard.png',
     aiTools: 'https://3bi.ai/og/ai-tools.png',
-    grokChat: 'https://3bi.ai/og/grok-chat.png',
+    grok: 'https://3bi.ai/og/grok.png',
     documentation: 'https://3bi.ai/og/documentation.png',
     pricing: 'https://3bi.ai/og/pricing.png',
     learn: 'https://3bi.ai/og/learn.png',
@@ -176,7 +176,7 @@ export const PAGE_SEO = {
     ],
   },
   
-  grokChat: {
+  grok: {
     title: 'Grok Chat - xAI Conversational AI',
     description: 'Chat with xAI\'s Grok 3 model. Advanced conversational AI with real-time streaming responses, persistent conversation history, and multi-modal support. Access Grok Vision for image analysis.',
     keywords: [
@@ -252,5 +252,5 @@ export const BREADCRUMB_CONFIG = {
   features: { label: 'Features', url: '/features' },
   learn: { label: 'Learn', url: '/learn' },
   community: { label: 'Community', url: '/community' },
-  grokChat: { label: 'Grok Chat', url: '/grok-chat' },
+  grok: { label: 'Grok Chat', url: '/grok' },
 };

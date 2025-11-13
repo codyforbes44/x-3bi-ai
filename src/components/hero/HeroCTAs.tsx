@@ -25,7 +25,7 @@ export function HeroCTAs() {
           size="lg" 
           variant="outline" 
           className="w-full sm:flex-1 h-14 text-lg border-border hover:bg-primary/10 hover:border-primary/30 backdrop-blur-sm touch-target transition-all duration-300"
-          onClick={() => navigate(ROUTES.GROK_CHAT)}
+          onClick={() => navigate(ROUTES.GROK)}
         >
           See Live Demo
         </Button>

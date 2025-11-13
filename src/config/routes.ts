@@ -64,7 +64,7 @@ export const ROUTES = {
   SHARED_GROK: '/shared/:shareId',
   MONITORING: '/monitoring',
   API_KEYS: '/api-keys',
-  GROK_CHAT: '/grok-chat',
+  GROK: '/grok',
 } as const;
 
 export const TUTORIAL_ROUTES = {
@@ -80,7 +80,7 @@ export const MAIN_NAVIGATION = [
   { name: 'Dashboard', href: ROUTES.DASHBOARD, icon: 'LayoutDashboard' },
   { name: 'Features', href: ROUTES.FEATURES, icon: 'Sparkles' },
   { name: 'AI Models', href: ROUTES.AI_MODELS, icon: 'Brain' },
-  { name: 'Grok Chat', href: ROUTES.GROK_CHAT, icon: 'MessageSquare' },
+  { name: 'Grok Chat', href: ROUTES.GROK, icon: 'MessageSquare' },
   { name: 'Learn', href: ROUTES.LEARN, icon: 'BookOpen' },
   { name: 'Docs', href: ROUTES.DOCUMENTATION, icon: 'FileText' },
   { name: 'Pricing', href: ROUTES.PRICING, icon: 'DollarSign' },
@@ -94,7 +94,7 @@ export const DASHBOARD_NAV_GROUPS = [
     items: [
       { name: 'Dashboard', href: ROUTES.DASHBOARD, icon: 'LayoutDashboard' },
       { name: 'AI Tools', href: ROUTES.FREE_AI_TOOLS, icon: 'Sparkles' },
-      { name: 'Grok Chat', href: ROUTES.GROK_CHAT, icon: 'MessageSquare' },
+      { name: 'Grok Chat', href: ROUTES.GROK, icon: 'MessageSquare' },
       { name: 'Memory', href: ROUTES.MEMORY, icon: 'Brain' },
       { name: 'Analytics', href: ROUTES.ANALYTICS, icon: 'BarChart3' },
       { name: 'Realtime Analytics', href: ROUTES.REALTIME_ANALYTICS, icon: 'Activity' },
@@ -139,7 +139,7 @@ export const FOOTER_NAV_GROUPS = [
     items: [
       { name: 'Dashboard', href: ROUTES.DASHBOARD },
       { name: 'AI Tools', href: ROUTES.FREE_AI_TOOLS },
-      { name: 'Grok Chat', href: ROUTES.GROK_CHAT },
+      { name: 'Grok Chat', href: ROUTES.GROK },
       { name: 'Memory', href: ROUTES.MEMORY },
       { name: 'Analytics', href: ROUTES.ANALYTICS },
       { name: 'Workspaces', href: ROUTES.WORKSPACES },
@@ -197,7 +197,7 @@ export const FOOTER_NAV_GROUPS = [
 export const MOBILE_QUICK_NAV = [
   { name: 'Home', href: ROUTES.HOME, icon: 'Home' },
   { name: 'Dashboard', href: ROUTES.DASHBOARD, icon: 'LayoutDashboard' },
-  { name: 'Grok', href: ROUTES.GROK_CHAT, icon: 'MessageSquare' },
+  { name: 'Grok', href: ROUTES.GROK, icon: 'MessageSquare' },
   { name: 'Learn', href: ROUTES.LEARN, icon: 'BookOpen' },
   { name: 'Profile', href: ROUTES.PROFILE, icon: 'User' },
 ] as const;

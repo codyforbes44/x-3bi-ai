@@ -153,9 +153,9 @@ const App = () => (
                             <Route path="/integrations-hub" element={<ProtectedRoute><IntegrationsHub /></ProtectedRoute>} />
                             <Route path="/api-access" element={<ProtectedRoute><APIAccess /></ProtectedRoute>} />
                             <Route path="/api-keys" element={<ProtectedRoute><APIKeys /></ProtectedRoute>} />
-                            <Route path="/grok-chat" element={<GrokChatPage />} />
-                            <Route path="/dashboard/grok-chat" element={<Navigate to="/grok-chat" replace />} />
-                            <Route path="/grok-chat/shared/:shareToken" element={<SharedGrokChat />} />
+        {/* Redirect old grok-chat route for backward compatibility */}
+        <Route path="/grok-chat/*" element={<Navigate to="/grok" replace />} />
+        <Route path="/dashboard/grok-chat" element={<Navigate to="/grok" replace />} />
                             
                             {/* Standalone Grok PWA */}
                             <Route path="/grok/*" element={<GrokApp />} />

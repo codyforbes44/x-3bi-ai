@@ -35,7 +35,7 @@ export function ProductTour({ runTour, onComplete }: ProductTourProps) {
       placement: 'right',
     },
     {
-      target: '[data-feature="grok-chat"]',
+      target: '[data-feature="grok"]',
       content: (
         <div>
           <h3 className="font-bold mb-2">Grok AI Chat</h3>
