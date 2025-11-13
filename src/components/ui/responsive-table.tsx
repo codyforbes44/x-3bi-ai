@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-interface Column<T> {
+export interface Column<T> {
   key: string;
   label: string;
   render: (item: T) => ReactNode;

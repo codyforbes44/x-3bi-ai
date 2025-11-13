@@ -1,8 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Activity, TrendingUp, AlertCircle, CheckCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Activity, TrendingUp, AlertCircle, CheckCircle, Download, FileJson, FileSpreadsheet } from 'lucide-react';
 import { monitorWebVitals } from '@/utils/performance';
+import { ResponsiveTable, Column } from '@/components/ui/responsive-table';
+import { useExport } from '@/hooks/useExport';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 
 interface WebVital {
   name: string;
@@ -14,6 +23,7 @@ interface WebVital {
 export function APMDashboard() {
   const [vitals, setVitals] = useState<WebVital[]>([]);
   const [isMonitoring, setIsMonitoring] = useState(false);
+  const { exportData } = useExport();
 
   useEffect(() => {
     setIsMonitoring(true);
@@ -88,16 +98,85 @@ export function APMDashboard() {
     return acc;
   }, {} as Record<string, WebVital>);
 
+  const handleExport = (format: 'csv' | 'json') => {
+    const data = vitals.map(vital => ({
+      metric: vital.name,
+      value: formatValue(vital.name, vital.value),
+      rating: vital.rating,
+      timestamp: new Date(vital.timestamp).toLocaleString(),
+    }));
+    
+    exportData(data, {
+      filename: `web-vitals-${new Date().toISOString().split('T')[0]}`,
+      format,
+    });
+  };
+
+  const columns: Column<WebVital>[] = [
+    {
+      key: 'name',
+      label: 'Metric',
+      render: (vital) => <span className="font-medium">{vital.name}</span>,
+    },
+    {
+      key: 'value',
+      label: 'Value',
+      render: (vital) => formatValue(vital.name, vital.value),
+    },
+    {
+      key: 'rating',
+      label: 'Rating',
+      render: (vital) => (
+        <Badge className={getRatingColor(vital.rating)} variant="outline">
+          {vital.rating.replace('-', ' ')}
+        </Badge>
+      ),
+      mobileLabel: 'Status',
+    },
+    {
+      key: 'timestamp',
+      label: 'Time',
+      render: (vital) => new Date(vital.timestamp).toLocaleTimeString(),
+      hideOnMobile: true,
+    },
+  ];
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <h2 className="text-2xl font-bold">Application Performance Monitoring</h2>
           <p className="text-muted-foreground">Real-time Web Vitals and performance metrics</p>
         </div>
-        <Badge variant={isMonitoring ? 'default' : 'secondary'}>
-          {isMonitoring ? 'Monitoring Active' : 'Monitoring Paused'}
-        </Badge>
+        <div className="flex items-center gap-3">
+          <Badge variant={isMonitoring ? 'default' : 'secondary'} className="w-fit">
+            {isMonitoring && (
+              <span className="relative flex h-2 w-2 mr-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-background opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-background"></span>
+              </span>
+            )}
+            {isMonitoring ? 'Monitoring Active' : 'Monitoring Paused'}
+          </Badge>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="outline" size="sm" className="min-h-[44px]">
+                <Download className="h-4 w-4 mr-2" />
+                Export
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onClick={() => handleExport('csv')}>
+                <FileSpreadsheet className="h-4 w-4 mr-2" />
+                Export as CSV
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => handleExport('json')}>
+                <FileJson className="h-4 w-4 mr-2" />
+                Export as JSON
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -119,6 +198,22 @@ export function APMDashboard() {
           </Card>
         ))}
       </div>
+
+      {vitals.length > 0 && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Vitals History</CardTitle>
+            <CardDescription>Recent performance measurements</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ResponsiveTable
+              data={vitals.slice(0, 10)}
+              columns={columns}
+              keyExtractor={(vital) => `${vital.name}-${vital.timestamp}`}
+            />
+          </CardContent>
+        </Card>
+      )}
 
       {vitals.length === 0 && (
         <Card>
