@@ -11,6 +11,9 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { newsletterSchema } from "@/utils/formValidation";
 import { logger } from "@/utils/logger";
+import { FormField } from "@/components/forms/FormField";
+import { InlineError } from "@/components/forms/InlineError";
+import { FormSuccess } from "@/components/forms/FormSuccess";
 
 const Newsletter = () => {
   const { toast } = useToast();
@@ -21,60 +24,75 @@ const Newsletter = () => {
     tutorials: false,
     caseStudies: false
   });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError(null);
+    setSuccess(false);
     
     try {
       // Validate form data
       const interestArray = Object.entries(interests)
         .filter(([_, value]) => value)
         .map(([key]) => key);
+
+      if (interestArray.length === 0) {
+        setError("Please select at least one interest");
+        setLoading(false);
+        return;
+      }
       
       const validatedData = newsletterSchema.parse({
         email,
         interests: interestArray
       });
 
-      const { error } = await supabase.from("newsletter_subscriptions").insert({
+      const { error: dbError } = await supabase.from("newsletter_subscriptions").insert({
         email: validatedData.email,
         interests: validatedData.interests,
       });
 
-      if (error) {
-        // Handle duplicate email gracefully
-        if (error.code === '23505') {
-          toast({
-            title: "Already Subscribed",
-            description: "This email is already subscribed to our newsletter.",
-          });
+      if (dbError) {
+        if (dbError.code === '23505') {
+          setError("This email is already subscribed to our newsletter");
         } else {
-          throw error;
+          throw dbError;
         }
       } else {
+        setSuccess(true);
+        setEmail("");
         toast({
           title: "Successfully Subscribed!",
           description: "Check your email for a confirmation link.",
         });
-        setEmail("");
       }
     } catch (error: any) {
       if (error.name === 'ZodError') {
-        toast({
-          title: "Validation Error",
-          description: error.errors[0].message,
-          variant: "destructive",
-        });
+        setError(error.errors[0].message);
       } else {
         logger.error("Newsletter subscription failed", error);
-        toast({
-          title: "Error",
-          description: "Failed to subscribe. Please try again.",
-          variant: "destructive",
-        });
+        setError("Failed to subscribe. Please try again.");
       }
+    } finally {
+      setLoading(false);
     }
   };
+
+  const selectedInterests = Object.entries(interests)
+    .filter(([_, value]) => value)
+    .map(([key]) => {
+      const labels: Record<string, string> = {
+        productUpdates: 'Product updates',
+        aiNews: 'AI news',
+        tutorials: 'Tutorials',
+        caseStudies: 'Case studies'
+      };
+      return labels[key];
+    });
 
   const benefits = [
     {
