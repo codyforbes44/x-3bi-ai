@@ -6,21 +6,127 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Skeleton } from "@/components/ui/skeleton";
+import { SearchBar } from "@/components/ui/search-bar";
+import { EmptyState } from "@/components/ui/empty-state";
+import { PageSkeleton } from "@/components/ui/page-skeleton";
 import { PLATFORM_FEATURES, FEATURE_CATEGORIES, getFeaturesByCategory, PLATFORM_STATS } from "@/config/platform-capabilities";
-import { Sparkles } from "lucide-react";
+import { Sparkles, History, Search as SearchIcon } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { SEO_CONFIG, PAGE_SEO, BREADCRUMB_CONFIG } from "@/config/seo-config";
+import { useRecentlyViewed } from "@/hooks/useRecentlyViewed";
+import { usePersonalization } from "@/hooks/usePersonalization";
 
 export default function FeaturesPage() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState("all");
+  
+  const { recentItems, addRecentItem } = useRecentlyViewed("features");
+  const { trackFeatureUsage } = usePersonalization();
 
   useEffect(() => {
     // Simulate loading state
     const timer = setTimeout(() => setIsLoading(false), 500);
     return () => clearTimeout(timer);
   }, []);
+
+  // Filter features based on search and active tab
+  const getFilteredFeatures = () => {
+    let features = activeTab === "all" 
+      ? PLATFORM_FEATURES 
+      : getFeaturesByCategory(activeTab);
+    
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      features = features.filter(
+        (feature) =>
+          feature.name.toLowerCase().includes(query) ||
+          feature.description.toLowerCase().includes(query) ||
+          feature.badge.toLowerCase().includes(query) ||
+          feature.capabilities.some(cap => cap.toLowerCase().includes(query))
+      );
+    }
+    
+    return features;
+  };
+
+  const filteredFeatures = getFilteredFeatures();
+
+  // Get recent features
+  const recentFeatures = recentItems
+    .map(item => PLATFORM_FEATURES.find(f => f.id === item.id))
+    .filter(Boolean)
+    .slice(0, 3);
+
+  const handleFeatureClick = (feature: any) => {
+    // Track feature usage
+    trackFeatureUsage(feature.id);
+    
+    // Add to recently viewed
+    addRecentItem({
+      id: feature.id,
+      title: feature.name,
+      path: feature.route,
+      metadata: { badge: feature.badge, category: feature.category }
+    });
+
+    // Navigate to feature
+    navigate(feature.route);
+  };
+
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery("");
+  };
+
+  const renderFeatureCard = (feature: any) => (
+    <Card 
+      key={feature.id} 
+      className="hover:shadow-lg transition-shadow cursor-pointer"
+      onClick={() => handleFeatureClick(feature)}
+    >
+      <CardHeader>
+        <div className="flex items-start justify-between mb-4">
+          <div className="p-3 rounded-lg bg-primary/10">
+            <feature.icon className="w-6 h-6 text-primary" />
+          </div>
+          <Badge variant="outline">{feature.badge}</Badge>
+        </div>
+        <CardTitle>{feature.name}</CardTitle>
+        <CardDescription>{feature.description}</CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="space-y-2">
+          <p className="text-sm font-medium">Capabilities:</p>
+          <div className="flex flex-wrap gap-2">
+            {feature.capabilities.map((cap: string, idx: number) => (
+              <Badge key={idx} variant="secondary" className="text-xs">
+                {cap}
+              </Badge>
+            ))}
+          </div>
+        </div>
+        <Button 
+          className="w-full" 
+          onClick={(e) => {
+            e.stopPropagation();
+            handleFeatureClick(feature);
+          }}
+        >
+          {feature.id.includes('chat') ? 'Try AI Chat' :
+           feature.id.includes('image') ? 'Generate Images' :
+           feature.id.includes('code') ? 'Start Coding' :
+           feature.id.includes('voice') ? 'Try Voice AI' :
+           feature.id.includes('workflow') ? 'Build Workflow' :
+           'Explore Feature'}
+        </Button>
+      </CardContent>
+    </Card>
+  );
 
   return (
     <>
@@ -47,137 +153,104 @@ export default function FeaturesPage() {
 
         <div className="container mx-auto px-4 py-12 max-w-7xl">
           {isLoading ? (
-            <div className="space-y-6">
-              <div className="flex gap-2">
-                {[...Array(5)].map((_, i) => (
-                  <Skeleton key={i} className="h-10 w-24" />
-                ))}
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[...Array(9)].map((_, i) => (
-                  <Card key={i}>
-                    <CardHeader>
-                      <div className="flex items-start justify-between mb-4">
-                        <Skeleton className="h-12 w-12 rounded-lg" />
-                        <Skeleton className="h-6 w-16" />
-                      </div>
-                      <Skeleton className="h-6 w-3/4 mb-2" />
-                      <Skeleton className="h-16 w-full" />
-                    </CardHeader>
-                    <CardContent className="space-y-2">
-                      <Skeleton className="h-4 w-full" />
-                      <Skeleton className="h-4 w-full" />
-                      <Skeleton className="h-4 w-3/4" />
-                      <Skeleton className="h-10 w-full mt-4" />
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
+            <PageSkeleton variant="card-grid" count={9} />
           ) : (
             <>
-          <Tabs defaultValue="all" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 mb-8">
-              <TabsTrigger value="all">
-                All ({PLATFORM_STATS.totalFeatures})
-              </TabsTrigger>
-              {FEATURE_CATEGORIES.map((cat) => (
-                <TabsTrigger key={cat.id} value={cat.id}>
-                  {cat.name} ({getFeaturesByCategory(cat.id).length})
-                </TabsTrigger>
-              ))}
-            </TabsList>
-
-            <TabsContent value="all" className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {PLATFORM_FEATURES.map((feature) => (
-                  <Card key={feature.id} className="hover:shadow-elegant transition-spring group">
-                    <CardHeader>
-                      <div className="flex items-start justify-between mb-4">
-                        <div className={`p-3 bg-${feature.color}-500/10 rounded-lg group-hover:bg-${feature.color}-500/20 transition-smooth`}>
-                          <feature.icon className={`w-6 h-6 text-${feature.color}-500`} />
-                        </div>
-                        <Badge variant="secondary">{feature.badge}</Badge>
-                      </div>
-                      <CardTitle className="group-hover:text-primary transition-smooth">
-                        {feature.name}
-                      </CardTitle>
-                      <CardDescription>{feature.description}</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {/* Capabilities */}
-                      <div className="space-y-2">
-                        {feature.capabilities.map((cap) => (
-                          <div key={cap} className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <div className={`w-1.5 h-1.5 rounded-full bg-${feature.color}-500`} />
-                            <span>{cap}</span>
-                          </div>
-                        ))}
-                      </div>
-
-                      <Button 
-                        variant="outline" 
-                        className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-smooth"
-                        onClick={() => navigate(feature.route)}
-                      >
-                        Open {feature.name}
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
+              {/* Search Bar */}
+              <div className="mb-8">
+                <SearchBar
+                  placeholder="Search features by name, description, or capability..."
+                  onSearch={handleSearch}
+                  showRecentSearches
+                  autoFocus={false}
+                />
               </div>
-            </TabsContent>
 
-            {FEATURE_CATEGORIES.map((category) => (
-              <TabsContent key={category.id} value={category.id} className="space-y-6">
-                <div className="mb-6">
-                  <div className="flex items-center gap-3 mb-2">
-                    <category.icon className={`w-6 h-6 text-${category.color}-500`} />
-                    <h2 className="text-2xl font-bold">{category.name}</h2>
+              {/* Recently Viewed Features */}
+              {recentFeatures.length > 0 && !searchQuery && (
+                <div className="mb-8">
+                  <div className="flex items-center gap-2 mb-4">
+                    <History className="w-5 h-5 text-muted-foreground" />
+                    <h2 className="text-xl font-semibold">Recently Viewed</h2>
                   </div>
-                  <p className="text-muted-foreground">{category.description}</p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {getFeaturesByCategory(category.id).map((feature) => (
-                    <Card key={feature.id} className="hover:shadow-elegant transition-spring group">
-                      <CardHeader>
-                        <div className="flex items-start justify-between mb-4">
-                          <div className={`p-3 bg-${feature.color}-500/10 rounded-lg group-hover:bg-${feature.color}-500/20 transition-smooth`}>
-                            <feature.icon className={`w-6 h-6 text-${feature.color}-500`} />
-                          </div>
-                          <Badge variant="secondary">{feature.badge}</Badge>
-                        </div>
-                        <CardTitle className="group-hover:text-primary transition-smooth">
-                          {feature.name}
-                        </CardTitle>
-                        <CardDescription>{feature.description}</CardDescription>
-                      </CardHeader>
-                      <CardContent className="space-y-4">
-                        <div className="space-y-2">
-                          {feature.capabilities.map((cap) => (
-                            <div key={cap} className="flex items-center gap-2 text-sm text-muted-foreground">
-                              <div className={`w-1.5 h-1.5 rounded-full bg-${feature.color}-500`} />
-                              <span>{cap}</span>
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    {recentFeatures.map((feature: any) => (
+                      <Card 
+                        key={feature.id}
+                        className="cursor-pointer hover:shadow-lg transition-shadow"
+                        onClick={() => handleFeatureClick(feature)}
+                      >
+                        <CardHeader className="pb-3">
+                          <div className="flex items-start justify-between">
+                            <div className="p-2 rounded-lg bg-primary/10">
+                              <feature.icon className="w-5 h-5 text-primary" />
                             </div>
-                          ))}
-                        </div>
-
-                        <Button 
-                          variant="outline" 
-                          className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-smooth"
-                          onClick={() => navigate(feature.route)}
-                        >
-                          Open {feature.name}
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
+                            <Badge variant="outline" className="text-xs">
+                              {feature.badge}
+                            </Badge>
+                          </div>
+                          <CardTitle className="text-lg mt-2">{feature.name}</CardTitle>
+                        </CardHeader>
+                      </Card>
+                    ))}
+                  </div>
                 </div>
-              </TabsContent>
-            ))}
-          </Tabs>
-          </>
+              )}
+
+              {/* Features Tabs */}
+              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+                <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 mb-8">
+                  <TabsTrigger value="all">
+                    All ({PLATFORM_STATS.totalFeatures})
+                  </TabsTrigger>
+                  {FEATURE_CATEGORIES.map((cat) => (
+                    <TabsTrigger key={cat.id} value={cat.id}>
+                      {cat.name} ({getFeaturesByCategory(cat.id).length})
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+
+                <TabsContent value="all" className="space-y-6">
+                  {filteredFeatures.length === 0 ? (
+                    <EmptyState
+                      icon={SearchIcon}
+                      title="No features found"
+                      description={`No features match "${searchQuery}". Try a different search term.`}
+                      action={
+                        <Button onClick={handleClearSearch}>
+                          Clear Search
+                        </Button>
+                      }
+                    />
+                  ) : (
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                      {filteredFeatures.map(renderFeatureCard)}
+                    </div>
+                  )}
+                </TabsContent>
+
+                {FEATURE_CATEGORIES.map((category) => (
+                  <TabsContent key={category.id} value={category.id} className="space-y-6">
+                    {filteredFeatures.length === 0 ? (
+                      <EmptyState
+                        icon={SearchIcon}
+                        title="No features found"
+                        description={`No ${category.name.toLowerCase()} features match "${searchQuery}". Try a different search term.`}
+                        action={
+                          <Button onClick={handleClearSearch}>
+                            Clear Search
+                          </Button>
+                        }
+                      />
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {filteredFeatures.map(renderFeatureCard)}
+                      </div>
+                    )}
+                  </TabsContent>
+                ))}
+              </Tabs>
+            </>
           )}
         </div>
       </PageLayout>
