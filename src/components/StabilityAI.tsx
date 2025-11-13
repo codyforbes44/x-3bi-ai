@@ -1,3 +1,4 @@
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -166,7 +167,7 @@ export default function StabilityAI() {
         {result && (
           <div className="space-y-4">
             <Label>Generated Image</Label>
-            <img src={result} alt="Generated" className="w-full rounded-lg border" />
+            <OptimizedImage src={result} alt="Generated" loading="lazy" blur className="w-full rounded-lg border" />
             <Button
               variant="outline"
               onClick={() => {

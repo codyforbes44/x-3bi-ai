@@ -1,3 +1,4 @@
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import { useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -220,7 +221,7 @@ export default function ReplicateAI() {
                         <source src={item} />
                       </video>
                     ) : (
-                      <img src={item} alt={`Result ${index + 1}`} className="w-full rounded-lg" />
+                      <OptimizedImage src={item} alt={`Result ${index + 1}`} loading="lazy" blur className="w-full rounded-lg" />
                     )}
                   </div>
                 ))}
@@ -231,7 +232,7 @@ export default function ReplicateAI() {
                   <source src={result} />
                 </video>
               ) : (
-                <img src={result} alt="Result" className="w-full rounded-lg" />
+                <OptimizedImage src={result} alt="Result" loading="lazy" blur className="w-full rounded-lg" />
               )
             ) : (
               <pre className="p-4 rounded-lg bg-muted text-sm overflow-auto">

@@ -1,3 +1,4 @@
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import { useState, useEffect } from "react";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
@@ -218,7 +219,7 @@ export default function SecuritySettings() {
               {qrCode && (
                 <div className="space-y-4">
                   <div className="bg-white p-4 rounded-lg">
-                    <img src={qrCode} alt="QR Code" className="mx-auto" />
+                    <OptimizedImage src={qrCode} alt="QR Code" loading="eager" className="mx-auto" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="verify-code">Verification Code</Label>

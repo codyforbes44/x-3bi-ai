@@ -1,3 +1,4 @@
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import { useState } from "react";
 import { SEO } from "@/components/SEO";
 import Header from "@/components/Header";
@@ -234,7 +235,7 @@ const APIDemos = () => {
                         </div>
                         <div className="bg-muted rounded-lg p-4 max-h-96 overflow-y-auto">
                           {output.startsWith("data:image") ? (
-                            <img src={output} alt="Generated" className="max-w-full rounded-lg" />
+                            <OptimizedImage src={output} alt="Generated" loading="lazy" blur className="max-w-full rounded-lg" />
                           ) : (
                             <pre className="text-sm whitespace-pre-wrap">{output}</pre>
                           )}

@@ -1,3 +1,4 @@
+import { OptimizedImage } from "@/components/ui/optimized-image";
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

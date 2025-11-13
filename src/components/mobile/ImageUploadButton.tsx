@@ -1,3 +1,4 @@
+import { OptimizedImage } from '@/components/ui/optimized-image';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -53,7 +54,7 @@ export function ImageUploadButton({ onImageSelect, label = "Upload Image" }: Ima
     <div className="space-y-2">
       {preview ? (
         <Card className="relative overflow-hidden">
-          <img src={preview} alt="Preview" className="w-full h-48 object-cover" />
+          <OptimizedImage src={preview} alt="Preview" loading="lazy" className="w-full h-48 object-cover" />
           <Button
             size="sm"
             variant="destructive"
