@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 
 /**
- * Accessibility improvements provider
+ * Enhanced Accessibility Provider
  * Handles focus management, keyboard navigation, and ARIA live regions
  */
 export function AccessibilityProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    // Add focus-visible polyfill behavior
+    // Add focus-visible behavior
     const handleFirstTab = (e: KeyboardEvent) => {
       if (e.key === "Tab") {
         document.body.classList.add("user-is-tabbing");
@@ -20,26 +20,17 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
     window.addEventListener("keydown", handleFirstTab);
     window.addEventListener("mousedown", handleMouseDownOnce);
 
-    // Add skip to main content link
-    const skipLink = document.createElement("a");
-    skipLink.href = "#main-content";
-    skipLink.className = "skip-to-main";
-    skipLink.textContent = "Skip to main content";
-    skipLink.setAttribute("aria-label", "Skip to main content");
-    document.body.insertBefore(skipLink, document.body.firstChild);
-
-    // Add ARIA live region for dynamic updates
+    // Add global ARIA live region for screen reader announcements
     const liveRegion = document.createElement("div");
     liveRegion.setAttribute("aria-live", "polite");
     liveRegion.setAttribute("aria-atomic", "true");
     liveRegion.className = "sr-only";
-    liveRegion.id = "aria-live-region";
+    liveRegion.id = "global-sr-announcer";
     document.body.appendChild(liveRegion);
 
     return () => {
       window.removeEventListener("keydown", handleFirstTab);
       window.removeEventListener("mousedown", handleMouseDownOnce);
-      skipLink.remove();
       liveRegion.remove();
     };
   }, []);
@@ -51,10 +42,9 @@ export function AccessibilityProvider({ children }: { children: React.ReactNode 
  * Announce message to screen readers
  */
 export function announceToScreenReader(message: string) {
-  const liveRegion = document.getElementById("aria-live-region");
+  const liveRegion = document.getElementById("global-sr-announcer");
   if (liveRegion) {
     liveRegion.textContent = message;
-    // Clear after announcement
     setTimeout(() => {
       liveRegion.textContent = "";
     }, 1000);

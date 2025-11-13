@@ -220,9 +220,17 @@ All colors MUST be HSL.
   }
 
   /* Accessibility improvements */
-  .skip-to-main {
-    @apply absolute left-0 top-0 -translate-y-full bg-primary text-primary-foreground px-4 py-2 rounded-br-md z-50;
-    @apply focus:translate-y-0 transition-transform;
+  .skip-links-container {
+    @apply fixed top-0 left-0 z-50;
+  }
+
+  .skip-link {
+    @apply absolute left-0 top-0 -translate-y-full bg-primary text-primary-foreground px-4 py-2 rounded-br-md;
+    @apply focus:translate-y-0 transition-transform font-medium;
+  }
+
+  .skip-link:not(:focus) {
+    @apply sr-only;
   }
   
   .sr-only {
@@ -232,12 +240,38 @@ All colors MUST be HSL.
   
   /* Focus visible styles */
   .user-is-tabbing *:focus {
-    @apply outline-2 outline-offset-2 outline-primary;
+    @apply outline-2 outline-offset-2 outline-ring;
   }
   
   /* High contrast focus indicators */
   *:focus-visible {
-    @apply outline-2 outline-offset-2 outline-primary ring-2 ring-primary;
+    @apply outline-2 outline-offset-2 outline-ring ring-2 ring-ring/20;
+  }
+
+  /* Touch target minimum size (WCAG 2.5.5) */
+  .touch-target {
+    @apply min-h-[44px] min-w-[44px];
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* High contrast mode */
+  .high-contrast {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --muted: 0 0% 20%;
+    --muted-foreground: 0 0% 80%;
+    --border: 0 0% 40%;
+    filter: contrast(1.2);
   }
 }
 
