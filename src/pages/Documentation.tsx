@@ -1,23 +1,23 @@
 import { useState } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import { PublicPageLayout } from "@/components/layout/PublicPageLayout";
 import { SEO } from "@/components/SEO";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { APIEndpointCard } from "@/components/docs/APIEndpointCard";
-import { APITester } from "@/components/docs/APITester";
-import { 
-  BookOpen, Code2, Zap, Database, Settings, 
-  FileCode, Terminal, Shield, Search, Webhook,
-  Key, Lock, AlertCircle, CheckCircle2, Info
-} from "lucide-react";
+import { AlertCircle, FileCode, BookOpen, Settings } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { generateTechArticleSchema } from "@/utils/structuredData";
 import { SEO_CONFIG, PAGE_SEO, BREADCRUMB_CONFIG } from "@/config/seo-config";
+import { APIEndpointCard } from "@/components/docs/APIEndpointCard";
+import { APITester } from "@/components/docs/APITester";
+import { DocumentationHero } from "@/components/docs/DocumentationHero";
+import { DocumentationStats } from "@/components/docs/DocumentationStats";
+import { AuthenticationGuide } from "@/components/docs/AuthenticationGuide";
+import { RateLimitGuide } from "@/components/docs/RateLimitGuide";
+import { ErrorCodesReference } from "@/components/docs/ErrorCodesReference";
+import { WebhooksGuide } from "@/components/docs/WebhooksGuide";
+import { DocumentationSections } from "@/components/docs/DocumentationSections";
+import { CodeExamples } from "@/components/docs/CodeExamples";
+import { SDKDocumentation } from "@/components/docs/SDKDocumentation";
 
 const Documentation = () => {
   const navigate = useNavigate();
@@ -239,80 +239,6 @@ data = response.json()`
     functionName: ep.functionName
   }));
 
-  const errorCodes = [
-    { code: "400", message: "Bad Request", description: "Invalid request parameters or malformed JSON" },
-    { code: "401", message: "Unauthorized", description: "Missing or invalid API key" },
-    { code: "403", message: "Forbidden", description: "API key doesn't have access to this resource" },
-    { code: "404", message: "Not Found", description: "Endpoint does not exist" },
-    { code: "429", message: "Too Many Requests", description: "Rate limit exceeded" },
-    { code: "500", message: "Internal Server Error", description: "Server error, please try again" },
-    { code: "503", message: "Service Unavailable", description: "Service temporarily unavailable" }
-  ];
-
-  const sections = [
-    {
-      icon: BookOpen,
-      title: "Getting Started",
-      description: "Quick start guides and basic concepts",
-      topics: ["Platform Overview", "Account Setup", "First Steps", "Basic Concepts"]
-    },
-    {
-      icon: Code2,
-      title: "API Reference",
-      description: "Complete API documentation and endpoints",
-      topics: ["Authentication", "Endpoints", "Rate Limits", "Error Handling"]
-    },
-    {
-      icon: Zap,
-      title: "AI Models",
-      description: "Documentation for each AI model",
-      topics: ["Claude Sonnet 4", "Claude Opus 4", "GPT-Image-1", "ElevenLabs"]
-    },
-    {
-      icon: Database,
-      title: "Integration Guides",
-      description: "Integrate 3BI.AI with your applications",
-      topics: ["JavaScript SDK", "Python SDK", "REST API", "Webhooks"]
-    },
-    {
-      icon: Settings,
-      title: "Advanced Features",
-      description: "Power user features and customization",
-      topics: ["Workflow Automation", "Custom Models", "Batch Processing", "Analytics"]
-    },
-    {
-      icon: Shield,
-      title: "Security & Privacy",
-      description: "Data protection and compliance",
-      topics: ["Data Encryption", "Privacy Policy", "GDPR Compliance", "Security Best Practices"]
-    }
-  ];
-
-  const quickLinks = [
-    { title: "Authentication Guide", category: "API" },
-    { title: "Chat API Reference", category: "API" },
-    { title: "Image Generation", category: "Guides" },
-    { title: "Voice Synthesis", category: "Guides" },
-    { title: "Error Codes", category: "Reference" },
-    { title: "SDK Installation", category: "Integration" }
-  ];
-
-  const codeExample = `// Initialize 3BI.AI
-import { ThreeBIAI } from '@3bi/sdk';
-
-const ai = new ThreeBIAI({
-  apiKey: 'your-api-key'
-});
-
-// Generate a chat response
-const response = await ai.chat({
-  model: 'claude-sonnet-4',
-  message: 'Explain quantum computing',
-  maxTokens: 500
-});
-
-console.log(response.text);`;
-
   const filteredEndpoints = searchQuery
     ? apiEndpoints.filter(
         (endpoint) =>
@@ -336,56 +262,9 @@ console.log(response.text);`;
           { name: BREADCRUMB_CONFIG.documentation.label, url: BREADCRUMB_CONFIG.documentation.url }
         ]}
       />
-      <Header />
-      <main className="min-h-screen pt-20 pb-16">
-        {/* Hero Section */}
-        <section className="container mx-auto px-4 py-16 text-center">
-          <Badge variant="secondary" className="mb-6">
-            <FileCode className="w-3 h-3 mr-1" />
-            Advanced API Documentation
-          </Badge>
-          <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-gradient-hero bg-clip-text text-transparent">
-            API Documentation Center
-          </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8">
-            Comprehensive API reference with interactive testing, code examples, and detailed guides for seamless integration.
-          </p>
-          
-          {/* Search Bar */}
-          <div className="max-w-2xl mx-auto">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-              <Input
-                placeholder="Search endpoints, parameters, examples..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 h-12 text-base"
-              />
-            </div>
-          </div>
-        </section>
-
-        {/* Stats */}
-        <section className="container mx-auto px-4 py-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
-            <Card className="p-6 text-center">
-              <div className="text-3xl font-bold text-primary mb-2">{apiEndpoints.length}</div>
-              <p className="text-sm text-muted-foreground">API Endpoints</p>
-            </Card>
-            <Card className="p-6 text-center">
-              <div className="text-3xl font-bold text-primary mb-2">99.9%</div>
-              <p className="text-sm text-muted-foreground">Uptime SLA</p>
-            </Card>
-            <Card className="p-6 text-center">
-              <div className="text-3xl font-bold text-primary mb-2">&lt;500ms</div>
-              <p className="text-sm text-muted-foreground">Avg Response</p>
-            </Card>
-            <Card className="p-6 text-center">
-              <div className="text-3xl font-bold text-primary mb-2">24/7</div>
-              <p className="text-sm text-muted-foreground">Support</p>
-            </Card>
-          </div>
-        </section>
+      <PublicPageLayout maxWidth="7xl">
+        <DocumentationHero searchQuery={searchQuery} onSearchChange={setSearchQuery} />
+        <DocumentationStats endpointsCount={apiEndpoints.length} />
 
         {/* API Reference */}
         <section className="container mx-auto px-4 py-16 bg-gradient-subtle">
@@ -427,288 +306,13 @@ console.log(response.text);`;
           </div>
         </section>
 
-        {/* Authentication Guide */}
-        <section className="container mx-auto px-4 py-16 bg-gradient-subtle">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center">Authentication</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <Card className="p-6">
-                <Key className="w-10 h-10 text-primary mb-4" />
-                <h3 className="text-xl font-bold mb-4">API Keys</h3>
-                <p className="text-muted-foreground mb-4">
-                  All API requests require authentication using an API key. Include your key in the Authorization header.
-                </p>
-                <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
-                  <code>Authorization: Bearer YOUR_API_KEY</code>
-                </pre>
-              </Card>
-
-              <Card className="p-6">
-                <Lock className="w-10 h-10 text-primary mb-4" />
-                <h3 className="text-xl font-bold mb-4">Security Best Practices</h3>
-                <ul className="space-y-2 text-sm text-muted-foreground">
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    Never expose API keys in client-side code
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    Rotate keys regularly for enhanced security
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    Use environment variables to store keys
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                    Monitor API usage for suspicious activity
-                  </li>
-                </ul>
-              </Card>
-            </div>
-          </div>
-        </section>
-
-        {/* Rate Limiting */}
-        <section className="container mx-auto px-4 py-16">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center">Rate Limits & Quotas</h2>
-            <Card className="p-8">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-primary mb-2">1,000</div>
-                  <p className="text-sm text-muted-foreground">Requests/hour (Free)</p>
-                </div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-primary mb-2">50,000</div>
-                  <p className="text-sm text-muted-foreground">Requests/hour (Pro)</p>
-                </div>
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-primary mb-2">Unlimited</div>
-                  <p className="text-sm text-muted-foreground">Requests (Enterprise)</p>
-                </div>
-              </div>
-              <div className="border-t pt-6">
-                <h4 className="font-semibold mb-4">Rate Limit Headers</h4>
-                <pre className="bg-muted p-4 rounded text-sm overflow-x-auto">
-                  <code>{`X-RateLimit-Limit: 1000
-X-RateLimit-Remaining: 999
-X-RateLimit-Reset: 1640000000`}</code>
-                </pre>
-              </div>
-            </Card>
-          </div>
-        </section>
-
-        {/* Error Codes */}
-        <section className="container mx-auto px-4 py-16 bg-gradient-subtle">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center">Error Codes Reference</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {errorCodes.map((error, index) => (
-                <Card key={index} className="p-6">
-                  <div className="flex items-start gap-4">
-                    <Badge variant="destructive" className="text-lg px-3 py-1">
-                      {error.code}
-                    </Badge>
-                    <div className="flex-1">
-                      <h4 className="font-bold mb-1">{error.message}</h4>
-                      <p className="text-sm text-muted-foreground">{error.description}</p>
-                    </div>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Webhooks */}
-        <section className="container mx-auto px-4 py-16">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center">Webhooks</h2>
-            <Card className="p-8">
-              <div className="flex items-start gap-4 mb-6">
-                <Webhook className="w-10 h-10 text-primary flex-shrink-0" />
-                <div>
-                  <h3 className="text-xl font-bold mb-2">Event Notifications</h3>
-                  <p className="text-muted-foreground">
-                    Receive real-time notifications when events occur in your account. Configure webhook endpoints to handle events programmatically.
-                  </p>
-                </div>
-              </div>
-              
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="setup">
-                  <AccordionTrigger>Setting Up Webhooks</AccordionTrigger>
-                  <AccordionContent>
-                    <div className="space-y-4 pt-4">
-                      <p className="text-sm text-muted-foreground">
-                        Configure your webhook endpoint URL in the dashboard to start receiving events.
-                      </p>
-                      <pre className="bg-muted p-4 rounded text-sm overflow-x-auto">
-                        <code>{`POST https://your-domain.com/webhooks
-Content-Type: application/json
-
-{
-  "event": "api.request.completed",
-  "timestamp": "2025-01-01T12:00:00Z",
-  "data": {
-    "endpoint": "/v1/ai-chat",
-    "status": "success"
-  }
-}`}</code>
-                      </pre>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem value="events">
-                  <AccordionTrigger>Available Events</AccordionTrigger>
-                  <AccordionContent>
-                    <ul className="space-y-2 pt-4">
-                      <li className="flex items-center gap-2 text-sm">
-                        <CheckCircle2 className="w-4 h-4 text-primary" />
-                        <code>api.request.completed</code> - API request finished
-                      </li>
-                      <li className="flex items-center gap-2 text-sm">
-                        <CheckCircle2 className="w-4 h-4 text-primary" />
-                        <code>api.request.failed</code> - API request failed
-                      </li>
-                      <li className="flex items-center gap-2 text-sm">
-                        <CheckCircle2 className="w-4 h-4 text-primary" />
-                        <code>quota.limit.reached</code> - Rate limit reached
-                      </li>
-                      <li className="flex items-center gap-2 text-sm">
-                        <CheckCircle2 className="w-4 h-4 text-primary" />
-                        <code>api.key.rotated</code> - API key was rotated
-                      </li>
-                    </ul>
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem value="security">
-                  <AccordionTrigger>Webhook Security</AccordionTrigger>
-                  <AccordionContent>
-                    <div className="space-y-3 pt-4">
-                      <p className="text-sm text-muted-foreground">
-                        All webhook payloads are signed with your webhook secret. Verify the signature to ensure authenticity.
-                      </p>
-                      <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
-                        <code>{`const crypto = require('crypto');
-
-function verifyWebhook(payload, signature, secret) {
-  const hash = crypto
-    .createHmac('sha256', secret)
-    .update(payload)
-    .digest('hex');
-  return hash === signature;
-}`}</code>
-                      </pre>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </Card>
-          </div>
-        </section>
-
-        {/* Main Documentation Sections */}
-        <section className="container mx-auto px-4 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-            {sections.map((section, index) => (
-              <Card key={index} className="p-6 hover-scale cursor-pointer">
-                <section.icon className="w-10 h-10 text-primary mb-4" />
-                <h3 className="text-xl font-bold mb-2">{section.title}</h3>
-                <p className="text-sm text-muted-foreground mb-4">{section.description}</p>
-                <ul className="space-y-2">
-                  {section.topics.map((topic, i) => (
-                    <li key={i} className="text-sm flex items-center">
-                      <span className="text-primary mr-2">→</span>
-                      <span className="text-muted-foreground hover:text-foreground transition-smooth cursor-pointer">
-                        {topic}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        {/* Code Example Section */}
-        <section className="container mx-auto px-4 py-16 bg-gradient-subtle">
-          <div className="max-w-4xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center">Quick Example</h2>
-            <Tabs defaultValue="javascript" className="w-full">
-              <TabsList className="grid w-full grid-cols-3 max-w-md mx-auto mb-6">
-                <TabsTrigger value="javascript">JavaScript</TabsTrigger>
-                <TabsTrigger value="python">Python</TabsTrigger>
-                <TabsTrigger value="curl">cURL</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="javascript">
-                <Card className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                      <Terminal className="w-5 h-5 text-primary" />
-                      <span className="font-semibold">JavaScript SDK</span>
-                    </div>
-                    <Badge variant="secondary">npm install @3bi/sdk</Badge>
-                  </div>
-                  <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
-                    <code className="text-sm">{codeExample}</code>
-                  </pre>
-                </Card>
-              </TabsContent>
-              
-              <TabsContent value="python">
-                <Card className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2">
-                      <Terminal className="w-5 h-5 text-primary" />
-                      <span className="font-semibold">Python SDK</span>
-                    </div>
-                    <Badge variant="secondary">pip install 3bi-ai</Badge>
-                  </div>
-                  <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
-                    <code className="text-sm">{`# Initialize 3BI.AI
-from threebiai import ThreeBIAI
-
-ai = ThreeBIAI(api_key='your-api-key')
-
-# Generate a chat response
-response = ai.chat(
-    model='claude-sonnet-4',
-    message='Explain quantum computing',
-    max_tokens=500
-)
-
-print(response.text)`}</code>
-                  </pre>
-                </Card>
-              </TabsContent>
-              
-              <TabsContent value="curl">
-                <Card className="p-6">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Terminal className="w-5 h-5 text-primary" />
-                    <span className="font-semibold">REST API</span>
-                  </div>
-                  <pre className="bg-muted p-4 rounded-lg overflow-x-auto">
-                    <code className="text-sm">{`curl -X POST https://api.3bi.ai/v1/chat \\
-  -H "Authorization: Bearer your-api-key" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "model": "claude-sonnet-4",
-    "message": "Explain quantum computing",
-    "max_tokens": 500
-  }'`}</code>
-                  </pre>
-                </Card>
-              </TabsContent>
-            </Tabs>
-          </div>
-        </section>
+        <AuthenticationGuide />
+        <RateLimitGuide />
+        <ErrorCodesReference />
+        <WebhooksGuide />
+        <DocumentationSections />
+        <CodeExamples />
+        <SDKDocumentation />
 
         {/* Resources */}
         <section className="container mx-auto px-4 py-16">
@@ -751,41 +355,6 @@ print(response.text)`}</code>
           </div>
         </section>
 
-        {/* SDK Documentation */}
-        <section className="container mx-auto px-4 py-16 bg-gradient-subtle">
-          <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold mb-8 text-center">Official SDKs</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card className="p-6 hover-scale cursor-pointer">
-                <Terminal className="w-10 h-10 text-primary mb-4" />
-                <h3 className="text-xl font-bold mb-2">JavaScript SDK</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Full-featured SDK for Node.js and browser environments
-                </p>
-                <Badge variant="secondary">npm install @3bi/sdk</Badge>
-              </Card>
-
-              <Card className="p-6 hover-scale cursor-pointer">
-                <Code2 className="w-10 h-10 text-primary mb-4" />
-                <h3 className="text-xl font-bold mb-2">Python SDK</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Pythonic interface for all 3BI.AI capabilities
-                </p>
-                <Badge variant="secondary">pip install 3bi-ai</Badge>
-              </Card>
-
-              <Card className="p-6 hover-scale cursor-pointer">
-                <FileCode className="w-10 h-10 text-primary mb-4" />
-                <h3 className="text-xl font-bold mb-2">REST API</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Direct HTTP access for any programming language
-                </p>
-                <Badge variant="secondary">api.3bi.ai</Badge>
-              </Card>
-            </div>
-          </div>
-        </section>
-
         {/* Support Section */}
         <section className="container mx-auto px-4 py-16 text-center">
           <div className="max-w-3xl mx-auto">
@@ -818,8 +387,7 @@ print(response.text)`}</code>
             </div>
           </div>
         </section>
-      </main>
-      <Footer />
+      </PublicPageLayout>
     </>
   );
 };

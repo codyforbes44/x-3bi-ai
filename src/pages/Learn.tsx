@@ -1,6 +1,5 @@
 import { SEO } from "@/components/SEO";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import { PublicPageLayout } from "@/components/layout/PublicPageLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -178,9 +177,7 @@ const Learn = () => {
           { name: BREADCRUMB_CONFIG.learn.label, url: BREADCRUMB_CONFIG.learn.url }
         ]}
       />
-      <div className="min-h-screen bg-background">
-      <Header />
-      <div className="pt-16 md:pt-20 pb-12 md:pb-16">
+      <PublicPageLayout maxWidth="7xl">
         <div className="container mx-auto px-4 md:px-6">
           {/* Hero Section */}
           <div className="text-center mb-12 md:mb-16 animate-fade-in">
@@ -672,9 +669,7 @@ function ChatApp() {
             </div>
           </div>
         </div>
-      </div>
-      <Footer />
-    </div>
+      </PublicPageLayout>
     </>
   );
 };

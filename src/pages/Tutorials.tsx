@@ -1,4 +1,4 @@
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PublicPageLayout } from "@/components/layout/PublicPageLayout";
 import { PageHero } from "@/components/layout/PageHero";
 import { StatsGrid } from "@/components/layout/StatsGrid";
 import { CTASection } from "@/components/layout/CTASection";
@@ -96,7 +96,7 @@ const Tutorials = () => {
         canonical="https://3bi.ai/tutorials"
         structuredData={structuredData}
       />
-      <PageLayout>
+      <PublicPageLayout maxWidth="7xl">
       <PageHero
         title="AI Tutorials"
         description="Step-by-step guides to master AI tools and unlock your creative potential with hands-on learning."
@@ -202,7 +202,7 @@ const Tutorials = () => {
           </Button>
         }
       />
-    </PageLayout>
+      </PublicPageLayout>
     </>
   );
 };
