@@ -325,7 +325,6 @@ export default function SecuritySettings() {
             )}
           </CardContent>
         </Card>
-        </div>
       </AuthenticatedPageLayout>
     </>
   );
