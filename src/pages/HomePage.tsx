@@ -96,8 +96,11 @@ const HomePage = () => {
             {/* Floating stats with particle effects */}
             <div className="flex gap-16 justify-center text-center pt-12">
               <div className="relative group">
-                <div className="text-6xl font-bold bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent">
-                  24
+                <div 
+                  className="text-6xl font-bold bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent"
+                  aria-label="3BI.AI phonetic spelling"
+                >
+                  Ʒbɪ
                 </div>
                 <Sparkles className="w-8 h-8 mx-auto mt-3 text-primary/70 group-hover:text-primary transition-colors" />
                 <div className="absolute -inset-2 bg-primary/10 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />

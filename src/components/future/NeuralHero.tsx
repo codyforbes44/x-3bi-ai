@@ -137,8 +137,11 @@ export function NeuralHero() {
         animate={{ scale: [1, 1.1, 1] }}
         transition={{ duration: 3, repeat: Infinity }}
       >
-        <div className="text-8xl font-bold bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent">
-          24
+        <div 
+          className="text-8xl font-bold bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent"
+          aria-label="3BI.AI phonetic spelling"
+        >
+          Ʒbɪ
         </div>
       </motion.div>
     </div>
