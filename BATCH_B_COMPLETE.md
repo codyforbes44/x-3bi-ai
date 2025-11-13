@@ -1,0 +1,1 @@
+Batch B pages enhanced with inline validation, success feedback, password strength indicators, character counters, and improved UX across AuthPage, Newsletter, Contact, Team, and ProfileCompletionPage.

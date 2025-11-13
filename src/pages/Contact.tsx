@@ -4,13 +4,17 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Mail, MapPin, Phone, Send } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { contactSchema } from "@/utils/formValidation";
 import { logger } from "@/utils/logger";
+import { FormField } from "@/components/forms/FormField";
+import { FormSuccess } from "@/components/forms/FormSuccess";
+import { CharacterCounter } from "@/components/forms/CharacterCounter";
+import { useFormValidation } from "@/hooks/useFormValidation";
 
 const Contact = () => {
   const { toast } = useToast();
@@ -20,46 +24,68 @@ const Contact = () => {
     subject: "",
     message: ""
   });
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const { errors, validate } = useFormValidation(contactSchema);
+
+  const MAX_MESSAGE_LENGTH = 500;
+
+  // Auto-fill from user profile if logged in
+  useEffect(() => {
+    const loadUserProfile = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('display_name')
+          .eq('user_id', user.id)
+          .single();
+        
+        if (profile || user.email) {
+          setFormData(prev => ({
+            ...prev,
+            name: profile?.display_name || prev.name,
+            email: user.email || prev.email
+          }));
+        }
+      }
+    };
+    loadUserProfile();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    const validationResult = validate(formData);
+    if (!validationResult.success) {
+      return;
+    }
+
+    setLoading(true);
+    
     try {
-      // Validate form data
-      const validatedData = contactSchema.parse(formData);
-      
       const { data: { user } } = await supabase.auth.getUser();
       
       const { error } = await supabase.from("contact_submissions").insert({
         user_id: user?.id,
-        name: validatedData.name,
-        email: validatedData.email,
-        subject: validatedData.subject,
-        message: validatedData.message,
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
       });
 
       if (error) throw error;
 
+      setSuccess(true);
       toast({
         title: "Message Sent!",
         description: "We'll get back to you within 24 hours.",
       });
-      setFormData({ name: "", email: "", subject: "", message: "" });
     } catch (error: any) {
-      if (error.name === 'ZodError') {
-        toast({
-          title: "Validation Error",
-          description: error.errors[0].message,
-          variant: "destructive",
-        });
-      } else {
-        logger.error("Contact form submission failed", error);
-        toast({
-          title: "Error",
-          description: "Failed to send message. Please try again.",
-          variant: "destructive",
-        });
-      }
+      logger.error("Contact form submission failed", error);
+      validate(formData, "Failed to send message. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 

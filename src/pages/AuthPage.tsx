@@ -1,24 +1,39 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { SEO } from "@/components/SEO";
 import { MinimalPageLayout } from "@/components/layout/MinimalPageLayout";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Eye, EyeOff, Heart, AlertCircle } from "lucide-react";
+import { Eye, EyeOff, Heart } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { User, Session } from '@supabase/supabase-js';
+import { FormField } from "@/components/forms/FormField";
+import { FormSuccess } from "@/components/forms/FormSuccess";
+import { PasswordStrength } from "@/components/forms/PasswordStrength";
+import { useFormValidation } from "@/hooks/useFormValidation";
+import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
+import { z } from "zod";
+
+const signInSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters")
+});
+
+const signUpSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+  displayName: z.string().optional()
+});
 
 const AuthPage = () => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState("signin");
   
   // Form states
   const [signInEmail, setSignInEmail] = useState("");
@@ -28,25 +43,39 @@ const AuthPage = () => {
   const [signUpDisplayName, setSignUpDisplayName] = useState("");
   
   const navigate = useNavigate();
+  const emailInputRef = useRef<HTMLInputElement>(null);
+
+  // Form validation
+  const { errors: signInErrors, validate: validateSignIn, setFieldError: setSignInFieldError } = useFormValidation(signInSchema);
+  const { errors: signUpErrors, validate: validateSignUp, setFieldError: setSignUpFieldError } = useFormValidation(signUpSchema);
+
+  // Unsaved changes warning
+  const hasUnsavedSignIn = signInEmail.length > 0 || signInPassword.length > 0;
+  const hasUnsavedSignUp = signUpEmail.length > 0 || signUpPassword.length > 0 || signUpDisplayName.length > 0;
+  useUnsavedChanges({ hasUnsavedChanges: hasUnsavedSignIn || hasUnsavedSignUp });
+
+  // Autofocus email input when tab changes
+  useEffect(() => {
+    setTimeout(() => {
+      emailInputRef.current?.focus();
+    }, 100);
+  }, [activeTab]);
 
   // Auth state management
   useEffect(() => {
-    // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         
         if (event === 'SIGNED_IN' && session?.user) {
-          // Redirect to homepage after successful sign in
           setTimeout(() => {
             navigate('/');
-          }, 100);
+          }, 1500);
         }
       }
     );
 
-    // Check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
@@ -61,32 +90,40 @@ const AuthPage = () => {
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const data = { email: signInEmail, password: signInPassword };
+    const validationResult = await validateSignIn(data);
+    
+    if (!validationResult.success) {
+      return;
+    }
+
     setLoading(true);
-    setError(null);
     setSuccess(null);
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { data: authData, error } = await supabase.auth.signInWithPassword({
         email: signInEmail,
         password: signInPassword,
       });
 
       if (error) {
-        if (error.message.includes('Invalid login credentials')) {
-          setError('Invalid email or password. Please check your credentials and try again.');
-        } else if (error.message.includes('Email not confirmed')) {
-          setError('Please check your email and click the confirmation link before signing in.');
-        } else {
-          setError(error.message);
-        }
+        const errorMsg = error.message.includes('Invalid login credentials') 
+          ? 'Invalid email or password. Please check your credentials and try again.'
+          : error.message.includes('Email not confirmed')
+          ? 'Please check your email and click the confirmation link before signing in.'
+          : error.message;
+        setSignInFieldError('_form', errorMsg);
         return;
       }
 
-      if (data.user) {
-        setSuccess('Successfully signed in!');
+      if (authData.user) {
+        setSuccess('Welcome back! Redirecting...');
+        setSignInEmail("");
+        setSignInPassword("");
       }
     } catch (err) {
-      setError('An unexpected error occurred. Please try again.');
+      setSignInFieldError('_form', 'An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -94,20 +131,25 @@ const AuthPage = () => {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
-    setError(null);
-    setSuccess(null);
-
-    if (signUpPassword.length < 6) {
-      setError('Password must be at least 6 characters long.');
-      setLoading(false);
+    
+    const data = { 
+      email: signUpEmail, 
+      password: signUpPassword,
+      displayName: signUpDisplayName 
+    };
+    const validationResult = await validateSignUp(data);
+    
+    if (!validationResult.success) {
       return;
     }
+
+    setLoading(true);
+    setSuccess(null);
 
     try {
       const redirectUrl = `${window.location.origin}/`;
       
-      const { data, error } = await supabase.auth.signUp({
+      const { data: authData, error } = await supabase.auth.signUp({
         email: signUpEmail,
         password: signUpPassword,
         options: {
@@ -119,233 +161,178 @@ const AuthPage = () => {
       });
 
       if (error) {
-        if (error.message.includes('User already registered')) {
-          setError('An account with this email already exists. Please sign in instead.');
-        } else {
-          setError(error.message);
-        }
+        setSignUpFieldError('_form', error.message);
         return;
       }
 
-      if (data.user && !data.session) {
-        setSuccess('Please check your email and click the confirmation link to complete your registration.');
-      } else if (data.session) {
-        setSuccess('Account created successfully!');
-        // Redirect to profile completion wizard
-        setTimeout(() => {
-          navigate('/onboarding/profile');
-        }, 500);
+      if (authData.user) {
+        setSuccess('Account created! Check your email to verify your account.');
+        setSignUpEmail("");
+        setSignUpPassword("");
+        setSignUpDisplayName("");
       }
     } catch (err) {
-      setError('An unexpected error occurred. Please try again.');
+      setSignUpFieldError('_form', 'An unexpected error occurred. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  // If user is already authenticated, redirect them
-  if (user) {
-    return (
-      <>
-        <SEO
-          title="Sign In - 3BI.AI"
-          description="Sign in to access your AI dashboard, tools, and workspace. Secure authentication with multiple options."
-          keywords={['sign in', 'login', 'authentication', 'account access']}
-          ogImage="https://3bi.ai/og/auth.png"
-          canonical="https://3bi.ai/auth"
-        />
-        <MinimalPageLayout>
-          <Card className="w-full max-w-md mx-auto">
-            <CardHeader className="text-center">
-              <div className="w-12 h-12 bg-gradient-hero rounded-lg flex items-center justify-center mx-auto mb-4">
-                <Heart className="w-6 h-6 text-white" />
-              </div>
-              <CardTitle>You're already signed in!</CardTitle>
-              <CardDescription>Redirecting you to the homepage...</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Button 
-                onClick={() => navigate('/')} 
-                className="w-full bg-gradient-hero text-white"
-              >
-                Go to Homepage
-              </Button>
-            </CardContent>
-          </Card>
-        </MinimalPageLayout>
-      </>
-    );
-  }
-
   return (
     <>
       <SEO
-        title="Sign In - 3BI.AI"
-        description="Sign in to access your AI dashboard, tools, and workspace. Secure authentication with multiple options."
-        keywords={['sign in', 'login', 'authentication', 'account access']}
+        title="Sign In - Access Your AI Platform"
+        description="Sign in to 3BI.AI to access multiple AI models, workflows, and enterprise features."
+        keywords={['sign in', 'login', 'authentication', 'AI platform access']}
         ogImage="https://3bi.ai/og/auth.png"
         canonical="https://3bi.ai/auth"
       />
       <MinimalPageLayout>
-        <Card className="w-full max-w-md mx-auto">
-        <CardHeader className="text-center">
-          <div className="w-12 h-12 bg-gradient-hero rounded-lg flex items-center justify-center mx-auto mb-4">
-            <Heart className="w-6 h-6 text-white" />
-          </div>
-          <CardTitle className="text-2xl">Welcome to 3BI.AI</CardTitle>
-          <CardDescription>Sign in to your account or create a new one</CardDescription>
-        </CardHeader>
-        
-        <CardContent>
-          {error && (
-            <Alert variant="destructive" className="mb-4">
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-          
-          {success && (
-            <Alert className="mb-4 border-green-200 bg-green-50 text-green-800">
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>{success}</AlertDescription>
-            </Alert>
-          )}
+        <div className="min-h-screen flex items-center justify-center px-4 py-12">
+          <Card className="w-full max-w-md">
+            <CardHeader className="space-y-1 text-center">
+              <div className="flex justify-center mb-4">
+                <Heart className="w-12 h-12 text-primary" />
+              </div>
+              <CardTitle className="text-2xl">Welcome to 3BI.AI</CardTitle>
+              <CardDescription>
+                Sign in to your account or create a new one
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Tabs value={activeTab} onValueChange={setActiveTab}>
+                <TabsList className="grid w-full grid-cols-2 mb-6">
+                  <TabsTrigger value="signin">Sign In</TabsTrigger>
+                  <TabsTrigger value="signup">Sign Up</TabsTrigger>
+                </TabsList>
 
-          <Tabs defaultValue="signin" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="signin">Sign In</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="signin">
-              <form onSubmit={handleSignIn} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="signin-email">Email</Label>
-                  <Input
-                    id="signin-email"
-                    type="email"
-                    placeholder="your@email.com"
-                    value={signInEmail}
-                    onChange={(e) => setSignInEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="signin-password">Password</Label>
-                  <div className="relative">
-                    <Input
-                      id="signin-password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Your password"
-                      value={signInPassword}
-                      onChange={(e) => setSignInPassword(e.target.value)}
+                {/* Sign In Tab */}
+                <TabsContent value="signin">
+                  {success && <FormSuccess message={success} className="mb-4" />}
+                  {signInErrors._form && <FormSuccess message={signInErrors._form} className="mb-4" variant="error" />}
+                  
+                  <form onSubmit={handleSignIn} className="space-y-4">
+                    <FormField
+                      label="Email"
+                      error={signInErrors.email}
                       required
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                      onClick={() => setShowPassword(!showPassword)}
                     >
-                      {showPassword ? (
-                        <EyeOff className="h-4 w-4" />
-                      ) : (
-                        <Eye className="h-4 w-4" />
-                      )}
-                    </Button>
-                  </div>
-                </div>
-                
-                <Button 
-                  type="submit" 
-                  className="w-full bg-gradient-hero text-white" 
-                  disabled={loading}
-                >
-                  {loading ? "Signing in..." : "Sign In"}
-                </Button>
-              </form>
-            </TabsContent>
-            
-            <TabsContent value="signup">
-              <form onSubmit={handleSignUp} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="signup-email">Email</Label>
-                  <Input
-                    id="signup-email"
-                    type="email"
-                    placeholder="your@email.com"
-                    value={signUpEmail}
-                    onChange={(e) => setSignUpEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="signup-displayname">Display Name</Label>
-                  <Input
-                    id="signup-displayname"
-                    type="text"
-                    placeholder="Your display name"
-                    value={signUpDisplayName}
-                    onChange={(e) => setSignUpDisplayName(e.target.value)}
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="signup-password">Password</Label>
-                  <div className="relative">
-                    <Input
-                      id="signup-password"
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Choose a strong password"
-                      value={signUpPassword}
-                      onChange={(e) => setSignUpPassword(e.target.value)}
+                      <Input
+                        ref={emailInputRef}
+                        type="email"
+                        placeholder="you@example.com"
+                        value={signInEmail}
+                        onChange={(e) => setSignInEmail(e.target.value)}
+                        disabled={loading}
+                        autoFocus
+                      />
+                    </FormField>
+
+                    <FormField
+                      label="Password"
+                      error={signInErrors.password}
                       required
-                      minLength={6}
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                      onClick={() => setShowPassword(!showPassword)}
                     >
-                      {showPassword ? (
-                        <EyeOff className="h-4 w-4" />
-                      ) : (
-                        <Eye className="h-4 w-4" />
-                      )}
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="••••••••"
+                          value={signInPassword}
+                          onChange={(e) => setSignInPassword(e.target.value)}
+                          disabled={loading}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                        >
+                          {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
+                    </FormField>
+
+                    <Button 
+                      type="submit" 
+                      className="w-full" 
+                      disabled={loading}
+                    >
+                      {loading ? "Signing in..." : "Sign In"}
                     </Button>
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    Password must be at least 6 characters long
-                  </p>
-                </div>
-                
-                <Button 
-                  type="submit" 
-                  className="w-full bg-gradient-hero text-white" 
-                  disabled={loading}
-                >
-                  {loading ? "Creating account..." : "Create Account"}
-                </Button>
-              </form>
-            </TabsContent>
-          </Tabs>
-          
-          <div className="mt-6 text-center">
-            <Button 
-              variant="ghost" 
-              onClick={() => navigate('/')}
-              className="text-sm text-muted-foreground"
-            >
-              ← Back to Homepage
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
+                  </form>
+                </TabsContent>
+
+                {/* Sign Up Tab */}
+                <TabsContent value="signup">
+                  {success && <FormSuccess message={success} className="mb-4" />}
+                  {signUpErrors._form && <FormSuccess message={signUpErrors._form} className="mb-4" variant="error" />}
+                  
+                  <form onSubmit={handleSignUp} className="space-y-4">
+                    <FormField
+                      label="Display Name"
+                      helper="How should we address you?"
+                    >
+                      <Input
+                        type="text"
+                        placeholder="Your name"
+                        value={signUpDisplayName}
+                        onChange={(e) => setSignUpDisplayName(e.target.value)}
+                        disabled={loading}
+                      />
+                    </FormField>
+
+                    <FormField
+                      label="Email"
+                      error={signUpErrors.email}
+                      required
+                    >
+                      <Input
+                        ref={emailInputRef}
+                        type="email"
+                        placeholder="you@example.com"
+                        value={signUpEmail}
+                        onChange={(e) => setSignUpEmail(e.target.value)}
+                        disabled={loading}
+                        autoFocus
+                      />
+                    </FormField>
+
+                    <FormField
+                      label="Password"
+                      error={signUpErrors.password}
+                      required
+                    >
+                      <div className="relative">
+                        <Input
+                          type={showPassword ? "text" : "password"}
+                          placeholder="••••••••"
+                          value={signUpPassword}
+                          onChange={(e) => setSignUpPassword(e.target.value)}
+                          disabled={loading}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                        >
+                          {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
+                      <PasswordStrength password={signUpPassword} />
+                    </FormField>
+
+                    <Button 
+                      type="submit" 
+                      className="w-full" 
+                      disabled={loading}
+                    >
+                      {loading ? "Creating account..." : "Create Account"}
+                    </Button>
+                  </form>
+                </TabsContent>
+              </Tabs>
+            </CardContent>
+          </Card>
+        </div>
       </MinimalPageLayout>
     </>
   );
