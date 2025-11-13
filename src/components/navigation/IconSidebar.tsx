@@ -4,7 +4,7 @@ import {
   Brain, Zap, FileText, Calculator, Settings, User,
   LayoutDashboard, Users, Workflow, Shield, Key, Palette
 } from "lucide-react";
-import { Sidebar, SidebarContent, SidebarGroup, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarGroup, SidebarMenu, SidebarMenuItem, SidebarMenuButton, useSidebar } from "@/components/ui/sidebar";
 import { CategoryDot } from "@/components/visual/CategoryDot";
 import { LongPressTooltip } from "@/components/visual/LongPressTooltip";
 import { AnimatedLogo } from "@/components/visual/AnimatedLogo";
@@ -31,21 +31,26 @@ const FEATURES = [
 export function IconSidebar() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { state } = useSidebar();
 
   const isActive = (route: string) => isRouteActive(location.pathname, location.search, route);
+  const isCollapsed = state === 'collapsed';
 
   return (
-    <Sidebar className="w-20 border-r border-border/50">
-      <SidebarContent className="py-4">
+    <Sidebar className={cn(
+      "border-r border-border/50 transition-all",
+      isCollapsed ? "w-0" : "w-16 sm:w-20"
+    )}>
+      <SidebarContent className="py-3 sm:py-4">
         {/* Logo */}
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mb-6 sm:mb-8">
           <LongPressTooltip content="Home" onClick={() => navigate('/')}>
-            <AnimatedLogo size="md" />
+            <AnimatedLogo size="md" className="w-10 h-10 sm:w-12 sm:h-12" />
           </LongPressTooltip>
         </div>
 
         <SidebarGroup>
-          <SidebarMenu className="space-y-2">
+          <SidebarMenu className="space-y-1 sm:space-y-2">
             {FEATURES.map((feature) => {
               const Icon = feature.icon;
               const active = isActive(feature.route);
@@ -55,18 +60,18 @@ export function IconSidebar() {
                   <LongPressTooltip content={feature.label} onClick={() => navigate(feature.route)}>
                     <SidebarMenuButton
                       className={cn(
-                        "w-14 h-14 mx-auto flex items-center justify-center rounded-xl relative transition-all",
+                        "w-12 h-12 sm:w-14 sm:h-14 mx-auto flex items-center justify-center rounded-xl relative transition-all touch-target",
                         active 
                           ? "bg-primary/20 text-primary shadow-lg shadow-primary/20" 
                           : "hover:bg-muted/50"
                       )}
                       aria-label={`${feature.label} - ${active ? 'Active' : 'Navigate to'}`}
                     >
-                      <Icon className="w-6 h-6" aria-hidden="true" />
+                      <Icon className="w-5 h-5 sm:w-6 sm:h-6" aria-hidden="true" />
                       <CategoryDot 
                         category={feature.category} 
                         size="sm" 
-                        className="absolute top-1 right-1"
+                        className="absolute top-0.5 right-0.5 sm:top-1 sm:right-1"
                         aria-label={`Category: ${feature.category}`}
                       />
                     </SidebarMenuButton>
