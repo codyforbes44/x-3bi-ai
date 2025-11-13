@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { SEO } from "@/components/SEO";
+import { MinimalPageLayout } from "@/components/layout/MinimalPageLayout";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -145,25 +146,34 @@ const AuthPage = () => {
   // If user is already authenticated, redirect them
   if (user) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <div className="w-12 h-12 bg-gradient-hero rounded-lg flex items-center justify-center mx-auto mb-4">
-              <Heart className="w-6 h-6 text-white" />
-            </div>
-            <CardTitle>You're already signed in!</CardTitle>
-            <CardDescription>Redirecting you to the homepage...</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <Button 
-              onClick={() => navigate('/')} 
-              className="w-full bg-gradient-hero text-white"
-            >
-              Go to Homepage
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
+      <>
+        <SEO
+          title="Sign In - 3BI.AI"
+          description="Sign in to access your AI dashboard, tools, and workspace. Secure authentication with multiple options."
+          keywords={['sign in', 'login', 'authentication', 'account access']}
+          ogImage="https://3bi.ai/og/auth.png"
+          canonical="https://3bi.ai/auth"
+        />
+        <MinimalPageLayout>
+          <Card className="w-full max-w-md mx-auto">
+            <CardHeader className="text-center">
+              <div className="w-12 h-12 bg-gradient-hero rounded-lg flex items-center justify-center mx-auto mb-4">
+                <Heart className="w-6 h-6 text-white" />
+              </div>
+              <CardTitle>You're already signed in!</CardTitle>
+              <CardDescription>Redirecting you to the homepage...</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Button 
+                onClick={() => navigate('/')} 
+                className="w-full bg-gradient-hero text-white"
+              >
+                Go to Homepage
+              </Button>
+            </CardContent>
+          </Card>
+        </MinimalPageLayout>
+      </>
     );
   }
 
@@ -176,8 +186,8 @@ const AuthPage = () => {
         ogImage="https://3bi.ai/og/auth.png"
         canonical="https://3bi.ai/auth"
       />
-      <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+      <MinimalPageLayout>
+        <Card className="w-full max-w-md mx-auto">
         <CardHeader className="text-center">
           <div className="w-12 h-12 bg-gradient-hero rounded-lg flex items-center justify-center mx-auto mb-4">
             <Heart className="w-6 h-6 text-white" />
@@ -336,7 +346,7 @@ const AuthPage = () => {
           </div>
         </CardContent>
       </Card>
-    </div>
+      </MinimalPageLayout>
     </>
   );
 };

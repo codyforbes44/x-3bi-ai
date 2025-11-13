@@ -79,11 +79,11 @@
 - [x] Newsletter.tsx → PublicPageLayout (form functionality preserved)
 - [x] Contact.tsx → PublicPageLayout (form functionality preserved)
 
-### Batch 2: Auth & Tools Pages (4 pages)
-- [ ] AuthPage.tsx → MinimalPageLayout
-- [ ] FreeAITools.tsx → PublicPageLayout
-- [ ] Pricing.tsx → PublicPageLayout
-- [ ] Enterprise.tsx → PublicPageLayout
+### Batch 2: Auth & Tools Pages (4 pages) - ✅ COMPLETE
+- [x] AuthPage.tsx → MinimalPageLayout (centered auth forms)
+- [x] FreeAITools.tsx → PublicPageLayout
+- [x] Pricing.tsx → PublicPageLayout
+- [x] Enterprise.tsx → PublicPageLayout (updated from PageLayout)
 
 ### Batch 3: Documentation Pages (7 pages)
 - [ ] Refactor Documentation.tsx into modular structure

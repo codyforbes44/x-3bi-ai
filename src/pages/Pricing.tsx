@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import { PublicPageLayout } from "@/components/layout/PublicPageLayout";
 import { SEO } from "@/components/SEO";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -113,9 +113,7 @@ const Pricing = () => {
           { name: BREADCRUMB_CONFIG.pricing.label, url: BREADCRUMB_CONFIG.pricing.url }
         ]}
       />
-      <div className="min-h-screen bg-background">
-        <Header />
-      <div className="pt-20 pb-16">
+      <PublicPageLayout maxWidth="7xl">
         <div className="container mx-auto px-4">
           {/* Hero Section */}
           <div className="text-center mb-16">
@@ -233,8 +231,7 @@ const Pricing = () => {
             </div>
           </div>
         </div>
-      </div>
-      </div>
+      </PublicPageLayout>
     </>
   );
 };

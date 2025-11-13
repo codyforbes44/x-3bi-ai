@@ -1,4 +1,4 @@
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PublicPageLayout } from "@/components/layout/PublicPageLayout";
 import { PageHero } from "@/components/layout/PageHero";
 import { FeatureGrid } from "@/components/layout/FeatureGrid";
 import { CTASection } from "@/components/layout/CTASection";
@@ -78,7 +78,7 @@ const Enterprise = () => {
         canonical="https://3bi.ai/enterprise"
         structuredData={structuredData}
       />
-      <PageLayout>
+      <PublicPageLayout maxWidth="7xl">
         <PageHero
           title="Enterprise Solutions"
           description={`Powerful AI platform built for enterprise scale. ${PLATFORM_STATS.totalFeatures} AI features, ${PLATFORM_STATS.totalModels} models, unlimited users, and dedicated support.`}
@@ -246,7 +246,7 @@ const Enterprise = () => {
           </div>
         </div>
       </div>
-    </PageLayout>
+      </PublicPageLayout>
     </>
   );
 };
