@@ -84,6 +84,7 @@ const SuperAdminDashboardPage = lazy(() => import("./pages/SuperAdminDashboardPa
 
 // Phase 8: Monitoring & Observability
 const MonitoringDashboard = lazy(() => import("./pages/MonitoringDashboard"));
+const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
 
 const queryClient = new QueryClient();
 
@@ -195,6 +196,9 @@ const App = () => (
                             
                             {/* Phase 8: Monitoring & Observability */}
                             <Route path="/monitoring" element={<ProtectedRoute><MonitoringDashboard /></ProtectedRoute>} />
+                            
+                            {/* Admin Dashboard */}
+                            <Route path={ROUTES.ADMIN_DASHBOARD} element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
                             
                             {/* OG Image Generator - Internal Tool */}
                             <Route path="/og-generator" element={<OGImageGenerator />} />
