@@ -1,8 +1,10 @@
+import { Suspense } from "react";
 import { SEO } from "@/components/SEO";
 import { ProductTour } from "@/components/onboarding/ProductTour";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { DashboardOverview } from "@/components/dashboard/DashboardOverview";
 import { DashboardContent } from "@/components/dashboard/DashboardContent";
+import { PageSkeleton } from "@/components/ui/page-skeleton";
 import { useDashboard } from "@/hooks/useDashboard";
 import { SEO_CONFIG, BREADCRUMB_CONFIG } from "@/config/seo-config";
 
@@ -34,14 +36,16 @@ const Dashboard = () => {
         isMobile={isMobile}
         onTabChange={setActiveTab}
       >
-        {activeTab === "overview" ? (
-          <DashboardOverview onFeatureSelect={setActiveTab} />
-        ) : (
-          <DashboardContent 
-            activeTab={activeTab} 
-            onTabChange={setActiveTab} 
-          />
-        )}
+        <Suspense fallback={<PageSkeleton variant="card-grid" count={6} />}>
+          {activeTab === "overview" ? (
+            <DashboardOverview onFeatureSelect={setActiveTab} />
+          ) : (
+            <DashboardContent 
+              activeTab={activeTab} 
+              onTabChange={setActiveTab} 
+            />
+          )}
+        </Suspense>
       </DashboardLayout>
     </>
   );

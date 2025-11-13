@@ -1,3 +1,4 @@
+import { useState, Suspense } from "react";
 import { PublicPageLayout } from "@/components/layout/PublicPageLayout";
 import { PageHero } from "@/components/layout/PageHero";
 import { FeatureGrid } from "@/components/layout/FeatureGrid";
@@ -11,9 +12,14 @@ import { generateOrganizationSchema } from "@/utils/structuredData";
 import { PLATFORM_STATS, getFeaturesByCategory } from "@/config/platform-capabilities";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/config/routes";
+import { DemoSchedulerDialog } from "@/components/dialogs/DemoSchedulerDialog";
+import { ContactSalesDialog } from "@/components/dialogs/ContactSalesDialog";
+import { PageSkeleton } from "@/components/ui/page-skeleton";
 
 const Enterprise = () => {
   const navigate = useNavigate();
+  const [demoDialogOpen, setDemoDialogOpen] = useState(false);
+  const [contactDialogOpen, setContactDialogOpen] = useState(false);
   
   const features = [
     {
@@ -88,11 +94,11 @@ const Enterprise = () => {
           }}
           actions={
             <>
-              <Button size="lg" className="bg-gradient-hero text-white">
+              <Button size="lg" className="bg-gradient-hero text-white" onClick={() => setDemoDialogOpen(true)}>
                 <Phone className="w-5 h-5 mr-2" />
                 Schedule Demo
               </Button>
-              <Button variant="outline" size="lg">
+              <Button variant="outline" size="lg" onClick={() => setContactDialogOpen(true)}>
                 <Mail className="w-5 h-5 mr-2" />
                 Contact Sales
               </Button>
@@ -240,15 +246,24 @@ const Enterprise = () => {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button variant="outline" className="w-full">Send Message</Button>
+                <Button variant="outline" className="w-full" onClick={() => setContactDialogOpen(true)}>Send Message</Button>
               </CardContent>
             </Card>
           </div>
         </div>
+
+        <DemoSchedulerDialog open={demoDialogOpen} onOpenChange={setDemoDialogOpen} />
+        <ContactSalesDialog open={contactDialogOpen} onOpenChange={setContactDialogOpen} />
       </div>
       </PublicPageLayout>
     </>
   );
 };
 
-export default Enterprise;
+const EnterpriseWithSuspense = () => (
+  <Suspense fallback={<PageSkeleton variant="card-grid" count={8} />}>
+    <Enterprise />
+  </Suspense>
+);
+
+export default EnterpriseWithSuspense;

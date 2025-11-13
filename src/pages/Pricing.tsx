@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { PublicPageLayout } from "@/components/layout/PublicPageLayout";
 import { SEO } from "@/components/SEO";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,9 +10,14 @@ import { PLATFORM_STATS, AI_MODELS } from "@/config/platform-capabilities";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "@/config/routes";
 import { SEO_CONFIG, PAGE_SEO, BREADCRUMB_CONFIG } from "@/config/seo-config";
+import { DemoSchedulerDialog } from "@/components/dialogs/DemoSchedulerDialog";
+import { NewsletterSignup } from "@/components/forms/NewsletterSignup";
+import { PageSkeleton } from "@/components/ui/page-skeleton";
+import { Suspense } from "react";
 
 const Pricing = () => {
   const navigate = useNavigate();
+  const [demoDialogOpen, setDemoDialogOpen] = useState(false);
 
   const plans = [
     {
@@ -176,6 +182,13 @@ const Pricing = () => {
                   <Button 
                     variant={plan.buttonVariant} 
                     className={`w-full ${plan.popular ? 'bg-gradient-hero text-white' : ''}`}
+                    onClick={() => {
+                      if (plan.name === "Enterprise") {
+                        setDemoDialogOpen(true);
+                      } else {
+                        navigate(ROUTES.DASHBOARD);
+                      }
+                    }}
                   >
                     {plan.buttonText}
                   </Button>
@@ -230,10 +243,26 @@ const Pricing = () => {
               </Card>
             </div>
           </div>
+
+          {/* Newsletter Section */}
+          <div className="mt-20 max-w-3xl mx-auto">
+            <NewsletterSignup
+              title="Stay Informed About New Features"
+              description="Get updates on new AI models, features, and exclusive pricing offers."
+            />
+          </div>
         </div>
+
+        <DemoSchedulerDialog open={demoDialogOpen} onOpenChange={setDemoDialogOpen} />
       </PublicPageLayout>
     </>
   );
 };
 
-export default Pricing;
+const PricingWithSuspense = () => (
+  <Suspense fallback={<PageSkeleton variant="card-grid" count={3} />}>
+    <Pricing />
+  </Suspense>
+);
+
+export default PricingWithSuspense;
