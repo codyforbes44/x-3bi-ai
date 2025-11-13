@@ -138,7 +138,7 @@ export function NeuralHero() {
         transition={{ duration: 3, repeat: Infinity }}
       >
         <div 
-          className="text-8xl font-bold bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent"
+          className="text-8xl font-bold bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent animate-pulse"
           aria-label="3BI.AI phonetic spelling"
         >
           Ʒbɪ
