@@ -10,6 +10,7 @@ interface NeuralButtonProps {
   className?: string;
   predictive?: boolean;
   haptic?: boolean;
+  ariaLabel?: string;
 }
 
 export function NeuralButton({
@@ -20,6 +21,7 @@ export function NeuralButton({
   className = "",
   predictive = true,
   haptic = true,
+  ariaLabel,
 }: NeuralButtonProps) {
   const [isPredicted, setIsPredicted] = useState(false);
   const [isThinking, setIsThinking] = useState(false);
@@ -57,6 +59,7 @@ export function NeuralButton({
       onMouseLeave={() => setIsPredicted(false)}
       className={cn(
         "relative overflow-hidden rounded-full p-4 transition-all",
+        "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
         variantStyles[variant],
         isPredicted && "ring-2 ring-primary/50 ring-offset-2",
         className
@@ -65,6 +68,7 @@ export function NeuralButton({
       whileTap={{ scale: 0.95 }}
       animate={isThinking ? { opacity: [1, 0.7, 1] } : {}}
       transition={{ duration: 0.15 }}
+      aria-label={ariaLabel}
     >
       {/* Neural thinking animation */}
       {isThinking && (
