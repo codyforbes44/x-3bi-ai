@@ -10,7 +10,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 import { AnimatedLogo } from "@/components/visual/AnimatedLogo";
 import { MAIN_NAVIGATION, ROUTES } from "@/config/routes";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
-import { OnboardingProgressIndicator } from "@/components/onboarding/OnboardingProgressIndicator";
+
 import { IconNavButton } from "@/components/visual/IconNavButton";
 
 // Map navigation items to icons
@@ -44,9 +44,7 @@ const Header = () => {
   const isActiveRoute = (href: string) => location.pathname === href;
 
   return (
-    <>
-      {user && <OnboardingProgressIndicator />}
-      <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border">
         <div className="container mx-auto px-3 md:px-4 h-14 md:h-16 flex items-center justify-between">
           {/* Logo */}
           <Link 
@@ -183,7 +181,6 @@ const Header = () => {
         )}
       </div>
     </header>
-    </>
   );
 };
 
