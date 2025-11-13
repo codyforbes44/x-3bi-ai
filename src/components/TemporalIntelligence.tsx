@@ -4,25 +4,45 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Clock, TrendingUp, Calendar, Sparkles, Loader2, AlertCircle } from 'lucide-react';
+import { Clock, TrendingUp, Calendar, Sparkles, Loader2, Download } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ResponsiveTable } from '@/components/ui/responsive-table';
+import { useExport } from '@/hooks/useExport';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { format } from 'date-fns';
+import { Progress } from '@/components/ui/progress';
 
 export const TemporalIntelligence = () => {
   const { toast } = useToast();
+  const { exportData } = useExport();
   const [patterns, setPatterns] = useState<any[]>([]);
   const [insights, setInsights] = useState<any[]>([]);
   const [analyzing, setAnalyzing] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [dateRange, setDateRange] = useState<{ from?: Date; to?: Date }>({});
 
   useEffect(() => {
     loadData();
-  }, []);
+  }, [dateRange]);
 
   const loadData = async () => {
     try {
+      let patternsQuery = supabase.from('temporal_patterns').select('*').order('created_at', { ascending: false });
+      let insightsQuery = supabase.from('predictive_insights').select('*').order('predicted_for', { ascending: true });
+
+      if (dateRange.from) {
+        patternsQuery = patternsQuery.gte('created_at', dateRange.from.toISOString());
+        insightsQuery = insightsQuery.gte('created_at', dateRange.from.toISOString());
+      }
+      if (dateRange.to) {
+        patternsQuery = patternsQuery.lte('created_at', dateRange.to.toISOString());
+        insightsQuery = insightsQuery.lte('created_at', dateRange.to.toISOString());
+      }
+
       const [patternsRes, insightsRes] = await Promise.all([
-        supabase.from('temporal_patterns').select('*').order('created_at', { ascending: false }),
-        supabase.from('predictive_insights').select('*').order('predicted_for', { ascending: true }).limit(10),
+        patternsQuery,
+        insightsQuery.limit(50),
       ]);
 
       setPatterns(patternsRes.data || []);
@@ -60,6 +80,32 @@ export const TemporalIntelligence = () => {
     }
   };
 
+  const handleExport = (type: 'predictions' | 'patterns') => {
+    const data = type === 'predictions' 
+      ? insights.map((i) => ({
+          prediction: i.prediction_text,
+          confidence: i.confidence_score,
+          type: i.insight_type,
+          predicted_for: i.predicted_for ? format(new Date(i.predicted_for), 'PPP') : 'N/A',
+          created: format(new Date(i.created_at), 'PPP'),
+        }))
+      : patterns.map((p) => ({
+          pattern: p.pattern_type,
+          frequency: p.frequency,
+          time_window: p.time_window,
+          detected: format(new Date(p.detected_at), 'PPP'),
+        }));
+    
+    exportData(data, { filename: `temporal-${type}`, format: 'csv' });
+    toast({ title: "Export Complete", description: `${type} exported successfully` });
+  };
+
+  const getConfidenceBadge = (confidence: number) => {
+    if (confidence >= 0.8) return { variant: 'default' as const, label: 'High', color: 'bg-green-500/10 text-green-600 border-green-500/20' };
+    if (confidence >= 0.6) return { variant: 'secondary' as const, label: 'Medium', color: 'bg-yellow-500/10 text-yellow-600 border-yellow-500/20' };
+    return { variant: 'outline' as const, label: 'Low', color: 'bg-red-500/10 text-red-600 border-red-500/20' };
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
@@ -70,20 +116,38 @@ export const TemporalIntelligence = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold flex items-center gap-2">
-            <Clock className="h-8 w-8 text-primary" />
+          <h2 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+            <Clock className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
             Temporal Intelligence
           </h2>
-          <p className="text-muted-foreground mt-1">
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">
             AI learns from your past to predict your future needs
           </p>
         </div>
-        <Button onClick={analyzePatterns} disabled={analyzing}>
-          {analyzing ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Sparkles className="h-4 w-4 mr-2" />}
-          Analyze Patterns
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" size="sm" className="h-9">
+                <Calendar className="h-4 w-4 mr-2" />
+                {dateRange.from ? format(dateRange.from, 'PP') : 'Filter dates'}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="end">
+              <CalendarComponent
+                mode="range"
+                selected={{ from: dateRange.from, to: dateRange.to }}
+                onSelect={(range) => setDateRange(range || {})}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+          <Button onClick={analyzePatterns} disabled={analyzing} size="sm" className="h-9">
+            {analyzing ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : <Sparkles className="h-4 w-4 mr-2" />}
+            Analyze
+          </Button>
+        </div>
       </div>
 
       <Tabs defaultValue="predictions" className="w-full">
@@ -93,6 +157,17 @@ export const TemporalIntelligence = () => {
         </TabsList>
 
         <TabsContent value="predictions" className="space-y-4">
+          <div className="flex justify-end mb-4">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => handleExport('predictions')}
+              disabled={insights.length === 0}
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Export
+            </Button>
+          </div>
           {insights.length === 0 ? (
             <Card className="p-8 text-center">
               <Calendar className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
@@ -105,97 +180,128 @@ export const TemporalIntelligence = () => {
               </Button>
             </Card>
           ) : (
-            insights.map((insight) => (
-              <Card key={insight.id} className="p-6">
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-lg font-semibold">{insight.title}</h3>
-                      <Badge variant={
-                        insight.confidence_score > 0.8 ? 'default' :
-                        insight.confidence_score > 0.6 ? 'secondary' : 'outline'
-                      }>
-                        {Math.round(insight.confidence_score * 100)}% confident
+            <ResponsiveTable
+              data={insights}
+              columns={[
+                {
+                  key: 'prediction',
+                  label: 'Prediction',
+                  render: (item) => (
+                    <div className="max-w-md">
+                      <p className="text-sm font-medium">{item.prediction_text}</p>
+                      <Badge variant="outline" className="mt-1 text-xs">
+                        {item.insight_type?.replace('_', ' ')}
                       </Badge>
                     </div>
-                    <p className="text-muted-foreground mb-4">{insight.description}</p>
-                    
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground mb-4">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4" />
-                        {new Date(insight.predicted_for).toLocaleDateString()}
+                  ),
+                },
+                {
+                  key: 'confidence',
+                  label: 'Confidence',
+                  mobileLabel: 'Confidence',
+                  render: (item) => {
+                    const badge = getConfidenceBadge(item.confidence_score);
+                    return (
+                      <div className="flex flex-col gap-2">
+                        <Badge className={badge.color}>{badge.label}</Badge>
+                        <Progress value={item.confidence_score * 100} className="w-16 h-2" />
+                        <span className="text-xs text-muted-foreground">
+                          {Math.round(item.confidence_score * 100)}%
+                        </span>
                       </div>
-                      <Badge variant="outline">{insight.insight_type}</Badge>
-                      <Badge variant={
-                        insight.status === 'pending' ? 'secondary' :
-                        insight.status === 'confirmed' ? 'default' : 'destructive'
-                      }>
-                        {insight.status}
-                      </Badge>
-                    </div>
-
-                    {insight.action_suggestions && insight.action_suggestions.length > 0 && (
-                      <div className="bg-muted p-4 rounded-lg">
-                        <p className="text-sm font-medium mb-2">Suggested Actions:</p>
-                        <ul className="text-sm space-y-1">
-                          {insight.action_suggestions.map((suggestion: string, idx: number) => (
-                            <li key={idx} className="flex items-start gap-2">
-                              <span className="text-primary mt-1">•</span>
-                              <span>{suggestion}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                  
-                  {insight.confidence_score > 0.8 && (
-                    <AlertCircle className="h-5 w-5 text-primary" />
-                  )}
-                </div>
-              </Card>
-            ))
+                    );
+                  },
+                },
+                {
+                  key: 'predicted_for',
+                  label: 'Predicted For',
+                  hideOnMobile: true,
+                  render: (item) => (
+                    <span className="text-xs text-muted-foreground">
+                      {item.predicted_for ? format(new Date(item.predicted_for), 'PP') : 'N/A'}
+                    </span>
+                  ),
+                },
+                {
+                  key: 'created',
+                  label: 'Created',
+                  mobileLabel: 'Date',
+                  render: (item) => (
+                    <span className="text-xs text-muted-foreground">
+                      {format(new Date(item.created_at), 'PP')}
+                    </span>
+                  ),
+                },
+              ]}
+              keyExtractor={(item) => item.id}
+              emptyMessage="No predictions found for this date range"
+            />
           )}
         </TabsContent>
 
         <TabsContent value="patterns" className="space-y-4">
+          <div className="flex justify-end mb-4">
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => handleExport('patterns')}
+              disabled={patterns.length === 0}
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Export
+            </Button>
+          </div>
           {patterns.length === 0 ? (
             <Card className="p-8 text-center">
               <TrendingUp className="h-16 w-16 mx-auto mb-4 text-muted-foreground" />
               <h3 className="text-xl font-semibold mb-2">No Patterns Detected</h3>
               <p className="text-muted-foreground mb-4">
-                Start using the platform to detect behavioral patterns
+                Continue using the platform to detect behavioral patterns
               </p>
+              <Button onClick={analyzePatterns}>
+                Start Analysis
+              </Button>
             </Card>
           ) : (
-            <div className="grid gap-4 md:grid-cols-2">
-              {patterns.map((pattern) => (
-                <Card key={pattern.id} className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="font-semibold">{pattern.pattern_name}</h3>
-                      <Badge variant="outline" className="mt-2">{pattern.pattern_type}</Badge>
+            <ResponsiveTable
+              data={patterns}
+              columns={[
+                {
+                  key: 'pattern',
+                  label: 'Pattern Type',
+                  render: (item) => (
+                    <div className="flex flex-col gap-1">
+                      <span className="text-sm font-medium">{item.pattern_type?.replace('_', ' ')}</span>
+                      <Badge variant="outline" className="text-xs w-fit">
+                        {item.time_window || 'General'}
+                      </Badge>
                     </div>
-                    <Badge variant="secondary">
-                      {Math.round((pattern.confidence_level || 0) * 100)}%
-                    </Badge>
-                  </div>
-                  
-                  {pattern.recurrence_rule && (
-                    <div className="text-sm text-muted-foreground mb-2">
-                      <strong>Recurrence:</strong> {pattern.recurrence_rule}
+                  ),
+                },
+                {
+                  key: 'frequency',
+                  label: 'Frequency',
+                  render: (item) => (
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-semibold text-primary">{item.frequency || 0}</span>
+                      <span className="text-xs text-muted-foreground">occurrences</span>
                     </div>
-                  )}
-                  
-                  {pattern.next_predicted_occurrence && (
-                    <div className="text-sm text-muted-foreground">
-                      <strong>Next expected:</strong>{' '}
-                      {new Date(pattern.next_predicted_occurrence).toLocaleString()}
-                    </div>
-                  )}
-                </Card>
-              ))}
-            </div>
+                  ),
+                },
+                {
+                  key: 'detected',
+                  label: 'Detected',
+                  mobileLabel: 'Date',
+                  render: (item) => (
+                    <span className="text-xs text-muted-foreground">
+                      {format(new Date(item.detected_at || item.created_at), 'PP')}
+                    </span>
+                  ),
+                },
+              ]}
+              keyExtractor={(item) => item.id}
+              emptyMessage="No patterns found for this date range"
+            />
           )}
         </TabsContent>
       </Tabs>
