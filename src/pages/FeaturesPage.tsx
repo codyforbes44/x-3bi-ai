@@ -5,25 +5,26 @@ import { SEO } from "@/components/SEO";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { SearchBar } from "@/components/ui/search-bar";
 import { EmptyState } from "@/components/ui/empty-state";
 import { PageSkeleton } from "@/components/ui/page-skeleton";
+import { FilterPanel, FilterGroup } from "@/components/ui/filter-panel";
 import { PLATFORM_FEATURES, FEATURE_CATEGORIES, getFeaturesByCategory, PLATFORM_STATS } from "@/config/platform-capabilities";
-import { Sparkles, History, Search as SearchIcon } from "lucide-react";
+import { Sparkles, History, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { SEO_CONFIG, PAGE_SEO, BREADCRUMB_CONFIG } from "@/config/seo-config";
 import { useRecentlyViewed } from "@/hooks/useRecentlyViewed";
 import { usePersonalization } from "@/hooks/usePersonalization";
+import { cn } from "@/lib/utils";
 
 export default function FeaturesPage() {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
-  const [activeTab, setActiveTab] = useState("all");
+  const [selectedFilters, setSelectedFilters] = useState<Record<string, string[]>>({});
   
   const { recentItems, addRecentItem } = useRecentlyViewed("features");
-  const { trackFeatureUsage } = usePersonalization();
+  const { preferences, trackFeatureUsage, toggleFavorite } = usePersonalization();
 
   useEffect(() => {
     // Simulate loading state
@@ -31,12 +32,50 @@ export default function FeaturesPage() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Filter features based on search and active tab
+  // Build filter groups from categories
+  const filterGroups: FilterGroup[] = [
+    {
+      id: "category",
+      label: "Category",
+      options: FEATURE_CATEGORIES.map(cat => ({
+        id: cat.id,
+        label: cat.name,
+        count: getFeaturesByCategory(cat.id).length
+      })),
+      defaultOpen: true
+    },
+    {
+      id: "badge",
+      label: "Type",
+      options: [
+        { id: "free", label: "Free", count: PLATFORM_FEATURES.filter(f => f.badge.toLowerCase() === "free").length },
+        { id: "beta", label: "Beta", count: PLATFORM_FEATURES.filter(f => f.badge.toLowerCase() === "beta").length },
+        { id: "premium", label: "Premium", count: PLATFORM_FEATURES.filter(f => f.badge.toLowerCase() === "premium").length },
+        { id: "new", label: "New", count: PLATFORM_FEATURES.filter(f => f.badge.toLowerCase() === "new").length },
+      ],
+      defaultOpen: true
+    }
+  ];
+
+  // Filter features based on search and selected filters
   const getFilteredFeatures = () => {
-    let features = activeTab === "all" 
-      ? PLATFORM_FEATURES 
-      : getFeaturesByCategory(activeTab);
+    let features = [...PLATFORM_FEATURES];
     
+    // Apply category filters
+    if (selectedFilters.category && selectedFilters.category.length > 0) {
+      features = features.filter(f => 
+        selectedFilters.category.includes(f.category)
+      );
+    }
+    
+    // Apply badge filters
+    if (selectedFilters.badge && selectedFilters.badge.length > 0) {
+      features = features.filter(f => 
+        selectedFilters.badge.some(b => f.badge.toLowerCase() === b)
+      );
+    }
+    
+    // Apply search query
     if (searchQuery) {
       const query = searchQuery.toLowerCase();
       features = features.filter(
@@ -52,6 +91,11 @@ export default function FeaturesPage() {
   };
 
   const filteredFeatures = getFilteredFeatures();
+  
+  // Get favorite features
+  const favoriteFeatures = [...PLATFORM_FEATURES].filter(f => 
+    preferences.favoriteFeatures.includes(f.id)
+  );
 
   // Get recent features
   const recentFeatures = recentItems
@@ -79,26 +123,63 @@ export default function FeaturesPage() {
     setSearchQuery(query);
   };
 
-  const handleClearSearch = () => {
-    setSearchQuery("");
+  const handleFilterChange = (groupId: string, optionId: string, checked: boolean) => {
+    setSelectedFilters(prev => {
+      const groupFilters = prev[groupId] || [];
+      return {
+        ...prev,
+        [groupId]: checked
+          ? [...groupFilters, optionId]
+          : groupFilters.filter(id => id !== optionId)
+      };
+    });
   };
 
-  const renderFeatureCard = (feature: any) => (
-    <Card 
-      key={feature.id} 
-      className="hover:shadow-lg transition-shadow cursor-pointer"
-      onClick={() => handleFeatureClick(feature)}
-    >
-      <CardHeader>
-        <div className="flex items-start justify-between mb-4">
-          <div className="p-3 rounded-lg bg-primary/10">
-            <feature.icon className="w-6 h-6 text-primary" />
+  const handleClearFilters = () => {
+    setSelectedFilters({});
+  };
+
+  const handleToggleFavorite = (featureId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    toggleFavorite(featureId);
+  };
+
+  const renderFeatureCard = (feature: any) => {
+    const isFavorite = preferences.favoriteFeatures.includes(feature.id);
+    
+    return (
+      <Card 
+        key={feature.id} 
+        className="hover:shadow-lg transition-all cursor-pointer group"
+        onClick={() => handleFeatureClick(feature)}
+      >
+        <CardHeader>
+          <div className="flex items-start justify-between mb-4">
+            <div className="p-3 rounded-lg bg-primary/10">
+              <feature.icon className="w-6 h-6 text-primary" />
+            </div>
+            <div className="flex items-center gap-2">
+              <Badge variant="outline">{feature.badge}</Badge>
+              <Button
+                variant="ghost"
+                size="sm"
+                className={cn(
+                  "h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity",
+                  isFavorite && "opacity-100"
+                )}
+                onClick={(e) => handleToggleFavorite(feature.id, e)}
+                aria-label={isFavorite ? "Remove from favorites" : "Add to favorites"}
+              >
+                <Star className={cn(
+                  "h-4 w-4",
+                  isFavorite ? "fill-yellow-500 text-yellow-500" : "text-muted-foreground"
+                )} />
+              </Button>
+            </div>
           </div>
-          <Badge variant="outline">{feature.badge}</Badge>
-        </div>
-        <CardTitle>{feature.name}</CardTitle>
-        <CardDescription>{feature.description}</CardDescription>
-      </CardHeader>
+          <CardTitle>{feature.name}</CardTitle>
+          <CardDescription>{feature.description}</CardDescription>
+        </CardHeader>
       <CardContent className="space-y-4">
         <div className="space-y-2">
           <p className="text-sm font-medium">Capabilities:</p>
@@ -126,7 +207,8 @@ export default function FeaturesPage() {
         </Button>
       </CardContent>
     </Card>
-  );
+    );
+  };
 
   return (
     <>
@@ -166,14 +248,45 @@ export default function FeaturesPage() {
                 />
               </div>
 
+              {/* Favorites Section */}
+              {favoriteFeatures.length > 0 && !searchQuery && Object.keys(selectedFilters).length === 0 && (
+                <div className="mb-8">
+                  <div className="flex items-center gap-2 mb-4">
+                    <Star className="w-5 h-5 text-yellow-500 fill-yellow-500" />
+                    <h2 className="text-xl font-semibold">Your Favorites</h2>
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {favoriteFeatures.slice(0, 3).map((feature: any) => (
+                      <Card 
+                        key={feature.id}
+                        className="cursor-pointer hover:shadow-lg transition-shadow"
+                        onClick={() => handleFeatureClick(feature)}
+                      >
+                        <CardHeader className="pb-3">
+                          <div className="flex items-start justify-between">
+                            <div className="p-2 rounded-lg bg-primary/10">
+                              <feature.icon className="w-5 h-5 text-primary" />
+                            </div>
+                            <Badge variant="outline" className="text-xs">
+                              {feature.badge}
+                            </Badge>
+                          </div>
+                          <CardTitle className="text-lg mt-2">{feature.name}</CardTitle>
+                        </CardHeader>
+                      </Card>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Recently Viewed Features */}
-              {recentFeatures.length > 0 && !searchQuery && (
+              {recentFeatures.length > 0 && !searchQuery && Object.keys(selectedFilters).length === 0 && (
                 <div className="mb-8">
                   <div className="flex items-center gap-2 mb-4">
                     <History className="w-5 h-5 text-muted-foreground" />
                     <h2 className="text-xl font-semibold">Recently Viewed</h2>
                   </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     {recentFeatures.map((feature: any) => (
                       <Card 
                         key={feature.id}
@@ -197,59 +310,57 @@ export default function FeaturesPage() {
                 </div>
               )}
 
-              {/* Features Tabs */}
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 mb-8">
-                  <TabsTrigger value="all">
-                    All ({PLATFORM_STATS.totalFeatures})
-                  </TabsTrigger>
-                  {FEATURE_CATEGORIES.map((cat) => (
-                    <TabsTrigger key={cat.id} value={cat.id}>
-                      {cat.name} ({getFeaturesByCategory(cat.id).length})
-                    </TabsTrigger>
-                  ))}
-                </TabsList>
+              {/* Main Content: Filter Panel + Features Grid */}
+              <div className="flex flex-col lg:flex-row gap-8">
+                {/* Filter Panel - Mobile: Below search, Desktop: Left sidebar */}
+                <div className="w-full lg:w-auto">
+                  <FilterPanel
+                    groups={filterGroups}
+                    selectedFilters={selectedFilters}
+                    onFilterChange={handleFilterChange}
+                    onClearAll={handleClearFilters}
+                    className="lg:sticky lg:top-4"
+                  />
+                </div>
 
-                <TabsContent value="all" className="space-y-6">
+                {/* Features Grid */}
+                <div className="flex-1">
                   {filteredFeatures.length === 0 ? (
                     <EmptyState
-                      icon={SearchIcon}
+                      icon={Sparkles}
                       title="No features found"
-                      description={`No features match "${searchQuery}". Try a different search term.`}
+                      description={
+                        searchQuery 
+                          ? "Try adjusting your search query or filters"
+                          : Object.keys(selectedFilters).length > 0
+                            ? "No features match your selected filters"
+                            : "No features available"
+                      }
                       action={
-                        <Button onClick={handleClearSearch}>
-                          Clear Search
-                        </Button>
+                        (searchQuery || Object.keys(selectedFilters).length > 0) && (
+                          <Button onClick={() => {
+                            setSearchQuery("");
+                            handleClearFilters();
+                          }}>
+                            Clear All
+                          </Button>
+                        )
                       }
                     />
                   ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                      {filteredFeatures.map(renderFeatureCard)}
-                    </div>
-                  )}
-                </TabsContent>
-
-                {FEATURE_CATEGORIES.map((category) => (
-                  <TabsContent key={category.id} value={category.id} className="space-y-6">
-                    {filteredFeatures.length === 0 ? (
-                      <EmptyState
-                        icon={SearchIcon}
-                        title="No features found"
-                        description={`No ${category.name.toLowerCase()} features match "${searchQuery}". Try a different search term.`}
-                        action={
-                          <Button onClick={handleClearSearch}>
-                            Clear Search
-                          </Button>
-                        }
-                      />
-                    ) : (
-                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <>
+                      <div className="flex items-center justify-between mb-6">
+                        <p className="text-sm text-muted-foreground">
+                          Showing {filteredFeatures.length} of {PLATFORM_STATS.totalFeatures} features
+                        </p>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                         {filteredFeatures.map(renderFeatureCard)}
                       </div>
-                    )}
-                  </TabsContent>
-                ))}
-              </Tabs>
+                    </>
+                  )}
+                </div>
+              </div>
             </>
           )}
         </div>
