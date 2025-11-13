@@ -1,7 +1,6 @@
 import { SEO } from "@/components/SEO";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import MultiModalMemory from "@/components/MultiModalMemory";
+import { AuthenticatedPageLayout } from "@/components/layout/AuthenticatedPageLayout";
 
 export default function MemoryPage() {
   return (
@@ -13,13 +12,9 @@ export default function MemoryPage() {
         ogImage="https://3bi.ai/og/memory.png"
         canonical="https://3bi.ai/memory"
       />
-      <div className="min-h-screen bg-background flex flex-col">
-      <Header />
-      <main className="flex-1 pt-20">
+      <AuthenticatedPageLayout maxWidth="full" padding="compact" showBreadcrumbs={false}>
         <MultiModalMemory />
-      </main>
-      <Footer />
-    </div>
+      </AuthenticatedPageLayout>
     </>
   );
 }

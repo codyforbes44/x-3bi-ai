@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { Copy, Key, Plus, Trash2, AlertCircle } from "lucide-react";
 import { format } from "date-fns";
 import { SEO } from "@/components/SEO";
+import { AuthenticatedPageLayout } from "@/components/layout/AuthenticatedPageLayout";
 
 interface APIKey {
   id: string;
@@ -149,8 +150,8 @@ export default function APIKeys() {
         ogImage="https://3bi.ai/og/api-keys.png"
         canonical="https://3bi.ai/api-keys"
       />
-      
-      <div className="container mx-auto py-8 px-4 max-w-6xl">
+      <AuthenticatedPageLayout maxWidth="xl" showBreadcrumbs={false}>
+        <div className="space-y-8">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h1 className="text-3xl font-bold mb-2">API Keys</h1>
@@ -319,7 +320,8 @@ export default function APIKeys() {
             )}
           </CardContent>
         </Card>
-      </div>
+        </div>
+      </AuthenticatedPageLayout>
     </>
   );
 }

@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { SEO } from "@/components/SEO";
-import { PageLayout } from "@/components/layout/PageLayout";
 import { WorkspaceSwitcher } from "@/components/workspaces/WorkspaceSwitcher";
 import { CreateWorkspaceDialog } from "@/components/workspaces/CreateWorkspaceDialog";
 import { WorkspaceSettings } from "@/components/workspaces/WorkspaceSettings";
 import { useWorkspace } from "@/contexts/WorkspaceContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Users, FolderKanban, Settings } from "lucide-react";
+import { AuthenticatedPageLayout } from "@/components/layout/AuthenticatedPageLayout";
 
 const Workspaces = () => {
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
@@ -14,11 +14,11 @@ const Workspaces = () => {
 
   if (loading) {
     return (
-      <PageLayout>
+      <AuthenticatedPageLayout maxWidth="xl" showBreadcrumbs={false}>
         <div className="flex items-center justify-center min-h-[60vh]">
           <p className="text-muted-foreground">Loading workspaces...</p>
         </div>
-      </PageLayout>
+      </AuthenticatedPageLayout>
     );
   }
 
@@ -31,8 +31,7 @@ const Workspaces = () => {
         ogImage="https://3bi.ai/og/workspaces.png"
         canonical="https://3bi.ai/workspaces"
       />
-      <PageLayout>
-      <div className="container mx-auto px-4 py-12">
+      <AuthenticatedPageLayout maxWidth="xl" showBreadcrumbs={false}>
         <div className="max-w-6xl mx-auto space-y-8">
           {/* Header */}
           <div className="space-y-4">
@@ -114,8 +113,7 @@ const Workspaces = () => {
           open={createDialogOpen} 
           onOpenChange={setCreateDialogOpen} 
         />
-      </div>
-    </PageLayout>
+      </AuthenticatedPageLayout>
     </>
   );
 };

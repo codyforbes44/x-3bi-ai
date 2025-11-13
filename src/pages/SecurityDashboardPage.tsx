@@ -1,8 +1,8 @@
-import { PageLayout } from '@/components/layout/PageLayout';
 import { PageHero } from '@/components/layout/PageHero';
 import { SecurityDashboard } from '@/components/SecurityDashboard';
 import { ShieldCheck } from 'lucide-react';
 import { SEO } from '@/components/SEO';
+import { AuthenticatedPageLayout } from '@/components/layout/AuthenticatedPageLayout';
 
 export default function SecurityDashboardPage() {
   return (
@@ -14,7 +14,7 @@ export default function SecurityDashboardPage() {
         ogImage="https://3bi.ai/og/security.png"
         canonical="https://3bi.ai/security-dashboard"
       />
-      <PageLayout>
+      <AuthenticatedPageLayout maxWidth="2xl" showBreadcrumbs={false}>
         <PageHero
           title="Security Dashboard"
           description="Monitor and improve your security posture"
@@ -23,10 +23,10 @@ export default function SecurityDashboardPage() {
             text: 'Security',
           }}
         />
-        <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <div className="mt-8">
           <SecurityDashboard />
         </div>
-      </PageLayout>
+      </AuthenticatedPageLayout>
     </>
   );
 }

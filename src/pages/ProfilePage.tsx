@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { SEO } from "@/components/SEO";
-import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,9 +12,9 @@ import { User, Settings, LogOut, AlertCircle, CheckCircle, Upload, Trash2 } from
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { uploadAvatar, deleteAvatar } from "@/utils/avatarUpload";
-import Header from "@/components/Header";
 import { profileSchema } from "@/utils/formValidation";
 import { logger } from "@/utils/logger";
+import { AuthenticatedPageLayout } from "@/components/layout/AuthenticatedPageLayout";
 
 interface UserProfile {
   id: string;
@@ -28,18 +27,7 @@ interface UserProfile {
 }
 
 const ProfilePage = () => {
-  const navigate = useNavigate();
-  
-  // Safely get auth context with fallback
-  let user = null;
-  let signOut = () => Promise.resolve();
-  try {
-    const auth = useAuth();
-    user = auth.user;
-    signOut = auth.signOut;
-  } catch (error) {
-    console.warn('AuthProvider not available');
-  }
+  const { user, signOut } = useAuth();
   
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
@@ -210,24 +198,6 @@ const ProfilePage = () => {
     }
   };
 
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-background">
-        <Header />
-        <div className="pt-20 pb-16 px-4">
-          <div className="container mx-auto max-w-2xl">
-            <Alert>
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>
-                Profile features are available for authenticated users. <Button variant="link" className="p-0 h-auto" onClick={() => navigate('/auth')}>Sign in to continue</Button>
-              </AlertDescription>
-            </Alert>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   const getInitials = (name: string | null) => {
     if (!name) return user?.email?.charAt(0).toUpperCase() || 'U';
     return name.split(' ').map(n => n.charAt(0)).join('').toUpperCase().slice(0, 2);
@@ -242,30 +212,27 @@ const ProfilePage = () => {
         ogImage="https://3bi.ai/og/profile.png"
         canonical="https://3bi.ai/profile"
       />
-      <div className="min-h-screen bg-background">
-      <Header />
-      <div className="pt-20 pb-16 px-4">
-        <div className="container mx-auto max-w-2xl">
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold mb-2">Account Settings</h1>
-            <p className="text-muted-foreground">Manage your profile and account preferences</p>
-          </div>
+      <AuthenticatedPageLayout maxWidth="2xl" showBreadcrumbs={false}>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-2">Account Settings</h1>
+          <p className="text-muted-foreground">Manage your profile and account preferences</p>
+        </div>
 
-          {error && (
-            <Alert variant="destructive" className="mb-6">
-              <AlertCircle className="h-4 w-4" />
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
+        {error && (
+          <Alert variant="destructive" className="mb-6">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
 
-          {success && (
-            <Alert className="mb-6 border-green-200 bg-green-50 text-green-800">
-              <CheckCircle className="h-4 w-4" />
-              <AlertDescription>{success}</AlertDescription>
-            </Alert>
-          )}
+        {success && (
+          <Alert className="mb-6 border-green-200 bg-green-50 text-green-800">
+            <CheckCircle className="h-4 w-4" />
+            <AlertDescription>{success}</AlertDescription>
+          </Alert>
+        )}
 
-          <div className="space-y-6">
+        <div className="space-y-6">
             {/* Profile Information */}
             <Card>
               <CardHeader>
@@ -433,10 +400,8 @@ const ProfilePage = () => {
                 </div>
               </CardContent>
             </Card>
-          </div>
         </div>
-      </div>
-    </div>
+      </AuthenticatedPageLayout>
     </>
   );
 };

@@ -1,8 +1,8 @@
-import { PageLayout } from '@/components/layout/PageLayout';
 import { PageHero } from '@/components/layout/PageHero';
 import { AIUsageAnalytics } from '@/components/analytics/AIUsageAnalytics';
 import { BarChart } from 'lucide-react';
 import { SEO } from '@/components/SEO';
+import { AuthenticatedPageLayout } from '@/components/layout/AuthenticatedPageLayout';
 
 export default function UsageAnalyticsPage() {
   return (
@@ -14,7 +14,7 @@ export default function UsageAnalyticsPage() {
         ogImage="https://3bi.ai/og/analytics.png"
         canonical="https://3bi.ai/usage-analytics"
       />
-      <PageLayout>
+      <AuthenticatedPageLayout maxWidth="2xl" showBreadcrumbs={false}>
         <PageHero
           title="AI Usage Analytics"
           description="Track usage, optimize costs, and gain insights into your AI consumption"
@@ -23,10 +23,10 @@ export default function UsageAnalyticsPage() {
             text: 'Analytics Dashboard',
           }}
         />
-        <div className="container mx-auto px-4 py-8 max-w-7xl">
+        <div className="mt-8">
           <AIUsageAnalytics />
         </div>
-      </PageLayout>
+      </AuthenticatedPageLayout>
     </>
   );
 }
