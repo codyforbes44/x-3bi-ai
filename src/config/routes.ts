@@ -125,8 +125,9 @@ export const DASHBOARD_NAV_GROUPS = [
   },
   {
     title: 'Admin',
-    requiredRole: 'super_admin' as const,
+    requiredRole: 'admin' as const,
     items: [
+      { name: 'Admin Dashboard', href: ROUTES.ADMIN_DASHBOARD, icon: 'Shield', requiredRole: 'admin' as const },
       { name: 'Super Admin Dashboard', href: ROUTES.SUPER_ADMIN_DASHBOARD, icon: 'Crown', requiredRole: 'super_admin' as const },
     ],
   },
