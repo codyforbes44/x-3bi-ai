@@ -18,6 +18,9 @@ import { HeroContent } from "@/components/home/HeroContent";
 import { StatsDisplay } from "@/components/home/StatsDisplay";
 import { QuickActions } from "@/components/home/QuickActions";
 import { usePredictiveUI } from "@/hooks/usePredictiveUI";
+import { useVoiceRecognition } from "@/hooks/useVoiceRecognition";
+import { VoiceCommandList } from "@/components/voice/VoiceCommandList";
+import { VoicePermissionDialog } from "@/components/voice/VoicePermissionDialog";
 import { useState } from "react";
 import { Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -27,12 +30,72 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useToast } from "@/hooks/use-toast";
 
 const HomePage = () => {
   const navigate = useNavigate();
   const { predictions, trackAction } = usePredictiveUI();
-  const [voiceEnabled, setVoiceEnabled] = useState(false);
-  const [transcript, setTranscript] = useState("");
+  const { toast } = useToast();
+  const [showCommandList, setShowCommandList] = useState(false);
+  const [showPermissionDialog, setShowPermissionDialog] = useState(false);
+
+  // Voice recognition with navigation commands
+  const voiceCommands = [
+    {
+      phrases: ['go to dashboard', 'open dashboard', 'show dashboard'],
+      action: () => {
+        navigate('/dashboard');
+        toast({ title: "Navigating to Dashboard" });
+      },
+      description: 'Navigate to dashboard'
+    },
+    {
+      phrases: ['go to grok', 'open grok', 'open chat', 'start chat'],
+      action: () => {
+        navigate('/grok');
+        toast({ title: "Opening Grok AI Chat" });
+      },
+      description: 'Open Grok AI chat'
+    },
+    {
+      phrases: ['go to ai tools', 'open ai tools', 'show ai tools'],
+      action: () => {
+        navigate('/free-ai-tools');
+        toast({ title: "Opening AI Tools" });
+      },
+      description: 'Navigate to AI tools'
+    },
+    {
+      phrases: ['go to settings', 'open settings', 'show settings'],
+      action: () => {
+        navigate('/settings');
+        toast({ title: "Opening Settings" });
+      },
+      description: 'Open settings'
+    },
+    {
+      phrases: ['go home', 'go to home', 'home page'],
+      action: () => {
+        navigate('/');
+        toast({ title: "Going Home" });
+      },
+      description: 'Return to homepage'
+    },
+  ];
+
+  const {
+    isListening,
+    isSupported,
+    transcript,
+    error,
+    isAwaitingCommand,
+    startListening,
+    stopListening,
+  } = useVoiceRecognition({
+    commands: voiceCommands,
+    requireWakeWord: true,
+    wakeWords: ['hey 3bi', 'hey three bi'],
+  });
 
   const structuredData = combineSchemas(
     generateOrganizationSchema(),
@@ -45,6 +108,47 @@ const HomePage = () => {
     trackAction(actionName);
     navigate(path);
   };
+
+  const handleVoiceToggle = () => {
+    if (!isSupported) {
+      toast({
+        title: "Not Supported",
+        description: "Voice commands are not supported in this browser. Please use Chrome, Edge, or Safari.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (isListening) {
+      stopListening();
+      toast({ title: "Voice commands stopped" });
+    } else {
+      setShowPermissionDialog(true);
+    }
+  };
+
+  const handlePermissionAccept = () => {
+    setShowPermissionDialog(false);
+    startListening();
+    setShowCommandList(true);
+    toast({ 
+      title: "Voice commands active",
+      description: 'Say "Hey 3BI" followed by a command'
+    });
+  };
+
+  const handlePermissionDecline = () => {
+    setShowPermissionDialog(false);
+  };
+
+  // Show error toasts
+  if (error) {
+    toast({
+      title: "Voice Command Error",
+      description: error,
+      variant: "destructive",
+    });
+  }
 
   return (
     <>
@@ -117,24 +221,29 @@ const HomePage = () => {
         </GestureZone>
 
         {/* Voice Command Interface */}
-        <div className="fixed bottom-8 right-8 z-50">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div>
-                  <VoiceVisualizer
-                    isListening={voiceEnabled}
-                    transcript={transcript}
-                    onToggle={() => setVoiceEnabled(!voiceEnabled)}
-                  />
-                </div>
-              </TooltipTrigger>
-              <TooltipContent side="left">
-                <p className="text-xs">Voice Commands</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
+        <VoiceVisualizer
+          isListening={isListening}
+          transcript={transcript}
+          error={error}
+          isAwaitingCommand={isAwaitingCommand}
+          isSupported={isSupported}
+          onToggle={handleVoiceToggle}
+          onShowCommands={() => setShowCommandList(true)}
+        />
+
+        {/* Voice Command List */}
+        <VoiceCommandList
+          isOpen={showCommandList}
+          onClose={() => setShowCommandList(false)}
+          requireWakeWord={true}
+        />
+
+        {/* Permission Dialog */}
+        <VoicePermissionDialog
+          isOpen={showPermissionDialog}
+          onAccept={handlePermissionAccept}
+          onDecline={handlePermissionDecline}
+        />
       </PageLayout>
     </>
   );
