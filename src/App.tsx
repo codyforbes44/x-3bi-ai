@@ -79,6 +79,7 @@ const MarketplacePage = lazy(() => import("./pages/MarketplacePage"));
 const SecurityDashboardPage = lazy(() => import("./pages/SecurityDashboardPage"));
 const WebhooksPage = lazy(() => import("./pages/WebhooksPage"));
 const WhiteLabelPage = lazy(() => import("./pages/WhiteLabelPage"));
+const SuperAdminDashboardPage = lazy(() => import("./pages/SuperAdminDashboardPage"));
 
 // Phase 8: Monitoring & Observability
 const MonitoringDashboard = lazy(() => import("./pages/MonitoringDashboard"));
@@ -188,6 +189,7 @@ const App = () => (
                             <Route path="/security-dashboard" element={<ProtectedRoute><SecurityDashboardPage /></ProtectedRoute>} />
                             <Route path="/webhooks" element={<ProtectedRoute><WebhooksPage /></ProtectedRoute>} />
                             <Route path="/enterprise/white-label" element={<ProtectedRoute><WhiteLabelPage /></ProtectedRoute>} />
+                            <Route path="/admin/super" element={<ProtectedRoute><SuperAdminDashboardPage /></ProtectedRoute>} />
                             
                             {/* Phase 8: Monitoring & Observability */}
                             <Route path="/monitoring" element={<ProtectedRoute><MonitoringDashboard /></ProtectedRoute>} />
