@@ -9,6 +9,7 @@ import { getAllFeatures } from "./FeatureCategories";
 import { CATEGORY_NEON_MAP, CATEGORY_LABELS } from "@/config/neon-config";
 import { getNeonVariantForFeature } from "@/utils/neonHelpers";
 import { Activity, Zap, Users, TrendingUp } from "lucide-react";
+import { LongPressTooltip } from "@/components/visual/LongPressTooltip";
 
 interface DashboardOverviewProps {
   onFeatureSelect: (featureId: string) => void;
@@ -75,29 +76,32 @@ export const DashboardOverview = ({ onFeatureSelect }: DashboardOverviewProps) =
 
   return (
     <div className="space-y-8 animate-fade-in">
-      {/* Quick Stats */}
+      {/* Icon-Only Stats - No Text Labels */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        {stats.map((stat, i) => (
-          <NeonCard
-            key={stat.label}
-            variant={stat.variant}
-            glass={true}
-            size="sm"
-            className="cursor-default"
-          >
-            <div className="flex flex-col items-start gap-2">
-              <stat.icon className="w-5 h-5 text-foreground/80" />
-              <div className="text-2xl font-bold text-foreground">{stat.value}</div>
-              <div className="text-xs text-muted-foreground">{stat.label}</div>
-            </div>
-          </NeonCard>
+        {stats.map((stat) => (
+          <LongPressTooltip key={stat.label} content={stat.label}>
+            <NeonCard
+              variant={stat.variant}
+              glass={true}
+              size="sm"
+              className="cursor-default"
+            >
+              <div className="flex flex-col items-start gap-2">
+                <stat.icon className="w-8 h-8 text-foreground/80" />
+                <div className="text-3xl font-bold text-foreground">{stat.value}</div>
+              </div>
+            </NeonCard>
+          </LongPressTooltip>
         ))}
       </div>
 
-      {/* Favorites Section */}
+      {/* Favorites Section - Icon Only Header */}
       {favoriteFeatures.length > 0 && (
         <section>
-          <h2 className="text-2xl font-bold mb-4 text-pink-500">Your Favorites</h2>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-2 h-2 rounded-full bg-pink-500 animate-pulse" />
+            <span className="text-2xl font-bold">{favoriteFeatures.length}</span>
+          </div>
           <BentoGrid>
             {favoriteFeatures.slice(0, 6).map((feature, index) => (
               <BentoItem

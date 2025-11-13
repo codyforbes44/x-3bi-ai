@@ -30,25 +30,16 @@ export const QuickAccess = ({ onFeatureSelect }: QuickAccessProps) => {
 
   return (
     <div className="space-y-6">
-      {/* Quick Search */}
+      {/* Quick Search - Icon Only */}
       <Card>
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            <Search className="w-5 h-5 text-primary" />
-            Quick Access
-          </CardTitle>
-          <CardDescription>
-            Search and jump to any feature instantly
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
+        <CardContent className="pt-6">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
             <Input
-              placeholder="Search features..."
+              placeholder="..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9"
+              className="pl-10"
             />
           </div>
 
@@ -84,19 +75,14 @@ export const QuickAccess = ({ onFeatureSelect }: QuickAccessProps) => {
         </CardContent>
       </Card>
 
-      {/* Featured Features */}
+      {/* Featured Features - Icon Only */}
       {!searchQuery && (
         <Card>
-          <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Star className="w-5 h-5 text-yellow-500" />
-              Featured
-            </CardTitle>
-            <CardDescription>
-              Popular and powerful features to get started
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+          <CardContent className="pt-6">
+            <div className="flex items-center gap-2 mb-4">
+              <Star className="w-6 h-6 text-yellow-500" />
+              <span className="text-xl font-bold">{featuredFeatures.length}</span>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {featuredFeatures.map((feature) => feature && (
                 <button

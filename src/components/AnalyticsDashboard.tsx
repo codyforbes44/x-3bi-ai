@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { BarChart3, TrendingUp, Users, MessageSquare, Clock, Activity, Brain, Zap } from "lucide-react";
+import { BarChart3, Users, MessageSquare, Clock, Activity, Brain, Zap, TrendingUp } from "lucide-react";
+import { VisualAnalytics } from "@/components/visual/VisualAnalytics";
+import { VisualChartCard } from "@/components/visual/VisualChartCard";
+import { IconGrid } from "@/components/visual/IconGrid";
+import { LongPressTooltip } from "@/components/visual/LongPressTooltip";
 
 interface AnalyticsData {
   totalSessions: number;
@@ -93,174 +96,77 @@ const AnalyticsDashboard = () => {
     }
   ];
 
+  // Generate sparkline data
+  const generateSparkline = () => 
+    analytics.dailyUsage.map(d => ({ value: d.sessions }));
+
   return (
     <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardDescription>
-                Monitor AI platform usage, performance, and user engagement
-              </CardDescription>
-            </div>
-            <div className="flex gap-2">
-              <Badge 
-                variant={timeRange === '7d' ? 'default' : 'outline'}
-                className="cursor-pointer"
-                onClick={() => setTimeRange('7d')}
-              >
-                7 Days
-              </Badge>
-              <Badge 
-                variant={timeRange === '30d' ? 'default' : 'outline'}
-                className="cursor-pointer"
-                onClick={() => setTimeRange('30d')}
-              >
-                30 Days
-              </Badge>
-              <Badge 
-                variant={timeRange === '90d' ? 'default' : 'outline'}
-                className="cursor-pointer"
-                onClick={() => setTimeRange('90d')}
-              >
-                90 Days
-              </Badge>
-            </div>
-          </div>
-        </CardHeader>
-      </Card>
+      {/* Visual Analytics - Icon Only */}
+      <VisualAnalytics
+        totalSessions={analytics.totalSessions}
+        totalMessages={analytics.totalMessages}
+        averageSessionDuration={analytics.averageSessionDuration}
+        activeUsers={analytics.activeUsers}
+        onTimeRangeChange={setTimeRange}
+        selectedRange={timeRange}
+      />
 
-      {/* Key Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        {stats.map((stat) => (
-          <Card key={stat.title}>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-4">
-                <div className={`w-12 h-12 rounded-lg bg-muted flex items-center justify-center ${stat.color}`}>
-                  <stat.icon className="w-6 h-6" />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold">{stat.value}</div>
-                  <div className="text-sm font-medium">{stat.title}</div>
-                  <div className="text-xs text-muted-foreground">{stat.description}</div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+      {/* Performance Metrics - Icon Only with Sparklines */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <VisualChartCard
+          icon={Clock}
+          value={`${analytics.performanceMetrics.averageResponseTime}ms`}
+          label="Average Response Time"
+          trend="down"
+          trendValue={12}
+          sparklineData={generateSparkline()}
+        />
+        <VisualChartCard
+          icon={Zap}
+          value={`${analytics.performanceMetrics.successRate}%`}
+          label="Success Rate"
+          trend="up"
+          trendValue={2}
+          sparklineData={generateSparkline()}
+        />
+        <VisualChartCard
+          icon={TrendingUp}
+          value={`${analytics.performanceMetrics.errorRate}%`}
+          label="Error Rate"
+          trend="down"
+          trendValue={5}
+          sparklineData={generateSparkline()}
+        />
       </div>
 
-      <Tabs defaultValue="usage" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="usage">Usage Trends</TabsTrigger>
-          <TabsTrigger value="models">Model Analytics</TabsTrigger>
-          <TabsTrigger value="performance">Performance</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="usage" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Daily Usage Trends</CardTitle>
-              <CardDescription>Sessions and messages over time</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {analytics.dailyUsage.map((day, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 rounded-lg border">
-                    <div className="text-sm font-medium">{day.date}</div>
-                    <div className="flex gap-4 text-sm">
-                      <div className="flex items-center gap-1">
-                        <Activity className="w-3 h-3 text-blue-500" />
-                        <span>{day.sessions} sessions</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <MessageSquare className="w-3 h-3 text-green-500" />
-                        <span>{day.messages} messages</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="models" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-lg">Top AI Models</CardTitle>
-              <CardDescription>Most frequently used AI models</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-3">
-                {analytics.topModels.map((model, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 rounded-lg border">
-                    <div className="flex items-center gap-3">
-                      {getModelIcon(model.model)}
-                      <div>
-                        <div className="font-medium">{model.model}</div>
-                        <div className="text-xs text-muted-foreground">
-                          {model.usage}% usage share
-                        </div>
-                      </div>
-                    </div>
-                    <Badge variant="outline">
-                      {model.usage}%
-                    </Badge>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="performance" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm flex items-center gap-2">
-                  <Zap className="w-4 h-4 text-yellow-500" />
-                  Response Time
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold">{analytics.performanceMetrics.averageResponseTime}ms</div>
-                <div className="text-xs text-muted-foreground">Average response time</div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm flex items-center gap-2">
-                  <TrendingUp className="w-4 h-4 text-green-500" />
-                  Success Rate
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-green-500">
-                  {analytics.performanceMetrics.successRate}%
-                </div>
-                <div className="text-xs text-muted-foreground">Successful requests</div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-sm flex items-center gap-2">
-                  <Activity className="w-4 h-4 text-red-500" />
-                  Error Rate
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-2xl font-bold text-red-500">
-                  {analytics.performanceMetrics.errorRate}%
-                </div>
-                <div className="text-xs text-muted-foreground">Failed requests</div>
-              </CardContent>
-            </Card>
+      {/* Top Models - Icon Grid Only */}
+      <Card>
+        <CardContent className="pt-6">
+          <div className="flex items-center gap-2 mb-4">
+            <Brain className="w-6 h-6 text-primary" />
+            <span className="text-xl font-bold">{analytics.topModels.length}</span>
           </div>
-        </TabsContent>
-      </Tabs>
+          <div className="space-y-3">
+            {analytics.topModels.map((model) => (
+              <LongPressTooltip key={model.model} content={model.model}>
+                <div className="flex items-center gap-3 p-3 rounded-lg bg-background/50 backdrop-blur-sm border border-border/50 hover:border-primary/50 transition-all">
+                  {getModelIcon(model.model)}
+                  <div className="flex-1">
+                    <div className="h-2 bg-muted rounded-full overflow-hidden">
+                      <div 
+                        className="h-full bg-primary transition-all"
+                        style={{ width: `${model.usage}%` }}
+                      />
+                    </div>
+                  </div>
+                  <span className="text-sm font-medium">{model.usage}%</span>
+                </div>
+              </LongPressTooltip>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
