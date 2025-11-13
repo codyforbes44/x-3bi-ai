@@ -83,6 +83,23 @@ export function ContactSalesDialog({ open, onOpenChange }: ContactSalesDialogPro
 
       if (error) throw error;
 
+      // Send email notifications
+      try {
+        await supabase.functions.invoke('send-contact-notification', {
+          body: {
+            name: formData.name,
+            email: formData.email,
+            subject: 'Sales Inquiry',
+            message: formData.message,
+            company: formData.company,
+            phone: formData.phone
+          }
+        });
+      } catch (emailError) {
+        console.error('Email notification failed:', emailError);
+        // Don't block the form submission if email fails
+      }
+
       setSubmitSuccess(true);
       
       toast({
@@ -100,9 +117,9 @@ export function ContactSalesDialog({ open, onOpenChange }: ContactSalesDialogPro
     } catch (error) {
       console.error('Error submitting contact form:', error);
       toast({
-        title: "Submission Failed",
-        description: "There was an error sending your message. Please try again.",
-        variant: "destructive",
+        title: "Error",
+        description: "Failed to send message. Please try again.",
+        variant: "destructive"
       });
     } finally {
       setIsSubmitting(false);
