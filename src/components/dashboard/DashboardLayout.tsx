@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/AppSidebar";
+import { IconSidebar } from "@/components/navigation/IconSidebar";
 import { DashboardTopBar } from "./DashboardTopBar";
 import { DashboardFeatureHeader } from "./DashboardFeatureHeader";
 
@@ -24,7 +24,7 @@ export const DashboardLayout = ({
   return (
     <SidebarProvider defaultOpen={!isMobile}>
       <div className="min-h-screen w-full flex bg-background">
-        <AppSidebar activeTab={activeTab} onTabChange={onTabChange} />
+        <IconSidebar />
 
         <SidebarInset className="flex-1 min-w-0">
           <div className="h-full">

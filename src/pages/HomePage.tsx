@@ -1,25 +1,7 @@
 import { SEO } from "@/components/SEO";
-import HeroSection from "@/components/HeroSection";
 import { PageLayout } from "@/components/layout/PageLayout";
-import { CTASection } from "@/components/layout/CTASection";
-import { GrokSpotlightSection } from "@/components/home/sections/GrokSpotlightSection";
-import { QuickStartSection } from "@/components/home/sections/QuickStartSection";
-import { CapabilitiesSection } from "@/components/home/sections/CapabilitiesSection";
-import { PlatformStatsSection } from "@/components/home/sections/PlatformStatsSection";
-import { NeonPlatformStatsSection } from "@/components/home/sections/NeonPlatformStats";
-import { PlatformHighlights } from "@/components/home/sections/PlatformHighlights";
-import { ComparisonSection } from "@/components/home/sections/ComparisonSection";
-import { PlatformRoadmap } from "@/components/home/sections/PlatformRoadmap";
-import { InteractiveDemos } from "@/components/home/sections/InteractiveDemos";
-import { AdvancedFeaturesShowcase } from "@/components/home/sections/AdvancedFeaturesShowcase";
-import { TestimonialsSection } from "@/components/home/sections/TestimonialsSection";
-import { FAQSection, getFAQs } from "@/components/home/sections/FAQSection";
-import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { ROUTES } from "@/config/routes";
-import { homeContent } from "@/config/home-content";
-import { PLATFORM_STATS } from "@/config/platform-capabilities";
-import { SEO_CONFIG, PAGE_SEO, BREADCRUMB_CONFIG } from "@/config/seo-config";
+import { SEO_CONFIG, PAGE_SEO } from "@/config/seo-config";
 import { 
   generateOrganizationSchema, 
   generateWebsiteSchema, 
@@ -27,6 +9,10 @@ import {
   generateFAQSchema,
   combineSchemas 
 } from "@/utils/structuredData";
+import { getFAQs } from "@/components/home/sections/FAQSection";
+import { ModelIconGlobe } from "@/components/visual/ModelIconGlobe";
+import { IconCTA } from "@/components/visual/IconCTA";
+import { Sparkles, Zap, Brain, Users } from "lucide-react";
 
 const HomePage = () => {
   const navigate = useNavigate();
@@ -38,8 +24,6 @@ const HomePage = () => {
     generateFAQSchema(getFAQs())
   );
 
-  const { seo, cta } = homeContent;
-
   return (
     <>
       <SEO
@@ -50,48 +34,65 @@ const HomePage = () => {
         ogType="website"
         canonical={SEO_CONFIG.siteUrl}
         structuredData={structuredData}
-        breadcrumbs={[
-          { name: 'Home', url: '/' }
-        ]}
+        breadcrumbs={[{ name: 'Home', url: '/' }]}
       />
       <PageLayout className="p-0">
-        <HeroSection />
-        <NeonPlatformStatsSection />
-        <PlatformHighlights />
-      <GrokSpotlightSection />
-      <InteractiveDemos />
-      <AdvancedFeaturesShowcase />
-      <CapabilitiesSection />
-      <ComparisonSection />
-      <PlatformRoadmap />
-        <QuickStartSection />
-        <TestimonialsSection />
-        <FAQSection />
-        <CTASection
-          title={cta.title}
-          description={`Access all ${PLATFORM_STATS.totalFeatures} AI features and ${PLATFORM_STATS.totalModels} premium models in one unified platform. Enterprise workflows, team collaboration, and advanced analytics for serious AI work.`}
-          variant="gradient"
-          actions={
-            <>
-              <Button 
-                size="lg" 
-                variant="neon-primary" 
-                className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 touch-target"
-                onClick={() => navigate(cta.primaryButton.route)}
-              >
-                {cta.primaryButton.text}
-              </Button>
-              <Button 
-                size="lg" 
-                variant="glass" 
-                className="w-full sm:w-auto text-base sm:text-lg px-6 sm:px-8 h-12 sm:h-14 touch-target"
-                onClick={() => navigate(cta.secondaryButton.route)}
-              >
-                {cta.secondaryButton.text}
-              </Button>
-            </>
-          }
-        />
+        {/* Visual Hero - Icon Globe */}
+        <section className="relative min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-primary/5 via-background to-background" />
+          
+          <div className="relative z-10 text-center space-y-12">
+            <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              24 AI • One Platform
+            </h1>
+            
+            <ModelIconGlobe />
+            
+            {/* Icon CTAs */}
+            <div className="flex gap-8 justify-center flex-wrap">
+              <IconCTA 
+                icon={Sparkles} 
+                onClick={() => navigate('/ai-chat')}
+                variant="primary"
+                size="xl"
+              />
+              <IconCTA 
+                icon={Brain} 
+                onClick={() => navigate('/grok-chat')}
+                variant="primary"
+                size="xl"
+              />
+              <IconCTA 
+                icon={Zap} 
+                onClick={() => navigate('/dashboard')}
+                variant="secondary"
+                size="lg"
+              />
+              <IconCTA 
+                icon={Users} 
+                onClick={() => navigate('/team-collaboration')}
+                variant="secondary"
+                size="lg"
+              />
+            </div>
+
+            {/* Minimal stats - icon + number only */}
+            <div className="flex gap-12 justify-center text-center pt-12">
+              <div className="space-y-2">
+                <div className="text-4xl font-bold text-primary">24</div>
+                <Sparkles className="w-6 h-6 mx-auto text-muted-foreground" />
+              </div>
+              <div className="space-y-2">
+                <div className="text-4xl font-bold text-primary">12</div>
+                <Brain className="w-6 h-6 mx-auto text-muted-foreground" />
+              </div>
+              <div className="space-y-2">
+                <div className="text-4xl font-bold text-primary">∞</div>
+                <Zap className="w-6 h-6 mx-auto text-muted-foreground" />
+              </div>
+            </div>
+          </div>
+        </section>
       </PageLayout>
     </>
   );

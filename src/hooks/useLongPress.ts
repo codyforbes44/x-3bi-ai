@@ -1,95 +1,36 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
-interface LongPressOptions {
-  threshold?: number; // Time in ms to trigger long press (default: 500)
-  onStart?: () => void;
-  onFinish?: () => void;
-  onCancel?: () => void;
+interface UseLongPressOptions {
+  onLongPress: () => void;
+  onClick?: () => void;
+  delay?: number;
 }
 
-export function useLongPress(
-  callback: () => void,
-  options: LongPressOptions = {}
-) {
-  const { threshold = 500, onStart, onFinish, onCancel } = options;
+export function useLongPress({ onLongPress, onClick, delay = 500 }: UseLongPressOptions) {
   const [longPressTriggered, setLongPressTriggered] = useState(false);
-  const [isPressed, setIsPressed] = useState(false);
+  const timeout = useRef<NodeJS.Timeout>();
 
-  useEffect(() => {
-    let timeout: NodeJS.Timeout;
+  const start = useCallback((event: React.MouseEvent | React.TouchEvent) => {
+    timeout.current = setTimeout(() => {
+      onLongPress();
+      setLongPressTriggered(true);
+    }, delay);
+  }, [onLongPress, delay]);
 
-    const start = () => {
-      setIsPressed(true);
-      onStart?.();
-      timeout = setTimeout(() => {
-        callback();
-        setLongPressTriggered(true);
-        onFinish?.();
-      }, threshold);
-    };
-
-    const cancel = () => {
-      setIsPressed(false);
-      if (!longPressTriggered) {
-        clearTimeout(timeout);
-        onCancel?.();
-      }
-      setLongPressTriggered(false);
-    };
-
-    return () => {
-      if (timeout) clearTimeout(timeout);
-    };
-  }, [callback, threshold, longPressTriggered, onStart, onFinish, onCancel]);
+  const clear = useCallback((event: React.MouseEvent | React.TouchEvent, shouldTriggerClick = true) => {
+    timeout.current && clearTimeout(timeout.current);
+    if (shouldTriggerClick && !longPressTriggered && onClick) {
+      onClick();
+    }
+    setLongPressTriggered(false);
+  }, [onClick, longPressTriggered]);
 
   return {
-    onMouseDown: () => {
-      const start = () => {
-        setIsPressed(true);
-        onStart?.();
-        const timeout = setTimeout(() => {
-          callback();
-          setLongPressTriggered(true);
-          onFinish?.();
-        }, threshold);
-        
-        const cancel = () => {
-          setIsPressed(false);
-          if (!longPressTriggered) {
-            clearTimeout(timeout);
-            onCancel?.();
-          }
-          setLongPressTriggered(false);
-        };
-        
-        window.addEventListener('mouseup', cancel, { once: true });
-      };
-      start();
-    },
-    onTouchStart: () => {
-      const start = () => {
-        setIsPressed(true);
-        onStart?.();
-        const timeout = setTimeout(() => {
-          callback();
-          setLongPressTriggered(true);
-          onFinish?.();
-        }, threshold);
-        
-        const cancel = () => {
-          setIsPressed(false);
-          if (!longPressTriggered) {
-            clearTimeout(timeout);
-            onCancel?.();
-          }
-          setLongPressTriggered(false);
-        };
-        
-        window.addEventListener('touchend', cancel, { once: true });
-        window.addEventListener('touchcancel', cancel, { once: true });
-      };
-      start();
-    },
-    isPressed,
+    onMouseDown: start,
+    onTouchStart: start,
+    onMouseUp: clear,
+    onMouseLeave: (e: React.MouseEvent) => clear(e, false),
+    onTouchEnd: clear,
   };
 }
+
