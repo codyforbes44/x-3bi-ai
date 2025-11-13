@@ -134,8 +134,8 @@ serve(async (req) => {
 
     console.log(`[Grok] Using model: ${model}, stream: ${stream}, userId: ${userId || 'guest'}`);
 
-    // Build request body
-    const requestBody: any = {
+    // Build request body for xAI API
+    const xaiRequestBody: any = {
       model,
       messages,
       temperature,
@@ -145,13 +145,13 @@ serve(async (req) => {
 
     // Add tools if provided (function calling)
     if (tools && tools.length > 0) {
-      requestBody.tools = tools;
+      xaiRequestBody.tools = tools;
       if (tool_choice) {
-        requestBody.tool_choice = tool_choice;
+        xaiRequestBody.tool_choice = tool_choice;
       }
     }
 
-    console.log('[Grok] Request body:', JSON.stringify(requestBody, null, 2));
+    console.log('[Grok] xAI request body:', JSON.stringify(xaiRequestBody, null, 2));
 
     // Grok API follows OpenAI-compatible format
     console.log('[Grok] Calling xAI API...');
@@ -161,7 +161,7 @@ serve(async (req) => {
         'Authorization': `Bearer ${grokApiKey}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(requestBody),
+      body: JSON.stringify(xaiRequestBody),
     });
 
     console.log(`[Grok] xAI API response status: ${response.status}`);
