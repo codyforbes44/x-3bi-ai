@@ -5,6 +5,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { ROUTES } from "@/config/routes";
 import ThemeProvider from "@/components/ThemeProvider";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { WorkspaceProvider } from "@/contexts/WorkspaceContext";
@@ -177,6 +178,7 @@ const App = () => (
                             <Route path="/security" element={<ProtectedRoute><SecuritySettings /></ProtectedRoute>} />
             {/* Redirect old settings page to new unified page */}
             <Route path="/ai-assistant-settings" element={<Navigate to="/settings/ai" replace />} />
+            <Route path="/settings" element={<Navigate to="/settings/ai" replace />} />
             <Route path="/settings/ai" element={<ProtectedRoute><UnifiedSettingsPage /></ProtectedRoute>} />
                             <Route path="/referrals" element={<ProtectedRoute><ReferralProgram /></ProtectedRoute>} />
                             <Route path="/install" element={<InstallPage />} />
@@ -189,7 +191,7 @@ const App = () => (
                             <Route path="/security-dashboard" element={<ProtectedRoute><SecurityDashboardPage /></ProtectedRoute>} />
                             <Route path="/webhooks" element={<ProtectedRoute><WebhooksPage /></ProtectedRoute>} />
                             <Route path="/enterprise/white-label" element={<ProtectedRoute><WhiteLabelPage /></ProtectedRoute>} />
-                            <Route path="/admin/super" element={<ProtectedRoute><SuperAdminDashboardPage /></ProtectedRoute>} />
+                            <Route path={ROUTES.SUPER_ADMIN_DASHBOARD} element={<ProtectedRoute><SuperAdminDashboardPage /></ProtectedRoute>} />
                             
                             {/* Phase 8: Monitoring & Observability */}
                             <Route path="/monitoring" element={<ProtectedRoute><MonitoringDashboard /></ProtectedRoute>} />
