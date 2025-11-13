@@ -13,7 +13,7 @@ export function MobileOptimizedLayout({ children, className }: MobileOptimizedLa
   return (
     <div
       className={cn(
-        'min-h-screen',
+        'min-h-screen bg-background',
         // iOS safe area insets for notch/home indicator
         isIOS && 'pb-[env(safe-area-inset-bottom)] pt-[env(safe-area-inset-top)]',
         // Android navigation bar spacing

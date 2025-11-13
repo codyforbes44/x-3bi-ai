@@ -8,17 +8,17 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Enhanced Dark Mode - Better Visibility and Contrast */
+    /* Enhanced Dark Mode - Deeper blacks for neon design */
     /* Deep neutral backgrounds */
-    --background: 222 47% 4%;
+    --background: 0 0% 2%;
     --foreground: 215 30% 75%;
 
     /* Card with subtle elevation */
-    --card: 222 47% 6%;
+    --card: 0 0% 5%;
     --card-foreground: 215 30% 75%;
 
     /* Elevated popover */
-    --popover: 222 47% 7%;
+    --popover: 0 0% 6%;
     --popover-foreground: 215 30% 75%;
 
     /* Refined primary - Vibrant Purple */
@@ -26,6 +26,12 @@ All colors MUST be HSL.
     --primary-foreground: 0 0% 100%;
     --primary-glow: 262 83% 68%;
     --primary-variant: 262 83% 48%;
+    
+    /* Neon Colors for gradient borders */
+    --neon-pink: 330 100% 60%;
+    --neon-cyan: 180 100% 60%;
+    --neon-purple: 280 100% 65%;
+    --neon-blue: 220 100% 65%;
 
     /* Secondary - Warm Neutral */
     --secondary: 240 5% 25%;
@@ -72,16 +78,18 @@ All colors MUST be HSL.
     
     /* Vibrant, professional gradients */
     --gradient-hero: linear-gradient(135deg, hsl(262 83% 58%) 0%, hsl(180 30% 65%) 100%);
-    
-    --gradient-card: linear-gradient(145deg, hsl(222 47% 6%) 0%, hsl(222 47% 10%) 100%);
-    
-    --gradient-subtle: linear-gradient(180deg, hsl(222 47% 4%) 0%, hsl(222 47% 6%) 100%);
-    
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 5%) 0%, hsl(0 0% 7%) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 2%) 0%, hsl(0 0% 4%) 100%);
     --gradient-ai: linear-gradient(135deg, hsl(262 83% 58% / 0.15) 0%, hsl(180 30% 65% / 0.15) 100%);
-    
     --gradient-neural: radial-gradient(ellipse at top, hsl(262 83% 58% / 0.08) 0%, transparent 50%);
-    
     --gradient-accent: linear-gradient(135deg, hsl(180 30% 65%) 0%, hsl(262 83% 58%) 100%);
+    
+    /* Neon Gradients for borders and effects */
+    --gradient-neon-pink: linear-gradient(135deg, hsl(330 100% 60%) 0%, hsl(280 100% 65%) 100%);
+    --gradient-neon-cyan: linear-gradient(135deg, hsl(180 100% 60%) 0%, hsl(220 100% 65%) 100%);
+    --gradient-neon-purple: linear-gradient(135deg, hsl(280 100% 65%) 0%, hsl(330 100% 60%) 100%);
+    --gradient-neon-blue: linear-gradient(135deg, hsl(220 100% 65%) 0%, hsl(180 100% 60%) 100%);
+    --gradient-neon-mixed: linear-gradient(135deg, hsl(330 100% 60%) 0%, hsl(180 100% 60%) 50%, hsl(280 100% 65%) 100%);
     
     /* Refined shadows */
     --shadow-sm: 0 1px 2px hsl(0 0% 0% / 0.15);
@@ -580,5 +588,41 @@ All colors MUST be HSL.
   
   .scrollbar-thin::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--muted-foreground));
+  }
+  
+  /* Glassmorphism Utilities */
+  .glass-card {
+    background: rgba(20, 20, 20, 0.4);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .glass-dark {
+    background: rgba(10, 10, 10, 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  /* Neon Glow Utilities */
+  .neon-glow-pink {
+    box-shadow: 0 0 20px hsl(330 100% 60% / 0.4);
+  }
+
+  .neon-glow-cyan {
+    box-shadow: 0 0 20px hsl(180 100% 60% / 0.4);
+  }
+
+  .neon-glow-purple {
+    box-shadow: 0 0 20px hsl(280 100% 65% / 0.4);
+  }
+
+  .neon-glow-blue {
+    box-shadow: 0 0 20px hsl(220 100% 65% / 0.4);
+  }
+
+  .neon-glow-mixed {
+    box-shadow: 0 0 25px hsl(280 100% 65% / 0.3), 0 0 40px hsl(180 100% 60% / 0.2);
   }
 }
