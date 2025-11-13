@@ -4,6 +4,7 @@ import { LAYOUT_CONFIG } from '@/config/layout-config';
 import { useAuth } from '@/contexts/AuthContext';
 import Header from '@/components/Header';
 import { SkipLinks } from '@/components/a11y/SkipLinks';
+import { Breadcrumbs } from '@/components/navigation/Breadcrumbs';
 import { cn } from '@/lib/utils';
 
 interface AuthenticatedPageLayoutProps {
@@ -79,17 +80,24 @@ export function AuthenticatedPageLayout({
         tabIndex={-1}
       >
         <div className={cn(maxWidthClass, horizontalPadding, paddingClass, 'mx-auto')}>
-          {/* TODO: Add Breadcrumbs component when Phase 2 is complete */}
           {showBreadcrumbs && (
             <div className="mb-6">
-              {/* <Breadcrumbs /> */}
+              <Breadcrumbs showHome={true} />
             </div>
           )}
 
-          {/* TODO: Add BackButton component when Phase 2 is complete */}
           {showBackButton && (
             <div className="mb-4">
-              {/* <BackButton /> */}
+              <button
+                onClick={() => window.history.back()}
+                className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+                aria-label="Go back"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+                Back
+              </button>
             </div>
           )}
 

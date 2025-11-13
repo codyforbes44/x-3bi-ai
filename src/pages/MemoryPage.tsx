@@ -12,7 +12,7 @@ export default function MemoryPage() {
         ogImage="https://3bi.ai/og/memory.png"
         canonical="https://3bi.ai/memory"
       />
-      <AuthenticatedPageLayout maxWidth="full" padding="compact" showBreadcrumbs={false}>
+      <AuthenticatedPageLayout maxWidth="full" padding="compact" showBreadcrumbs={true}>
         <MultiModalMemory />
       </AuthenticatedPageLayout>
     </>
