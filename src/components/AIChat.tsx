@@ -179,8 +179,7 @@ const AIChat = () => {
             </Button>
           </div>
         </div>
-      </div>
-    </NeonCard>
+      </NeonCard>
   );
 };
 

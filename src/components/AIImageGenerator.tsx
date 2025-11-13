@@ -182,9 +182,7 @@ const AIImageGenerator = () => {
               <p className="text-xs md:text-sm">Generated image will appear here</p>
             </div>
           )}
-        </div>
-      </CardContent>
-    </Card>
+        </NeonCard>
   );
 };
 
