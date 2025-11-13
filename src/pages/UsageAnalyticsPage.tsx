@@ -3,6 +3,8 @@ import { AIUsageAnalytics } from '@/components/analytics/AIUsageAnalytics';
 import { BarChart } from 'lucide-react';
 import { SEO } from '@/components/SEO';
 import { AuthenticatedPageLayout } from '@/components/layout/AuthenticatedPageLayout';
+import { Suspense } from 'react';
+import { PageSkeleton } from '@/components/ui/page-skeleton';
 
 export default function UsageAnalyticsPage() {
   return (
@@ -25,7 +27,9 @@ export default function UsageAnalyticsPage() {
           compact
         />
         <div className="mt-8">
-          <AIUsageAnalytics />
+          <Suspense fallback={<PageSkeleton variant="chart" count={3} />}>
+            <AIUsageAnalytics />
+          </Suspense>
         </div>
       </AuthenticatedPageLayout>
     </>

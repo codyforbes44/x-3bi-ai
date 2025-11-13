@@ -16,6 +16,7 @@ import { FormSuccess } from "@/components/forms/FormSuccess";
 import { CharacterCounter } from "@/components/forms/CharacterCounter";
 import { useFormValidation, commonSchemas } from "@/hooks/useFormValidation";
 import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
+import { PageSkeleton } from "@/components/ui/page-skeleton";
 import { z } from "zod";
 
 const profileSchema = z.object({
@@ -194,9 +195,16 @@ const ProfilePage = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
+      <>
+        <SEO title="Profile Settings" description="Manage your account profile and preferences" noIndex={true} />
+        <div className="container max-w-4xl mx-auto py-8 px-4">
+          <div className="mb-8">
+            <h1 className="text-3xl font-bold mb-2">Profile Settings</h1>
+            <p className="text-muted-foreground">Manage your account information and preferences</p>
+          </div>
+          <PageSkeleton variant="form" count={4} />
+        </div>
+      </>
     );
   }
 
