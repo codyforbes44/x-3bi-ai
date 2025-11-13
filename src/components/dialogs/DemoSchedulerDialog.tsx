@@ -8,6 +8,8 @@ import { FormSuccess } from "@/components/forms/FormSuccess";
 import { CharacterCounter } from "@/components/forms/CharacterCounter";
 import { useFormValidation } from "@/hooks/useFormValidation";
 import { useUnsavedChanges } from "@/hooks/useUnsavedChanges";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { Calendar, Loader2 } from "lucide-react";
 
@@ -26,6 +28,7 @@ interface DemoSchedulerDialogProps {
 }
 
 export function DemoSchedulerDialog({ open, onOpenChange }: DemoSchedulerDialogProps) {
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -62,19 +65,50 @@ export function DemoSchedulerDialog({ open, onOpenChange }: DemoSchedulerDialogP
 
     setIsSubmitting(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    setSubmitSuccess(true);
-    
-    // Reset form after success
-    setTimeout(() => {
-      setFormData({ name: "", email: "", company: "", phone: "", preferredDate: "", message: "" });
-      clearErrors();
-      setSubmitSuccess(false);
-      onOpenChange(false);
-    }, 2000);
+    try {
+      // Get current user if logged in
+      const { data: { user } } = await supabase.auth.getUser();
+      
+      // Insert demo request into database
+      const { error } = await supabase
+        .from('demo_requests')
+        .insert({
+          user_id: user?.id || null,
+          name: formData.name,
+          email: formData.email,
+          company: formData.company,
+          phone: formData.phone || null,
+          preferred_date: formData.preferredDate,
+          message: formData.message || null,
+          status: 'pending'
+        });
+
+      if (error) throw error;
+
+      setSubmitSuccess(true);
+      
+      toast({
+        title: "Demo Scheduled!",
+        description: "We'll contact you within 24 hours to confirm your demo.",
+      });
+      
+      // Reset form after success
+      setTimeout(() => {
+        setFormData({ name: "", email: "", company: "", phone: "", preferredDate: "", message: "" });
+        clearErrors();
+        setSubmitSuccess(false);
+        onOpenChange(false);
+      }, 2000);
+    } catch (error) {
+      console.error('Error submitting demo request:', error);
+      toast({
+        title: "Submission Failed",
+        description: "There was an error submitting your request. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleClose = (open: boolean) => {

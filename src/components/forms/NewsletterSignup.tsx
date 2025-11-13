@@ -6,6 +6,8 @@ import { SimpleFormField } from "@/components/forms/SimpleFormField";
 import { FormSuccess } from "@/components/forms/FormSuccess";
 import { CharacterCounter } from "@/components/forms/CharacterCounter";
 import { useFormValidation } from "@/hooks/useFormValidation";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 import { Mail, Loader2, Sparkles } from "lucide-react";
 
@@ -26,6 +28,7 @@ export function NewsletterSignup({
   className = "",
   variant = "card"
 }: NewsletterSignupProps) {
+  const { toast } = useToast();
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
@@ -52,17 +55,56 @@ export function NewsletterSignup({
 
     setIsSubmitting(true);
     
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    setSubmitSuccess(true);
-    
-    // Reset after success
-    setTimeout(() => {
-      setEmail("");
-      setSubmitSuccess(false);
-    }, 3000);
+    try {
+      // Check if email already exists
+      const { data: existing } = await supabase
+        .from('newsletter_subscriptions')
+        .select('email')
+        .eq('email', email)
+        .maybeSingle();
+
+      if (existing) {
+        toast({
+          title: "Already Subscribed",
+          description: "This email is already subscribed to our newsletter.",
+        });
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Insert newsletter subscription
+      const { error } = await supabase
+        .from('newsletter_subscriptions')
+        .insert({
+          email: email,
+          active: true,
+          interests: {}
+        });
+
+      if (error) throw error;
+
+      setSubmitSuccess(true);
+      
+      toast({
+        title: "Successfully Subscribed!",
+        description: "Check your email for confirmation.",
+      });
+      
+      // Reset after success
+      setTimeout(() => {
+        setEmail("");
+        setSubmitSuccess(false);
+      }, 3000);
+    } catch (error) {
+      console.error('Error subscribing to newsletter:', error);
+      toast({
+        title: "Subscription Failed",
+        description: "There was an error subscribing. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const content = (
