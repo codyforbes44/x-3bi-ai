@@ -5,18 +5,28 @@ import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { useToast } from '@/components/ui/use-toast';
 import { supabase } from '@/integrations/supabase/client';
-import { Brain, TrendingUp, Target, Sparkles, RefreshCw } from 'lucide-react';
+import { Brain, TrendingUp, Target, Sparkles, RefreshCw, Download, Calendar } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ResponsiveTable } from '@/components/ui/responsive-table';
+import { useExport } from '@/hooks/useExport';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Calendar as CalendarComponent } from '@/components/ui/calendar';
+import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
 
 export const DigitalTwin = () => {
   const { toast } = useToast();
+  const { exportData } = useExport();
   const [profile, setProfile] = useState<any>(null);
+  const [predictions, setPredictions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [training, setTraining] = useState(false);
+  const [dateRange, setDateRange] = useState<{ from?: Date; to?: Date }>({});
 
   useEffect(() => {
     loadProfile();
-  }, []);
+    loadPredictions();
+  }, [dateRange]);
 
   const loadProfile = async () => {
     try {
@@ -31,6 +41,29 @@ export const DigitalTwin = () => {
       console.error('Error loading profile:', error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadPredictions = async () => {
+    try {
+      let query = supabase
+        .from('predictive_insights')
+        .select('*')
+        .eq('insight_type', 'behavior_prediction')
+        .order('created_at', { ascending: false });
+
+      if (dateRange.from) {
+        query = query.gte('created_at', dateRange.from.toISOString());
+      }
+      if (dateRange.to) {
+        query = query.lte('created_at', dateRange.to.toISOString());
+      }
+
+      const { data, error } = await query;
+      if (error) throw error;
+      setPredictions(data || []);
+    } catch (error) {
+      console.error('Error loading predictions:', error);
     }
   };
 
@@ -72,6 +105,7 @@ export const DigitalTwin = () => {
         title: "Digital Twin Prediction",
         description: data.prediction,
       });
+      loadPredictions();
     } catch (error: any) {
       toast({
         title: "Prediction Error",
@@ -79,6 +113,23 @@ export const DigitalTwin = () => {
         variant: "destructive",
       });
     }
+  };
+
+  const handleExport = () => {
+    const exportData_ = predictions.map((p) => ({
+      prediction: p.prediction_text,
+      confidence: p.confidence_score,
+      category: p.category,
+      date: format(new Date(p.created_at), 'PPP'),
+    }));
+    exportData(exportData_, { filename: 'digital-twin-predictions', format: 'csv' });
+    toast({ title: "Export Complete", description: "Predictions exported successfully" });
+  };
+
+  const getConfidenceBadge = (confidence: number) => {
+    if (confidence >= 0.8) return <Badge className="bg-green-500/10 text-green-600 border-green-500/20">High</Badge>;
+    if (confidence >= 0.6) return <Badge className="bg-yellow-500/10 text-yellow-600 border-yellow-500/20">Medium</Badge>;
+    return <Badge className="bg-red-500/10 text-red-600 border-red-500/20">Low</Badge>;
   };
 
   if (loading) {
@@ -91,25 +142,47 @@ export const DigitalTwin = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-3xl font-bold flex items-center gap-2">
-            <Brain className="h-8 w-8 text-primary" />
+          <h2 className="text-2xl sm:text-3xl font-bold flex items-center gap-2">
+            <Brain className="h-6 w-6 sm:h-8 sm:w-8 text-primary" />
             Digital Twin
           </h2>
-          <p className="text-muted-foreground mt-1">
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">
             Your AI clone that learns your patterns and makes decisions in your style
           </p>
         </div>
-        <Button onClick={() => trainTwin({
-          type: 'manual',
-          input: 'User testing the system',
-          decision: 'Explore features',
-          context: { source: 'dashboard' }
-        })} disabled={training}>
-          {training ? <RefreshCw className="h-4 w-4 animate-spin mr-2" /> : <Sparkles className="h-4 w-4 mr-2" />}
-          Train Twin
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button variant="outline" size="sm" className="h-9">
+                <Calendar className="h-4 w-4 mr-2" />
+                {dateRange.from ? format(dateRange.from, 'PP') : 'Filter dates'}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="end">
+              <CalendarComponent
+                mode="range"
+                selected={{ from: dateRange.from, to: dateRange.to }}
+                onSelect={(range) => setDateRange(range || {})}
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+          <Button variant="outline" size="sm" onClick={handleExport} disabled={predictions.length === 0} className="h-9">
+            <Download className="h-4 w-4 mr-2" />
+            Export
+          </Button>
+          <Button onClick={() => trainTwin({
+            type: 'manual',
+            input: 'User testing the system',
+            decision: 'Explore features',
+            context: { source: 'dashboard' }
+          })} disabled={training} size="sm" className="h-9">
+            {training ? <RefreshCw className="h-4 w-4 animate-spin mr-2" /> : <Sparkles className="h-4 w-4 mr-2" />}
+            Train Twin
+          </Button>
+        </div>
       </div>
 
       {!profile ? (
@@ -129,14 +202,15 @@ export const DigitalTwin = () => {
           </Button>
         </Card>
       ) : (
-        <Tabs defaultValue="profile" className="w-full">
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="profile">Profile</TabsTrigger>
-            <TabsTrigger value="patterns">Patterns</TabsTrigger>
-            <TabsTrigger value="test">Test Predictions</TabsTrigger>
+        <Tabs defaultValue="status" className="w-full">
+          <TabsList className="grid w-full grid-cols-4">
+            <TabsTrigger value="status">Status</TabsTrigger>
+            <TabsTrigger value="predictions">Predictions</TabsTrigger>
+            <TabsTrigger value="behaviors">Behaviors</TabsTrigger>
+            <TabsTrigger value="test">Test</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="profile" className="space-y-4">
+          <TabsContent value="status" className="space-y-4">
             <Card className="p-6">
               <div className="space-y-6">
                 <div>
@@ -187,7 +261,66 @@ export const DigitalTwin = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="patterns" className="space-y-4">
+          <TabsContent value="predictions" className="space-y-4">
+            <Card className="p-4 sm:p-6">
+              <h3 className="text-lg font-semibold mb-4">Behavior Predictions</h3>
+              {predictions.length === 0 ? (
+                <p className="text-sm text-muted-foreground text-center py-8">
+                  No predictions yet. Train your digital twin to generate predictions.
+                </p>
+              ) : (
+                <ResponsiveTable
+                  data={predictions}
+                  columns={[
+                    {
+                      key: 'prediction',
+                      label: 'Prediction',
+                      render: (item) => (
+                        <div className="max-w-md">
+                          <p className="text-sm font-medium">{item.prediction_text}</p>
+                        </div>
+                      ),
+                    },
+                    {
+                      key: 'confidence',
+                      label: 'Confidence',
+                      mobileLabel: 'Confidence',
+                      render: (item) => (
+                        <div className="flex flex-col gap-2">
+                          {getConfidenceBadge(item.confidence_score)}
+                          <span className="text-xs text-muted-foreground">
+                            {Math.round(item.confidence_score * 100)}%
+                          </span>
+                        </div>
+                      ),
+                    },
+                    {
+                      key: 'category',
+                      label: 'Category',
+                      render: (item) => (
+                        <Badge variant="outline">{item.category || 'General'}</Badge>
+                      ),
+                      hideOnMobile: true,
+                    },
+                    {
+                      key: 'date',
+                      label: 'Date',
+                      mobileLabel: 'Created',
+                      render: (item) => (
+                        <span className="text-xs text-muted-foreground">
+                          {format(new Date(item.created_at), 'PP')}
+                        </span>
+                      ),
+                    },
+                  ]}
+                  keyExtractor={(item) => item.id}
+                  emptyMessage="No predictions found for this date range"
+                />
+              )}
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="behaviors" className="space-y-4">
             <div className="grid gap-4 md:grid-cols-2">
               <Card className="p-6">
                 <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
