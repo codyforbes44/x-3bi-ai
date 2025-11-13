@@ -22,6 +22,7 @@ import { OfflineIndicator } from "@/components/pwa/OfflineIndicator";
 import FloatingBadge from "@/components/FloatingBadge";
 import ScrollToTop from "@/components/ScrollToTop";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
+import { RequireRole } from "@/components/auth";
 import { RoutePreloader } from "@/components/RoutePreloader";
 import HomePage from "./pages/HomePage";
 
@@ -197,8 +198,14 @@ const App = () => (
                             {/* Phase 8: Monitoring & Observability */}
                             <Route path="/monitoring" element={<ProtectedRoute><MonitoringDashboard /></ProtectedRoute>} />
                             
-                            {/* Admin Dashboard */}
-                            <Route path={ROUTES.ADMIN_DASHBOARD} element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} />
+                            {/* Admin Dashboard - Role-based protection */}
+                            <Route path={ROUTES.ADMIN_DASHBOARD} element={
+                              <ProtectedRoute>
+                                <RequireRole role="admin">
+                                  <AdminDashboard />
+                                </RequireRole>
+                              </ProtectedRoute>
+                            } />
                             
                             {/* OG Image Generator - Internal Tool */}
                             <Route path="/og-generator" element={<OGImageGenerator />} />
