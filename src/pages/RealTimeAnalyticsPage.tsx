@@ -4,6 +4,8 @@ import { RealTimeMonitoring } from '@/components/RealTimeMonitoring';
 import { Activity } from 'lucide-react';
 import { SEO } from '@/components/SEO';
 import { RequireRole } from '@/components/auth/RequireRole';
+import { Suspense } from 'react';
+import { PageSkeleton } from '@/components/ui/page-skeleton';
 
 export default function RealTimeAnalyticsPage() {
   return (
@@ -25,7 +27,9 @@ export default function RealTimeAnalyticsPage() {
           }}
         />
         <div className="container mx-auto px-4 py-8 max-w-7xl">
-          <RealTimeMonitoring />
+          <Suspense fallback={<PageSkeleton variant="chart" count={4} />}>
+            <RealTimeMonitoring />
+          </Suspense>
         </div>
       </PageLayout>
     </RequireRole>

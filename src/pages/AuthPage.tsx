@@ -45,8 +45,8 @@ const AuthPage = () => {
   const navigate = useNavigate();
   const emailInputRef = useRef<HTMLInputElement>(null);
 
-  const { errors: signInErrors, validate: validateSignIn, setError: setSignInError } = useFormValidation(signInSchema);
-  const { errors: signUpErrors, validate: validateSignUp, setError: setSignUpError } = useFormValidation(signUpSchema);
+  const { errors: signInErrors, validate: validateSignIn, validateField: validateSignInField, clearFieldError: clearSignInError, setError: setSignInError } = useFormValidation(signInSchema);
+  const { errors: signUpErrors, validate: validateSignUp, validateField: validateSignUpField, clearFieldError: clearSignUpError, setError: setSignUpError } = useFormValidation(signUpSchema);
 
   const hasUnsavedSignIn = signInEmail.length > 0 || signInPassword.length > 0;
   const hasUnsavedSignUp = signUpEmail.length > 0 || signUpPassword.length > 0;
@@ -192,7 +192,11 @@ const AuthPage = () => {
                         type="email"
                         placeholder="you@example.com"
                         value={signInEmail}
-                        onChange={(e) => setSignInEmail(e.target.value)}
+                        onChange={(e) => {
+                          setSignInEmail(e.target.value);
+                          clearSignInError("email");
+                        }}
+                        onBlur={() => validateSignInField("email", signInEmail)}
                         disabled={loading}
                       />
                     </SimpleFormField>
@@ -203,7 +207,11 @@ const AuthPage = () => {
                           type={showPassword ? "text" : "password"}
                           placeholder="••••••••"
                           value={signInPassword}
-                          onChange={(e) => setSignInPassword(e.target.value)}
+                          onChange={(e) => {
+                            setSignInPassword(e.target.value);
+                            clearSignInError("password");
+                          }}
+                          onBlur={() => validateSignInField("password", signInPassword)}
                           disabled={loading}
                         />
                         <button
@@ -247,7 +255,11 @@ const AuthPage = () => {
                         type="email"
                         placeholder="you@example.com"
                         value={signUpEmail}
-                        onChange={(e) => setSignUpEmail(e.target.value)}
+                        onChange={(e) => {
+                          setSignUpEmail(e.target.value);
+                          clearSignUpError("email");
+                        }}
+                        onBlur={() => validateSignUpField("email", signUpEmail)}
                         disabled={loading}
                       />
                     </SimpleFormField>
@@ -258,7 +270,11 @@ const AuthPage = () => {
                           type={showPassword ? "text" : "password"}
                           placeholder="••••••••"
                           value={signUpPassword}
-                          onChange={(e) => setSignUpPassword(e.target.value)}
+                          onChange={(e) => {
+                            setSignUpPassword(e.target.value);
+                            clearSignUpError("password");
+                          }}
+                          onBlur={() => validateSignUpField("password", signUpPassword)}
                           disabled={loading}
                         />
                         <button

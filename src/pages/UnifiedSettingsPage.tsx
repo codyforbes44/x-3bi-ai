@@ -1,6 +1,8 @@
 import { SEO } from '@/components/SEO';
 import { UnifiedAISettings } from '@/components/settings/UnifiedAISettings';
 import { AuthenticatedPageLayout } from '@/components/layout/AuthenticatedPageLayout';
+import { Suspense } from 'react';
+import { PageSkeleton } from '@/components/ui/page-skeleton';
 
 export default function UnifiedSettingsPage() {
   return (
@@ -11,7 +13,9 @@ export default function UnifiedSettingsPage() {
         keywords={['AI settings', 'AI configuration', 'model selection', 'voice settings']}
       />
       <AuthenticatedPageLayout maxWidth="2xl" showBreadcrumbs={false}>
-        <UnifiedAISettings />
+        <Suspense fallback={<PageSkeleton variant="form" count={6} />}>
+          <UnifiedAISettings />
+        </Suspense>
       </AuthenticatedPageLayout>
     </>
   );
