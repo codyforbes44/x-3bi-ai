@@ -1,8 +1,8 @@
 import { OptimizedImage } from "@/components/ui/optimized-image";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { NeonCard } from "@/components/ui/neon-card";
+import { AccentDot } from "@/components/ui/accent-dot";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
@@ -70,11 +70,21 @@ const AIImageGenerator = () => {
   };
 
   return (
-    <Card className="h-[700px] md:h-[800px] flex flex-col">
-      <CardHeader className="pb-3 md:pb-4 flex-row items-center justify-end">
-        <Badge variant="secondary" className="text-xs">DALL-E 3</Badge>
-      </CardHeader>
-      <CardContent className="flex-1 flex flex-col space-y-3 md:space-y-4 min-h-0">
+    <NeonCard variant="pink" glass={true} glow={true} size="lg" className="h-[700px] md:h-[800px] flex flex-col">
+      <div className="pb-3 md:pb-4 flex items-center justify-between p-4 md:p-6 border-b border-white/10">
+        <div className="flex items-center gap-3">
+          <AccentDot color="pink" />
+          <div>
+            <h3 className="text-lg md:text-xl font-semibold text-foreground flex items-center gap-2">
+              <Image className="h-5 w-5 text-pink-500" />
+              AI Image Generator
+            </h3>
+            <p className="text-xs md:text-sm text-muted-foreground">Create stunning images with AI</p>
+          </div>
+        </div>
+        <Badge variant="neon-pink" className="text-xs">DALL-E 3</Badge>
+      </div>
+      <div className="flex-1 flex flex-col space-y-3 md:space-y-4 min-h-0 p-4 md:p-6">
         <div className="space-y-3 md:space-y-4">
           <div>
             <label className="text-xs md:text-sm font-medium mb-2 block">Prompt</label>

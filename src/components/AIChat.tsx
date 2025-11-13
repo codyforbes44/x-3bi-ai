@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { NeonCard } from "@/components/ui/neon-card";
+import { AccentDot } from "@/components/ui/accent-dot";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Send, Bot, User, Loader2 } from "lucide-react";
@@ -178,8 +179,8 @@ const AIChat = () => {
             </Button>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </NeonCard>
   );
 };
 

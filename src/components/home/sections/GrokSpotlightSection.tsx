@@ -56,21 +56,21 @@ export function GrokSpotlightSection() {
 
           {/* Right Visual Card */}
           <div className="relative">
-            <Card className="border-2 border-blue-500/20 bg-gradient-to-br from-blue-950/30 to-purple-950/30 backdrop-blur-sm overflow-hidden">
-              <CardContent className="p-8">
+            <NeonCard variant="purple" glass={true} glow={true} size="lg" className="overflow-hidden">
+              <div className="p-8">
                 <div className="space-y-6">
                   {/* Chat Example */}
                   <div className="space-y-3">
                     <div className="flex justify-end">
-                      <div className="bg-blue-600 text-white rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
+                      <div className="bg-purple-600 text-white rounded-2xl rounded-tr-sm px-4 py-3 max-w-[80%]">
                         <p className="text-sm">{grokSpotlight.chatExample.user}</p>
                       </div>
                     </div>
                     <div className="flex justify-start">
                       <div className="bg-muted rounded-2xl rounded-tl-sm px-4 py-3 max-w-[85%]">
                         <div className="flex items-center gap-2 mb-2">
-                          <grokSpotlight.badge.icon className="w-4 h-4 text-blue-500" />
-                          <span className="text-xs font-semibold text-blue-500">Grok</span>
+                          <grokSpotlight.badge.icon className="w-4 h-4 text-purple-500" />
+                          <span className="text-xs font-semibold text-purple-500">Grok</span>
                         </div>
                         <p className="text-sm">{grokSpotlight.chatExample.grok}</p>
                       </div>
@@ -82,8 +82,8 @@ export function GrokSpotlightSection() {
                     {grokSpotlight.featureBadges.map((badge) => (
                       <Badge 
                         key={badge.label}
-                        variant="secondary" 
-                        className={`bg-${badge.color}-500/10 text-${badge.color}-500`}
+                        variant="neon-purple" 
+                        className="text-xs"
                       >
                         <CheckCircle2 className="w-3 h-3 mr-1" />
                         {badge.label}
@@ -91,8 +91,9 @@ export function GrokSpotlightSection() {
                     ))}
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+              <AccentDot color="purple" />
+            </NeonCard>
 
             {/* Floating Badge */}
             <div className="absolute -top-4 -right-4 bg-gradient-to-br from-blue-600 to-purple-600 text-white rounded-full p-4 shadow-xl animate-pulse-slow">
