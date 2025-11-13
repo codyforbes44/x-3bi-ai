@@ -48,12 +48,13 @@ const Header = () => {
       {user && <OnboardingProgressIndicator />}
       <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-lg border-b border-border">
         <div className="container mx-auto px-3 md:px-4 h-14 md:h-16 flex items-center justify-between">
-          {/* Logo - Icon Only */}
+          {/* Logo */}
           <Link 
             to={ROUTES.HOME} 
             className="flex items-center hover:opacity-80 transition-opacity"
+            aria-label="3BI.AI Home"
           >
-            <AnimatedLogo size="md" />
+            <AnimatedLogo size="md" showText={true} />
           </Link>
           
           {/* Desktop Navigation - Icons Only */}
@@ -137,7 +138,7 @@ const Header = () => {
             </SheetTrigger>
             <SheetContent side="right" className="w-[280px] sm:w-[320px]">
               <div className="flex flex-col space-y-6 mt-6">
-                <AnimatedLogo size="lg" />
+                <AnimatedLogo size="lg" showText={true} />
                 
                 <nav className="flex flex-col space-y-3">
                   {MAIN_NAVIGATION.map(item => {
