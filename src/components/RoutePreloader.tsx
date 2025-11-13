@@ -1,36 +1,51 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { prefetchOnIdle, preconnect, dnsPrefetch } from '@/utils/prefetch';
 
 /**
- * Preload routes based on likely user navigation
+ * Enhanced Route Preloader
+ * Intelligently prefetches routes based on likely user navigation
+ * Uses requestIdleCallback for non-blocking prefetch
  */
 export const RoutePreloader = () => {
   const location = useLocation();
 
   useEffect(() => {
-    const preloadRoutes = () => {
-      // Preload common next steps based on current route
-      const preloadMap: Record<string, string[]> = {
-        '/': ['/auth', '/dashboard', '/pricing'],
-        '/auth': ['/dashboard'],
-        '/dashboard': ['/grok', '/profile', '/workspaces'],
-        '/pricing': ['/auth', '/enterprise'],
-      };
-
-      const routesToPreload = preloadMap[location.pathname] || [];
-
-      routesToPreload.forEach((route) => {
-        const link = document.createElement('link');
-        link.rel = 'prefetch';
-        link.href = route;
-        document.head.appendChild(link);
-      });
+    // Preload common next steps based on current route
+    const preloadMap: Record<string, { routes: string[]; priority: 'high' | 'medium' | 'low' }> = {
+      '/': {
+        routes: ['/auth', '/dashboard', '/pricing', '/grok'],
+        priority: 'high',
+      },
+      '/auth': {
+        routes: ['/dashboard', '/profile'],
+        priority: 'high',
+      },
+      '/dashboard': {
+        routes: ['/grok', '/profile', '/workspaces', '/analytics'],
+        priority: 'medium',
+      },
+      '/pricing': {
+        routes: ['/auth', '/enterprise', '/contact'],
+        priority: 'medium',
+      },
+      '/grok': {
+        routes: ['/dashboard', '/profile'],
+        priority: 'low',
+      },
     };
 
-    // Preload after a short delay to not interfere with current page load
-    const timer = setTimeout(preloadRoutes, 2000);
+    const config = preloadMap[location.pathname];
+    if (config) {
+      prefetchOnIdle(config.routes, config.priority);
+    }
 
-    return () => clearTimeout(timer);
+    // Preconnect to critical domains
+    if (location.pathname === '/') {
+      preconnect('https://jmazzsxnatfewblgpxfq.supabase.co');
+      dnsPrefetch('https://fonts.googleapis.com');
+      dnsPrefetch('https://fonts.gstatic.com');
+    }
   }, [location.pathname]);
 
   return null;

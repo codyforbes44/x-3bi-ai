@@ -17,6 +17,7 @@ import { AISidebarProvider } from "@/contexts/AISidebarContext";
 import { AppLayout } from "@/components/layout/AppLayout";
 import { CommandPalette } from "@/components/CommandPalette";
 import { MobileBottomNav } from "@/components/MobileBottomNav";
+import { OfflineIndicator } from "@/components/pwa/OfflineIndicator";
 import FloatingBadge from "@/components/FloatingBadge";
 import ScrollToTop from "@/components/ScrollToTop";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
@@ -101,6 +102,7 @@ const App = () => (
                         <Sonner />
                         <FloatingBadge />
                         <BrowserRouter>
+                          <OfflineIndicator />
                           <CommandPalette />
                           <ScrollToTop />
                           <RoutePreloader />

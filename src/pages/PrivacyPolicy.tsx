@@ -1,4 +1,5 @@
-import { PageLayout } from "@/components/layout/PageLayout";
+import { PublicPageLayout } from "@/components/layout/PublicPageLayout";
+import { TableOfContents } from "@/components/layout/TableOfContents";
 import { SEO } from "@/components/SEO";
 
 export default function PrivacyPolicy() {
@@ -9,8 +10,9 @@ export default function PrivacyPolicy() {
         description="Learn how 3BI.AI collects, uses, and protects your personal data. GDPR and CCPA compliant privacy practices."
         canonical="https://3bi.ai/privacy"
       />
-      <PageLayout>
-        <div className="container max-w-4xl mx-auto px-4 py-12">
+      <PublicPageLayout maxWidth="7xl">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_250px] gap-8">
+          <div className="max-w-4xl">
           <h1 className="text-4xl font-bold mb-2 text-foreground">Privacy Policy</h1>
           <p className="text-muted-foreground mb-8">Effective Date: January 1, 2025</p>
 
@@ -245,7 +247,13 @@ export default function PrivacyPolicy() {
             </section>
           </div>
         </div>
-      </PageLayout>
+
+          {/* Table of Contents - Desktop only */}
+          <aside className="hidden lg:block">
+            <TableOfContents selector="h2" />
+          </aside>
+        </div>
+      </PublicPageLayout>
     </>
   );
 }
