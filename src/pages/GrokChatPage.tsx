@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NeonCard } from '@/components/ui/neon-card';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { AccentDot } from '@/components/ui/accent-dot';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';

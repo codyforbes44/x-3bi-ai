@@ -97,11 +97,21 @@ const AICodeAssistant = () => {
   ];
 
   return (
-    <Card className="h-[600px] flex flex-col">
-      <CardHeader className="pb-4 flex-row items-center justify-end">
-        <Badge variant="secondary">GPT-4o Mini</Badge>
-      </CardHeader>
-      <CardContent className="flex-1 flex flex-col space-y-4">
+    <NeonCard variant="cyan" glass={true} glow={true} size="lg" className="h-[600px] flex flex-col">
+      <div className="pb-4 flex items-center justify-between p-4 md:p-6 border-b border-white/10">
+        <div className="flex items-center gap-3">
+          <AccentDot color="cyan" />
+          <div>
+            <h3 className="text-lg md:text-xl font-semibold text-foreground flex items-center gap-2">
+              <Code className="h-5 w-5 text-cyan-400" />
+              AI Code Assistant
+            </h3>
+          </div>
+        </div>
+        <Badge variant="neon-cyan" className="text-xs">Gemini 2.5 Flash</Badge>
+      </div>
+      
+      <div className="flex-1 flex flex-col space-y-4 p-4 md:p-6 min-h-0">
         <div className="space-y-4">
           <div>
             <label className="text-sm font-medium mb-2 block">Code Input</label>
@@ -109,7 +119,7 @@ const AICodeAssistant = () => {
               value={code}
               onChange={(e) => setCode(e.target.value)}
               placeholder="Paste your code here..."
-              className="min-h-[120px] font-mono text-sm"
+              className="min-h-[100px] font-mono text-sm"
               disabled={isProcessing}
             />
           </div>
@@ -122,10 +132,8 @@ const AICodeAssistant = () => {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {languages.map((lang) => (
-                    <SelectItem key={lang.value} value={lang.value}>
-                      {lang.label}
-                    </SelectItem>
+                  {languages.map(lang => (
+                    <SelectItem key={lang.value} value={lang.value}>{lang.label}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -138,10 +146,8 @@ const AICodeAssistant = () => {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {tasks.map((taskOption) => (
-                    <SelectItem key={taskOption.value} value={taskOption.value}>
-                      {taskOption.label}
-                    </SelectItem>
+                  {tasks.map(t => (
+                    <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -151,7 +157,7 @@ const AICodeAssistant = () => {
           <Button 
             onClick={handleProcess} 
             disabled={!code.trim() || isProcessing}
-            className="w-full"
+            className="w-full bg-cyan-400 hover:bg-cyan-500 text-black"
           >
             {isProcessing ? (
               <>
@@ -167,42 +173,26 @@ const AICodeAssistant = () => {
           </Button>
         </div>
 
-        <div className="flex-1 flex flex-col">
-          <div className="flex items-center justify-between mb-2">
-            <label className="text-sm font-medium">Result</label>
-            {result && (
-              <Button onClick={handleCopy} size="sm" variant="outline">
-                {copied ? (
-                  <>
-                    <Check className="w-4 h-4 mr-2" />
-                    Copied
-                  </>
-                ) : (
-                  <>
-                    <Copy className="w-4 h-4 mr-2" />
-                    Copy
-                  </>
-                )}
+        {result && (
+          <div className="flex-1 min-h-0 glass-dark rounded-xl border border-white/10 p-4 flex flex-col">
+            <div className="flex items-center justify-between mb-3">
+              <h4 className="text-sm font-semibold">Result</h4>
+              <Button
+                onClick={handleCopy}
+                variant="ghost"
+                size="sm"
+                className="h-8"
+              >
+                {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
               </Button>
-            )}
+            </div>
+            <div className="flex-1 overflow-auto">
+              <pre className="text-xs font-mono whitespace-pre-wrap">{result}</pre>
+            </div>
           </div>
-          <div className="flex-1 border border-border rounded-lg p-4 bg-muted/30">
-            {result ? (
-              <pre className="text-sm whitespace-pre-wrap font-mono overflow-auto h-full">
-                {result}
-              </pre>
-            ) : (
-              <div className="flex items-center justify-center h-full text-muted-foreground">
-                <div className="text-center">
-                  <Code className="w-12 h-12 mx-auto mb-4 opacity-50" />
-                  <p>Processed code will appear here</p>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+        )}
+      </div>
+    </NeonCard>
   );
 };
 
