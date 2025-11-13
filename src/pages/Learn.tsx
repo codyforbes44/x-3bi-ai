@@ -1,3 +1,4 @@
+import { useState, Suspense, useMemo } from "react";
 import { SEO } from "@/components/SEO";
 import { PublicPageLayout } from "@/components/layout/PublicPageLayout";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,8 +9,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { BookOpen, Video, FileText, Code, Lightbulb, Rocket, Clock, User, Search, Terminal, Zap, Database, Globe, Shield, CheckCircle2, ArrowRight, BookMarked, GraduationCap, PlayCircle } from "lucide-react";
 import { SEO_CONFIG, PAGE_SEO, BREADCRUMB_CONFIG } from "@/config/seo-config";
+import { useProgressTracking } from "@/hooks/useProgressTracking";
+import { NewsletterSignup } from "@/components/forms/NewsletterSignup";
+import { PageSkeleton } from "@/components/ui/page-skeleton";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const Learn = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [difficultyFilter, setDifficultyFilter] = useState<string>("all");
+  const { markAsStarted, markAsCompleted, getItemStatus } = useProgressTracking();
   const categories = [
     {
       icon: Rocket,
@@ -100,42 +108,67 @@ const Learn = () => {
 
   const tutorials = [
     {
+      id: "quick-start",
       title: "Quick Start Guide",
       description: "Get up and running in 5 minutes",
       duration: "5 min",
-      difficulty: "Beginner"
+      difficulty: "Beginner",
+      type: "tutorial"
     },
     {
+      id: "auth-setup",
       title: "Authentication Setup",
       description: "Implement secure user authentication",
       duration: "15 min",
-      difficulty: "Beginner"
+      difficulty: "Beginner",
+      type: "tutorial"
     },
     {
+      id: "ai-chat-interface",
       title: "Building AI Chat Interface",
       description: "Create an interactive chat application",
       duration: "30 min",
-      difficulty: "Intermediate"
+      difficulty: "Intermediate",
+      type: "tutorial"
     },
     {
+      id: "deploying-app",
       title: "Deploying Your App",
       description: "Deploy your application to production",
       duration: "20 min",
-      difficulty: "Intermediate"
+      difficulty: "Intermediate",
+      type: "tutorial"
     },
     {
+      id: "advanced-workflows",
       title: "Advanced AI Workflows",
       description: "Chain multiple AI operations",
       duration: "45 min",
-      difficulty: "Advanced"
+      difficulty: "Advanced",
+      type: "tutorial"
     },
     {
+      id: "performance-optimization",
       title: "Performance Optimization",
       description: "Optimize your AI application",
       duration: "40 min",
-      difficulty: "Advanced"
+      difficulty: "Advanced",
+      type: "tutorial"
     }
   ];
+
+  // Filter tutorials based on search and difficulty
+  const filteredTutorials = useMemo(() => {
+    return tutorials.filter(tutorial => {
+      const matchesSearch = searchQuery === "" || 
+        tutorial.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        tutorial.description.toLowerCase().includes(searchQuery.toLowerCase());
+      
+      const matchesDifficulty = difficultyFilter === "all" || tutorial.difficulty === difficultyFilter;
+      
+      return matchesSearch && matchesDifficulty;
+    });
+  }, [searchQuery, difficultyFilter]);
 
   const faqs = [
     {
@@ -265,7 +298,10 @@ const Learn = () => {
                         {content.modules} modules
                       </div>
                     </div>
-                    <Button className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-smooth">
+                    <Button 
+                      className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-smooth"
+                      onClick={() => markAsStarted(content.title)}
+                    >
                       Start Learning
                       <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
                     </Button>
@@ -299,31 +335,73 @@ const Learn = () => {
               </TabsList>
 
               <TabsContent value="tutorials" className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                  {tutorials.map((tutorial, index) => (
-                    <Card key={tutorial.title} className="group hover:shadow-elegant transition-spring cursor-pointer animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
-                      <CardHeader>
-                        <div className="flex items-center justify-between mb-2">
-                          <Badge variant={tutorial.difficulty === "Beginner" ? "default" : tutorial.difficulty === "Intermediate" ? "secondary" : "outline"}>
-                            {tutorial.difficulty}
-                          </Badge>
-                          <span className="text-sm text-muted-foreground flex items-center gap-1">
-                            <Clock className="w-3 h-3" />
-                            {tutorial.duration}
-                          </span>
-                        </div>
-                        <CardTitle className="text-base md:text-lg group-hover:text-primary transition-smooth">{tutorial.title}</CardTitle>
-                        <CardDescription className="text-sm">{tutorial.description}</CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <Button variant="outline" className="w-full group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-smooth">
-                          <PlayCircle className="w-4 h-4 mr-2" />
-                          Start Tutorial
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  ))}
+                <div className="flex flex-col sm:flex-row gap-4 mb-6">
+                  <div className="relative flex-1">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
+                    <Input 
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder="Search tutorials..." 
+                      className="pl-10"
+                    />
+                  </div>
+                  <Select value={difficultyFilter} onValueChange={setDifficultyFilter}>
+                    <SelectTrigger className="w-full sm:w-[180px]">
+                      <SelectValue placeholder="All Levels" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Levels</SelectItem>
+                      <SelectItem value="Beginner">Beginner</SelectItem>
+                      <SelectItem value="Intermediate">Intermediate</SelectItem>
+                      <SelectItem value="Advanced">Advanced</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                  {filteredTutorials.map((tutorial, index) => {
+                    const status = getItemStatus(tutorial.id);
+                    return (
+                      <Card key={tutorial.id} className="group hover:shadow-elegant transition-spring cursor-pointer animate-fade-in" style={{ animationDelay: `${index * 50}ms` }}>
+                        <CardHeader>
+                          <div className="flex items-center justify-between mb-2">
+                            <Badge variant={tutorial.difficulty === "Beginner" ? "default" : tutorial.difficulty === "Intermediate" ? "secondary" : "outline"}>
+                              {tutorial.difficulty}
+                            </Badge>
+                            <span className="text-sm text-muted-foreground flex items-center gap-1">
+                              <Clock className="w-3 h-3" />
+                              {tutorial.duration}
+                            </span>
+                          </div>
+                          <CardTitle className="text-base md:text-lg group-hover:text-primary transition-smooth flex items-center gap-2">
+                            {tutorial.title}
+                            {status === "completed" && <CheckCircle2 className="w-4 h-4 text-green-500" />}
+                          </CardTitle>
+                          <CardDescription className="text-sm">{tutorial.description}</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <Button 
+                            variant="outline" 
+                            className="w-full group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-smooth"
+                            onClick={() => {
+                              if (status === "not-started") {
+                                markAsStarted(tutorial.id);
+                              }
+                            }}
+                          >
+                            <PlayCircle className="w-4 h-4 mr-2" />
+                            {status === "completed" ? "Completed" : status === "in-progress" ? "Continue" : "Start Tutorial"}
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    );
+                  })}
+                </div>
+                {filteredTutorials.length === 0 && (
+                  <Card className="p-12 text-center">
+                    <p className="text-muted-foreground">No tutorials found matching your search.</p>
+                  </Card>
+                )}
               </TabsContent>
 
               <TabsContent value="api" className="space-y-6">
@@ -638,6 +716,14 @@ function ChatApp() {
             </div>
           </div>
 
+          {/* Newsletter Section */}
+          <div className="mb-12 max-w-3xl mx-auto">
+            <NewsletterSignup
+              title="Get Weekly AI Learning Tips"
+              description="Curated tutorials, guides, and updates delivered every week."
+            />
+          </div>
+
           {/* Quick Start Section */}
           <div className="bg-gradient-subtle rounded-xl md:rounded-2xl p-6 md:p-12 text-center animate-fade-in">
             <GraduationCap className="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 md:mb-6 text-primary" />
@@ -674,4 +760,10 @@ function ChatApp() {
   );
 };
 
-export default Learn;
+const LearnWithSuspense = () => (
+  <Suspense fallback={<PageSkeleton variant="list" count={6} />}>
+    <Learn />
+  </Suspense>
+);
+
+export default LearnWithSuspense;
