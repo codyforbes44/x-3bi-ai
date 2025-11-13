@@ -114,72 +114,82 @@ const AIChat = () => {
   };
 
   return (
-    <Card className="h-[600px] md:h-[700px] flex flex-col">
-      <CardHeader className="pb-3 md:pb-4 flex-row items-center justify-end">
-        <Badge variant="secondary" className="text-xs">Gemini 2.5 Flash</Badge>
-      </CardHeader>
-      <CardContent className="flex-1 flex flex-col p-0 min-h-0">
-        <ScrollArea className="flex-1 px-3 md:px-6" ref={scrollAreaRef}>
-          <div className="space-y-3 md:space-y-4 pb-4">
-            {messages.map((message) => (
-              <div
-                key={message.id}
-                className={`flex gap-2 md:gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div className={`flex gap-2 md:gap-3 max-w-[85%] md:max-w-[80%] ${message.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
-                  <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
-                    message.role === 'user' 
-                      ? 'bg-primary text-primary-foreground' 
-                      : 'bg-muted text-muted-foreground'
-                  }`}>
-                    {message.role === 'user' ? <User className="w-3 h-3 md:w-4 md:h-4" /> : <Bot className="w-3 h-3 md:w-4 md:h-4" />}
-                  </div>
-                  <div className={`rounded-lg p-2.5 md:p-3 ${
-                    message.role === 'user'
-                      ? 'bg-primary text-primary-foreground'
-                      : 'bg-muted text-muted-foreground'
-                  }`}>
-                    <p className="text-xs md:text-sm whitespace-pre-wrap break-words">{message.content}</p>
-                    <span className="text-[10px] md:text-xs opacity-70 mt-1 block">
-                      {message.timestamp.toLocaleTimeString()}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            ))}
-            {isLoading && (
-              <div className="flex gap-2 md:gap-3 justify-start">
-                <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-muted flex items-center justify-center">
-                  <Bot className="w-3 h-3 md:w-4 md:h-4" />
-                </div>
-                <div className="bg-muted rounded-lg p-2.5 md:p-3">
-                  <Loader2 className="w-3 h-3 md:w-4 md:h-4 animate-spin" />
-                </div>
-              </div>
-            )}
-          </div>
-        </ScrollArea>
-        <div className="p-3 md:p-6 pt-3 md:pt-4 border-t">
-          <div className="flex gap-2">
-            <Input
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Ask me anything..."
-              className="flex-1 text-sm md:text-base"
-              disabled={isLoading}
-            />
-            <Button 
-              onClick={handleSend} 
-              disabled={!input.trim() || isLoading}
-              size="icon"
-              className="h-9 w-9 md:h-10 md:w-10"
-            >
-              <Send className="w-3 h-3 md:w-4 md:h-4" />
-            </Button>
+    <NeonCard variant="purple" glass={true} glow={true} size="lg" className="h-[600px] md:h-[700px] flex flex-col">
+      <div className="pb-3 md:pb-4 flex items-center justify-between p-4 md:p-6 border-b border-white/10">
+        <div className="flex items-center gap-3">
+          <AccentDot color="purple" />
+          <div>
+            <h3 className="text-lg md:text-xl font-semibold text-foreground flex items-center gap-2">
+              <Bot className="h-5 w-5 text-purple-500" />
+              AI Chat
+            </h3>
           </div>
         </div>
-      </NeonCard>
+        <Badge variant="neon-purple" className="text-xs">Gemini 2.5 Flash</Badge>
+      </div>
+      
+      <ScrollArea className="flex-1 px-3 md:px-6 py-4" ref={scrollAreaRef}>
+        <div className="space-y-3 md:space-y-4 pb-4">
+          {messages.map((message) => (
+            <div
+              key={message.id}
+              className={`flex gap-2 md:gap-3 ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
+            >
+              <div className={`flex gap-2 md:gap-3 max-w-[85%] md:max-w-[80%] ${message.role === 'user' ? 'flex-row-reverse' : 'flex-row'}`}>
+                <div className={`w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                  message.role === 'user' 
+                    ? 'bg-purple-600' 
+                    : 'bg-purple-600/20'
+                }`}>
+                  {message.role === 'user' ? <User className="w-3 h-3 md:w-4 md:h-4 text-white" /> : <Bot className="w-3 h-3 md:w-4 md:h-4 text-purple-500" />}
+                </div>
+                <div className={`rounded-lg p-2.5 md:p-3 ${
+                  message.role === 'user'
+                    ? 'bg-purple-600 text-white'
+                    : 'glass-card border border-white/10'
+                }`}>
+                  <p className="text-xs md:text-sm whitespace-pre-wrap break-words">{message.content}</p>
+                  <span className="text-[10px] md:text-xs opacity-70 mt-1 block">
+                    {message.timestamp.toLocaleTimeString()}
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
+          {isLoading && (
+            <div className="flex gap-2 md:gap-3 justify-start">
+              <div className="w-7 h-7 md:w-8 md:h-8 rounded-full bg-purple-600/20 flex items-center justify-center">
+                <Bot className="w-3 h-3 md:w-4 md:h-4 text-purple-500" />
+              </div>
+              <div className="glass-card border border-white/10 rounded-lg p-2.5 md:p-3">
+                <Loader2 className="w-3 h-3 md:w-4 md:h-4 animate-spin text-purple-500" />
+              </div>
+            </div>
+          )}
+        </div>
+      </ScrollArea>
+      
+      <div className="p-3 md:p-6 pt-3 md:pt-4 border-t border-white/10">
+        <div className="flex gap-2">
+          <Input
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="Ask me anything..."
+            className="flex-1 text-sm md:text-base"
+            disabled={isLoading}
+          />
+          <Button 
+            onClick={handleSend} 
+            disabled={!input.trim() || isLoading}
+            size="icon"
+            className="h-9 w-9 md:h-10 md:w-10 bg-purple-600 hover:bg-purple-700"
+          >
+            <Send className="w-3 h-3 md:w-4 md:h-4" />
+          </Button>
+        </div>
+      </div>
+    </NeonCard>
   );
 };
 

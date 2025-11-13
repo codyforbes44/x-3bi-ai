@@ -161,7 +161,7 @@ const AIImageGenerator = () => {
         <div className="flex-1 flex items-center justify-center border-2 border-dashed border-border rounded-lg min-h-0 overflow-hidden">
           {generatedImage ? (
             <div className="relative w-full h-full p-2 md:p-4">
-              <img 
+              <OptimizedImage
                 src={generatedImage} 
                 alt="Generated" 
                 className="w-full h-full object-contain rounded-lg"
@@ -182,7 +182,9 @@ const AIImageGenerator = () => {
               <p className="text-xs md:text-sm">Generated image will appear here</p>
             </div>
           )}
-        </NeonCard>
+        </div>
+      </div>
+    </NeonCard>
   );
 };
 
