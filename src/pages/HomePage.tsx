@@ -39,8 +39,9 @@ const HomePage = () => {
   const [showCommandList, setShowCommandList] = useState(false);
   const [showPermissionDialog, setShowPermissionDialog] = useState(false);
 
-  // Voice recognition with navigation commands
+  // Voice recognition with navigation and dashboard feature commands
   const voiceCommands = [
+    // Basic navigation
     {
       phrases: ['go to dashboard', 'open dashboard', 'show dashboard'],
       action: () => {
@@ -50,7 +51,7 @@ const HomePage = () => {
       description: 'Navigate to dashboard'
     },
     {
-      phrases: ['go to grok', 'open grok', 'open chat', 'start chat'],
+      phrases: ['go to grok', 'open grok', 'start chat'],
       action: () => {
         navigate('/grok');
         toast({ title: "Opening Grok AI Chat" });
@@ -58,7 +59,7 @@ const HomePage = () => {
       description: 'Open Grok AI chat'
     },
     {
-      phrases: ['go to ai tools', 'open ai tools', 'show ai tools'],
+      phrases: ['go to ai tools', 'open ai tools', 'show ai tools', 'free tools'],
       action: () => {
         navigate('/free-ai-tools');
         toast({ title: "Opening AI Tools" });
@@ -80,6 +81,174 @@ const HomePage = () => {
         toast({ title: "Going Home" });
       },
       description: 'Return to homepage'
+    },
+
+    // Dashboard feature commands - Enterprise
+    {
+      phrases: ['show analytics', 'open analytics', 'analytics dashboard'],
+      action: () => {
+        navigate('/dashboard?tab=analytics');
+        toast({ title: "Opening Analytics Dashboard" });
+      },
+      description: 'Open Analytics'
+    },
+    {
+      phrases: ['show workspaces', 'open workspaces', 'my workspaces'],
+      action: () => {
+        navigate('/dashboard?tab=workspace');
+        toast({ title: "Opening Workspaces" });
+      },
+      description: 'Manage Workspaces'
+    },
+    {
+      phrases: ['show workflows', 'open workflows', 'automation', 'create workflow'],
+      action: () => {
+        navigate('/dashboard?tab=workflows');
+        toast({ title: "Opening Workflow Automation" });
+      },
+      description: 'Open Workflows'
+    },
+
+    // Dashboard feature commands - Advanced AI
+    {
+      phrases: ['open claude', 'talk to claude', 'claude chat', 'claude 4'],
+      action: () => {
+        navigate('/dashboard?tab=claude');
+        toast({ title: "Opening Claude 4 Chat" });
+      },
+      description: 'Chat with Claude 4'
+    },
+    {
+      phrases: ['grok chat', 'talk to grok', 'use grok'],
+      action: () => {
+        navigate('/dashboard?tab=grok');
+        toast({ title: "Opening Grok Chat" });
+      },
+      description: 'Chat with Grok'
+    },
+    {
+      phrases: ['show vision', 'grok vision', 'image analysis', 'analyze image'],
+      action: () => {
+        navigate('/dashboard?tab=grok-vision');
+        toast({ title: "Opening Grok Vision" });
+      },
+      description: 'Grok Vision Analysis'
+    },
+    {
+      phrases: ['multi-model chat', 'compare models', 'multi chat'],
+      action: () => {
+        navigate('/dashboard?tab=multi-chat');
+        toast({ title: "Opening Multi-Model Chat" });
+      },
+      description: 'Multi-Model Comparison'
+    },
+    {
+      phrases: ['voice conversation', 'voice agent', 'talk to ai'],
+      action: () => {
+        navigate('/dashboard?tab=conversation');
+        toast({ title: "Starting Voice Conversation" });
+      },
+      description: 'Voice Conversation'
+    },
+    {
+      phrases: ['advanced ai', 'premium ai', 'advanced features'],
+      action: () => {
+        navigate('/dashboard?tab=advanced');
+        toast({ title: "Opening Advanced AI" });
+      },
+      description: 'Advanced AI Features'
+    },
+    {
+      phrases: ['local ai', 'privacy mode', 'offline ai'],
+      action: () => {
+        navigate('/dashboard?tab=local');
+        toast({ title: "Opening Local AI" });
+      },
+      description: 'Local AI (Privacy Mode)'
+    },
+    {
+      phrases: ['real-time voice', 'realtime voice', 'live voice'],
+      action: () => {
+        navigate('/dashboard?tab=realtime');
+        toast({ title: "Opening Real-Time Voice" });
+      },
+      description: 'Real-Time Voice'
+    },
+
+    // Dashboard feature commands - AI Tools
+    {
+      phrases: ['generate image', 'create image', 'make image', 'dall-e'],
+      action: () => {
+        navigate('/dashboard?tab=image');
+        toast({ title: "Opening Image Generation" });
+      },
+      description: 'Generate Images'
+    },
+    {
+      phrases: ['text to speech', 'voice synthesis', 'premium voice', 'elevenlabs'],
+      action: () => {
+        navigate('/dashboard?tab=voice');
+        toast({ title: "Opening Premium Voice" });
+      },
+      description: 'Premium Voice Synthesis'
+    },
+    {
+      phrases: ['basic voice', 'simple voice', 'openai voice'],
+      action: () => {
+        navigate('/dashboard?tab=basic-voice');
+        toast({ title: "Opening Basic Voice" });
+      },
+      description: 'Basic Voice Synthesis'
+    },
+    {
+      phrases: ['ai chat', 'chat assistant', 'chatbot'],
+      action: () => {
+        navigate('/dashboard?tab=chat');
+        toast({ title: "Opening AI Chat" });
+      },
+      description: 'AI Chat Assistant'
+    },
+
+    // Dashboard feature commands - Utilities
+    {
+      phrases: ['web scraper', 'scrape website', 'extract data'],
+      action: () => {
+        navigate('/dashboard?tab=scraper');
+        toast({ title: "Opening Web Scraper" });
+      },
+      description: 'Web Scraper'
+    },
+    {
+      phrases: ['code generator', 'generate code', 'code gen'],
+      action: () => {
+        navigate('/dashboard?tab=code-gen');
+        toast({ title: "Opening Code Generator" });
+      },
+      description: 'Code Generator'
+    },
+    {
+      phrases: ['code assistant', 'code help', 'programming'],
+      action: () => {
+        navigate('/dashboard?tab=code');
+        toast({ title: "Opening Code Assistant" });
+      },
+      description: 'Code Assistant'
+    },
+    {
+      phrases: ['deploy', 'deployment', 'deploy app'],
+      action: () => {
+        navigate('/dashboard?tab=deploy');
+        toast({ title: "Opening Deployment" });
+      },
+      description: 'Deploy Application'
+    },
+    {
+      phrases: ['insights', 'show insights', 'ai insights'],
+      action: () => {
+        navigate('/dashboard?tab=insights');
+        toast({ title: "Opening AI Insights" });
+      },
+      description: 'AI Insights'
     },
   ];
 

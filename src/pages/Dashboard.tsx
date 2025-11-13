@@ -1,12 +1,17 @@
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { SEO } from "@/components/SEO";
 import { ProductTour } from "@/components/onboarding/ProductTour";
 import { DashboardLayout } from "@/components/dashboard/DashboardLayout";
 import { DashboardOverview } from "@/components/dashboard/DashboardOverview";
 import { DashboardContent } from "@/components/dashboard/DashboardContent";
 import { PageSkeleton } from "@/components/ui/page-skeleton";
+import { DashboardVoiceIndicator } from "@/components/dashboard/DashboardVoiceIndicator";
+import { VoiceCommandList } from "@/components/voice/VoiceCommandList";
 import { useDashboard } from "@/hooks/useDashboard";
+import { useDashboardVoiceControl } from "@/hooks/useDashboardVoiceControl";
+import { useVoiceRecognition } from "@/hooks/useVoiceRecognition";
 import { SEO_CONFIG, BREADCRUMB_CONFIG } from "@/config/seo-config";
+import { useToast } from "@/hooks/use-toast";
 
 /**
  * Main Dashboard Page
@@ -14,6 +19,46 @@ import { SEO_CONFIG, BREADCRUMB_CONFIG } from "@/config/seo-config";
  */
 const Dashboard = () => {
   const { activeTab, setActiveTab, runTour, setRunTour, isMobile } = useDashboard();
+  const { toast } = useToast();
+  const [showCommandList, setShowCommandList] = useState(false);
+
+  // Dashboard voice control integration
+  const { commands } = useDashboardVoiceControl({
+    activeTab,
+    onTabChange: setActiveTab,
+    enabled: true,
+  });
+
+  const {
+    isListening,
+    isSupported,
+    transcript,
+    error,
+    isAwaitingCommand,
+    startListening,
+    stopListening,
+  } = useVoiceRecognition({
+    commands,
+    requireWakeWord: true,
+    wakeWords: ['hey 3bi', 'hey three bi'],
+  });
+
+  const handleVoiceToggle = () => {
+    if (!isSupported) {
+      toast({
+        title: "Not Supported",
+        description: "Voice commands are not supported in this browser.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (isListening) {
+      stopListening();
+    } else {
+      startListening();
+    }
+  };
 
   return (
     <>
@@ -30,6 +75,20 @@ const Dashboard = () => {
       />
       
       <ProductTour runTour={runTour} onComplete={() => setRunTour(false)} />
+      
+      <VoiceCommandList
+        isOpen={showCommandList}
+        onClose={() => setShowCommandList(false)}
+        requireWakeWord={true}
+      />
+
+      <DashboardVoiceIndicator
+        isListening={isListening}
+        isAwaitingCommand={isAwaitingCommand}
+        transcript={transcript}
+        error={error}
+        onToggle={handleVoiceToggle}
+      />
       
       <DashboardLayout 
         activeTab={activeTab}
