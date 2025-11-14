@@ -404,35 +404,83 @@ export type Database = {
       }
       contact_submissions: {
         Row: {
+          company: string | null
           created_at: string
           email: string
           id: string
           message: string
           name: string
+          phone: string | null
           status: string
           subject: string
           updated_at: string
           user_id: string | null
         }
         Insert: {
+          company?: string | null
           created_at?: string
           email: string
           id?: string
           message: string
           name: string
+          phone?: string | null
           status?: string
           subject: string
           updated_at?: string
           user_id?: string | null
         }
         Update: {
+          company?: string | null
           created_at?: string
           email?: string
           id?: string
           message?: string
           name?: string
+          phone?: string | null
           status?: string
           subject?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      demo_requests: {
+        Row: {
+          company: string
+          created_at: string
+          email: string
+          id: string
+          message: string | null
+          name: string
+          phone: string | null
+          preferred_date: string
+          status: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          company: string
+          created_at?: string
+          email: string
+          id?: string
+          message?: string | null
+          name: string
+          phone?: string | null
+          preferred_date: string
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          company?: string
+          created_at?: string
+          email?: string
+          id?: string
+          message?: string | null
+          name?: string
+          phone?: string | null
+          preferred_date?: string
+          status?: string
           updated_at?: string
           user_id?: string | null
         }
@@ -998,6 +1046,57 @@ export type Database = {
           id?: string
           name?: string
           resource?: string
+        }
+        Relationships: []
+      }
+      pixel_canvas: {
+        Row: {
+          color: string
+          created_at: string | null
+          id: string
+          updated_at: string | null
+          user_id: string | null
+          x: number
+          y: number
+        }
+        Insert: {
+          color: string
+          created_at?: string | null
+          id?: string
+          updated_at?: string | null
+          user_id?: string | null
+          x: number
+          y: number
+        }
+        Update: {
+          color?: string
+          created_at?: string | null
+          id?: string
+          updated_at?: string | null
+          user_id?: string | null
+          x?: number
+          y?: number
+        }
+        Relationships: []
+      }
+      pixel_cooldowns: {
+        Row: {
+          created_at: string | null
+          id: string
+          last_pixel_at: string | null
+          user_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          id?: string
+          last_pixel_at?: string | null
+          user_id: string
+        }
+        Update: {
+          created_at?: string | null
+          id?: string
+          last_pixel_at?: string | null
+          user_id?: string
         }
         Relationships: []
       }
@@ -1925,7 +2024,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "moderator" | "user"
+      app_role: "admin" | "moderator" | "user" | "super_admin"
       execution_status:
         | "pending"
         | "running"
@@ -2074,7 +2173,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "moderator", "user"],
+      app_role: ["admin", "moderator", "user", "super_admin"],
       execution_status: [
         "pending",
         "running",
