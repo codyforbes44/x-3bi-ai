@@ -1,6 +1,7 @@
 import * as React from "react"
 import { Slot } from "@radix-ui/react-slot"
 import { cva, type VariantProps } from "class-variance-authority"
+import { Loader2, Check } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 
@@ -23,6 +24,7 @@ const buttonVariants = cva(
         "neon-secondary": "bg-gradient-to-r from-cyan-400 to-blue-500 text-white border-0 hover:shadow-[0_0_30px_rgba(34,211,238,0.5)] transition-all",
         "neon-accent": "bg-gradient-to-r from-pink-500 via-cyan-400 to-purple-500 text-white border-0 hover:shadow-[0_0_30px_rgba(168,85,247,0.5)] transition-all",
         glass: "glass-card border border-white/10 backdrop-blur-md hover:border-white/20 transition-all",
+        success: "bg-green-600 text-white hover:bg-green-700",
       },
       size: {
         default: "h-12 px-5 py-2.5 text-base md:h-10 md:px-4 md:text-sm",
@@ -43,17 +45,41 @@ export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean
+  loading?: boolean
+  success?: boolean
+  loadingText?: string
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, loading, success, loadingText, children, disabled, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
+    
+    if (asChild) {
+      return (
+        <Comp
+          className={cn(buttonVariants({ variant, size, className }))}
+          ref={ref}
+          disabled={disabled || loading}
+          {...props}
+        />
+      )
+    }
+
     return (
       <Comp
-        className={cn(buttonVariants({ variant, size, className }))}
+        className={cn(
+          buttonVariants({ variant: success ? "success" : variant, size, className }),
+          loading && "cursor-wait",
+          success && "animate-scale-in"
+        )}
         ref={ref}
+        disabled={disabled || loading || success}
         {...props}
-      />
+      >
+        {loading && <Loader2 className="h-4 w-4 animate-spin" />}
+        {success && <Check className="h-4 w-4 animate-scale-in" />}
+        {loading && loadingText ? loadingText : children}
+      </Comp>
     )
   }
 )

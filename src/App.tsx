@@ -1,4 +1,6 @@
 import { Suspense, lazy } from "react";
+import ErrorBoundary from "@/components/ErrorBoundary";
+import NetworkErrorBoundary from "@/components/NetworkErrorBoundary";
 import { HelmetProvider } from "react-helmet-async";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
