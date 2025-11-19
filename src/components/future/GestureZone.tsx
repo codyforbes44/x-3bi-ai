@@ -2,6 +2,8 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 import Hammer from "hammerjs";
 import { cn } from "@/lib/utils";
 
+type GestureType = 'all' | 'horizontal' | 'vertical' | 'none';
+
 interface GestureZoneProps {
   children: ReactNode;
   onSwipeUp?: () => void;
@@ -13,6 +15,10 @@ interface GestureZoneProps {
   onRotate?: (angle: number) => void;
   showTrails?: boolean;
   className?: string;
+  enableGestures?: boolean;
+  gestureType?: GestureType;
+  threshold?: number;
+  velocity?: number;
 }
 
 export function GestureZone({
@@ -26,39 +32,65 @@ export function GestureZone({
   onRotate,
   showTrails = true,
   className = "",
+  enableGestures = true,
+  gestureType = 'all',
+  threshold = 80,
+  velocity = 0.6,
 }: GestureZoneProps) {
   const zoneRef = useRef<HTMLDivElement>(null);
   const [trails, setTrails] = useState<Array<{ x: number; y: number; id: number }>>([]);
 
   useEffect(() => {
-    if (!zoneRef.current) return;
+    if (!zoneRef.current || !enableGestures || gestureType === 'none') return;
 
     const hammer = new Hammer.Manager(zoneRef.current);
 
-    // Add recognizers
-    hammer.add(new Hammer.Swipe({ direction: Hammer.DIRECTION_ALL }));
+    // Configure swipe direction based on gestureType
+    let direction = Hammer.DIRECTION_ALL;
+    if (gestureType === 'horizontal') {
+      direction = Hammer.DIRECTION_HORIZONTAL;
+    } else if (gestureType === 'vertical') {
+      direction = Hammer.DIRECTION_VERTICAL;
+    }
+
+    // Add recognizers with smart thresholds
+    hammer.add(new Hammer.Swipe({ 
+      direction,
+      threshold,
+      velocity
+    }));
     hammer.add(new Hammer.Pinch());
     hammer.add(new Hammer.Rotate());
 
-    // Swipe handlers
-    hammer.on("swipeup", () => {
-      onSwipeUp?.();
-      if (navigator.vibrate) navigator.vibrate(15);
-    });
+    // Swipe handler with direction dominance
+    hammer.on("swipe", (e) => {
+      const deltaX = Math.abs(e.deltaX);
+      const deltaY = Math.abs(e.deltaY);
 
-    hammer.on("swipedown", () => {
-      onSwipeDown?.();
-      if (navigator.vibrate) navigator.vibrate(15);
-    });
+      // Only trigger if movement is primarily in the intended direction
+      if (gestureType === 'all' || gestureType === 'vertical') {
+        if (deltaY > deltaX * 1.5) {
+          if (e.direction === Hammer.DIRECTION_UP && onSwipeUp) {
+            onSwipeUp();
+            if (navigator.vibrate) navigator.vibrate(15);
+          } else if (e.direction === Hammer.DIRECTION_DOWN && onSwipeDown) {
+            onSwipeDown();
+            if (navigator.vibrate) navigator.vibrate(15);
+          }
+        }
+      }
 
-    hammer.on("swipeleft", () => {
-      onSwipeLeft?.();
-      if (navigator.vibrate) navigator.vibrate(15);
-    });
-
-    hammer.on("swiperight", () => {
-      onSwipeRight?.();
-      if (navigator.vibrate) navigator.vibrate(15);
+      if (gestureType === 'all' || gestureType === 'horizontal') {
+        if (deltaX > deltaY * 1.5) {
+          if (e.direction === Hammer.DIRECTION_LEFT && onSwipeLeft) {
+            onSwipeLeft();
+            if (navigator.vibrate) navigator.vibrate(15);
+          } else if (e.direction === Hammer.DIRECTION_RIGHT && onSwipeRight) {
+            onSwipeRight();
+            if (navigator.vibrate) navigator.vibrate(15);
+          }
+        }
+      }
     });
 
     // Pinch handlers
@@ -80,7 +112,7 @@ export function GestureZone({
     return () => {
       hammer.destroy();
     };
-  }, [onSwipeUp, onSwipeDown, onSwipeLeft, onSwipeRight, onPinchIn, onPinchOut, onRotate]);
+  }, [onSwipeUp, onSwipeDown, onSwipeLeft, onSwipeRight, onPinchIn, onPinchOut, onRotate, enableGestures, gestureType, threshold, velocity]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!showTrails) return;
@@ -98,10 +130,17 @@ export function GestureZone({
     }, 1000);
   };
 
+  // Determine touch-action CSS class
+  const touchActionClass = 
+    gestureType === 'horizontal' ? 'touch-pan-y' :
+    gestureType === 'vertical' ? 'touch-pan-x' :
+    gestureType === 'none' ? 'touch-auto' :
+    '';
+
   return (
     <div
       ref={zoneRef}
-      className={cn("relative touch-pan-y", className)}
+      className={cn("relative", touchActionClass, className)}
       onMouseMove={handleMouseMove}
     >
       {children}

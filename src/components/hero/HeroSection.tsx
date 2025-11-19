@@ -13,7 +13,9 @@ interface HeroSectionProps {
 export function HeroSection({ onNavigate, predictions = [] }: HeroSectionProps) {
   return (
     <GestureZone
-      onSwipeUp={() => onNavigate('/dashboard', 'swipe_dashboard')}
+      gestureType="horizontal"
+      threshold={100}
+      velocity={0.8}
       onSwipeLeft={() => onNavigate('/free-ai-tools', 'swipe_ai_tools')}
       onSwipeRight={() => onNavigate('/grok', 'swipe_grok')}
       className="relative min-h-screen flex flex-col items-center justify-center px-4 overflow-hidden"

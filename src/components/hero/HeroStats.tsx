@@ -75,7 +75,7 @@ export function HeroStats() {
             </TooltipTrigger>
             <TooltipContent>
               <div className="space-y-1 text-xs">
-                <p>Swipe ↑ for Dashboard</p>
+                <p className="font-semibold text-primary">Try swiping left or right!</p>
                 <p>Swipe ← for AI Tools</p>
                 <p>Swipe → for Grok Chat</p>
               </div>
