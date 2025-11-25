@@ -28,6 +28,10 @@ interface DashboardPageLayoutProps {
    * Custom className for content area
    */
   className?: string;
+  /**
+   * Require authentication - if false, allows guest access
+   */
+  requireAuth?: boolean;
 }
 
 /**
@@ -42,6 +46,7 @@ export function DashboardPageLayout({
   showBreadcrumbs = true,
   headerActions,
   className = '',
+  requireAuth = false,
 }: DashboardPageLayoutProps) {
   const { user, loading } = useAuth();
 
@@ -57,8 +62,8 @@ export function DashboardPageLayout({
     );
   }
 
-  // Redirect to auth if not logged in
-  if (!user) {
+  // Redirect to auth if not logged in and auth is required
+  if (requireAuth && !user) {
     return <Navigate to="/auth" replace />;
   }
 

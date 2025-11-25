@@ -162,16 +162,16 @@ const App = () => (
                             <Route path="/ai-enhance" element={<Navigate to="/dashboard?tab=image-enhance" replace />} />
                             <Route path="/ai-summary" element={<Navigate to="/dashboard?tab=summarizer" replace />} />
                             
-                            {/* Dashboard routes */}
-                            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-                            <Route path="/dashboard-overview" element={<ProtectedRoute><DashboardOverview /></ProtectedRoute>} />
+                            {/* Dashboard routes - accessible to all */}
+                            <Route path="/dashboard" element={<Dashboard />} />
+                            <Route path="/dashboard-overview" element={<DashboardOverview />} />
                             
-                            {/* Other authenticated pages */}
-                            <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-                            <Route path="/workspaces" element={<ProtectedRoute><Workspaces /></ProtectedRoute>} />
-                            <Route path="/integrations-hub" element={<ProtectedRoute><IntegrationsHub /></ProtectedRoute>} />
-                            <Route path="/api-access" element={<ProtectedRoute><APIAccess /></ProtectedRoute>} />
-                            <Route path="/api-keys" element={<ProtectedRoute><APIKeys /></ProtectedRoute>} />
+                            {/* Other pages - accessible to all */}
+                            <Route path="/profile" element={<ProfilePage />} />
+                            <Route path="/workspaces" element={<Workspaces />} />
+                            <Route path="/integrations-hub" element={<IntegrationsHub />} />
+                            <Route path="/api-access" element={<APIAccess />} />
+                            <Route path="/api-keys" element={<APIKeys />} />
         {/* Redirect old grok-chat route for backward compatibility */}
         <Route path="/grok-chat/*" element={<Navigate to="/grok" replace />} />
         <Route path="/dashboard/grok-chat" element={<Navigate to="/grok" replace />} />
@@ -179,28 +179,55 @@ const App = () => (
                             {/* Standalone Grok PWA */}
                             <Route path="/grok/*" element={<GrokApp />} />
                             
-                            <Route path="/memory" element={<ProtectedRoute><MemoryPage /></ProtectedRoute>} />
-                            <Route path="/analytics" element={<ProtectedRoute><UsageAnalyticsPage /></ProtectedRoute>} />
-                            <Route path="/security" element={<ProtectedRoute><SecuritySettings /></ProtectedRoute>} />
+                            <Route path="/memory" element={<MemoryPage />} />
+                            <Route path="/analytics" element={<UsageAnalyticsPage />} />
+                            <Route path="/security" element={<SecuritySettings />} />
             {/* Redirect old settings page to new unified page */}
             <Route path="/ai-assistant-settings" element={<Navigate to="/settings/ai" replace />} />
             <Route path="/settings" element={<Navigate to="/settings/ai" replace />} />
-            <Route path="/settings/ai" element={<ProtectedRoute><UnifiedSettingsPage /></ProtectedRoute>} />
-                            <Route path="/referrals" element={<ProtectedRoute><ReferralProgram /></ProtectedRoute>} />
+            <Route path="/settings/ai" element={<UnifiedSettingsPage />} />
+                            <Route path="/referrals" element={<ReferralProgram />} />
                             <Route path="/install" element={<InstallPage />} />
-                            <Route path="/predictive-ai" element={<ProtectedRoute><PredictiveAI /></ProtectedRoute>} />
+                            <Route path="/predictive-ai" element={<PredictiveAI />} />
                             
-                            {/* Phase 7: Platform Domination */}
-                            <Route path="/analytics/realtime" element={<ProtectedRoute><RealTimeAnalyticsPage /></ProtectedRoute>} />
-                            <Route path="/enterprise/permissions" element={<ProtectedRoute><PermissionsPage /></ProtectedRoute>} />
-                            <Route path="/marketplace" element={<ProtectedRoute><MarketplacePage /></ProtectedRoute>} />
-                            <Route path="/security-dashboard" element={<ProtectedRoute><SecurityDashboardPage /></ProtectedRoute>} />
-                            <Route path="/webhooks" element={<ProtectedRoute><WebhooksPage /></ProtectedRoute>} />
-                            <Route path="/enterprise/white-label" element={<ProtectedRoute><WhiteLabelPage /></ProtectedRoute>} />
-                            <Route path={ROUTES.SUPER_ADMIN_DASHBOARD} element={<ProtectedRoute><SuperAdminDashboardPage /></ProtectedRoute>} />
+                            {/* Phase 7: Platform Domination - Public access */}
+                            <Route path="/analytics/realtime" element={<RealTimeAnalyticsPage />} />
+                            <Route path="/enterprise/permissions" element={<PermissionsPage />} />
+                            <Route path="/marketplace" element={<MarketplacePage />} />
+                            {/* Admin-only routes - Protected */}
+                            <Route path="/security-dashboard" element={
+                              <ProtectedRoute>
+                                <RequireRole role="admin">
+                                  <SecurityDashboardPage />
+                                </RequireRole>
+                              </ProtectedRoute>
+                            } />
+                            <Route path="/webhooks" element={
+                              <ProtectedRoute>
+                                <RequireRole role="admin">
+                                  <WebhooksPage />
+                                </RequireRole>
+                              </ProtectedRoute>
+                            } />
+                            <Route path="/enterprise/white-label" element={
+                              <ProtectedRoute>
+                                <WhiteLabelPage />
+                              </ProtectedRoute>
+                            } />
+                            <Route path={ROUTES.SUPER_ADMIN_DASHBOARD} element={
+                              <ProtectedRoute>
+                                <SuperAdminDashboardPage />
+                              </ProtectedRoute>
+                            } />
                             
-                            {/* Phase 8: Monitoring & Observability */}
-                            <Route path="/monitoring" element={<ProtectedRoute><MonitoringDashboard /></ProtectedRoute>} />
+                            {/* Phase 8: Monitoring & Observability - Admin only */}
+                            <Route path="/monitoring" element={
+                              <ProtectedRoute>
+                                <RequireRole role="admin">
+                                  <MonitoringDashboard />
+                                </RequireRole>
+                              </ProtectedRoute>
+                            } />
                             
                             {/* Admin Dashboard - Role-based protection */}
                             <Route path={ROUTES.ADMIN_DASHBOARD} element={

@@ -29,6 +29,10 @@ interface AuthenticatedPageLayoutProps {
    * Custom className for content area
    */
   className?: string;
+  /**
+   * Require authentication - if false, allows guest access
+   */
+  requireAuth?: boolean;
 }
 
 /**
@@ -43,6 +47,7 @@ export function AuthenticatedPageLayout({
   showBreadcrumbs = true,
   showBackButton = false,
   className = '',
+  requireAuth = false,
 }: AuthenticatedPageLayoutProps) {
   const { user, loading } = useAuth();
 
@@ -59,8 +64,8 @@ export function AuthenticatedPageLayout({
     );
   }
 
-  // Redirect to auth if not logged in
-  if (!user) {
+  // Redirect to auth if not logged in and auth is required
+  if (requireAuth && !user) {
     return <Navigate to="/auth" replace />;
   }
 
