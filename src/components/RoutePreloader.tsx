@@ -14,7 +14,7 @@ export const RoutePreloader = () => {
     // Preload common next steps based on current route
     const preloadMap: Record<string, { routes: string[]; priority: 'high' | 'medium' | 'low' }> = {
       '/': {
-        routes: ['/auth', '/dashboard', '/pricing', '/grok'],
+        routes: ['/auth', '/dashboard', '/features', '/grok'],
         priority: 'high',
       },
       '/auth': {
@@ -25,7 +25,7 @@ export const RoutePreloader = () => {
         routes: ['/grok', '/profile', '/workspaces', '/analytics'],
         priority: 'medium',
       },
-      '/pricing': {
+      '/features': {
         routes: ['/auth', '/enterprise', '/contact'],
         priority: 'medium',
       },

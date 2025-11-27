@@ -146,14 +146,14 @@ export const homeContent = {
     title: "Ready to Transform Your Workflow?",
     description: "Access Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, and more premium models in one platform. Features include workflows, analytics, and team collaboration with enterprise-grade security.",
     primaryButton: {
-      text: "Get Started",
-      route: "/pricing"
+      text: "Get Started Free",
+      route: "/dashboard"
     },
     secondaryButton: {
       text: "View Features",
       route: "/features"
     },
-    footer: "Try it now • No commitments"
+    footer: "100% Free • No credit card required"
   },
 
   seo: {

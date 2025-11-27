@@ -65,6 +65,6 @@ export const GROK_CONFIG = {
   defaultTemperature: 0.7,
   defaultMaxTokens: 4096,
   streamingEnabled: true,
-  guestRateLimit: 5, // messages per minute (rolling window)
-  authenticatedRateLimit: 5, // messages per day (resets at UTC-0)
+  guestRateLimit: 1000, // high limit per day (generous for free tier)
+  authenticatedRateLimit: 1000, // high limit per day (generous for free tier)
 } as const;

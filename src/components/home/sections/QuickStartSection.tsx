@@ -46,12 +46,12 @@ export function QuickStartSection() {
           <Button 
             size="lg" 
             className="bg-gradient-hero text-white w-full sm:w-auto min-w-[250px] h-12 sm:h-14 text-base sm:text-lg touch-target"
-            onClick={() => navigate(ROUTES.PRICING)}
+            onClick={() => navigate(ROUTES.DASHBOARD)}
           >
-            View Pricing & Plans →
+            Get Started Free →
           </Button>
           <p className="text-sm text-muted-foreground mt-3">
-            14-day free trial • No credit card required • Cancel anytime
+            100% Free • No credit card required • All features included
           </p>
         </div>
       </div>

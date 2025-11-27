@@ -86,8 +86,8 @@ const Enterprise = () => {
       />
       <PublicPageLayout maxWidth="7xl">
         <PageHero
-          title="Enterprise Solutions"
-          description={`Powerful AI platform built for enterprise scale. ${PLATFORM_STATS.totalFeatures} AI features, ${PLATFORM_STATS.totalModels} models, unlimited users, and dedicated support.`}
+          title="Enterprise Solutions - Free for All Teams"
+          description={`Enterprise-grade AI platform, completely free. ${PLATFORM_STATS.totalFeatures} AI features, ${PLATFORM_STATS.totalModels} models, unlimited users, and all features included at no cost.`}
           badge={{
             icon: Shield,
             text: "Enterprise Grade"

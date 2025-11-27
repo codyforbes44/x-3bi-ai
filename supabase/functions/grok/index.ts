@@ -36,66 +36,11 @@ serve(async (req) => {
     
     // Apply different rate limits based on auth status
     if (userId) {
-      // Authenticated: 5 messages per day (resets at UTC-0)
-      const today = new Date().toISOString().split('T')[0]; // UTC date YYYY-MM-DD
-      
-      const { data: rateLimit } = await supabaseClient
-        .from('grok_rate_limits')
-        .select('*')
-        .eq('user_id', userId)
-        .eq('date', today)
-        .maybeSingle();
-      
-      const messageCount = rateLimit?.message_count || 0;
-      const DAILY_LIMIT = 5;
-      
-      if (messageCount >= DAILY_LIMIT) {
-        // Calculate time until UTC midnight
-        const now = new Date();
-        const tomorrow = new Date(Date.UTC(
-          now.getUTCFullYear(),
-          now.getUTCMonth(),
-          now.getUTCDate() + 1
-        ));
-        
-        return new Response(
-          JSON.stringify({
-            error: 'Daily limit reached',
-            message: `You've reached your daily limit of ${DAILY_LIMIT} messages. Your limit resets at midnight UTC.`,
-            limit: DAILY_LIMIT,
-            remaining: 0,
-            resetAt: tomorrow.toISOString(),
-          }),
-          {
-            status: 429,
-            headers: {
-              'Content-Type': 'application/json',
-              'X-RateLimit-Limit': String(DAILY_LIMIT),
-              'X-RateLimit-Remaining': '0',
-              'X-RateLimit-Reset': tomorrow.toISOString(),
-              'Retry-After': String(Math.ceil((tomorrow.getTime() - now.getTime()) / 1000)),
-            },
-          }
-        );
-      }
-      
-      // Increment counter
-      await supabaseClient.from('grok_rate_limits').upsert({
-        user_id: userId,
-        date: today,
-        message_count: messageCount + 1,
-        updated_at: new Date().toISOString()
-      }, {
-        onConflict: 'user_id,date'
-      });
+      // Authenticated: unlimited access on free platform
+      console.log('[Grok] Authenticated user - unlimited access');
     } else {
-      // Guest: 5 requests per minute (IP-based, rolling window)
-      const clientIp = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown';
-      const rateLimitResult = isRateLimited(`guest_${clientIp}`, { windowMs: 60000, maxRequests: 5 });
-      
-      if (rateLimitResult.limited) {
-        return createRateLimitResponse(rateLimitResult.resetAt);
-      }
+      // Guest: unlimited requests (no rate limiting for free platform)
+      console.log('[Grok] Guest user - unlimited access on free platform');
     }
     
     console.log('[Grok] Rate limit checks passed');

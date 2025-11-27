@@ -16,7 +16,6 @@ export const ROUTES = {
   ANALYTICS: '/analytics',
   
   // Business
-  PRICING: '/pricing',
   ENTERPRISE: '/enterprise',
   
   // Learning & Resources
@@ -85,7 +84,6 @@ export const MAIN_NAVIGATION = [
   { name: 'Grok Chat', href: ROUTES.GROK, icon: 'MessageSquare' },
   { name: 'Learn', href: ROUTES.LEARN, icon: 'BookOpen' },
   { name: 'Docs', href: ROUTES.DOCUMENTATION, icon: 'FileText' },
-  { name: 'Pricing', href: ROUTES.PRICING, icon: 'DollarSign' },
   { name: 'Enterprise', href: ROUTES.ENTERPRISE, icon: 'Building2' },
 ] as const;
 
@@ -162,7 +160,6 @@ export const FOOTER_NAV_GROUPS = [
       { name: 'Memory', href: ROUTES.MEMORY },
       { name: 'Analytics', href: ROUTES.ANALYTICS },
       { name: 'Workspaces', href: ROUTES.WORKSPACES },
-      { name: 'Pricing', href: ROUTES.PRICING },
       { name: 'Enterprise', href: ROUTES.ENTERPRISE },
     ],
   },
