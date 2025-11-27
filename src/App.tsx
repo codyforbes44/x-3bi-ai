@@ -74,6 +74,7 @@ const FeaturesPage = lazy(() => import("./pages/FeaturesPage"));
 const AIModelsPage = lazy(() => import("./pages/AIModelsPage"));
 const UnifiedSettingsPage = lazy(() => import("./pages/UnifiedSettingsPage"));
 const OGImageGenerator = lazy(() => import("./pages/OGImageGenerator"));
+const Screenshots = lazy(() => import("./pages/Screenshots"));
 
 // Phase 7: Platform Domination
 const RealTimeAnalyticsPage = lazy(() => import("./pages/RealTimeAnalyticsPage"));
@@ -238,6 +239,9 @@ const App = () => (
                             
                             {/* OG Image Generator - Internal Tool */}
                             <Route path="/og-generator" element={<OGImageGenerator />} />
+                            
+                            {/* Screenshot Generator - Internal Tool */}
+                            <Route path="/screenshots" element={<Screenshots />} />
                             
                             {/* 404 catch-all */}
                             <Route path="*" element={<NotFound />} />
