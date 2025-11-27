@@ -76,7 +76,7 @@ export const GrokVision = () => {
             role: msg.role,
             content: msg.content,
           })),
-          model: 'grok-3', // Grok 3 handles vision automatically
+          model: 'grok-4-0709', // Grok 4 handles vision automatically
           temperature: 0.7,
         },
       });

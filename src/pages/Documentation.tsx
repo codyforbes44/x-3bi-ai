@@ -98,7 +98,7 @@ data = response.json()`
       },
       responseExample: `{
   "response": "System Architecture Design:\\n1. Frontend Layer...\\n2. API Gateway...\\n3. Microservices...",
-  "model": "claude-opus-4"
+  "model": "claude-opus-4-1-20250805"
 }`,
       functionName: "ai-architect"
     },

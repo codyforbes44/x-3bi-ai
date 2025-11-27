@@ -15,20 +15,87 @@ interface RouterOptions {
 
 // Model routing configuration
 const MODEL_ROUTES: Record<string, ModelConfig> = {
-  'grok-3': {
-    primary: 'grok-3',
-    fallbacks: ['claude-opus-4-1-20250805', 'gpt-5-2025-08-07'],
+  // === GROK MODELS ===
+  'grok-4-0709': {
+    primary: 'grok-4-0709',
+    fallbacks: ['grok-4-fast-reasoning', 'grok-3', 'claude-opus-4-1-20250805'],
     provider: 'xai',
   },
+  'grok-4-fast-reasoning': {
+    primary: 'grok-4-fast-reasoning',
+    fallbacks: ['grok-4-0709', 'grok-3'],
+    provider: 'xai',
+  },
+  'grok-3': {
+    primary: 'grok-3',
+    fallbacks: ['grok-4-0709', 'claude-sonnet-4-5-20250514'],
+    provider: 'xai',
+  },
+  'grok-3-fast': {
+    primary: 'grok-3-fast',
+    fallbacks: ['grok-3', 'gpt-5-mini-2025-08-07'],
+    provider: 'xai',
+  },
+  
+  // === CLAUDE MODELS ===
   'claude-opus-4-1-20250805': {
     primary: 'claude-opus-4-1-20250805',
-    fallbacks: ['gpt-5-2025-08-07', 'grok-3'],
+    fallbacks: ['claude-sonnet-4-5-20250514', 'o3-2025-04-16', 'grok-4-0709'],
     provider: 'anthropic',
   },
+  'claude-sonnet-4-5-20250514': {
+    primary: 'claude-sonnet-4-5-20250514',
+    fallbacks: ['claude-opus-4-1-20250805', 'gpt-5-2025-08-07', 'grok-4-0709'],
+    provider: 'anthropic',
+  },
+  
+  // === OPENAI MODELS ===
   'gpt-5-2025-08-07': {
     primary: 'gpt-5-2025-08-07',
-    fallbacks: ['claude-opus-4-1-20250805', 'grok-3'],
+    fallbacks: ['gpt-5-mini-2025-08-07', 'claude-sonnet-4-5-20250514', 'grok-4-0709'],
     provider: 'openai',
+  },
+  'gpt-5-mini-2025-08-07': {
+    primary: 'gpt-5-mini-2025-08-07',
+    fallbacks: ['gpt-5-nano-2025-08-07', 'gpt-5-2025-08-07'],
+    provider: 'openai',
+  },
+  'gpt-5-nano-2025-08-07': {
+    primary: 'gpt-5-nano-2025-08-07',
+    fallbacks: ['gpt-5-mini-2025-08-07', 'gemini-2.5-flash-lite'],
+    provider: 'openai',
+  },
+  'o3-2025-04-16': {
+    primary: 'o3-2025-04-16',
+    fallbacks: ['o4-mini-2025-04-16', 'claude-opus-4-1-20250805', 'gpt-5-2025-08-07'],
+    provider: 'openai',
+  },
+  'o4-mini-2025-04-16': {
+    primary: 'o4-mini-2025-04-16',
+    fallbacks: ['o3-2025-04-16', 'gpt-5-mini-2025-08-07'],
+    provider: 'openai',
+  },
+  
+  // === GEMINI MODELS ===
+  'gemini-3-pro-preview': {
+    primary: 'gemini-3-pro-preview',
+    fallbacks: ['gemini-2.5-pro', 'claude-opus-4-1-20250805'],
+    provider: 'google',
+  },
+  'gemini-2.5-pro': {
+    primary: 'gemini-2.5-pro',
+    fallbacks: ['gemini-2.5-flash', 'gpt-5-2025-08-07'],
+    provider: 'google',
+  },
+  'gemini-2.5-flash': {
+    primary: 'gemini-2.5-flash',
+    fallbacks: ['gemini-2.5-flash-lite', 'gpt-5-mini-2025-08-07'],
+    provider: 'google',
+  },
+  'gemini-2.5-flash-lite': {
+    primary: 'gemini-2.5-flash-lite',
+    fallbacks: ['gemini-2.5-flash', 'gpt-5-nano-2025-08-07'],
+    provider: 'google',
   },
 };
 
@@ -149,11 +216,15 @@ export function getOptimalModel(task: string): string {
   switch (task) {
     case 'code':
       return 'gpt-5-2025-08-07'; // GPT-5 is great for code
+    case 'reasoning':
+      return 'o3-2025-04-16'; // O3 for complex reasoning
     case 'chat':
-      return 'grok-3'; // Grok for conversational AI
+      return 'grok-4-0709'; // Grok 4 for conversational AI
     case 'analysis':
       return 'claude-opus-4-1-20250805'; // Claude for deep reasoning
+    case 'fast':
+      return 'gpt-5-mini-2025-08-07'; // Mini for speed
     default:
-      return 'grok-3';
+      return 'grok-4-0709';
   }
 }

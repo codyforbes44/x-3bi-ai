@@ -36,9 +36,27 @@ serve(async (req) => {
       throw new Error('GEMINI_API_KEY not configured');
     }
 
-    console.log('Processing request with Gemini:', model);
+    // Validate model
+    const validModels = [
+      'gemini-3-pro-preview', 'gemini-2.5-pro', 'gemini-2.5-flash', 'gemini-2.5-flash-lite',
+      'gemini-2.0-pro', 'gemini-1.5-pro', 'gemini-1.5-flash'
+    ];
+    
+    // Map model IDs to API model names
+    const modelMapping: Record<string, string> = {
+      'gemini-3-pro-preview': 'gemini-3.0-pro-preview',
+      'gemini-2.5-pro': 'gemini-2.5-pro-latest',
+      'gemini-2.5-flash': 'gemini-2.5-flash-latest',
+      'gemini-2.5-flash-lite': 'gemini-2.5-flash-lite-latest',
+      'gemini-2.0-pro': 'gemini-2.0-pro-latest',
+      'gemini-1.5-pro': 'gemini-1.5-pro-latest',
+      'gemini-1.5-flash': 'gemini-1.5-flash-latest',
+    };
+    
+    const apiModel = modelMapping[model] || model;
+    console.log('Processing request with Gemini:', model, '→', apiModel);
 
-    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GOOGLE_AI_API_KEY}`;
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${apiModel}:generateContent?key=${GOOGLE_AI_API_KEY}`;
 
     // Build content parts
     const parts: any[] = [{ text: prompt }];

@@ -62,8 +62,8 @@ const AdvancedAI: React.FC = () => {
     anthropic: {
       name: 'Claude 4',
       models: [
-        { value: 'claude-sonnet-4-20250514', label: 'Claude 4 Sonnet (Recommended)' },
-        { value: 'claude-opus-4-20250514', label: 'Claude 4 Opus (Most Capable)' },
+        { value: 'claude-sonnet-4-5-20250514', label: 'Claude 4.5 Sonnet (Recommended)' },
+        { value: 'claude-opus-4-1-20250805', label: 'Claude 4.1 Opus (Most Capable)' },
         { value: 'claude-3-5-haiku-20241022', label: 'Claude 3.5 Haiku (Fast)' }
       ],
       color: 'text-purple-500',

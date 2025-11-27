@@ -11,7 +11,7 @@ serve(async (req) => {
   }
 
   try {
-    const { message, model = 'claude-sonnet-4-20250514', provider = 'anthropic', tools, images } = await req.json();
+    const { message, model = 'claude-sonnet-4-5-20250514', provider = 'anthropic', tools, images } = await req.json();
 
     if (!message) {
       throw new Error('Message is required');
@@ -172,12 +172,22 @@ serve(async (req) => {
         }
       ];
 
+      // Determine if this is a newer model that requires max_completion_tokens
+      const isNewerModel = model.includes('gpt-5') || model.includes('o3') || model.includes('o4');
+      
       const requestBody: any = {
         model: model || 'gpt-4o',
         messages,
-        temperature: 0.7,
-        max_tokens: 4000
       };
+      
+      // Newer models use max_completion_tokens and don't support temperature
+      if (isNewerModel) {
+        requestBody.max_completion_tokens = 4000;
+        // O3/O4 models don't support temperature parameter
+      } else {
+        requestBody.temperature = 0.7;
+        requestBody.max_tokens = 4000;
+      }
 
       if (tools && tools.length > 0) {
         requestBody.tools = tools;

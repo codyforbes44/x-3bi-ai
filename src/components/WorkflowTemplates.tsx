@@ -68,7 +68,7 @@ const templates: WorkflowTemplate[] = [
       { type: "trigger", label: "PR Created", config: { event: "pull_request" } },
       { type: "ai-code", label: "Code Analysis", config: { checks: ["quality", "security"] } },
       { type: "condition", label: "Check Issues Found", config: {} },
-      { type: "ai-text", label: "Generate Review", config: { model: "claude-opus-4" } },
+      { type: "ai-text", label: "Generate Review", config: { model: "claude-opus-4-1-20250805" } },
       { type: "webhook", label: "Post Comment", config: { platform: "github" } }
     ],
     triggers: ["webhook"]
