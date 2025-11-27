@@ -94,18 +94,18 @@ export function ComparisonSection() {
         <div className="text-center mt-12">
           <div className="mb-6">
             <div className="text-4xl font-bold bg-gradient-hero bg-clip-text text-transparent mb-2">
-              Save 60%+
+              100% Free
             </div>
             <p className="text-muted-foreground">
-              Compared to individual AI subscriptions
+              All features, all models, no subscriptions
             </p>
           </div>
           <Button 
             size="lg" 
             className="bg-gradient-hero text-primary-foreground"
-            onClick={() => navigate(ROUTES.PRICING)}
+            onClick={() => navigate(ROUTES.FEATURES)}
           >
-            View Pricing Plans
+            Explore All Features
           </Button>
         </div>
       </div>

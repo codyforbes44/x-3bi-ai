@@ -32,12 +32,12 @@ export const SEO_CONFIG = {
     aiTools: 'https://3bi.ai/og/ai-tools.png',
     grok: 'https://3bi.ai/og/grok.png',
     documentation: 'https://3bi.ai/og/documentation.png',
-    pricing: 'https://3bi.ai/og/pricing.png',
+    features: 'https://3bi.ai/og/features.png',
     learn: 'https://3bi.ai/og/learn.png',
     community: 'https://3bi.ai/og/community.png',
   },
 
-  // Preconnect domains for performance
+  // Preconnect to critical domains
   preconnectDomains: [
     'https://jmazzsxnatfewblgpxfq.supabase.co',
     'https://fonts.googleapis.com',
@@ -140,23 +140,6 @@ export const PAGE_SEO = {
     ogType: 'website',
   },
   
-  pricing: {
-    title: 'Pricing - 3BI.AI Plans',
-    description: 'Access 12 AI models including Grok 3, Claude Opus 4, GPT-5, and Gemini 2.0 Pro. Transparent pricing with multiple plans to fit your needs. Enterprise options available.',
-    keywords: [
-      'AI platform pricing',
-      'multi-model AI cost',
-      'Grok 3 pricing',
-      'Claude Opus 4 pricing',
-      'GPT-5 access',
-      'Gemini Pro pricing',
-      'enterprise AI plans',
-      'AI subscription plans',
-      'business AI pricing',
-      'team AI platform cost',
-    ],
-  },
-  
   documentation: {
     title: 'API Documentation - Complete Developer Guide',
     description: 'Complete API documentation for 3BI.AI. Access Grok, Claude 4, GPT-5 via REST API. Code examples in JavaScript, Python, cURL. Authentication, endpoints, SDKs, best practices.',
@@ -194,11 +177,11 @@ export const PAGE_SEO = {
   },
   
   features: {
-    title: '27 AI Features - Complete Platform Overview',
-    description: '27 AI capabilities in one platform: Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, image generation (DALL-E 3, Stable Diffusion), voice synthesis (ElevenLabs), workflow automation, analytics, and team collaboration tools.',
+    title: '27 AI Features - 100% Free Platform',
+    description: '27 AI capabilities completely free: Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, image generation (DALL-E 3, Stable Diffusion), voice synthesis (ElevenLabs), workflow automation, analytics, team collaboration. No subscriptions, no hidden costs.',
     keywords: [
-      'AI platform features',
-      '12 AI models',
+      'free AI platform',
+      '12 AI models free',
       'multi-model platform',
       'AI workflow automation',
       'AI image generation',
@@ -247,7 +230,6 @@ export const PAGE_SEO = {
 export const BREADCRUMB_CONFIG = {
   home: { label: 'Home', url: '/' },
   dashboard: { label: 'Dashboard', url: '/dashboard' },
-  pricing: { label: 'Pricing', url: '/pricing' },
   documentation: { label: 'Documentation', url: '/documentation' },
   features: { label: 'Features', url: '/features' },
   learn: { label: 'Learn', url: '/learn' },

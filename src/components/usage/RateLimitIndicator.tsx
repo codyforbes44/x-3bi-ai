@@ -18,9 +18,9 @@ export function RateLimitIndicator() {
   const navigate = useNavigate();
   const [status, setStatus] = useState<RateLimitStatus>({
     current: 3847,
-    limit: 5000,
-    resetAt: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // 5 days from now
-    remaining: 1153,
+    limit: 50000, // Generous limit for free tier
+    resetAt: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000),
+    remaining: 46153,
   });
 
   const percentageUsed = (status.current / status.limit) * 100;
@@ -96,7 +96,7 @@ export function RateLimitIndicator() {
           <Alert variant="destructive">
             <AlertTriangle className="h-4 w-4" />
             <AlertDescription className="text-xs">
-              You've reached your API limit. Upgrade to continue using AI features.
+              You've reached your generous usage limit. Please wait for the reset or contact support.
             </AlertDescription>
           </Alert>
         )}
@@ -105,20 +105,9 @@ export function RateLimitIndicator() {
           <Alert>
             <TrendingUp className="h-4 w-4" />
             <AlertDescription className="text-xs">
-              You're approaching your limit. Consider upgrading for unlimited access.
+              You're approaching your usage limit. All features remain free.
             </AlertDescription>
           </Alert>
-        )}
-
-        {(isAtLimit || isNearLimit) && (
-          <Button
-            onClick={() => navigate('/pricing')}
-            variant={isAtLimit ? 'destructive' : 'default'}
-            className="w-full"
-            size="sm"
-          >
-            {isAtLimit ? 'Upgrade Now' : 'View Plans'}
-          </Button>
         )}
       </CardContent>
     </Card>

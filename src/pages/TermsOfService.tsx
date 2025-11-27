@@ -90,17 +90,18 @@ export default function TermsOfService() {
             <section>
               <h2 className="text-2xl font-semibold mb-4 text-foreground">5. AI-Generated Content and Usage Limits</h2>
               
-              <h3 className="text-xl font-semibold mb-3 text-foreground">5.1 Fair Use Policy</h3>
+              <h3 className="text-xl font-semibold mb-3 text-foreground">5.1 Platform Access</h3>
               <p className="text-foreground/90 leading-relaxed">
-                Our Services include AI-powered features with usage limits based on your subscription plan:
+                All features and AI models on our platform are completely free to use. We believe in democratizing AI access for everyone:
               </p>
               <ul className="list-disc pl-6 space-y-2 text-foreground/90 mt-2">
-                <li><strong>Free Tier:</strong> Limited monthly requests with rate limiting</li>
-                <li><strong>Pro Tier:</strong> Higher limits with priority processing</li>
-                <li><strong>Enterprise Tier:</strong> Custom limits and dedicated support</li>
+                <li><strong>All Features Free:</strong> Access to all 27 AI features without any cost</li>
+                <li><strong>All Models Free:</strong> Use all 12 premium AI models including Grok, Claude, GPT-5</li>
+                <li><strong>No Hidden Fees:</strong> No subscription plans, no premium tiers, completely free</li>
+                <li><strong>Fair Use:</strong> Generous usage limits to prevent abuse while keeping service free for everyone</li>
               </ul>
               <p className="text-foreground/90 leading-relaxed mt-4">
-                Excessive or abusive usage may result in throttling, temporary suspension, or additional charges.
+                Excessive or abusive usage may result in throttling or temporary suspension to ensure fair access for all users.
               </p>
 
               <h3 className="text-xl font-semibold mb-3 mt-6 text-foreground">5.2 AI Content Disclaimer</h3>
@@ -141,24 +142,16 @@ export default function TermsOfService() {
             </section>
 
             <section>
-              <h2 className="text-2xl font-semibold mb-4 text-foreground">7. Subscription Plans and Payments</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-foreground">7. Free Platform Policy</h2>
               
-              <h3 className="text-xl font-semibold mb-3 text-foreground">7.1 Pricing</h3>
+              <h3 className="text-xl font-semibold mb-3 text-foreground">7.1 No Subscription Required</h3>
               <p className="text-foreground/90 leading-relaxed">
-                We offer free and paid subscription plans. Pricing is subject to change with 30 days' notice. Current pricing is available at <a href="https://3bi.ai/pricing" className="text-primary hover:underline">3bi.ai/pricing</a>.
+                3BI.AI is completely free to use. There are no subscription plans, no premium tiers, and no hidden costs. All features and AI models are available to all users at no charge.
               </p>
 
-              <h3 className="text-xl font-semibold mb-3 mt-6 text-foreground">7.2 Billing and Renewals</h3>
-              <ul className="list-disc pl-6 space-y-2 text-foreground/90">
-                <li>Subscriptions renew automatically unless canceled before the renewal date</li>
-                <li>Charges are non-refundable except as required by law or at our discretion</li>
-                <li>You are responsible for all applicable taxes</li>
-                <li>Failed payments may result in service suspension</li>
-              </ul>
-
-              <h3 className="text-xl font-semibold mb-3 mt-6 text-foreground">7.3 Cancellations and Refunds</h3>
+              <h3 className="text-xl font-semibold mb-3 mt-6 text-foreground">7.2 Fair Use and Abuse Prevention</h3>
               <p className="text-foreground/90 leading-relaxed">
-                You may cancel your subscription at any time. Cancellations take effect at the end of the current billing period. We do not provide refunds for partial months or unused credits, except in cases of service unavailability exceeding our SLA commitments.
+                While our platform is free, we implement fair use policies to prevent abuse and ensure service availability for all users. Excessive or abusive usage patterns may result in temporary rate limiting or service suspension.
               </p>
             </section>
 
