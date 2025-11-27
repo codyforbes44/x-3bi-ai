@@ -47,19 +47,19 @@ export function HeroCTA({ onNavigate, predictions = [] }: HeroCTAProps) {
         <Button 
           size="lg" 
           className="w-full sm:flex-1 h-14 text-lg group"
-          onClick={() => onNavigate(user ? '/dashboard' : '/auth', user ? 'click_dashboard' : 'click_get_started')}
+          onClick={() => onNavigate('/dashboard', 'click_dashboard')}
         >
           <Sparkles className="mr-2 w-5 h-5" />
-          <span>{user ? 'Go to Dashboard' : 'Start Free Trial'}</span>
+          <span>Start Free Now</span>
           <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
         </Button>
         <Button 
           size="lg" 
           variant="outline" 
           className="w-full sm:flex-1 h-14 text-lg"
-          onClick={() => onNavigate('/grok', 'click_demo')}
+          onClick={() => onNavigate('/features', 'click_features')}
         >
-          See Live Demo
+          See All Features
         </Button>
       </div>
 

@@ -8,16 +8,10 @@ export function HeroHeadline() {
 
   return (
     <div className="space-y-4">
-      {user ? (
-        <p className="text-lg text-muted-foreground">
-          Welcome back, {user.email?.split('@')[0]}
-        </p>
-      ) : (
-        <Badge variant="outline" className="border-primary/50">
-          <BadgeIcon className="w-4 h-4 mr-2" />
-          {homeContent.hero.badge.text}
-        </Badge>
-      )}
+      <Badge variant="outline" className="border-primary/50 bg-primary/5">
+        <BadgeIcon className="w-4 h-4 mr-2" />
+        {homeContent.hero.badge.text}
+      </Badge>
       
       <h1 
         id="hero-heading"
@@ -30,6 +24,12 @@ export function HeroHeadline() {
       <p className="text-lg sm:text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
         {homeContent.hero.description}
       </p>
+
+      {user && (
+        <p className="text-sm text-primary/70">
+          Welcome back, {user.email?.split('@')[0]} →
+        </p>
+      )}
     </div>
   );
 }
