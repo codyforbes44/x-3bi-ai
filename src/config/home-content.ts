@@ -13,14 +13,14 @@ export const homeContent = {
   hero: {
     badge: {
       icon: Sparkles,
-      text: "All-in-One AI Platform"
+      text: "100% Free Forever • No Credit Card"
     },
     preHeadline: "The Complete AI Platform",
     title: {
-      line1: "Access Multiple AI Models",
-      line2: "In One Unified Platform"
+      line1: "Free Access to 12 Premium AI Models",
+      line2: "Grok, Claude, GPT-5 & More"
     },
-    description: "Access Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, and more premium models. Unified with enterprise workflows, team collaboration, and analytics.",
+    description: "Start using Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro instantly. No signup required, unlimited access, all features free forever.",
     capabilities: [
       { icon: Zap, label: "Grok AI", color: "text-blue-300" },
       { icon: Brain, label: "Claude 4", color: "text-purple-300" },
@@ -30,9 +30,9 @@ export const homeContent = {
       { icon: Rocket, label: "Workflows", color: "text-orange-300" }
     ],
     trustIndicators: [
-      { type: "live", text: "Premium X Verified" },
-      { type: "text", text: "27 AI Features" },
-      { type: "text", text: "Built by ApplyAI" }
+      { type: "text", text: "100% Free Forever" },
+      { type: "text", text: "No Credit Card Required" },
+      { type: "text", text: "Unlimited Access" }
     ]
   },
 
@@ -78,10 +78,10 @@ export const homeContent = {
   quickStart: {
     badge: {
       icon: Sparkles,
-      text: "Powered by Cᴏᴅʏ Fᴏʀʙᴇꜱ"
+      text: "Start Using Instantly"
     },
-    title: "Try AI Features Now",
-    description: "Experience premium AI instantly. No signup required—just start creating with enterprise-grade tools."
+    title: "Start Free in Seconds",
+    description: "No signup, no credit card, no limits. Jump straight into premium AI tools—all features unlocked from day one."
   },
 
   aiCapabilities: [
@@ -143,29 +143,29 @@ export const homeContent = {
   ],
 
   cta: {
-    title: "Ready to Transform Your Workflow?",
-    description: "Access Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, and more premium models in one platform. Features include workflows, analytics, and team collaboration with enterprise-grade security.",
+    title: "Start Using Premium AI Right Now",
+    description: "12 premium AI models, 27 enterprise features, unlimited access—completely free forever. No signup required to start, no credit card ever.",
     primaryButton: {
-      text: "Get Started Free",
+      text: "Start Free Now",
       route: "/dashboard"
     },
     secondaryButton: {
-      text: "View Features",
+      text: "See All Features",
       route: "/features"
     },
-    footer: "100% Free • No credit card required"
+    footer: "Forever Free • Unlimited Everything • No Credit Card"
   },
 
   seo: {
-    title: "3BI.AI - Complete AI Platform | Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, 27 Features",
-    description: "The complete AI platform for teams. Access 12 premium models: Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro (1M context), DALL-E 3, FLUX Pro, ElevenLabs Turbo, and more. 27 enterprise features including workflow automation, multi-modal memory, team collaboration, and real-time analytics. Enterprise security, unlimited teams, and full API access.",
+    title: "3BI.AI - Free AI Platform | 12 Premium Models | Grok, Claude, GPT-5, Gemini - Forever Free",
+    description: "100% free AI platform with unlimited access to 12 premium models: Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, DALL-E 3, FLUX Pro, and more. 27 enterprise features, no credit card required, no limits—free forever.",
     keywords: [
-      'AI platform', 'Grok 3', 'Claude Opus 4', 'GPT-5', 'Gemini 2.0 Pro', 'enterprise AI', 
-      'AI chat', 'multi-modal AI', 'AI memory system', 'business AI', 'AI tools',
-      'DALL-E 3', 'FLUX Pro', 'Stable Diffusion 3', 'ElevenLabs', 'AI voice synthesis',
-      'workflow automation', 'team collaboration', 'AI analytics', 'API access',
-      'X AI', 'xAI Grok', 'Anthropic Claude', 'OpenAI GPT-5', 'Google Gemini',
-      'AI image generation', 'AI code assistant', 'system architect AI'
+      'free AI platform', 'Grok 3 free', 'Claude Opus 4 free', 'GPT-5 free', 'Gemini 2.0 Pro free',
+      'free enterprise AI', 'unlimited AI access', 'no credit card AI', 'free AI chat', 'free AI tools',
+      'free DALL-E 3', 'free image generation', 'free voice synthesis', 'free AI code assistant',
+      'free workflow automation', 'free team collaboration', 'free AI analytics',
+      'X AI Grok free', 'Anthropic Claude free', 'OpenAI GPT-5 free', 'Google Gemini free',
+      'forever free AI', 'unlimited AI models', 'no signup AI'
     ],
     ogImage: "https://3bi.ai/og/home.png",
     canonical: "https://3bi.ai/"
