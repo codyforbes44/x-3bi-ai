@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { validateString, createValidationErrorResponse } from '../_shared/validation.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -21,20 +22,19 @@ serve(async (req) => {
     const { data: { user } } = await supabaseClient.auth.getUser();
     if (!user) throw new Error('Unauthorized');
 
-    const { 
-      alias, 
-      parent_alias, 
-      modality, 
-      content, 
-      image_url, 
-      audio_url, 
-      video_metadata,
-      metadata = {}
-    } = await req.json();
+    const body = await req.json();
 
-    if (!alias || !modality) {
-      throw new Error('Alias and modality are required');
-    }
+    // Validate required fields with proper length limits
+    const alias = validateString(body.alias, 'alias', { maxLength: 100 });
+    const modality = validateString(body.modality, 'modality', { maxLength: 50 });
+    
+    // Validate optional fields
+    const parent_alias = body.parent_alias ? validateString(body.parent_alias, 'parent_alias', { maxLength: 100 }) : null;
+    const content = body.content ? validateString(body.content, 'content', { maxLength: 10000 }) : null;
+    const image_url = body.image_url ? validateString(body.image_url, 'image_url', { maxLength: 2048 }) : null;
+    const audio_url = body.audio_url ? validateString(body.audio_url, 'audio_url', { maxLength: 2048 }) : null;
+    const video_metadata = body.video_metadata || null;
+    const metadata = body.metadata || {};
 
     // Generate content hash for integrity (TIMP-like)
     const contentString = JSON.stringify({ content, image_url, audio_url, video_metadata });

@@ -35,6 +35,13 @@ export const PRIMARY_NAV_ITEMS: NavItem[] = [
     featureId: null 
   },
   { 
+    icon: Brain, 
+    route: '/grok', 
+    label: 'Grok AI', 
+    category: 'advanced-ai', 
+    featureId: null 
+  },
+  { 
     icon: MessageSquare, 
     route: getFeatureRoute('chat'), 
     label: 'Chat', 
@@ -55,13 +62,6 @@ export const PRIMARY_NAV_ITEMS: NavItem[] = [
     category: 'workspace', 
     featureId: null 
   },
-  { 
-    icon: Settings, 
-    route: '/settings', 
-    label: 'Settings', 
-    category: 'account', 
-    featureId: null 
-  },
 ];
 
 /**
@@ -69,10 +69,10 @@ export const PRIMARY_NAV_ITEMS: NavItem[] = [
  */
 export const SECONDARY_NAV_ITEMS: NavItem[] = [
   { 
-    icon: Brain, 
-    route: '/grok', 
-    label: 'Grok AI', 
-    category: 'advanced-ai', 
+    icon: Settings, 
+    route: '/settings', 
+    label: 'Settings', 
+    category: 'account', 
     featureId: null 
   },
   { 

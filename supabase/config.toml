@@ -79,13 +79,13 @@ verify_jwt = true
 verify_jwt = true
 
 [functions.demo-chat]
-verify_jwt = true
+verify_jwt = false
 
 [functions.demo-image]
-verify_jwt = true
+verify_jwt = false
 
 [functions.demo-voice]
-verify_jwt = true
+verify_jwt = false
 
 [functions.send-demo-notification]
 verify_jwt = false
