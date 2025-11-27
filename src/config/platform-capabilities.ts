@@ -8,25 +8,67 @@ import {
 
 // AI Models Configuration
 export const AI_MODELS = [
+  // === xAI GROK MODELS ===
   {
-    id: "grok-3",
-    name: "Grok 3",
+    id: "grok-4-0709",
+    name: "Grok 4",
     provider: "xAI",
     category: "chat",
-    description: "X's most advanced AI with real-time knowledge up to October 2025",
-    features: ["Real-time data", "Vision", "Function calling", "Extended context"],
-    contextWindow: "128K tokens",
-    capabilities: ["text", "vision", "tools"],
+    description: "Flagship Grok model with 256K context and advanced reasoning",
+    features: ["Advanced reasoning", "Vision", "Function calling", "256K context"],
+    contextWindow: "256K tokens",
+    capabilities: ["text", "vision", "tools", "reasoning"],
+    icon: Brain,
+    color: "blue",
+    verified: true
+  },
+  {
+    id: "grok-4-fast-reasoning",
+    name: "Grok 4 Fast Reasoning",
+    provider: "xAI",
+    category: "chat",
+    description: "Fast reasoning model with massive 2M context window",
+    features: ["Fast reasoning", "2M context", "Vision", "Function calling"],
+    contextWindow: "2M tokens",
+    capabilities: ["text", "vision", "tools", "reasoning"],
     icon: Zap,
     color: "blue",
     verified: true
   },
   {
-    id: "claude-opus-4",
-    name: "Claude Opus 4",
+    id: "grok-3",
+    name: "Grok 3",
+    provider: "xAI",
+    category: "chat",
+    description: "Advanced AI with excellent performance and 131K context",
+    features: ["Real-time data", "Vision", "Function calling", "131K context"],
+    contextWindow: "131K tokens",
+    capabilities: ["text", "vision", "tools"],
+    icon: Brain,
+    color: "blue",
+    verified: true
+  },
+  {
+    id: "grok-3-fast",
+    name: "Grok 3 Fast",
+    provider: "xAI",
+    category: "chat",
+    description: "Optimized Grok 3 for faster responses",
+    features: ["Fast responses", "Function calling", "131K context"],
+    contextWindow: "131K tokens",
+    capabilities: ["text", "tools"],
+    icon: Zap,
+    color: "blue",
+    verified: true
+  },
+  
+  // === ANTHROPIC CLAUDE MODELS ===
+  {
+    id: "claude-opus-4-1-20250805",
+    name: "Claude Opus 4.1",
     provider: "Anthropic",
     category: "chat",
-    description: "Most capable model for complex reasoning and analysis",
+    description: "Most capable Claude model for complex reasoning and analysis",
     features: ["Superior reasoning", "200K context", "Vision", "Tool use"],
     contextWindow: "200K tokens",
     capabilities: ["text", "vision", "tools"],
@@ -35,7 +77,7 @@ export const AI_MODELS = [
     verified: true
   },
   {
-    id: "claude-sonnet-4",
+    id: "claude-sonnet-4-5-20250514",
     name: "Claude Sonnet 4.5",
     provider: "Anthropic",
     category: "chat",
@@ -47,12 +89,14 @@ export const AI_MODELS = [
     color: "purple",
     verified: true
   },
+  
+  // === OPENAI MODELS ===
   {
-    id: "gpt-5",
+    id: "gpt-5-2025-08-07",
     name: "GPT-5",
     provider: "OpenAI",
     category: "chat",
-    description: "OpenAI's latest multimodal model with advanced reasoning",
+    description: "OpenAI's flagship model with advanced reasoning",
     features: ["Multimodal", "Vision", "128K context", "Tool use"],
     contextWindow: "128K tokens",
     capabilities: ["text", "vision", "tools"],
@@ -61,8 +105,75 @@ export const AI_MODELS = [
     verified: true
   },
   {
-    id: "gemini-2-pro",
-    name: "Gemini 2.0 Pro",
+    id: "gpt-5-mini-2025-08-07",
+    name: "GPT-5 Mini",
+    provider: "OpenAI",
+    category: "chat",
+    description: "Fast and efficient GPT-5 variant",
+    features: ["Fast responses", "128K context", "Vision", "Cost-effective"],
+    contextWindow: "128K tokens",
+    capabilities: ["text", "vision", "tools"],
+    icon: Zap,
+    color: "green",
+    verified: true
+  },
+  {
+    id: "gpt-5-nano-2025-08-07",
+    name: "GPT-5 Nano",
+    provider: "OpenAI",
+    category: "chat",
+    description: "Fastest GPT-5 for high-volume tasks",
+    features: ["Ultra-fast", "128K context", "Cost-optimized"],
+    contextWindow: "128K tokens",
+    capabilities: ["text", "tools"],
+    icon: Zap,
+    color: "green",
+    verified: true
+  },
+  {
+    id: "o3-2025-04-16",
+    name: "O3",
+    provider: "OpenAI",
+    category: "chat",
+    description: "Powerful reasoning model for complex multi-step problems",
+    features: ["Advanced reasoning", "200K context", "Code analysis", "Vision"],
+    contextWindow: "200K tokens",
+    capabilities: ["text", "vision", "reasoning", "code"],
+    icon: Brain,
+    color: "green",
+    verified: true
+  },
+  {
+    id: "o4-mini-2025-04-16",
+    name: "O4 Mini",
+    provider: "OpenAI",
+    category: "chat",
+    description: "Fast reasoning model optimized for coding and visual tasks",
+    features: ["Fast reasoning", "200K context", "Coding", "Vision"],
+    contextWindow: "200K tokens",
+    capabilities: ["text", "vision", "reasoning", "code"],
+    icon: Zap,
+    color: "green",
+    verified: true
+  },
+  
+  // === GOOGLE GEMINI MODELS ===
+  {
+    id: "gemini-3-pro-preview",
+    name: "Gemini 3 Pro Preview",
+    provider: "Google",
+    category: "chat",
+    description: "Next-generation Gemini with enhanced capabilities",
+    features: ["Multimodal", "Native tools", "2M context", "Real-time"],
+    contextWindow: "2M tokens",
+    capabilities: ["text", "vision", "audio", "tools"],
+    icon: Sparkles,
+    color: "orange",
+    verified: true
+  },
+  {
+    id: "gemini-2.5-pro",
+    name: "Gemini 2.5 Pro",
     provider: "Google",
     category: "chat",
     description: "Google's advanced multimodal AI with native tool use",
@@ -70,6 +181,32 @@ export const AI_MODELS = [
     contextWindow: "1M tokens",
     capabilities: ["text", "vision", "audio", "tools"],
     icon: Sparkles,
+    color: "orange",
+    verified: true
+  },
+  {
+    id: "gemini-2.5-flash",
+    name: "Gemini 2.5 Flash",
+    provider: "Google",
+    category: "chat",
+    description: "Balanced Gemini model for speed and quality",
+    features: ["Fast responses", "1M context", "Multimodal"],
+    contextWindow: "1M tokens",
+    capabilities: ["text", "vision", "audio", "tools"],
+    icon: Zap,
+    color: "orange",
+    verified: true
+  },
+  {
+    id: "gemini-2.5-flash-lite",
+    name: "Gemini 2.5 Flash Lite",
+    provider: "Google",
+    category: "chat",
+    description: "Fastest Gemini model for simple tasks",
+    features: ["Ultra-fast", "1M context", "Cost-optimized"],
+    contextWindow: "1M tokens",
+    capabilities: ["text", "tools"],
+    icon: Zap,
     color: "orange",
     verified: true
   },
@@ -182,7 +319,7 @@ export const PLATFORM_FEATURES = [
     color: "purple",
     badge: "Most Capable",
     description: "Claude Opus 4 & Sonnet 4 for superior reasoning, context understanding, and conversations",
-    models: ["claude-opus-4", "claude-sonnet-4"],
+    models: ["claude-opus-4-1-20250805", "claude-sonnet-4-5-20250514"],
     capabilities: ["200K context", "Vision", "Tool use", "Advanced reasoning"],
     route: "/ai-chat",
     featured: true
@@ -234,7 +371,7 @@ export const PLATFORM_FEATURES = [
     color: "orange",
     badge: "Enterprise",
     description: "Design complex architectures and technical solutions with Claude Opus 4",
-    models: ["claude-opus-4"],
+    models: ["claude-opus-4-1-20250805"],
     capabilities: ["Architecture design", "System analysis", "Tech stack recommendations"],
     route: "/ai-architect",
     featured: true
@@ -260,7 +397,7 @@ export const PLATFORM_FEATURES = [
     color: "orange",
     badge: "Multimodal",
     description: "Google's advanced multimodal AI with 1M context window",
-    models: ["gemini-2-pro"],
+    models: ["gemini-2.5-pro"],
     capabilities: ["1M context", "Multimodal", "Native tools", "Real-time"],
     route: "/google-gemini",
     featured: false
@@ -286,7 +423,7 @@ export const PLATFORM_FEATURES = [
     color: "green",
     badge: "Advanced",
     description: "Orchestrate multiple AI agents working together on complex tasks",
-    models: ["claude-opus-4", "grok-3"],
+    models: ["claude-opus-4-1-20250805", "grok-4-0709"],
     capabilities: ["Agent coordination", "Task delegation", "Parallel processing"],
     route: "/predictive-ai",
     featured: false
@@ -299,7 +436,7 @@ export const PLATFORM_FEATURES = [
     color: "cyan",
     badge: "Smart Memory",
     description: "Build and query intelligent knowledge graphs from unstructured data",
-    models: ["claude-opus-4"],
+    models: ["claude-opus-4-1-20250805"],
     capabilities: ["Graph building", "Semantic search", "Relationship mapping"],
     route: "/predictive-ai",
     featured: false
@@ -312,7 +449,7 @@ export const PLATFORM_FEATURES = [
     color: "purple",
     badge: "Predictive",
     description: "Create AI digital twins that learn and predict user patterns",
-    models: ["claude-opus-4"],
+    models: ["claude-opus-4-1-20250805"],
     capabilities: ["Pattern learning", "Behavior prediction", "Personalization"],
     route: "/predictive-ai",
     featured: false
@@ -325,7 +462,7 @@ export const PLATFORM_FEATURES = [
     color: "orange",
     badge: "Forecasting",
     description: "Time-series analysis and future trend prediction",
-    models: ["claude-opus-4"],
+    models: ["claude-opus-4-1-20250805"],
     capabilities: ["Time-series", "Forecasting", "Anomaly detection"],
     route: "/predictive-ai",
     featured: false
@@ -338,7 +475,7 @@ export const PLATFORM_FEATURES = [
     color: "blue",
     badge: "Advanced Memory",
     description: "Store and retrieve conversations, images, voice, and context across sessions",
-    models: ["claude-opus-4", "grok-3"],
+    models: ["claude-opus-4-1-20250805", "grok-4-0709"],
     capabilities: ["Cross-session", "Multimodal", "Semantic search", "Context aware"],
     route: "/memory",
     featured: false

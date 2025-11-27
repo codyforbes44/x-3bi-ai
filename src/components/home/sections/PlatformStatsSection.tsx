@@ -5,10 +5,10 @@ import { Brain, Sparkles, Zap, TrendingUp, CheckCircle2 } from "lucide-react";
 
 export function PlatformStatsSection() {
   const topModels = [
-    AI_MODELS.find(m => m.id === 'grok-3'),
-    AI_MODELS.find(m => m.id === 'claude-opus-4'),
-    AI_MODELS.find(m => m.id === 'gpt-5'),
-    AI_MODELS.find(m => m.id === 'gemini-2-pro'),
+    AI_MODELS.find(m => m.id === 'grok-4-0709'),
+    AI_MODELS.find(m => m.id === 'claude-opus-4-1-20250805'),
+    AI_MODELS.find(m => m.id === 'gpt-5-2025-08-07'),
+    AI_MODELS.find(m => m.id === 'gemini-2.5-pro'),
   ].filter(Boolean);
 
   return (

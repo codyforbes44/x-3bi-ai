@@ -69,7 +69,23 @@ serve(async (req) => {
     validateArray(messages, 'messages', { minLength: 1, maxLength: 100 });
     validateString(model, 'model', { maxLength: 100 });
     validateNumber(temperature, 'temperature', { min: 0, max: 2 });
-    validateNumber(max_tokens, 'max_tokens', { min: 1, max: 32000 });
+    
+    // Validate model is a valid Grok model
+    const validModels = [
+      'grok-4-0709', 'grok-4-fast-reasoning', 'grok-4-fast-non-reasoning',
+      'grok-3', 'grok-3-fast', 'grok-3-mini',
+      'grok-2-vision-1212', 'grok-2-image-1212', 'grok-2', 'grok-2-mini',
+      'grok-code-fast-1'
+    ];
+    if (!validModels.includes(model)) {
+      throw new ValidationError(`Invalid model. Must be one of: ${validModels.join(', ')}`);
+    }
+    
+    // Set max tokens based on model context window
+    const maxTokensForModel = model.includes('grok-4-fast') ? 8192 : 
+                               model.includes('grok-4') ? 4096 :
+                               model.includes('grok-3') ? 4096 : 2048;
+    validateNumber(max_tokens, 'max_tokens', { min: 1, max: maxTokensForModel });
 
     const grokApiKey = Deno.env.get('XAI_API_KEY');
     if (!grokApiKey) {
