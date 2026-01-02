@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { logError, getErrorMessage, getErrorStatus } from '../_shared/errorHandling.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -133,9 +134,9 @@ serve(async (req) => {
     });
 
   } catch (error) {
-    console.error('Error in ai-insights function:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
+    logError(error, 'ai-insights');
+    return new Response(JSON.stringify({ error: getErrorMessage(error) }), {
+      status: getErrorStatus(error),
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }

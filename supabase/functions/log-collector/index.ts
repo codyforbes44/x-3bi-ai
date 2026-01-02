@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { logError, getErrorMessage, getErrorStatus } from '../_shared/errorHandling.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -34,7 +35,7 @@ serve(async (req) => {
       });
 
     if (error) {
-      console.error('Error storing log:', error);
+      logError(error, 'log-collector-store');
       return new Response(JSON.stringify({ error: error.message }), {
         status: 500,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -45,9 +46,9 @@ serve(async (req) => {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    console.error('Log collector error:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
+    logError(error, 'log-collector');
+    return new Response(JSON.stringify({ error: getErrorMessage(error) }), {
+      status: getErrorStatus(error),
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }

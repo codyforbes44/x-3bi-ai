@@ -2,6 +2,7 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { requireAuth } from '../_shared/auth.ts';
 import { validateUrl } from '../_shared/validation.ts';
 import { isRateLimited, getRateLimitHeaders, createRateLimitResponse } from '../_shared/rateLimit.ts';
+import { logError, getErrorMessage, getErrorStatus } from '../_shared/errorHandling.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -96,12 +97,12 @@ serve(async (req) => {
     });
 
   } catch (error) {
-    console.error('Error in web-scraper function:', error);
+    logError(error, 'web-scraper');
     return new Response(JSON.stringify({ 
       success: false,
-      error: error.message 
+      error: getErrorMessage(error) 
     }), {
-      status: 500,
+      status: getErrorStatus(error),
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }

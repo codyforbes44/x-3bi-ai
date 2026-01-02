@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
 import { Resend } from "npm:resend@2.0.0";
+import { logError, getErrorMessage, getErrorStatus } from '../_shared/errorHandling.ts';
 
 const resend = new Resend(Deno.env.get("RESEND_API_KEY"));
 
@@ -86,11 +87,11 @@ const handler = async (req: Request): Promise<Response> => {
       }
     );
   } catch (error: any) {
-    console.error("Error in send-newsletter-welcome function:", error);
+    logError(error, 'send-newsletter-welcome');
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: getErrorMessage(error) }),
       {
-        status: 500,
+        status: getErrorStatus(error),
         headers: { ...corsHeaders, "Content-Type": "application/json" },
       }
     );

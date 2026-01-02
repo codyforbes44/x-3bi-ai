@@ -49,19 +49,17 @@ export class RateLimitError extends APIError {
 }
 
 /**
- * Log error with context
+ * Log error with context - keeps logging minimal for production
+ * Only logs error name and message, not full stack traces (visible in Edge Function logs)
  */
 export function logError(error: unknown, context?: string): void {
   const prefix = context ? `[${context}]` : '';
   
   if (error instanceof Error) {
-    console.error(`${prefix} ${error.name}:`, error.message);
-    if ('details' in error) {
-      console.error('Details:', (error as any).details);
-    }
-    console.error('Stack:', error.stack);
+    // Only log essential info - stack traces are verbose
+    console.error(`${prefix} ${error.name}: ${error.message}`);
   } else {
-    console.error(`${prefix} Unknown error:`, error);
+    console.error(`${prefix} Error:`, String(error));
   }
 }
 
