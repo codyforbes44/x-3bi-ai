@@ -1,4 +1,5 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { logError, getErrorMessage, getErrorStatus } from '../_shared/errorHandling.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -22,7 +23,7 @@ serve(async (req) => {
       throw new Error('Text is required');
     }
 
-    console.log('Generating voice with ElevenLabs:', { voice_id, model_id, text_length: text.length });
+    // Log for debugging
 
     const response = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voice_id}`, {
       method: 'POST',
@@ -41,24 +42,24 @@ serve(async (req) => {
     });
 
     if (!response.ok) {
-      const error = await response.text();
-      console.error('ElevenLabs API error:', error);
-      throw new Error(`ElevenLabs API error: ${error}`);
+      const errorText = await response.text();
+      logError(new Error(`ElevenLabs API error: ${errorText}`), 'ai-voice');
+      throw new Error(`ElevenLabs API error: ${errorText}`);
     }
 
     const arrayBuffer = await response.arrayBuffer();
     const base64Audio = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
     const audio_url = `data:audio/mpeg;base64,${base64Audio}`;
 
-    console.log('Voice generated successfully');
+    // Voice generated successfully
 
     return new Response(JSON.stringify({ audio_url }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   } catch (error) {
-    console.error('Error in ai-voice function:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
+    logError(error, 'ai-voice');
+    return new Response(JSON.stringify({ error: getErrorMessage(error) }), {
+      status: getErrorStatus(error),
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
   }

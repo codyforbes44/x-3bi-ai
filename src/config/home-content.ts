@@ -20,7 +20,7 @@ export const homeContent = {
       line1: "Free Access to 12 Premium AI Models",
       line2: "Grok, Claude, GPT-5 & More"
     },
-    description: "Start using Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro instantly. No signup required, unlimited access, all features free forever.",
+    description: "Start using Grok 4, Claude Opus 4.1, GPT-5, Gemini 2.5 Pro instantly. No signup required, unlimited access, all features free forever.",
     capabilities: [
       { icon: Zap, label: "Grok AI", color: "text-blue-300" },
       { icon: Brain, label: "Claude 4", color: "text-purple-300" },
@@ -46,8 +46,8 @@ export const homeContent = {
     features: [
       {
         icon: Brain,
-        title: "Grok 3 - Latest Model",
-        description: "Advanced reasoning and real-time knowledge up to October 2025",
+        title: "Grok 4 - Flagship Model",
+        description: "Advanced reasoning with 256K context and vision capabilities",
         color: "blue"
       },
       {
@@ -130,9 +130,9 @@ export const homeContent = {
   ],
 
   platformBenefits: [
-    "12 Premium AI Models - Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, DALL-E 3, FLUX Pro, Stable Diffusion 3, ElevenLabs Turbo, Whisper Large v3, Runway Gen-3, Suno v4, and more",
+    "12 Premium AI Models - Grok 4, Claude Opus 4.1, GPT-5, Gemini 2.5 Pro, O3, O4 Mini, DALL-E 3, FLUX Pro, Stable Diffusion 3, ElevenLabs Turbo, Whisper Large v3, Runway Gen-3, and more",
     "27 Advanced AI Features - Chat, code generation, image creation, voice synthesis, system architecture, workflow automation, analytics, and enterprise tools",
-    "Real-Time AI Access - Grok 3 with live data up to October 2025, Gemini 2.0 Pro with 1M context window",
+    "Real-Time AI Access - Grok 4 with 256K context, Grok 4 Fast Reasoning with 2M context, Gemini 2.5 Pro with 1M context window",
     "X Premium Integration - Verified organization account with exclusive Grok AI capabilities and function calling",
     "Team Workspaces - Unlimited team members, role-based access control (RBAC), shared resources, and real-time collaboration",
     "Visual Workflow Builder - Drag-and-drop automation with conditional logic, multi-step workflows, and 50+ integrations",
@@ -157,10 +157,10 @@ export const homeContent = {
   },
 
   seo: {
-    title: "3BI.AI - Free AI Platform | 12 Premium Models | Grok, Claude, GPT-5, Gemini - Forever Free",
-    description: "100% free AI platform with unlimited access to 12 premium models: Grok 3, Claude Opus 4, GPT-5, Gemini 2.0 Pro, DALL-E 3, FLUX Pro, and more. 27 enterprise features, no credit card required, no limits—free forever.",
+    title: "3BI.AI - Free AI Platform | 12 Premium Models | Grok 4, Claude 4.1, GPT-5, Gemini - Forever Free",
+    description: "100% free AI platform with unlimited access to 12 premium models: Grok 4, Claude Opus 4.1, GPT-5, Gemini 2.5 Pro, O3, DALL-E 3, FLUX Pro, and more. 27 enterprise features, no credit card required, no limits—free forever.",
     keywords: [
-      'free AI platform', 'Grok 3 free', 'Claude Opus 4 free', 'GPT-5 free', 'Gemini 2.0 Pro free',
+      'free AI platform', 'Grok 4 free', 'Claude Opus 4.1 free', 'GPT-5 free', 'Gemini 2.5 Pro free',
       'free enterprise AI', 'unlimited AI access', 'no credit card AI', 'free AI chat', 'free AI tools',
       'free DALL-E 3', 'free image generation', 'free voice synthesis', 'free AI code assistant',
       'free workflow automation', 'free team collaboration', 'free AI analytics',

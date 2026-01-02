@@ -1,5 +1,6 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { logError, getErrorMessage, getErrorStatus } from '../_shared/errorHandling.ts';
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -190,11 +191,12 @@ serve(async (req) => {
     );
 
   } catch (error) {
-    console.error('Error in ai-agent-executor:', error);
+    // Log error for debugging (visible in Supabase Edge Function logs)
+    logError(error, 'ai-agent-executor');
     return new Response(
-      JSON.stringify({ error: error.message }),
+      JSON.stringify({ error: getErrorMessage(error) }),
       { 
-        status: 500,
+        status: getErrorStatus(error),
         headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
       }
     );
